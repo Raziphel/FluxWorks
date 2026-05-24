@@ -8,7 +8,8 @@
   "dependencies": [
     "base >= 2.0.0",
     "space-age >= 2.0.0",
-    "FluxworksAssets >= 1.0.0"
+    "FluxworksAssets >= 1.0.0",
+    "haul_lib > 2.0.0"
   ],
   "quality_required": true,
 	"rail_bridges_required": true,
