@@ -4,17 +4,17 @@ local Common = require("__haul_lib__/utils/common")
 data:extend({
 {
   type = "recipe",
-  name = "stone-upcycle",
+  name = "fw-stone-upcycle",
   category = "chemistry",
   subgroup = "fluid-recipes",
-  order = "a[chemistry]-aa[stone-upcycle]",
+  order = "a[chemistry]-aa[fw-stone-upcycle]",
   enabled = true,
   energy_required = 5,
   main_product = "coal",
   ingredients =
   {
     {type = "item", name = "stone", amount = 10},
-    {type = "fluid", name = "purple-flux", amount = 1},
+    {type = "fluid", name = "fw-purple-flux", amount = 1},
   },
   results=
   {
@@ -23,17 +23,17 @@ data:extend({
 },
 {
   type = "recipe",
-  name = "coal-upcycle",
+  name = "fw-coal-upcycle",
   category = "chemistry",
   subgroup = "fluid-recipes",
-  order = "a[chemistry]-ab[coal-upcycle]",
+  order = "a[chemistry]-ab[fw-coal-upcycle]",
   enabled = true,
   energy_required = 5,
   main_product = "copper-ore",
   ingredients =
   {
     {type = "item", name = "coal", amount = 10},
-    {type = "fluid", name = "purple-flux", amount = 1},
+    {type = "fluid", name = "fw-purple-flux", amount = 1},
   },
   results=
   {
@@ -42,17 +42,17 @@ data:extend({
 },
 {
   type = "recipe",
-  name = "copper-upcycle",
+  name = "fw-copper-upcycle",
   category = "chemistry",
   subgroup = "fluid-recipes",
-  order = "a[chemistry]-ac[copper-upcycle]",
+  order = "a[chemistry]-ac[fw-copper-upcycle]",
   enabled = true,
   energy_required = 5,
   main_product = "iron-ore",
   ingredients =
   {
     {type = "item", name = "copper-ore", amount = 10},
-    {type = "fluid", name = "purple-flux", amount = 1},
+    {type = "fluid", name = "fw-purple-flux", amount = 1},
   },
   results=
   {
@@ -61,17 +61,17 @@ data:extend({
 },
 {
   type = "recipe",
-  name = "iron-upcycle",
+  name = "fw-iron-upcycle",
   category = "chemistry",
   subgroup = "fluid-recipes",
-  order = "a[chemistry]-ad[iron-upcycle]",
+  order = "a[chemistry]-ad[fw-iron-upcycle]",
   enabled = true,
   energy_required = 5,
   main_product = "uranium-ore",
   ingredients =
   {
     {type = "item", name = "iron-ore", amount = 10},
-    {type = "fluid", name = "purple-flux", amount = 5},
+    {type = "fluid", name = "fw-purple-flux", amount = 5},
   },
   results=
   {
@@ -84,10 +84,10 @@ data:extend({
 
 {
   type = "recipe",
-  name = "coal-downcycle",
+  name = "fw-coal-downcycle",
   category = "chemistry",
   subgroup = "fluid-recipes",
-  order = "a[chemistry]-ba[coal-downcycle]",
+  order = "a[chemistry]-ba[fw-coal-downcycle]",
   enabled = true,
   energy_required = 5,
   main_product = "stone",
@@ -98,15 +98,15 @@ data:extend({
   results=
   {
     {type = "item", name = "stone", amount = 10},
-    {type = "fluid", name = "purple-flux", amount = 1},
+    {type = "fluid", name = "fw-purple-flux", amount = 1},
   }
 },
 {
   type = "recipe",
-  name = "copper-downcycle",
+  name = "fw-copper-downcycle",
   category = "chemistry",
   subgroup = "fluid-recipes",
-  order = "a[chemistry]-bb[copper-downcycle]",
+  order = "a[chemistry]-bb[fw-copper-downcycle]",
   enabled = true,
   energy_required = 5,
   main_product = "coal",
@@ -117,15 +117,15 @@ data:extend({
   results=
   {
     {type = "item", name = "coal", amount = 10},
-    {type = "fluid", name = "purple-flux", amount = 1},
+    {type = "fluid", name = "fw-purple-flux", amount = 1},
   }
 },
 {
   type = "recipe",
-  name = "iron-downcycle",
+  name = "fw-iron-downcycle",
   category = "chemistry",
   subgroup = "fluid-recipes",
-  order = "a[chemistry]-bc[iron-downcycle]",
+  order = "a[chemistry]-bc[fw-iron-downcycle]",
   enabled = true,
   energy_required = 5,
   main_product = "copper-ore",
@@ -136,15 +136,15 @@ data:extend({
   results=
   {
     {type = "item", name = "copper-ore", amount = 10},
-    {type = "fluid", name = "purple-flux", amount = 1},
+    {type = "fluid", name = "fw-purple-flux", amount = 1},
   }
 },
 {
   type = "recipe",
-  name = "uranium-downcycle",
+  name = "fw-uranium-downcycle",
   category = "chemistry",
   subgroup = "fluid-recipes",
-  order = "a[chemistry]-bd[uranium-downcycle]",
+  order = "a[chemistry]-bd[fw-uranium-downcycle]",
   enabled = true,
   energy_required = 5,
   main_product = "iron-ore",
@@ -155,8 +155,7 @@ data:extend({
   results=
   {
     {type = "item", name = "iron-ore", amount = 10},
-    {type = "fluid", name = "purple-flux", amount = 2},
+    {type = "fluid", name = "fw-purple-flux", amount = 2},
   }
 }
 })
-

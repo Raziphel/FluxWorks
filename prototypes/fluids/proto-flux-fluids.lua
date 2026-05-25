@@ -3,7 +3,7 @@ local Common = require("__haul_lib__/utils/common")
 data:extend({
 {
   type = "fluid",
-  name = "purple-flux",
+  name = "fw-purple-flux",
   default_temperature = 15,
   max_temperature = 100,
   base_color = { r = 0, g = 0.34, b = 0.6 },
@@ -14,7 +14,7 @@ data:extend({
 },
 {
   type = "fluid",
-  name = "yellow-flux",
+  name = "fw-yellow-flux",
   default_temperature = 15,
   max_temperature = 100,
   base_color = { r = 0, g = 0.34, b = 0.6 },
@@ -25,7 +25,7 @@ data:extend({
 },
 {
   type = "fluid",
-  name = "red-flux",
+  name = "fw-red-flux",
   default_temperature = 15,
   max_temperature = 100,
   base_color = { r = 0, g = 0.34, b = 0.6 },
@@ -36,7 +36,7 @@ data:extend({
 },
 {
   type = "fluid",
-  name = "green-flux",
+  name = "fw-green-flux",
   default_temperature = 15,
   max_temperature = 100,
   base_color = { r = 0, g = 0.34, b = 0.6 },
