@@ -9,10 +9,10 @@ end
 data:extend({
   {
     type = "item",
-    name = "fw-flux",
+    name = "fw-crystalised-flux",
     icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
     subgroup = "raw-resource",
-    order = "ga[fw-flux]",
+    order = "ga[fw-crystalised-flux]",
     stack_size = 200,
     pictures = {
       {
@@ -87,7 +87,7 @@ data:extend({
   },
   {
     type = "resource",
-    name = "fw-flux",
+    name = "fw-crystalised-flux",
     category = mining_category,
     icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
     flags = { "placeable-neutral" },
@@ -103,9 +103,9 @@ data:extend({
     resource_patch_search_radius = 12,
     tree_removal_probability = 1,
     tree_removal_max_distance = 32 * 32,
-    minable = { mining_time = 2, result = "fw-flux" },
+    minable = { mining_time = 2, result = "fw-crystalised-flux" },
     autoplace = resource_autoplace.resource_autoplace_settings({
-      name = "fw-flux",
+      name = "fw-crystalised-flux",
       order = "f",
       base_density = 0.35,
       richness_multiplier = 2.4,
@@ -158,8 +158,8 @@ data:extend({
 })
 
 if data.raw["autoplace-control"] and data.raw["autoplace-control"]["iron-ore"] then
-  local flux_autoplace = Common.cloneInto("autoplace-control", "iron-ore", "fw-flux")
-  flux_autoplace.localised_name = { "", "[entity=fw-flux] ", { "autoplace-control-names.fw-flux" } }
+  local flux_autoplace = Common.cloneInto("autoplace-control", "iron-ore", "fw-crystalised-flux")
+  flux_autoplace.localised_name = { "", "[entity=fw-crystalised-flux] ", { "autoplace-control-names.fw-crystalised-flux" } }
   flux_autoplace.richness = true
   flux_autoplace.order = "b-k"
   flux_autoplace.category = "resource"
@@ -167,8 +167,8 @@ else
   data:extend({
     {
       type = "autoplace-control",
-      name = "fw-flux",
-      localised_name = { "", "[entity=fw-flux] ", { "autoplace-control-names.fw-flux" } },
+      name = "fw-crystalised-flux",
+      localised_name = { "", "[entity=fw-crystalised-flux] ", { "autoplace-control-names.fw-crystalised-flux" } },
       richness = true,
       order = "b-k",
       category = "resource",
