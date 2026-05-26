@@ -1,6 +1,12 @@
 local resource_autoplace = require("__core__.lualib.resource-autoplace")
 local item_sounds = require("__base__.prototypes.item_sounds")
-local ORE_RARITY = require("prototypes.resources.rarity")
+
+local ORE_RARITY = {
+  ["fw-lead-ore"] =     { base_density = 5.8, base_spots_per_km2 = 1.4,  starting = true,  regular_rq = 1.25, starting_rq = 1.65 },
+  ["fw-bauxite-ore"] =  { base_density = 2.1, base_spots_per_km2 = 0.65, starting = false, regular_rq = 0.90, starting_rq = 1.0 },
+  ["fw-titanium-ore"] = { base_density = 1.4, base_spots_per_km2 = 0.45, starting = false, regular_rq = 0.70, starting_rq = 1.0 },
+  ["fw-salt"] =         { base_density = 5.5, base_spots_per_km2 = 2.0,  starting = true,  regular_rq = 1.85, starting_rq = 1.95 },
+}
 
 -- Centralized asset paths so moving graphics later is painless.
 local ore_path = "__FluxWorksAssets__/graphics/resources/ores/"
@@ -146,128 +152,6 @@ data:extend({
     drop_sound = item_sounds.resource_inventory_move,
     subgroup = "raw-resource",
     order = "z[lead-ore]",
-    stack_size = 50,
-  },
-  {
-    type = "autoplace-control",
-    category = "resource",
-    name = "fw-tin-ore",
-    localised_name = { "", "[item=tin-ore] ", { "autoplace-control-names.fw-tin-ore" } },
-    richness = true,
-    order = "a-n",
-  },
-  {
-    type = "resource",
-    name = "fw-tin-ore",
-    icons = {
-      { icon = ore_path .. "tin-ore.png", icon_size = 64, tint = { r = 0.68, g = 0.72, b = 0.60, a = 1 } },
-    },
-    flags = { "placeable-neutral" },
-    order = "a-b-a",
-    map_color = { r = 0.58, g = 0.64, b = 0.52 },
-    minable = { mining_time = 0.75, result = "tin-ore" },
-    collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
-    selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
-      name = "fw-tin-ore",
-      order = "a-n",
-      base_density = ORE_RARITY["fw-tin-ore"].base_density,
-      base_spots_per_km2 = ORE_RARITY["fw-tin-ore"].base_spots_per_km2,
-      has_starting_area_placement = ORE_RARITY["fw-tin-ore"].starting,
-      regular_rq_factor_multiplier = ORE_RARITY["fw-tin-ore"].regular_rq,
-      starting_rq_factor_multiplier = ORE_RARITY["fw-tin-ore"].starting_rq,
-    }),
-    stage_counts = { 15000, 9500, 5500, 2900, 1300, 400, 150, 80 },
-    stages = {
-      sheet = {
-        filename = ore_path .. "hr-tin-ore.png",
-        priority = "extra-high",
-        size = 128,
-        frame_count = 8,
-        variation_count = 8,
-        scale = 0.5,
-        tint = { r = 0.68, g = 0.72, b = 0.60, a = 1 },
-      },
-    },
-  },
-  {
-    type = "item",
-    name = "tin-ore",
-    icons = {
-      { icon = ore_path .. "tin-ore.png", icon_size = 64, tint = { r = 0.68, g = 0.72, b = 0.60, a = 1 } },
-    },
-    pictures = {
-      { filename = ore_path .. "tin-ore.png", size = 64, scale = 0.5, tint = { r = 0.68, g = 0.72, b = 0.60, a = 1 } },
-      { filename = ore_path .. "tin-ore-1.png", size = 64, scale = 0.5, tint = { r = 0.68, g = 0.72, b = 0.60, a = 1 } },
-      { filename = ore_path .. "tin-ore-2.png", size = 64, scale = 0.5, tint = { r = 0.68, g = 0.72, b = 0.60, a = 1 } },
-      { filename = ore_path .. "tin-ore-3.png", size = 64, scale = 0.5, tint = { r = 0.68, g = 0.72, b = 0.60, a = 1 } },
-    },
-    inventory_move_sound = item_sounds.resource_inventory_move,
-    pick_sound = item_sounds.resource_inventory_pickup,
-    drop_sound = item_sounds.resource_inventory_move,
-    subgroup = "raw-resource",
-    order = "z[tin-ore]",
-    stack_size = 50,
-  },
-  {
-    type = "autoplace-control",
-    category = "resource",
-    name = "fw-aluminum-ore",
-    localised_name = { "", "[item=aluminum-ore] ", { "autoplace-control-names.fw-aluminum-ore" } },
-    richness = true,
-    order = "a-a",
-  },
-  {
-    type = "resource",
-    name = "fw-aluminum-ore",
-    icons = {
-      { icon = ore_path .. "aluminum-ore.png", icon_size = 64, tint = { r = 0.80, g = 0.82, b = 0.76, a = 1 } },
-    },
-    flags = { "placeable-neutral" },
-    order = "a-b-a",
-    map_color = { r = 0.70, g = 0.72, b = 0.66 },
-    minable = { mining_time = 1, result = "aluminum-ore" },
-    collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
-    selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
-      name = "fw-aluminum-ore",
-      order = "a-a",
-      base_density = ORE_RARITY["fw-aluminum-ore"].base_density,
-      base_spots_per_km2 = ORE_RARITY["fw-aluminum-ore"].base_spots_per_km2,
-      has_starting_area_placement = ORE_RARITY["fw-aluminum-ore"].starting,
-      regular_rq_factor_multiplier = ORE_RARITY["fw-aluminum-ore"].regular_rq,
-      starting_rq_factor_multiplier = ORE_RARITY["fw-aluminum-ore"].starting_rq,
-    }),
-    stage_counts = { 15000, 9500, 5500, 2900, 1300, 400, 150, 80 },
-    stages = {
-      sheet = {
-        filename = ore_path .. "hr-aluminum-ore.png",
-        priority = "extra-high",
-        size = 128,
-        frame_count = 8,
-        variation_count = 8,
-        scale = 0.5,
-        tint = { r = 0.80, g = 0.82, b = 0.76, a = 1 },
-      },
-    },
-  },
-  {
-    type = "item",
-    name = "aluminum-ore",
-    icons = {
-      { icon = ore_path .. "aluminum-ore.png", icon_size = 64, tint = { r = 0.80, g = 0.82, b = 0.76, a = 1 } },
-    },
-    pictures = {
-      { filename = ore_path .. "aluminum-ore.png", size = 64, scale = 0.5, tint = { r = 0.80, g = 0.82, b = 0.76, a = 1 } },
-      { filename = ore_path .. "aluminum-ore-2.png", size = 64, scale = 0.5, tint = { r = 0.80, g = 0.82, b = 0.76, a = 1 } },
-      { filename = ore_path .. "aluminum-ore-3.png", size = 64, scale = 0.5, tint = { r = 0.80, g = 0.82, b = 0.76, a = 1 } },
-      { filename = ore_path .. "aluminum-ore-4.png", size = 64, scale = 0.5, tint = { r = 0.80, g = 0.82, b = 0.76, a = 1 } },
-    },
-    inventory_move_sound = item_sounds.resource_inventory_move,
-    pick_sound = item_sounds.resource_inventory_pickup,
-    drop_sound = item_sounds.resource_inventory_move,
-    subgroup = "raw-resource",
-    order = "z[aluminum-ore]",
     stack_size = 50,
   },
   -- Recolored aluminum variant for bauxite.

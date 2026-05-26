@@ -11,25 +11,10 @@ local resource_planets = {
   ["fw-lead-ore"] = {
     "nauvis",
   },
-  ["fw-tin-ore"] = {
-    "nauvis",
-  },
-  ["fw-aluminum-ore"] = {
-    "nauvis",
-  },
   ["fw-bauxite-ore"] = {
     "nauvis",
   },
   ["fw-salt"] = {
-    "nauvis",
-  },
-  ["fw-silica-ore"] = {
-    "nauvis",
-  },
-  ["fw-graphite-ore"] = {
-    "nauvis",
-  },
-  ["fw-diamond-ore"] = {
     "nauvis",
   },
 }

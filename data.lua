@@ -1,6 +1,5 @@
 require("prototypes.resources.flux-rift-resource")
 require("prototypes.resources.ores")
-require("prototypes.resources.rare-ores")
 require("prototypes.items.advanced-materials")
 require("prototypes.technology.liquid-mining")
 require("prototypes.technology.advanced-materials")

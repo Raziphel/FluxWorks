@@ -12,27 +12,15 @@ local TRANSMUTATION_BALANCE = {
   -- Ordered chain from common -> rare.
   -- Add/remove/reorder steps here.
   steps = {
-    -- Core metals chain.
-    { from = "stone",        to = "coal",         flux_cost = 1, flux_refund = 1, output_amount = 9 },
-    { from = "coal",         to = "copper-ore",   flux_cost = 1, flux_refund = 1, output_amount = 8 },
-    { from = "copper-ore",   to = "iron-ore",     flux_cost = 1, flux_refund = 1, output_amount = 8 },
-    { from = "iron-ore",     to = "tin-ore",      flux_cost = 2, flux_refund = 1, output_amount = 7 },
-    { from = "tin-ore",      to = "lead-ore",     flux_cost = 2, flux_refund = 1, output_amount = 6 },
-    { from = "lead-ore",     to = "bauxite-ore",  flux_cost = 3, flux_refund = 2, output_amount = 5 },
-    { from = "bauxite-ore",  to = "aluminum-ore", flux_cost = 2, flux_refund = 1, output_amount = 5 },
-    { from = "aluminum-ore", to = "uranium-ore",  flux_cost = 3, flux_refund = 2, output_amount = 4 },
-    { from = "uranium-ore",  to = "titanium-ore", flux_cost = 8, flux_refund = 2, output_amount = 3 },
-
-    -- Silicon branch.
-    { from = "stone",        to = "silica",       flux_cost = 2, flux_refund = 1, output_amount = 7 },
-    { from = "silica",       to = "silicon",      flux_cost = 3, flux_refund = 1, output_amount = 5 },
-    { from = "silicon",      to = "silicon-wafer",flux_cost = 4, flux_refund = 2, output_amount = 4 },
-
-    -- Carbon branch.
-    { from = "coal",         to = "flake-graphite", flux_cost = 2, flux_refund = 1, output_amount = 7 },
-    { from = "flake-graphite", to = "graphite",   flux_cost = 2, flux_refund = 1, output_amount = 6 },
-    { from = "graphite",     to = "rough-diamond",flux_cost = 6, flux_refund = 2, output_amount = 3 },
-    { from = "rough-diamond",to = "diamond",      flux_cost = 8, flux_refund = 2, output_amount = 2 },
+    -- Core transmutation chain. Item amounts are fixed at 10->10;
+    -- only flux values scale with each tier.
+    { from = "stone",       to = "coal",         flux_cost = 1, flux_refund = 1 },
+    { from = "coal",        to = "copper-ore",   flux_cost = 2, flux_refund = 2 },
+    { from = "copper-ore",  to = "iron-ore",     flux_cost = 3, flux_refund = 3 },
+    { from = "iron-ore",    to = "lead-ore",     flux_cost = 4, flux_refund = 4 },
+    { from = "lead-ore",    to = "bauxite-ore",  flux_cost = 5, flux_refund = 5 },
+    { from = "bauxite-ore", to = "uranium-ore",  flux_cost = 6, flux_refund = 6 },
+    { from = "uranium-ore", to = "titanium-ore", flux_cost = 7, flux_refund = 7 },
   },
 }
 
