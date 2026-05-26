@@ -1,7 +1,9 @@
 local Common = require("__haul_lib__/utils/common")
 
+-- Flux fluids used by the transmutation loop.
 data:extend({
 {
+  -- Main loop fluid.
   type = "fluid",
   name = "fw-purple-flux",
   default_temperature = 15,
@@ -13,6 +15,7 @@ data:extend({
   order = "a[fluid]-a[water]"
 },
 {
+  -- Reserved variants for later mechanics.
   type = "fluid",
   name = "fw-yellow-flux",
   default_temperature = 15,

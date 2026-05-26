@@ -1,1 +1,1 @@
-require("prototypes.updates.flux-planet-autoplace")
+require("prototypes.updates.resource-placement")

@@ -1,6 +1,7 @@
 local resource_autoplace = require("__core__.lualib.resource-autoplace")
 local Common = require("__haul_lib__/utils/common")
 
+-- If KR quarry exists, use it so this patch works with quarry drills.
 local mining_category = "basic-solid"
 if data.raw["resource-category"] and data.raw["resource-category"]["kr-quarry"] then
   mining_category = "kr-quarry"
@@ -8,12 +9,13 @@ end
 
 data:extend({
   {
+    -- Mined item from the flux rift.
     type = "item",
     name = "fw-crystalised-flux",
     icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
     subgroup = "raw-resource",
     order = "ga[fw-crystalised-flux]",
-    stack_size = 200,
+    stack_size = 50,
     pictures = {
       {
         layers = {
@@ -86,6 +88,7 @@ data:extend({
     },
   },
   {
+    -- The actual world node.
     type = "resource",
     name = "fw-crystalised-flux",
     category = mining_category,
@@ -158,12 +161,14 @@ data:extend({
 })
 
 if data.raw["autoplace-control"] and data.raw["autoplace-control"]["iron-ore"] then
+  -- Copy iron-ore's map-gen control so this looks/behaves like a normal ore slider.
   local flux_autoplace = Common.cloneInto("autoplace-control", "iron-ore", "fw-crystalised-flux")
   flux_autoplace.localised_name = { "", "[entity=fw-crystalised-flux] ", { "autoplace-control-names.fw-crystalised-flux" } }
   flux_autoplace.richness = true
   flux_autoplace.order = "b-k"
   flux_autoplace.category = "resource"
 else
+  -- Safety fallback in case iron-ore control isn't available for some reason.
   data:extend({
     {
       type = "autoplace-control",
