@@ -1,22 +1,14 @@
 -- Resource placement for FluxWorks.
--- Each resource has its own planet list so tuning spawn locations is easy.
+-- Flux is global; other ores stay on Nauvis.
+local global_resource_names = {
+  "fw-crystalised-flux",
+}
 
-local resource_planets = {
-  ["fw-crystalised-flux"] = {
-    "nauvis",
-  },
-  ["fw-titanium-ore"] = {
-    "nauvis",
-  },
-  ["fw-lead-ore"] = {
-    "nauvis",
-  },
-  ["fw-bauxite-ore"] = {
-    "nauvis",
-  },
-  ["fw-salt"] = {
-    "nauvis",
-  },
+local nauvis_resource_names = {
+  "fw-titanium-ore",
+  "fw-lead-ore",
+  "fw-bauxite-ore",
+  "fw-salt",
 }
 
 local function ensure_map_gen_tables(planet)
@@ -37,8 +29,7 @@ local function register_resource_on_planet(planet, resource_name)
   planet.map_gen_settings.autoplace_settings.entity.settings[resource_name] = planet.map_gen_settings.autoplace_settings.entity.settings[resource_name] or {}
 end
 
-local function register_resources_on_planet(planet_name, resources)
-  local planet = data.raw.planet and data.raw.planet[planet_name]
+local function register_resources_on_planet(planet, resources)
   if not ensure_map_gen_tables(planet) then
     return
   end
@@ -48,17 +39,12 @@ local function register_resources_on_planet(planet_name, resources)
   end
 end
 
--- Build a reverse map so each planet gets all resources assigned to it.
-local planet_resources = {}
-for resource_name, planets in pairs(resource_planets) do
-  for _, planet_name in pairs(planets) do
-    planet_resources[planet_name] = planet_resources[planet_name] or {}
-    table.insert(planet_resources[planet_name], resource_name)
-  end
+for _, planet in pairs(data.raw.planet or {}) do
+  register_resources_on_planet(planet, global_resource_names)
 end
 
-for planet_name, resources in pairs(planet_resources) do
-  register_resources_on_planet(planet_name, resources)
+if data.raw.planet and data.raw.planet["nauvis"] then
+  register_resources_on_planet(data.raw.planet["nauvis"], nauvis_resource_names)
 end
 
 -- Keep preset sliders populated so worldgen UI stays consistent.
@@ -69,7 +55,10 @@ for _, preset_group in pairs(data.raw["map-gen-presets"] or {}) do
         local controls = preset.basic_settings.autoplace_controls
         local has_ore_profile = controls["iron-ore"] or controls["copper-ore"] or controls["stone"]
         if has_ore_profile then
-          for resource_name, _ in pairs(resource_planets) do
+          for _, resource_name in pairs(global_resource_names) do
+            controls[resource_name] = controls[resource_name] or { frequency = "normal", size = "normal", richness = "normal" }
+          end
+          for _, resource_name in pairs(nauvis_resource_names) do
             controls[resource_name] = controls[resource_name] or { frequency = "normal", size = "normal", richness = "normal" }
           end
         end

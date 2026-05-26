@@ -4,8 +4,8 @@ local item_sounds = require("__base__.prototypes.item_sounds")
 local ORE_RARITY = {
   ["fw-lead-ore"] =     { base_density = 5.8, base_spots_per_km2 = 1.4,  starting = true,  regular_rq = 1.25, starting_rq = 1.65 },
   ["fw-bauxite-ore"] =  { base_density = 2.1, base_spots_per_km2 = 0.65, starting = false, regular_rq = 0.90, starting_rq = 1.0 },
-  ["fw-titanium-ore"] = { base_density = 1.4, base_spots_per_km2 = 0.45, starting = false, regular_rq = 0.70, starting_rq = 1.0 },
-  ["fw-salt"] =         { base_density = 5.5, base_spots_per_km2 = 2.0,  starting = true,  regular_rq = 1.85, starting_rq = 1.95 },
+  ["fw-titanium-ore"] = { base_density = 0.72, base_spots_per_km2 = 0.24, starting = false, regular_rq = 0.62, starting_rq = 1.0 },
+  ["fw-salt"] =         { base_density = 5.5, base_spots_per_km2 = 2.0,  starting = false, regular_rq = 1.85, starting_rq = 1.95 },
 }
 
 -- Centralized asset paths so moving graphics later is painless.
@@ -105,11 +105,11 @@ data:extend({
     type = "resource",
     name = "fw-lead-ore",
     icons = {
-      { icon = ore_path .. "lead-ore.png", icon_size = 64, tint = { r = 0.60, g = 0.62, b = 0.68, a = 1 } },
+      { icon = ore_path .. "lead-ore.png", icon_size = 64, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
     },
     flags = { "placeable-neutral" },
     order = "a-b-a",
-    map_color = { r = 0.52, g = 0.55, b = 0.60 },
+    map_color = { r = 0.66, g = 0.52, b = 0.78 },
     minable = { mining_time = 1, result = "lead-ore" },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
@@ -131,7 +131,7 @@ data:extend({
         frame_count = 8,
         variation_count = 8,
         scale = 0.5,
-        tint = { r = 0.60, g = 0.62, b = 0.68, a = 1 },
+        tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 },
       },
     },
   },
@@ -139,13 +139,13 @@ data:extend({
     type = "item",
     name = "lead-ore",
     icons = {
-      { icon = ore_path .. "lead-ore.png", icon_size = 64, tint = { r = 0.60, g = 0.62, b = 0.68, a = 1 } },
+      { icon = ore_path .. "lead-ore.png", icon_size = 64, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
     },
     pictures = {
-      { filename = ore_path .. "lead-ore.png", size = 64, scale = 0.5, tint = { r = 0.60, g = 0.62, b = 0.68, a = 1 } },
-      { filename = ore_path .. "lead-ore-1.png", size = 64, scale = 0.5, tint = { r = 0.60, g = 0.62, b = 0.68, a = 1 } },
-      { filename = ore_path .. "lead-ore-2.png", size = 64, scale = 0.5, tint = { r = 0.60, g = 0.62, b = 0.68, a = 1 } },
-      { filename = ore_path .. "lead-ore-3.png", size = 64, scale = 0.5, tint = { r = 0.60, g = 0.62, b = 0.68, a = 1 } },
+      { filename = ore_path .. "lead-ore.png", size = 64, scale = 0.5, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
+      { filename = ore_path .. "lead-ore-1.png", size = 64, scale = 0.5, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
+      { filename = ore_path .. "lead-ore-2.png", size = 64, scale = 0.5, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
+      { filename = ore_path .. "lead-ore-3.png", size = 64, scale = 0.5, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
     },
     inventory_move_sound = item_sounds.resource_inventory_move,
     pick_sound = item_sounds.resource_inventory_pickup,
@@ -246,15 +246,22 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
-      name = "fw-salt",
-      order = "a-s",
-      base_density = ORE_RARITY["fw-salt"].base_density,
-      base_spots_per_km2 = ORE_RARITY["fw-salt"].base_spots_per_km2,
-      regular_rq_factor_multiplier = ORE_RARITY["fw-salt"].regular_rq,
-      has_starting_area_placement = ORE_RARITY["fw-salt"].starting,
-      starting_rq_factor_multiplier = ORE_RARITY["fw-salt"].starting_rq,
-    }),
+    autoplace = (function()
+      local autoplace = resource_autoplace.resource_autoplace_settings({
+        name = "fw-salt",
+        order = "a-s",
+        base_density = ORE_RARITY["fw-salt"].base_density,
+        base_spots_per_km2 = ORE_RARITY["fw-salt"].base_spots_per_km2,
+        regular_rq_factor_multiplier = ORE_RARITY["fw-salt"].regular_rq,
+        has_starting_area_placement = ORE_RARITY["fw-salt"].starting,
+        starting_rq_factor_multiplier = ORE_RARITY["fw-salt"].starting_rq,
+      })
+
+      -- Keep salt in very wet terrain so patches cluster near water.
+      autoplace.probability_expression =
+        "(" .. autoplace.probability_expression .. ") * clamp((moisture - 0.68) * 4, 0, 1)"
+      return autoplace
+    end)(),
     stage_counts = { 15000, 9500, 5500, 2900, 1300, 400, 150, 80 },
     stages = {
       sheet = {
