@@ -4,7 +4,7 @@ local item_sounds = require("__base__.prototypes.item_sounds")
 local ORE_RARITY = {
   ["fw-lead-ore"] =     { base_density = 5.8, base_spots_per_km2 = 1.4,  starting = true,  regular_rq = 1.25, starting_rq = 1.65 },
   ["fw-bauxite-ore"] =  { base_density = 2.1, base_spots_per_km2 = 0.65, starting = false, regular_rq = 0.90, starting_rq = 1.0 },
-  ["fw-titanium-ore"] = { base_density = 0.72, base_spots_per_km2 = 0.24, starting = false, regular_rq = 0.62, starting_rq = 1.0 },
+  ["fw-titanium-ore"] = { base_density = 1.25, base_spots_per_km2 = 0.42, starting = false, regular_rq = 0.85, starting_rq = 1.0 },
   ["fw-salt"] =         { base_density = 5.5, base_spots_per_km2 = 2.0,  starting = false, regular_rq = 1.85, starting_rq = 1.95 },
 }
 
@@ -257,9 +257,10 @@ data:extend({
         starting_rq_factor_multiplier = ORE_RARITY["fw-salt"].starting_rq,
       })
 
-      -- Keep salt in very wet terrain so patches cluster near water.
+      -- Favor wet terrain, but keep a baseline chance so deposits still spawn
+      -- on more seeds/maps instead of disappearing entirely.
       autoplace.probability_expression =
-        "(" .. autoplace.probability_expression .. ") * clamp((moisture - 0.68) * 4, 0, 1)"
+        "(" .. autoplace.probability_expression .. ") * (0.25 + 0.75 * clamp((moisture - 0.50) * 2.5, 0, 1))"
       return autoplace
     end)(),
     stage_counts = { 15000, 9500, 5500, 2900, 1300, 400, 150, 80 },
@@ -291,16 +292,6 @@ data:extend({
     stack_size = 50,
   },
   {
-    -- Basic silica item for early/future chains.
-    type = "item",
-    name = "fw-silica",
-    icon = ore_path .. "silica.png",
-    icon_size = 64,
-    subgroup = "raw-material",
-    order = "z[fw-silica]",
-    stack_size = 100,
-  },
-  {
     -- Early salt source so this chain starts without extra dependencies.
     type = "recipe",
     name = "fw-salt-from-water",
@@ -322,18 +313,10 @@ data:extend({
     order = "a[fluid]-f[fw-chlorine]",
   },
   {
-    -- Basic silica recipe until we flesh out the full processing line.
-    type = "recipe",
-    name = "fw-silica",
-    category = "smelting",
-    ingredients = { { type = "item", name = "stone-brick", amount = 1 } },
-    results = { { type = "item", name = "fw-silica", amount = 5 } },
-    energy_required = 3.2,
-    enabled = false,
-  },
-  {
     type = "recipe",
     name = "fw-chlorine",
+    icon = fluid_path .. "chlorine.png",
+    icon_size = 128,
     category = "chemistry",
     ingredients = { { type = "item", name = "fw-salt", amount = 2 } },
     results = { { type = "fluid", name = "fw-chlorine", amount = 10 } },

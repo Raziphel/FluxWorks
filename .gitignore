@@ -14,3 +14,5 @@ _*
 config/secret.toml
 .venv
 .idea
+.DS_Store
+**/.DS_Store

@@ -40,33 +40,13 @@ end
 local crusher_recipe = data.raw["recipe"] and data.raw["recipe"]["crusher"]
 if crusher_recipe then
   remove_surface_conditions(crusher_recipe)
-end
-
--- Unlock crusher and FluxWorks crushing recipes through a dedicated tech.
-if not (data.raw["technology"] and data.raw["technology"]["fw-comminution"]) then
-  data:extend({
-    {
-      type = "technology",
-      name = "fw-comminution",
-      icon = "__FluxWorksAssets__/graphics/technology/comminution.png",
-      icon_size = 128,
-      prerequisites = { "automation-2" },
-      effects = {
-        { type = "unlock-recipe", recipe = "crusher" },
-        { type = "unlock-recipe", recipe = "silica" },
-        { type = "unlock-recipe", recipe = "graphite" },
-      },
-      unit = {
-        count = 80,
-        ingredients = {
-          { "automation-science-pack", 1 },
-          { "logistic-science-pack", 1 },
-        },
-        time = 20,
-      },
-      order = "b-a",
-    },
-  })
+  crusher_recipe.enabled = false
+  if crusher_recipe.normal then
+    crusher_recipe.normal.enabled = false
+  end
+  if crusher_recipe.expensive then
+    crusher_recipe.expensive.enabled = false
+  end
 end
 
 -- If base game still gates crusher behind Vulcanus discovery, remove that hard lock.

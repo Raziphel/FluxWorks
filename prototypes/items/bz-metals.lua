@@ -1,0 +1,40 @@
+local item_sounds = require("__base__.prototypes.item_sounds")
+
+data:extend({
+  {
+    type = "item",
+    name = "lead-plate",
+    icon = "__FluxWorksAssets__/graphics/resources/ores/lead-ore.png",
+    icon_size = 64,
+    inventory_move_sound = item_sounds.metal_small_inventory_move,
+    pick_sound = item_sounds.metal_small_inventory_pickup,
+    drop_sound = item_sounds.metal_small_inventory_move,
+    subgroup = "raw-material",
+    order = "d[lead-plate]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
+    name = "titanium-plate",
+    icon = "__FluxWorksAssets__/graphics/resources/ores/titanium-ore.png",
+    icon_size = 64,
+    inventory_move_sound = item_sounds.metal_small_inventory_move,
+    pick_sound = item_sounds.metal_small_inventory_pickup,
+    drop_sound = item_sounds.metal_small_inventory_move,
+    subgroup = "raw-material",
+    order = "d[titanium-plate]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
+    name = "aluminum-plate",
+    icon = "__FluxWorksAssets__/graphics/icons/items/aluminum-plate.png",
+    icon_size = 128,
+    inventory_move_sound = item_sounds.metal_small_inventory_move,
+    pick_sound = item_sounds.metal_small_inventory_pickup,
+    drop_sound = item_sounds.metal_small_inventory_move,
+    subgroup = "raw-material",
+    order = "d[aluminum-plate]",
+    stack_size = 100,
+  },
+})

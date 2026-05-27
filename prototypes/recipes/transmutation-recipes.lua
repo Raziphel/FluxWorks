@@ -24,6 +24,21 @@ local TRANSMUTATION_BALANCE = {
   },
 }
 
+data:extend({
+  {
+    type = "item-subgroup",
+    name = "fw-transmutation-upcycle",
+    group = "intermediate-products",
+    order = "z[fw-transmutation]-a",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-transmutation-downcycle",
+    group = "intermediate-products",
+    order = "z[fw-transmutation]-b",
+  },
+})
+
 local recipes = {}
 
 local function letter_for(index)
@@ -44,7 +59,7 @@ local function to_upcycle_recipe(step, index)
     name = name,
     localised_name = { "", { "item-name." .. step.from }, " -> ", { "item-name." .. step.to } },
     category = "chemistry",
-    subgroup = "fluid-recipes",
+    subgroup = "fw-transmutation-upcycle",
     order = "a[chemistry]-a" .. suffix .. "[" .. name .. "]",
     enabled = true,
     energy_required = energy_required,
@@ -73,7 +88,7 @@ local function to_downcycle_recipe(step, index)
     name = name,
     localised_name = { "", { "item-name." .. step.to }, " -> ", { "item-name." .. step.from } },
     category = "chemistry",
-    subgroup = "fluid-recipes",
+    subgroup = "fw-transmutation-downcycle",
     order = "a[chemistry]-b" .. suffix .. "[" .. name .. "]",
     enabled = true,
     energy_required = energy_required,

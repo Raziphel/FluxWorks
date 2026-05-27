@@ -2,8 +2,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-liquid-mining",
-    icon = "__base__/graphics/technology/fluid-handling.png",
-    icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/resources/fluids/chlorine.png",
+    icon_size = 128,
     prerequisites = { "fluid-handling" },
     unit = {
       count = 200,
