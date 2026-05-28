@@ -1,39 +1,57 @@
-local core_effects = {
-  { type = "unlock-recipe", recipe = "fw-solder-alloy" },
-  { type = "unlock-recipe", recipe = "fw-bearing" },
-  { type = "unlock-recipe", recipe = "fw-ceramic-insulator" },
-}
-
-local advanced_effects = {
-  { type = "unlock-recipe", recipe = "fw-light-frame" },
-  { type = "unlock-recipe", recipe = "fw-capacitor" },
-  { type = "unlock-recipe", recipe = "fw-gunpowder" },
-}
-
 data:extend({
   {
     type = "technology",
-    name = "fw-metals-fabrication",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bearing.png",
-    icon_size = 128,
-    prerequisites = { "fw-comminution", "steel-processing" },
+    name = "fw-material-foundations",
+    icon = "__FluxWorksAssets__/graphics/technology/fw-glassworking.png",
+    icon_size = 1024,
+    prerequisites = { "fw-comminution", "steel-processing", "logistics-2", "automation-2", "electronics" },
     unit = {
-      count = 120,
+      count = 90,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+      },
+      time = 25,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-glass" },
+      { type = "unlock-recipe", recipe = "fw-rubber-sheet" },
+      { type = "unlock-recipe", recipe = "fw-copper-tube" },
+      { type = "unlock-recipe", recipe = "fw-metal-mesh" },
+      { type = "unlock-recipe", recipe = "fw-iron-beam" },
+    },
+    order = "c-a[fw-material-foundations]",
+  },
+  {
+    type = "technology",
+    name = "fw-metals-fabrication",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-steel-beam.png",
+    icon_size = 1024,
+    prerequisites = { "fw-material-foundations", "engine", "military-2", "toolbelt" },
+    unit = {
+      count = 130,
       ingredients = {
         { "automation-science-pack", 1 },
         { "logistic-science-pack", 1 },
       },
       time = 30,
     },
-    effects = core_effects,
-    order = "c-a[fw-metals-fabrication]",
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-solder-alloy" },
+      { type = "unlock-recipe", recipe = "fw-bearing" },
+      { type = "unlock-recipe", recipe = "fw-ceramic-insulator" },
+      { type = "unlock-recipe", recipe = "fw-steel-beam" },
+      { type = "unlock-recipe", recipe = "fw-aluminum-beam" },
+      { type = "unlock-recipe", recipe = "fw-cable-harness" },
+    },
+    order = "c-b[fw-metals-fabrication]",
   },
   {
     type = "technology",
-    name = "fw-advanced-fabrication",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-light-frame.png",
-    icon_size = 128,
-    prerequisites = { "fw-metals-fabrication", "advanced-circuit", "military" },
+    name = "fw-electromechanical-systems",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-inductor-coil.png",
+    icon_size = 1024,
+    prerequisites = { "fw-metals-fabrication", "advanced-circuit", "electric-energy-distribution-1", "battery" },
     unit = {
       count = 180,
       ingredients = {
@@ -43,7 +61,98 @@ data:extend({
       },
       time = 30,
     },
-    effects = advanced_effects,
-    order = "c-b[fw-advanced-fabrication]",
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-circuit-substrate" },
+      { type = "unlock-recipe", recipe = "fw-inductor-coil" },
+      { type = "unlock-recipe", recipe = "fw-capacitor" },
+    },
+    order = "c-c[fw-electromechanical-systems]",
+  },
+  {
+    type = "technology",
+    name = "fw-material-refinement",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-cermet.png",
+    icon_size = 1024,
+    prerequisites = { "fw-metals-fabrication", "concrete", "sulfur-processing", "fluid-handling" },
+    unit = {
+      count = 170,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+      },
+      time = 30,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-cermet" },
+      { type = "unlock-recipe", recipe = "fw-inline-filter" },
+    },
+    order = "c-c[fw-material-refinement]",
+  },
+  {
+    type = "technology",
+    name = "fw-instrumentation",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-sensor-package.png",
+    icon_size = 1024,
+    prerequisites = { "fw-electromechanical-systems", "solar-energy", "radar" },
+    unit = {
+      count = 210,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+      },
+      time = 30,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-glass-lens" },
+      { type = "unlock-recipe", recipe = "fw-ribbon-cable" },
+    },
+    order = "c-d[fw-instrumentation]",
+  },
+  {
+    type = "technology",
+    name = "fw-systems-integration",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-transformer-core.png",
+    icon_size = 1024,
+    prerequisites = { "fw-instrumentation", "robotics", "electric-energy-accumulators", "electric-engine" },
+    unit = {
+      count = 260,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+        { "production-science-pack", 1 },
+      },
+      time = 35,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-sensor-package" },
+      { type = "unlock-recipe", recipe = "fw-transformer-core" },
+    },
+    order = "c-e[fw-systems-integration]",
+  },
+  {
+    type = "technology",
+    name = "fw-advanced-fabrication",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-light-frame.png",
+    icon_size = 128,
+    prerequisites = { "fw-electromechanical-systems", "fw-material-refinement", "fw-systems-integration", "military-3", "production-science-pack" },
+    unit = {
+      count = 220,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+        { "production-science-pack", 1 },
+      },
+      time = 35,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-composite-panel" },
+      { type = "unlock-recipe", recipe = "fw-light-frame" },
+      { type = "unlock-recipe", recipe = "fw-gunpowder" },
+    },
+    order = "c-d[fw-advanced-fabrication]",
   },
 })

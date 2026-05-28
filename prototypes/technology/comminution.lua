@@ -18,6 +18,7 @@ data:extend({
       { type = "unlock-recipe", recipe = "fw-crushed-copper-ore" },
       { type = "unlock-recipe", recipe = "fw-crushed-lead-ore" },
       { type = "unlock-recipe", recipe = "fw-crushed-titanium-ore" },
+      { type = "unlock-recipe", recipe = "fw-sand" },
       { type = "unlock-recipe", recipe = "fw-gunpowder-early" },
     },
     order = "a-b-c[fw-comminution]",

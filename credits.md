@@ -11,3 +11,9 @@ FluxWorks includes adapted resource graphics and prototype inspiration from the 
 - https://github.com/brevven/carbon
 
 These source projects are licensed under the MIT License.
+
+Additional icon and render assets are adapted from:
+
+- https://github.com/malcolmriley/unused-renders
+
+Please see that repository for original artwork context and licensing details.
