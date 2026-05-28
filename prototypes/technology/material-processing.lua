@@ -1,3 +1,5 @@
+local Tech = require("__haul_lib__/utils/tech")
+
 data:extend({
   {
     type = "technology",
@@ -156,3 +158,46 @@ data:extend({
     order = "c-d[fw-advanced-fabrication]",
   },
 })
+
+-- Normalize progression with Haul Lib tech helpers so balancing stays centralized.
+Tech:get("fw-material-foundations")
+  :setCost(90)
+  :setColors("RG")
+  :setTime(25)
+  :setPrerequisites({ "fw-comminution", "steel-processing", "logistics-2", "automation-2", "electronics" })
+
+Tech:get("fw-metals-fabrication")
+  :setCost(130)
+  :setColors("RGM")
+  :setTime(30)
+  :setPrerequisites({ "fw-material-foundations", "engine", "military-2", "toolbelt" })
+
+Tech:get("fw-electromechanical-systems")
+  :setCost(180)
+  :setColors("RGB")
+  :setTime(30)
+  :setPrerequisites({ "fw-metals-fabrication", "advanced-circuit", "electric-energy-distribution-1", "battery" })
+
+Tech:get("fw-material-refinement")
+  :setCost(170)
+  :setColors("RGB")
+  :setTime(30)
+  :setPrerequisites({ "fw-metals-fabrication", "concrete", "sulfur-processing", "fluid-handling" })
+
+Tech:get("fw-instrumentation")
+  :setCost(210)
+  :setColors("RGB")
+  :setTime(30)
+  :setPrerequisites({ "fw-electromechanical-systems", "solar-energy", "radar" })
+
+Tech:get("fw-systems-integration")
+  :setCost(260)
+  :setColors("RGBP")
+  :setTime(35)
+  :setPrerequisites({ "fw-instrumentation", "robotics", "electric-energy-accumulators", "electric-engine" })
+
+Tech:get("fw-advanced-fabrication")
+  :setCost(220)
+  :setColors("RGBMP")
+  :setTime(35)
+  :setPrerequisites({ "fw-electromechanical-systems", "fw-material-refinement", "fw-systems-integration", "military-3", "production-science-pack" })
