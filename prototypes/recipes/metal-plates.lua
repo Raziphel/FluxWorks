@@ -2,8 +2,8 @@ data:extend({
   {
     type = "recipe",
     name = "lead-plate",
-    icon = "__FluxWorksAssets__/graphics/resources/ores/lead-ore.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/icons/items/metal-plate-lead.png",
+    icon_size = 1024,
     category = "smelting",
     enabled = false,
     energy_required = 3.2,

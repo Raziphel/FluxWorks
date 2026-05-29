@@ -4,8 +4,8 @@ data:extend({
   {
     type = "item",
     name = "lead-plate",
-    icon = "__FluxWorksAssets__/graphics/resources/ores/lead-ore.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/icons/items/metal-plate-lead.png",
+    icon_size = 1024,
     inventory_move_sound = item_sounds.metal_small_inventory_move,
     pick_sound = item_sounds.metal_small_inventory_pickup,
     drop_sound = item_sounds.metal_small_inventory_move,

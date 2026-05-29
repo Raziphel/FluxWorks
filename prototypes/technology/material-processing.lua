@@ -21,6 +21,9 @@ data:extend({
       { type = "unlock-recipe", recipe = "fw-copper-tube" },
       { type = "unlock-recipe", recipe = "fw-metal-mesh" },
       { type = "unlock-recipe", recipe = "fw-iron-beam" },
+      { type = "unlock-recipe", recipe = "lead-plate" },
+      { type = "unlock-recipe", recipe = "lead-plate-from-crushed" },
+      { type = "unlock-recipe", recipe = "fw-circuit-contact-leaded" },
     },
     order = "c-a[fw-material-foundations]",
   },
@@ -45,6 +48,7 @@ data:extend({
       { type = "unlock-recipe", recipe = "fw-steel-beam" },
       { type = "unlock-recipe", recipe = "fw-aluminum-beam" },
       { type = "unlock-recipe", recipe = "fw-cable-harness" },
+      { type = "unlock-recipe", recipe = "aluminum-plate" },
     },
     order = "c-b[fw-metals-fabrication]",
   },
@@ -67,8 +71,73 @@ data:extend({
       { type = "unlock-recipe", recipe = "fw-circuit-substrate" },
       { type = "unlock-recipe", recipe = "fw-inductor-coil" },
       { type = "unlock-recipe", recipe = "fw-capacitor" },
+      { type = "unlock-recipe", recipe = "titanium-plate" },
+      { type = "unlock-recipe", recipe = "titanium-plate-from-crushed" },
     },
     order = "c-c[fw-electromechanical-systems]",
+  },
+  {
+    type = "technology",
+    name = "fw-circuit-foundry",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-substrate.png",
+    icon_size = 1024,
+    prerequisites = { "electronics", "automation-2", "logistics-2" },
+    unit = {
+      count = 70,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+      },
+      time = 20,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-solder-wire" },
+      { type = "unlock-recipe", recipe = "fw-chip-carrier" },
+      { type = "unlock-recipe", recipe = "fw-ceramic-wafer" },
+    },
+    order = "c-c[fw-circuit-foundry]",
+  },
+  {
+    type = "technology",
+    name = "fw-signal-architecture",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-ribbon-cable.png",
+    icon_size = 1024,
+    prerequisites = { "fw-circuit-foundry", "advanced-circuit", "battery", "radar" },
+    unit = {
+      count = 140,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+      },
+      time = 25,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-conductor-bundle" },
+      { type = "unlock-recipe", recipe = "fw-microchip" },
+    },
+    order = "c-d[fw-signal-architecture]",
+  },
+  {
+    type = "technology",
+    name = "fw-computational-arrays",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-sensor-package.png",
+    icon_size = 1024,
+    prerequisites = { "fw-signal-architecture", "processing-unit", "modules", "electric-engine" },
+    unit = {
+      count = 180,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+      },
+      time = 30,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-memory-die" },
+      { type = "unlock-recipe", recipe = "fw-rocket-engine" },
+    },
+    order = "c-e[fw-computational-arrays]",
   },
   {
     type = "technology",
@@ -178,6 +247,12 @@ Tech:get("fw-electromechanical-systems")
   :setTime(30)
   :setPrerequisites({ "fw-metals-fabrication", "advanced-circuit", "electric-energy-distribution-1", "battery" })
 
+Tech:get("fw-circuit-foundry")
+  :setCost(70)
+  :setColors("RG")
+  :setTime(20)
+  :setPrerequisites({ "electronics", "automation-2", "logistics-2" })
+
 Tech:get("fw-material-refinement")
   :setCost(170)
   :setColors("RGB")
@@ -190,11 +265,23 @@ Tech:get("fw-instrumentation")
   :setTime(30)
   :setPrerequisites({ "fw-electromechanical-systems", "solar-energy", "radar" })
 
+Tech:get("fw-signal-architecture")
+  :setCost(140)
+  :setColors("RGB")
+  :setTime(25)
+  :setPrerequisites({ "fw-circuit-foundry", "advanced-circuit", "battery", "radar" })
+
 Tech:get("fw-systems-integration")
   :setCost(260)
   :setColors("RGBP")
   :setTime(35)
   :setPrerequisites({ "fw-instrumentation", "robotics", "electric-energy-accumulators", "electric-engine" })
+
+Tech:get("fw-computational-arrays")
+  :setCost(180)
+  :setColors("RGB")
+  :setTime(30)
+  :setPrerequisites({ "fw-signal-architecture", "processing-unit", "modules", "electric-engine" })
 
 Tech:get("fw-advanced-fabrication")
   :setCost(220)
