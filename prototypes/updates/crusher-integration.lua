@@ -1,4 +1,6 @@
--- Cross-surface crusher integration for FluxWorks + BZ-style crushing recipes.
+local Recipe = require("__haul_lib__/utils/recipe")
+
+-- Make base crusher play nicely with FluxWorks/BZ-style crushing on any surface.
 
 local function remove_surface_conditions(prototype)
   if prototype then
@@ -6,14 +8,14 @@ local function remove_surface_conditions(prototype)
   end
 end
 
--- Ensure our recipe category exists for BZ-style crushing chains.
+-- Keep this category around for mods/recipes that expect it.
 if not (data.raw["recipe-category"] and data.raw["recipe-category"]["basic-crushing"]) then
   data:extend({
     { type = "recipe-category", name = "basic-crushing" },
   })
 end
 
--- Patch base crusher to be usable on any surface and in basic-crushing chains.
+-- Open up the base crusher so it works in our full crushing chain.
 local crusher_entity = data.raw["assembling-machine"] and data.raw["assembling-machine"]["crusher"]
 if crusher_entity then
   remove_surface_conditions(crusher_entity)
@@ -39,17 +41,17 @@ end
 
 local crusher_recipe = data.raw["recipe"] and data.raw["recipe"]["crusher"]
 if crusher_recipe then
-  remove_surface_conditions(crusher_recipe)
-  crusher_recipe.enabled = false
-  if crusher_recipe.normal then
-    crusher_recipe.normal.enabled = false
-  end
+  Recipe:get("crusher")
+    :setConditions(nil)
+    :disable()
+
   if crusher_recipe.expensive then
+    crusher_recipe.expensive.surface_conditions = nil
     crusher_recipe.expensive.enabled = false
   end
 end
 
--- If base game still gates crusher behind Vulcanus discovery, remove that hard lock.
+-- If vanilla still gates crusher on Vulcanus discovery, remove that lock.
 local vulcanus_discovery = data.raw["technology"] and data.raw["technology"]["planet-discovery-vulcanus"]
 if vulcanus_discovery and vulcanus_discovery.effects then
   local filtered = {}

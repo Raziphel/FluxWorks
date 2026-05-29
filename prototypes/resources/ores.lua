@@ -8,7 +8,7 @@ local ORE_RARITY = {
   ["fw-salt"] =         { base_density = 5.5, base_spots_per_km2 = 2.0,  starting = false, regular_rq = 1.85, starting_rq = 1.95 },
 }
 
--- Centralized asset paths so moving graphics later is painless.
+-- Centralized asset paths so art moves are easy later.
 local ore_path = "__FluxWorksAssets__/graphics/resources/ores/"
 local fluid_path = "__FluxWorksAssets__/graphics/resources/fluids/"
 
@@ -23,7 +23,7 @@ for _, picture in pairs(salt_particle.pictures) do
 end
 
 data:extend({
-  -- Titanium.
+  -- Titanium ore controls + prototypes.
   {
     type = "autoplace-control",
     category = "resource",
@@ -32,7 +32,7 @@ data:extend({
     richness = true,
     order = "a-t",
   },
-  -- Lead.
+  -- Titanium resource + item.
   {
     type = "resource",
     name = "fw-titanium-ore",
@@ -72,7 +72,7 @@ data:extend({
       },
     },
   },
-  -- Tin.
+  -- Lead ore controls + prototypes.
   {
     type = "item",
     name = "titanium-ore",
@@ -92,7 +92,7 @@ data:extend({
     order = "z[titanium-ore]",
     stack_size = 50,
   },
-  -- Aluminum.
+  -- Lead resource + item.
   {
     type = "autoplace-control",
     category = "resource",
@@ -154,7 +154,7 @@ data:extend({
     order = "z[lead-ore]",
     stack_size = 50,
   },
-  -- Recolored aluminum variant for bauxite.
+  -- Bauxite uses a recolored aluminum-style palette.
   {
     type = "autoplace-control",
     category = "resource",
@@ -257,8 +257,8 @@ data:extend({
         starting_rq_factor_multiplier = ORE_RARITY["fw-salt"].starting_rq,
       })
 
-      -- Favor wet terrain, but keep a baseline chance so deposits still spawn
-      -- on more seeds/maps instead of disappearing entirely.
+      -- Favor wetter terrain, but keep a baseline chance so
+      -- salt still appears on rougher seeds/maps.
       autoplace.probability_expression =
         "(" .. autoplace.probability_expression .. ") * (0.25 + 0.75 * clamp((moisture - 0.50) * 2.5, 0, 1))"
       return autoplace
@@ -292,7 +292,7 @@ data:extend({
     stack_size = 50,
   },
   {
-    -- Early salt source so this chain starts without extra dependencies.
+    -- Early salt source so the chain can start without extra mod dependencies.
     type = "recipe",
     name = "fw-salt-from-water",
     category = "crafting-with-fluid",

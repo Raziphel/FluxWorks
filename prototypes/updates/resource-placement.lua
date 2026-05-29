@@ -1,5 +1,5 @@
--- Resource placement for FluxWorks.
--- Flux is global; other ores stay on Nauvis.
+-- Resource placement rules for FluxWorks.
+-- Flux can appear everywhere; ore deposits stay on Nauvis.
 local global_resource_names = {
   "fw-crystalised-flux",
 }
@@ -47,7 +47,7 @@ if data.raw.planet and data.raw.planet["nauvis"] then
   register_resources_on_planet(data.raw.planet["nauvis"], nauvis_resource_names)
 end
 
--- Keep preset sliders populated so worldgen UI stays consistent.
+-- Keep worldgen preset sliders populated so the UI stays consistent.
 for _, preset_group in pairs(data.raw["map-gen-presets"] or {}) do
   if type(preset_group) == "table" then
     for _, preset in pairs(preset_group) do

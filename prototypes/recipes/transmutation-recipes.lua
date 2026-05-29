@@ -1,8 +1,8 @@
 -- Flux transmutation chain.
--- Tune values in TRANSMUTATION_BALANCE to change costs, rates, and refunds.
+-- If we rebalance later, do it here once and every recipe follows.
 
 local TRANSMUTATION_BALANCE = {
-  -- Global defaults used when a step does not override a value.
+  -- Defaults for any step that doesn't override values.
   defaults = {
     input_amount = 10,
     output_amount = 10,
@@ -10,10 +10,10 @@ local TRANSMUTATION_BALANCE = {
   },
 
   -- Ordered chain from common -> rare.
-  -- Add/remove/reorder steps here.
+  -- Add/remove/reorder here and both upcycle/downcycle stay in sync.
   steps = {
-    -- Core transmutation chain. Item amounts are fixed at 10->10;
-    -- only flux values scale with each tier.
+    -- Item amounts stay fixed at 10 -> 10.
+    -- Only flux cost/refund scales by tier.
     { from = "stone",       to = "coal",         flux_cost = 1, flux_refund = 1 },
     { from = "coal",        to = "copper-ore",   flux_cost = 2, flux_refund = 2 },
     { from = "copper-ore",  to = "iron-ore",     flux_cost = 3, flux_refund = 3 },

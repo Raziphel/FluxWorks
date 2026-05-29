@@ -1,5 +1,3 @@
-local Common = require("__haul_lib__/utils/common")
-
 -- Flux fluids used by the transmutation loop.
 data:extend({
 {
