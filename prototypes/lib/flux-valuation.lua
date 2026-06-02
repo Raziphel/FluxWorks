@@ -16,7 +16,6 @@ M.ITEM_TYPES = {
 
 M.EXCLUDED_ITEMS = {
   ["fw-flux-condenser"] = true,
-  ["fw-purple-flux-barrel"] = true,
   ["blueprint"] = true,
   ["blueprint-book"] = true,
   ["copy-paste-tool"] = true,
@@ -25,6 +24,12 @@ M.EXCLUDED_ITEMS = {
   ["upgrade-planner"] = true,
   ["selection-tool"] = true,
   ["spidertron-remote"] = true,
+}
+
+M.NON_CONVERTIBLE_ITEM_PATTERNS = {
+  "^fw%-.*flux",
+  "%-barrel$",
+  "%-fuel%-cell$",
 }
 
 M.VALUE_OVERRIDES = FluxValues.item_values or {}
@@ -76,6 +81,11 @@ function M.is_convertible(item)
   end
   if item.type == "item-with-entity-data" then
     return false
+  end
+  for _, pattern in pairs(M.NON_CONVERTIBLE_ITEM_PATTERNS) do
+    if string.find(item.name, pattern) then
+      return false
+    end
   end
   return item.stack_size >= 2
 end

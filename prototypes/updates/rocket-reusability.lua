@@ -281,8 +281,9 @@ local reusable_rocket_components = {
     {
         type = "item",
         name = "fw-rocket-avionics",
-        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-avionics.png",
-        icon_size = 120,
+        icon = "__FluxWorksAssets__/graphics/icons/items/reusable-rocket-avionics.png",
+        icon_size = 64,
+        icon_mipmaps = 0,
         subgroup = "fw-intermediate-aerospace",
         order = "b[fw-rocket-avionics]",
         stack_size = 50
@@ -290,8 +291,9 @@ local reusable_rocket_components = {
     {
         type = "item",
         name = "fw-rocket-heatshield",
-        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-heatshield.png",
-        icon_size = 120,
+        icon = "__FluxWorksAssets__/graphics/icons/items/reusable-rocket-heatshield.png",
+        icon_size = 64,
+        icon_mipmaps = 0,
         subgroup = "fw-intermediate-aerospace",
         order = "c[fw-rocket-heatshield]",
         stack_size = 50
@@ -302,8 +304,9 @@ local reusable_rocket_component_recipes = {
     {
         type = "recipe",
         name = "fw-rocket-avionics",
-        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-avionics.png",
-        icon_size = 120,
+        icon = "__FluxWorksAssets__/graphics/icons/items/reusable-rocket-avionics.png",
+        icon_size = 64,
+        icon_mipmaps = 0,
         energy_required = 8,
         enabled = false,
         category = "crafting",
@@ -317,8 +320,9 @@ local reusable_rocket_component_recipes = {
     {
         type = "recipe",
         name = "fw-rocket-heatshield",
-        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-heatshield.png",
-        icon_size = 120,
+        icon = "__FluxWorksAssets__/graphics/icons/items/reusable-rocket-heatshield.png",
+        icon_size = 64,
+        icon_mipmaps = 0,
         energy_required = 8,
         enabled = false,
         category = "crafting",

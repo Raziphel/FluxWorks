@@ -53,7 +53,6 @@ patch_recipe_set({
   { "accumulator", "fw-capacitor", 2 },
   { "firearm-magazine", "fw-bullet-casing", 1 },
   { "firearm-magazine", "fw-gunpowder", 1 },
-  { "gun-turret", "electronic-circuit", 2 },
   { "piercing-rounds-magazine", "firearm-magazine", 1 },
   { "piercing-rounds-magazine", "fw-bullet-casing", 1 },
   { "piercing-rounds-magazine", "fw-gunpowder", 1 },
@@ -69,8 +68,6 @@ patch_recipe_set({
   { "stack-inserter", "fw-aluminum-beam", 1 },
   { "stack-filter-inserter", "fw-aluminum-beam", 1 },
   { "bulk-inserter", "fw-aluminum-beam", 1 },
-  { "underground-belt", "fw-steel-beam", 1 },
-  { "splitter", "fw-steel-beam", 1 },
   { "assembling-machine-2", "fw-steel-beam", 1 },
   { "assembling-machine-2", "fw-circuit-substrate", 1 },
   { "assembling-machine-3", "fw-aluminum-beam", 2 },
@@ -160,8 +157,8 @@ patch_recipe_ingredients("asteroid-collector", "fw-cermet", 2)
 patch_recipe_ingredients("crusher", "fw-cermet", 2)
 patch_recipe_ingredients("cargo-landing-pad", "fw-composite-panel", 4)
 patch_recipe_ingredients("cargo-bay", "fw-inline-filter", 2)
-patch_recipe_ingredients("space-platform-thruster", "fw-cermet", 2)
-patch_recipe_ingredients("space-platform-thruster", "fw-rocket-engine", 2)
+patch_recipe_ingredients("thruster", "fw-cermet", 2)
+patch_recipe_ingredients("thruster", "fw-rocket-engine", 2)
 patch_recipe_ingredients("space-platform-hub", "fw-transformer-core", 2)
 patch_recipe_ingredients("space-platform-hub", "fw-memory-die", 2)
 patch_recipe_ingredients("space-platform-hub", "fw-rocket-engine", 1)
@@ -192,7 +189,7 @@ patch_recipe_ingredients("fusion-reactor-equipment", "fw-rocket-engine", 2)
 patch_recipe_ingredients("power-armor-mk2", "fw-rocket-engine", 2)
 
 patch_recipe_ingredients("space-platform-foundation", "titanium-plate", 4)
-patch_recipe_ingredients("space-platform-thruster", "titanium-plate", 6)
+patch_recipe_ingredients("thruster", "titanium-plate", 6)
 patch_recipe_ingredients("space-platform-hub", "titanium-plate", 8)
 patch_recipe_ingredients("cargo-landing-pad", "titanium-plate", 8)
 patch_recipe_ingredients("asteroid-collector", "titanium-plate", 4)
@@ -221,12 +218,11 @@ patch_recipe_set({
   { "offshore-pump", "lead-plate", 2 },
   { "pump", "electronic-circuit", 1 },
   { "offshore-pump", "electronic-circuit", 2 },
-  { "gun-turret", "fw-ribbon-cable", 1 },
   { "laser-turret", "silicon", 2 },
   { "flamethrower-turret", "lead-plate", 6 },
   { "artillery-turret", "titanium-plate", 12 },
   { "rocket-silo", "silicon", 16 },
-  { "space-platform-thruster", "silicon", 6 },
+  { "thruster", "silicon", 6 },
   { "space-platform-hub", "silicon", 6 },
   { "space-platform-foundation", "lead-plate", 4 },
   { "cargo-landing-pad", "lead-plate", 6 },
@@ -239,23 +235,18 @@ patch_recipe_set({
 
 -- Wide integration pass across base game + Space Age surfaces.
 patch_many_recipes({
-  "transport-belt",
   "fast-transport-belt",
   "express-transport-belt",
   "turbo-transport-belt",
-  "underground-belt",
   "fast-underground-belt",
   "express-underground-belt",
   "turbo-underground-belt",
-  "splitter",
   "fast-splitter",
   "express-splitter",
   "turbo-splitter",
 }, "fw-steel-beam", 1)
 
 patch_many_recipes({
-  "inserter",
-  "long-handed-inserter",
   "bulk-inserter",
   "stack-inserter",
   "stack-filter-inserter",
@@ -263,7 +254,6 @@ patch_many_recipes({
 }, "fw-circuit-substrate", 1)
 
 patch_many_recipes({
-  "assembling-machine-1",
   "assembling-machine-2",
   "assembling-machine-3",
   "electric-furnace",
@@ -273,7 +263,6 @@ patch_many_recipes({
 }, "fw-composite-panel", 1)
 
 patch_many_recipes({
-  "gun-turret",
   "laser-turret",
   "flamethrower-turret",
   "artillery-turret",
@@ -282,12 +271,8 @@ patch_many_recipes({
 }, "fw-cermet", 2)
 
 patch_many_recipes({
-  "gun-turret",
   "flamethrower-turret",
   "artillery-turret",
-  "tank",
-  "car",
-  "artillery-wagon",
 }, "fw-bullet-casing", 2)
 
 patch_many_recipes({
@@ -304,11 +289,8 @@ patch_many_recipes({
 }, "fw-steel-beam", 1)
 
 patch_many_recipes({
-  "boiler",
   "steam-engine",
   "steam-turbine",
-  "solar-panel",
-  "accumulator",
   "medium-electric-pole",
   "big-electric-pole",
   "substation",
@@ -373,7 +355,7 @@ patch_many_recipes({
   "satellite",
   "space-platform-foundation",
   "space-platform-starter-pack",
-  "space-platform-thruster",
+  "thruster",
   "space-platform-hub",
   "cargo-landing-pad",
   "asteroid-collector",
@@ -381,7 +363,7 @@ patch_many_recipes({
 
 -- Space Age deep integration pass: orbital hardware and late-game planetary systems.
 patch_many_recipes({
-  "space-platform-thruster",
+  "thruster",
   "space-platform-hub",
   "space-platform-starter-pack",
   "cargo-landing-pad",
@@ -390,7 +372,7 @@ patch_many_recipes({
 }, "fw-rocket-avionics", 1)
 
 patch_many_recipes({
-  "space-platform-thruster",
+  "thruster",
   "space-platform-hub",
   "space-platform-starter-pack",
   "space-platform-foundation",
@@ -430,16 +412,14 @@ patch_many_recipes({
 
 -- Extra-wide integration pass: intermediates, combat, logistics, and utility.
 patch_many_recipes({
-  "iron-gear-wheel",
-  "pipe",
-  "engine-unit",
-  "electric-engine-unit",
-  "flying-robot-frame",
-  "low-density-structure",
-  "battery",
-  "explosives",
-  "sulfur",
-  "plastic-bar",
+  "electronic-circuit",
+  "advanced-circuit",
+  "processing-unit",
+  "module",
+  "speed-module",
+  "effectivity-module",
+  "productivity-module",
+  "quality-module",
 }, "fw-circuit-contact", 1)
 
 patch_many_recipes({
@@ -456,10 +436,8 @@ patch_many_recipes({
 }, "fw-copper-tube", 1)
 
 patch_many_recipes({
-  "stone-furnace",
   "steel-furnace",
   "electric-furnace",
-  "assembling-machine-1",
   "assembling-machine-2",
   "assembling-machine-3",
   "chemical-plant",
@@ -504,7 +482,6 @@ patch_many_recipes({
   "gate",
   "wall",
   "stone-wall",
-  "gun-turret",
   "laser-turret",
   "flamethrower-turret",
   "artillery-turret",
@@ -561,8 +538,6 @@ patch_many_recipes({
 
 patch_many_recipes({
   "pumpjack",
-  "chemical-plant",
-  "oil-refinery",
   "centrifuge",
   "electrolyser",
   "electromagnetic-plant",
@@ -575,7 +550,6 @@ patch_many_recipes({
 
 patch_many_recipes({
   "accumulator",
-  "solar-panel",
   "fusion-generator",
   "fusion-reactor",
   "fusion-reactor-equipment",
@@ -598,7 +572,7 @@ patch_many_recipes({
 patch_many_recipes({
   "space-platform-starter-pack",
   "space-platform-foundation",
-  "space-platform-thruster",
+  "thruster",
   "space-platform-hub",
   "asteroid-collector",
   "cargo-bay",

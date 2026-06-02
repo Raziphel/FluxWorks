@@ -2,27 +2,28 @@
 -- If we rebalance later, do it here once and every recipe follows.
 
 local TRANSMUTATION_BALANCE = {
-  -- Defaults for any step that doesn't override values.
+  -- Defaults for any step that does not override values.
   defaults = {
     input_amount = 10,
     output_amount = 10,
     energy_required = 5,
+    flux_refund = 1,
   },
 
-  -- Ordered chain from common -> rare.
-  -- Add/remove/reorder here and both upcycle/downcycle stay in sync.
+  -- Ordered rough-material ladder from common -> rare.
+  -- Upcycling is intentionally lossy and downcycling refunds less Flux than it
+  -- costs to climb, so the loop can smooth shortages without printing resources.
   steps = {
-    -- Item amounts stay fixed at 10 -> 10.
-    -- Only flux cost/refund scales by tier.
-    { from = "stone",       to = "coal",         flux_cost = 1, flux_refund = 1 },
-    { from = "coal",        to = "copper-ore",   flux_cost = 2, flux_refund = 2 },
-    { from = "copper-ore",  to = "iron-ore",     flux_cost = 3, flux_refund = 3 },
-    { from = "iron-ore",    to = "lead-ore",     flux_cost = 4, flux_refund = 4 },
-    { from = "lead-ore",    to = "bauxite-ore",  flux_cost = 5, flux_refund = 5 },
-    { from = "bauxite-ore", to = "tin-ore",      flux_cost = 6, flux_refund = 6 },
-    { from = "tin-ore",     to = "silicon-ore",  flux_cost = 7, flux_refund = 7 },
-    { from = "silicon-ore", to = "uranium-ore",  flux_cost = 8, flux_refund = 8 },
-    { from = "uranium-ore", to = "titanium-ore", flux_cost = 9, flux_refund = 9 },
+    { from = "stone",       to = "coal",         input_amount = 12, output_amount = 10, flux_cost = 4,  flux_refund = 1, energy_required = 4 },
+    { from = "coal",        to = "copper-ore",   input_amount = 12, output_amount = 10, flux_cost = 6,  flux_refund = 2, energy_required = 4 },
+    { from = "copper-ore",  to = "iron-ore",     input_amount = 10, output_amount = 10, flux_cost = 4,  flux_refund = 1, energy_required = 4 },
+    { from = "iron-ore",    to = "lead-ore",     input_amount = 10, output_amount = 9,  flux_cost = 8,  flux_refund = 3, energy_required = 5 },
+    { from = "lead-ore",    to = "tin-ore",      input_amount = 10, output_amount = 9,  flux_cost = 8,  flux_refund = 3, energy_required = 5 },
+    { from = "tin-ore",     to = "bauxite-ore",  input_amount = 10, output_amount = 8,  flux_cost = 10, flux_refund = 4, energy_required = 6 },
+    { from = "bauxite-ore", to = "silicon-ore",  input_amount = 10, output_amount = 8,  flux_cost = 12, flux_refund = 4, energy_required = 6 },
+    { from = "fw-sand",     to = "silicon-ore",  input_amount = 14, output_amount = 6,  flux_cost = 12, flux_refund = 3, energy_required = 6 },
+    { from = "silicon-ore", to = "titanium-ore", input_amount = 10, output_amount = 7,  flux_cost = 18, flux_refund = 6, energy_required = 8 },
+    { from = "titanium-ore", to = "uranium-ore", input_amount = 10, output_amount = 7,  flux_cost = 22, flux_refund = 7, energy_required = 9 },
   },
 }
 
@@ -42,6 +43,10 @@ data:extend({
 })
 
 local recipes = {}
+
+local function item_exists(name)
+  return data.raw.item and data.raw.item[name]
+end
 
 local flux_source_recipe = {
   type = "recipe",
@@ -75,6 +80,10 @@ local function letter_for(index)
   return string.char(string.byte("a") + index - 1)
 end
 
+local function recipe_name_part(item_name)
+  return string.gsub(item_name, "^fw%-", "")
+end
+
 local function to_upcycle_recipe(step, index)
   local defaults = TRANSMUTATION_BALANCE.defaults
   local input_amount = step.input_amount or defaults.input_amount
@@ -82,7 +91,7 @@ local function to_upcycle_recipe(step, index)
   local energy_required = step.energy_required or defaults.energy_required
   local flux_cost = step.flux_cost or 1
   local suffix = letter_for(index)
-  local name = "fw-" .. step.from .. "-to-" .. step.to
+  local name = "fw-" .. recipe_name_part(step.from) .. "-to-" .. recipe_name_part(step.to)
 
   return {
     type = "recipe",
@@ -92,6 +101,7 @@ local function to_upcycle_recipe(step, index)
     subgroup = "fw-transmutation-upcycle",
     order = "a[chemistry]-a" .. suffix .. "[" .. name .. "]",
     enabled = false,
+    allow_productivity = false,
     energy_required = energy_required,
     main_product = step.to,
     ingredients = {
@@ -109,9 +119,18 @@ local function to_downcycle_recipe(step, index)
   local input_amount = step.output_amount or defaults.output_amount
   local output_amount = step.input_amount or defaults.input_amount
   local energy_required = step.energy_required or defaults.energy_required
-  local flux_refund = step.flux_refund or 1
+  local flux_refund = step.flux_refund
+  if flux_refund == nil then
+    flux_refund = defaults.flux_refund
+  end
   local suffix = letter_for(index)
-  local name = "fw-" .. step.to .. "-to-" .. step.from
+  local name = "fw-" .. recipe_name_part(step.to) .. "-to-" .. recipe_name_part(step.from)
+  local results = {
+    { type = "item", name = step.from, amount = output_amount },
+  }
+  if flux_refund > 0 then
+    table.insert(results, { type = "fluid", name = "fw-purple-flux", amount = flux_refund })
+  end
 
   return {
     type = "recipe",
@@ -121,21 +140,21 @@ local function to_downcycle_recipe(step, index)
     subgroup = "fw-transmutation-downcycle",
     order = "a[chemistry]-b" .. suffix .. "[" .. name .. "]",
     enabled = false,
+    allow_productivity = false,
     energy_required = energy_required,
     main_product = step.from,
     ingredients = {
       { type = "item", name = step.to, amount = input_amount },
     },
-    results = {
-      { type = "item", name = step.from, amount = output_amount },
-      { type = "fluid", name = "fw-purple-flux", amount = flux_refund },
-    },
+    results = results,
   }
 end
 
 for i, step in ipairs(TRANSMUTATION_BALANCE.steps) do
-  table.insert(recipes, to_upcycle_recipe(step, i))
-  table.insert(recipes, to_downcycle_recipe(step, i))
+  if item_exists(step.from) and item_exists(step.to) then
+    table.insert(recipes, to_upcycle_recipe(step, i))
+    table.insert(recipes, to_downcycle_recipe(step, i))
+  end
 end
 
 data:extend(recipes)
