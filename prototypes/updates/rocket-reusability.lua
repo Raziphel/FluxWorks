@@ -3,6 +3,7 @@ require("prototypes.updates.remnant-beacon")
 local space_age_sounds = require("__space-age__.prototypes.entity.sounds")
 local explosion_animations = require("__space-age__.prototypes.entity.explosion-animations")
 local space_age_item_sounds = require("__space-age__.prototypes.item_sounds")
+local Common = require("__haul_lib__/utils/common")
 
 data:extend
 {
@@ -276,15 +277,69 @@ data:extend
 
 local add_incomplete = settings.startup["enable-incomplete-rocket-parts"].value
 
+local reusable_rocket_components = {
+    {
+        type = "item",
+        name = "fw-rocket-avionics",
+        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-avionics.png",
+        icon_size = 120,
+        subgroup = "fw-intermediate-aerospace",
+        order = "b[fw-rocket-avionics]",
+        stack_size = 50
+    },
+    {
+        type = "item",
+        name = "fw-rocket-heatshield",
+        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-heatshield.png",
+        icon_size = 120,
+        subgroup = "fw-intermediate-aerospace",
+        order = "c[fw-rocket-heatshield]",
+        stack_size = 50
+    }
+}
+
+local reusable_rocket_component_recipes = {
+    {
+        type = "recipe",
+        name = "fw-rocket-avionics",
+        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-avionics.png",
+        icon_size = 120,
+        energy_required = 8,
+        enabled = false,
+        category = "crafting",
+        ingredients = {
+            { type = "item", name = "processing-unit", amount = 2 },
+            { type = "item", name = "fw-sensor-package", amount = 1 },
+            { type = "item", name = "fw-ribbon-cable", amount = 2 }
+        },
+        results = { { type = "item", name = "fw-rocket-avionics", amount = 1 } }
+    },
+    {
+        type = "recipe",
+        name = "fw-rocket-heatshield",
+        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-heatshield.png",
+        icon_size = 120,
+        energy_required = 8,
+        enabled = false,
+        category = "crafting",
+        ingredients = {
+            { type = "item", name = "low-density-structure", amount = 2 },
+            { type = "item", name = "fw-cermet", amount = 2 },
+            { type = "item", name = "fw-glass", amount = 4 }
+        },
+        results = { { type = "item", name = "fw-rocket-heatshield", amount = 1 } }
+    }
+}
+
+data:extend(reusable_rocket_components)
+data:extend(reusable_rocket_component_recipes)
+
 if add_incomplete then
-    local incomplete_rocket_part = table.deepcopy(data.raw.item["rocket-part"])
-    incomplete_rocket_part.name = "incomplete-rocket-part"
+    local incomplete_rocket_part = Common.cloneInto("item", "rocket-part", "incomplete-rocket-part")
     incomplete_rocket_part.stack_size = 50
     incomplete_rocket_part.hidden = false
 
     incomplete_rocket_part.icon = "__FluxWorksAssets__/graphics/icons/items/fw-incomplete-rocket-part.png"
-
-    data:extend { incomplete_rocket_part }
 
     local incomplete_rocket_part_recipe = {
         type = "recipe",
@@ -294,7 +349,10 @@ if add_incomplete then
         category = "crafting",
         ingredients = {
             { type = "item", name = "processing-unit",       amount = 1 },
-            { type = "item", name = "low-density-structure", amount = 1 }
+            { type = "item", name = "low-density-structure", amount = 1 },
+            { type = "item", name = "fw-rocket-engine", amount = 1 },
+            { type = "item", name = "fw-rocket-avionics", amount = 1 },
+            { type = "item", name = "fw-rocket-heatshield", amount = 1 }
         },
         allow_productivity = settings.startup["enable-incomplete-rocket-parts-productivity"].value,
         results = { { type = "item", name = "incomplete-rocket-part", amount = 1 } },
@@ -321,6 +379,9 @@ local recipe = {
     {
         { type = "item", name = "processing-unit",       amount_min = 3, amount_max = 10 },
         { type = "item", name = "low-density-structure", amount_min = 3, amount_max = 10 },
+        { type = "item", name = "fw-rocket-engine",      amount_min = 1, amount_max = 2 },
+        { type = "item", name = "fw-rocket-avionics", amount_min = 1, amount_max = 2 },
+        { type = "item", name = "fw-rocket-heatshield", amount_min = 1, amount_max = 2 },
         { type = "item", name = "rocket-chunk",          amount = 1,     probability = 0.1 }
     },
     allow_productivity = true,
@@ -330,6 +391,9 @@ local recipe = {
 if add_incomplete then
     recipe.results = {
         { type = "item", name = "incomplete-rocket-part", amount_min = 3, amount_max = 10 },
+        { type = "item", name = "fw-rocket-engine",       amount_min = 1, amount_max = 3 },
+        { type = "item", name = "fw-rocket-avionics", amount_min = 1, amount_max = 2 },
+        { type = "item", name = "fw-rocket-heatshield", amount_min = 1, amount_max = 2 },
         { type = "item", name = "rocket-chunk",           amount = 1,     probability = 0.1 }
     }
 end
@@ -344,6 +408,14 @@ local technology = {
             {
                 type = "unlock-recipe",
                 recipe = "rocket-chunk-processing"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "fw-rocket-avionics"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "fw-rocket-heatshield"
             },
         },
         prerequisites = { "production-science-pack", "utility-science-pack", "space-science-pack" },

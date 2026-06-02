@@ -1,12 +1,6 @@
 local resource_autoplace = require("__core__.lualib.resource-autoplace")
 local Common = require("__haul_lib__/utils/common")
 
--- If KR quarry exists, use it so this patch works with quarry drills.
-local mining_category = "basic-solid"
-if data.raw["resource-category"] and data.raw["resource-category"]["kr-quarry"] then
-  mining_category = "kr-quarry"
-end
-
 data:extend({
   {
     -- Mined item from the flux rift.
@@ -16,6 +10,7 @@ data:extend({
     subgroup = "raw-resource",
     order = "ga[fw-crystalised-flux]",
     stack_size = 50,
+    weight = 10000,
     pictures = {
       {
         layers = {
@@ -91,7 +86,7 @@ data:extend({
     -- The actual world node.
     type = "resource",
     name = "fw-crystalised-flux",
-    category = mining_category,
+    category = "fw-flux-rift",
     icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
     flags = { "placeable-neutral" },
     order = "a-b-a",

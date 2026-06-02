@@ -4,13 +4,15 @@
   "title": "FluxWorks",
   "author": "Raziphel, FluidNatalie",
   "factorio_version": "2.0",
-  "description": "A massive Factorio overhaul mod!",
+  "description": "A massive Factorio overhaul mod! Rocket reusability content includes adapted concepts/assets from the Rocket Reusability mod by Lylac (https://mods.factorio.com/mod/rocket-reusability).",
   "dependencies": [
     "base >= 2.0.0",
     "space-age >= 2.0.0",
     "? quality >= 2.0.0",
     "FluxWorksAssets >= 0.0.1",
-    "haul_lib >= 2.0.0"
+    "haul_lib >= 2.0.0",
+
+    "! age-of-production"
   ],
   "quality_required": true,
 	"rail_bridges_required": true,

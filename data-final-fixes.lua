@@ -1,3 +1,6 @@
 require("prototypes.updates.resource-placement")
 require("prototypes.updates.recipe-tweaks")
 require("prototypes.updates.rocket-reusability-final-fixes")
+require("prototypes.updates.factoriopedia")
+require("prototypes.recipes.flux-condensing")
+require("prototypes.updates.flux-tooltips")

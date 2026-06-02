@@ -1,10 +1,10 @@
-debug_mode = settings.global["debug-mode"].value
-
-script.on_init(verify_whitelist)
-
 function verify_whitelist ()
     storage.platform_type_whitelist = storage.platform_type_whitelist or {player = {}}
     storage.platform_type_whitelist["player"]["space-platform-starter-pack"] = true
+end
+
+local function on_init_setup()
+    verify_whitelist()
 end
 
 remote.add_interface("rocket-reusability",
@@ -28,12 +28,6 @@ script.on_event(
 
             verify_whitelist()
 
-            debug_mode = settings.global["debug-mode"].value
-
-            if debug_mode then
-                game.print("A rocket has been launched")
-            end
-
             local surface = event.rocket_silo.surface
             local planet
             for index, test_planet in pairs(game.planets) do
@@ -42,22 +36,9 @@ script.on_event(
                     break
                 end
             end
-            if not planet then 
-                if debug_mode then
-                    game.print("Couldn't find associated planet for rocket launch.")
-                end
-                return 
-            else
-                if debug_mode then
-                    game.print("Launched from planet ".. planet.prototype.name)
-                end
-            end
+            if not planet then return end
             ---@type LuaForce
             local force = event.rocket_silo.force
-
-            if debug_mode then
-                game.print("Initial conditions OK")
-            end
 
             if not force.is_space_platforms_unlocked() then return end
             if not force.technologies["rocket-chunk-processing"].researched then return end
@@ -79,16 +60,10 @@ script.on_event(
                                 
                                 local candidates = platform.surface.find_entities_filtered({name = "remnant-beacon"})
                                 if #candidates > 0 then
-                                    if debug_mode then
-                                        game.print("we got a priority candidate")
-                                    end
                                     ---@type LuaEntity
                                     local remnant_beacon = candidates[1]
                                     if remnant_beacon and remnant_beacon.valid then
                                         if remnant_beacon.status == defines.entity_status.working or remnant_beacon.status == defines.entity_status.low_power then
-                                            if debug_mode then
-                                                game.print("adding priority")
-                                            end
                                             table.insert(priority_candidates, platform)
                                             priority_count = priority_count + 1
                                         end
@@ -101,27 +76,14 @@ script.on_event(
             end
 
             if #platform_candidates == 0 then
-                if debug_mode then
-                    game.print("Found no suitable platforms.")
-                end
                 return 
             end
 
             local target
             if priority_count > 0 then
-                if debug_mode then
-                    game.print("We got a priority candidate!")
-                end
                 target = priority_candidates[math.random(1, priority_count)]
             else
-                if debug_mode then
-                    game.print("There is no priority.")
-                end
                 target = platform_candidates[math.random(1, platform_count)]
-            end
-
-            if debug_mode then
-                game.print("Spawning asteroid on platform " .. target.name)
             end
 
             local x_pos = math.random(-40, 40)
@@ -138,9 +100,14 @@ script.on_event(
             end
 
             target.surface.create_entity({name = "used-rocket-asteroid", position = {x_pos, y_pos}})
-            if debug_mode then
-                game.print("Spawned asteroid at " .. x_pos .. " " .. y_pos)
-            end
         end
     end
 )
+
+script.on_configuration_changed(function()
+    verify_whitelist()
+end)
+
+script.on_init(function()
+    on_init_setup()
+end)

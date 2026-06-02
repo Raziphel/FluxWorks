@@ -16,4 +16,14 @@ Additional icon and render assets are adapted from:
 
 - https://github.com/malcolmriley/unused-renders
 
-Please see that repository for original artwork context and licensing details.
+License notes:
+
+- `unused-renders` is distributed under CC BY 4.0 and requires attribution.
+- `factorio_free_graphics_for_modders` is a mixed-license catalog; each imported asset must be verified and credited per its original license.
+- Assets under restrictive non-commercial licenses (for example `CC BY-NC` / `CC BY-NC-SA`) are not used unless redistribution terms are explicitly compatible.
+
+Attribution policy for FluxWorks:
+
+1. Verify the original license for each imported asset.
+2. Confirm redistribution is allowed for Factorio mod distribution.
+3. Add source and license attribution to this credits file.

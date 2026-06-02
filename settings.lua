@@ -13,11 +13,4 @@ data:extend{
         default_value = false,
         order = "g"
     },
-    {
-        type = "bool-setting",
-        name = "debug-mode",
-        setting_type = "runtime-global",
-        default_value = false,
-        order = "g"
-    },
 }
