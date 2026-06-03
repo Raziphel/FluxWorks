@@ -21,6 +21,13 @@ data:extend({
     order = "c-c[flux]",
   },
   {
+    type = "item-group",
+    name = "fw-chemistry",
+    icon = "__FluxWorksAssets__/graphics/resources/fluids/chlorine.png",
+    icon_size = 128,
+    order = "c-d[chemistry]",
+  },
+  {
     type = "item-subgroup",
     name = "fw-science-packs",
     group = "fw-science",
@@ -67,5 +74,29 @@ data:extend({
     name = "fw-flux-machines",
     group = "fw-flux",
     order = "c[machines]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-chemistry-fluids",
+    group = "fw-chemistry",
+    order = "a[fluids]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-chemistry-materials",
+    group = "fw-chemistry",
+    order = "b[materials]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-chemistry-processes",
+    group = "fw-chemistry",
+    order = "c[processes]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-chemistry-machines",
+    group = "fw-chemistry",
+    order = "d[machines]",
   },
 })

@@ -61,9 +61,58 @@ local function move_recipe(name, subgroup)
   set_subgroup("recipe", name, subgroup)
 end
 
+local function recipe_entries(recipe, field)
+  if recipe[field] then
+    return recipe[field]
+  end
+  if recipe.normal and recipe.normal[field] then
+    return recipe.normal[field]
+  end
+  return nil
+end
+
+local function entry_type(entry)
+  return entry.type or "item"
+end
+
+local function entry_name(entry)
+  return entry.name or entry[1]
+end
+
+local function recipe_main_item_name(recipe)
+  if not recipe then
+    return nil
+  end
+  if recipe.main_product and recipe.main_product ~= "" then
+    return recipe.main_product
+  end
+  local results = recipe_entries(recipe, "results")
+  if results then
+    for _, result in pairs(results) do
+      if entry_type(result) == "item" then
+        return entry_name(result)
+      end
+    end
+  end
+  return recipe.result or (recipe.normal and recipe.normal.result)
+end
+
+local function item_subgroup(name)
+  local item = data.raw.item and data.raw.item[name]
+  if item then
+    return item.subgroup
+  end
+  local tool = data.raw.tool and data.raw.tool[name]
+  if tool then
+    return tool.subgroup
+  end
+  return nil
+end
+
 ensure_item_group("fw-science", "__base__/graphics/icons/lab.png", 64, "c-a[science]")
 ensure_item_group("fw-bioprocessing", "__space-age__/graphics/icons/biochamber.png", 64, "c-b[bioprocessing]")
 ensure_item_group("fw-flux", "__FluxWorksAssets__/graphics/icons/items/flux.png", 64, "c-c[flux]")
+ensure_item_group("fw-chemistry", "__FluxWorksAssets__/graphics/resources/fluids/chlorine.png", 128, "c-d[chemistry]")
 
 ensure_item_subgroup("fw-science-packs", "fw-science", "a[science-packs]")
 ensure_item_subgroup("fw-science-labs", "fw-science", "b[labs]")
@@ -77,6 +126,10 @@ ensure_item_subgroup("fw-flux-systems", "fw-flux", "d[systems]")
 ensure_item_subgroup("fw-transmutation-upcycle", "fw-flux", "e[transmutation]-a[upcycle]")
 ensure_item_subgroup("fw-transmutation-downcycle", "fw-flux", "e[transmutation]-b[downcycle]")
 ensure_item_subgroup("fw-flux-exchange", "fw-flux", "f[exchange]")
+ensure_item_subgroup("fw-chemistry-fluids", "fw-chemistry", "a[fluids]")
+ensure_item_subgroup("fw-chemistry-materials", "fw-chemistry", "b[materials]")
+ensure_item_subgroup("fw-chemistry-processes", "fw-chemistry", "c[processes]")
+ensure_item_subgroup("fw-chemistry-machines", "fw-chemistry", "d[machines]")
 
 for _, name in pairs({
   "automation-science-pack",
@@ -163,6 +216,98 @@ for _, name in pairs({
 end
 
 for _, name in pairs({
+  "fw-salt",
+  "fw-carbon",
+  "fw-rubber-sheet",
+  "sulfur",
+  "plastic-bar",
+  "explosives",
+  "battery",
+  "solid-fuel",
+  "rocket-fuel",
+  "coal",
+  "carbon",
+}) do
+  set_subgroup("item", name, "fw-chemistry-materials")
+end
+
+for _, name in pairs({
+  "fw-chlorine",
+  "sulfuric-acid",
+  "lubricant",
+}) do
+  set_subgroup("fluid", name, "fw-chemistry-fluids")
+end
+
+for _, name in pairs({
+  "chemical-plant",
+  "oil-refinery",
+}) do
+  move_item_and_recipe(name, "fw-chemistry-machines")
+end
+
+for _, name in pairs({
+  "fw-salt-from-water",
+  "fw-chlorine",
+  "fw-carbon-refining",
+  "fw-carbon-washing",
+  "fw-rubber-sheet",
+  "fw-gunpowder",
+  "fw-gunpowder-early",
+  "plastic-bar",
+  "sulfur",
+  "sulfuric-acid",
+  "explosives",
+  "battery",
+  "flamethrower-ammo",
+  "solid-fuel-from-light-oil",
+  "solid-fuel-from-petroleum-gas",
+  "solid-fuel-from-heavy-oil",
+  "lubricant",
+  "heavy-oil-cracking",
+  "light-oil-cracking",
+  "basic-oil-processing",
+  "advanced-oil-processing",
+  "coal-liquefaction",
+  "simple-coal-liquefaction",
+  "ice-melting",
+  "acid-neutralisation",
+  "steam-condensation",
+  "carbon",
+  "coal-synthesis",
+  "thruster-fuel",
+  "thruster-oxidizer",
+  "advanced-thruster-fuel",
+  "advanced-thruster-oxidizer",
+  "lithium",
+  "ammoniacal-solution-separation",
+  "solid-fuel-from-ammonia",
+  "ammonia-rocket-fuel",
+  "holmium-solution",
+}) do
+  move_recipe(name, "fw-chemistry-processes")
+end
+
+for _, name in pairs({
+  "fw-chlorine-barrel",
+  "empty-fw-chlorine-barrel",
+  "sulfuric-acid-barrel",
+  "empty-sulfuric-acid-barrel",
+  "lubricant-barrel",
+  "empty-lubricant-barrel",
+  "crude-oil-barrel",
+  "empty-crude-oil-barrel",
+  "heavy-oil-barrel",
+  "empty-heavy-oil-barrel",
+  "light-oil-barrel",
+  "empty-light-oil-barrel",
+  "petroleum-gas-barrel",
+  "empty-petroleum-gas-barrel",
+}) do
+  move_item_and_recipe(name, "fw-chemistry-fluids")
+end
+
+for _, name in pairs({
   "fw-crystalised-flux",
   "fw-flux-asteroid-chunk",
 }) do
@@ -207,5 +352,11 @@ for recipe_name, recipe in pairs(data.raw.recipe or {}) do
     recipe.subgroup = "fw-flux-exchange"
   elseif string.sub(recipe_name, 1, 3) == "fw-" and string.find(recipe_name, "flux", 1, true) then
     recipe.subgroup = recipe.subgroup or "fw-flux-systems"
+  end
+end
+
+for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+  if string.sub(recipe_name, 1, 3) == "fw-" and not recipe.subgroup then
+    recipe.subgroup = item_subgroup(recipe_main_item_name(recipe))
   end
 end
