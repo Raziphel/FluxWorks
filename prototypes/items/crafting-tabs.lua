@@ -1,0 +1,71 @@
+data:extend({
+  {
+    type = "item-group",
+    name = "fw-science",
+    icon = "__base__/graphics/icons/lab.png",
+    icon_size = 64,
+    order = "c-a[science]",
+  },
+  {
+    type = "item-group",
+    name = "fw-bioprocessing",
+    icon = "__space-age__/graphics/icons/biochamber.png",
+    icon_size = 64,
+    order = "c-b[bioprocessing]",
+  },
+  {
+    type = "item-group",
+    name = "fw-flux",
+    icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
+    icon_size = 64,
+    order = "c-c[flux]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-science-packs",
+    group = "fw-science",
+    order = "a[science-packs]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-science-labs",
+    group = "fw-science",
+    order = "b[labs]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-bioprocessing-machines",
+    group = "fw-bioprocessing",
+    order = "a[machines]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-bioprocessing-products",
+    group = "fw-bioprocessing",
+    order = "b[products]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-bioprocessing-processes",
+    group = "fw-bioprocessing",
+    order = "c[processes]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-flux-resources",
+    group = "fw-flux",
+    order = "a[resources]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-flux-fluids",
+    group = "fw-flux",
+    order = "b[fluids]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-flux-machines",
+    group = "fw-flux",
+    order = "c[machines]",
+  },
+})

@@ -370,11 +370,11 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-metallic-deposit",
       order = "a-m",
-      base_density = 11.0,
+      base_density = 15.5,
       base_spots_per_km2 = 0.62,
       has_starting_area_placement = true,
-      regular_rq_factor_multiplier = 1.35,
-      starting_rq_factor_multiplier = 2.35,
+      regular_rq_factor_multiplier = 1.60,
+      starting_rq_factor_multiplier = 2.65,
     }),
     stage_counts = { 28000, 17000, 10000, 5600, 2500, 900, 280, 120 },
     stages = {
@@ -424,11 +424,11 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-mineral-deposit",
       order = "a-n",
-      base_density = 7.0,
+      base_density = 10.0,
       base_spots_per_km2 = 0.42,
       has_starting_area_placement = true,
-      regular_rq_factor_multiplier = 1.20,
-      starting_rq_factor_multiplier = 2.05,
+      regular_rq_factor_multiplier = 1.45,
+      starting_rq_factor_multiplier = 2.35,
     }),
     stage_counts = { 26000, 15500, 9200, 5200, 2300, 820, 260, 110 },
     stages = {
@@ -476,11 +476,11 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-carbonic-deposit",
       order = "a-o",
-      base_density = 7.8,
+      base_density = 11.2,
       base_spots_per_km2 = 0.36,
       has_starting_area_placement = true,
-      regular_rq_factor_multiplier = 1.55,
-      starting_rq_factor_multiplier = 1.75,
+      regular_rq_factor_multiplier = 1.80,
+      starting_rq_factor_multiplier = 2.10,
     }),
     stage_counts = { 24000, 14500, 8600, 4800, 2100, 760, 240, 100 },
     stages = {

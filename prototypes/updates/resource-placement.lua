@@ -117,7 +117,7 @@ if default_preset_group then
         ["enemy-base"] = { frequency = "very-low", size = "very-low", richness = "very-low" },
         ["fw-metallic-deposit"] = { frequency = "normal", size = "big", richness = "very-good" },
         ["fw-mineral-deposit"] = { frequency = "normal", size = "normal", richness = "very-good" },
-        ["fw-carbonic-deposit"] = { frequency = "normal", size = "normal", richness = "good" },
+        ["fw-carbonic-deposit"] = { frequency = "normal", size = "normal", richness = "very-good" },
         ["fw-crystalised-flux"] = { frequency = "normal", size = "normal", richness = "normal" },
       },
     },

@@ -104,7 +104,32 @@ local function recipe_icon_from_item(item_name)
   return nil
 end
 
-local function make_clone_recipe(item_name, item, flux_value)
+local function quality_suffix(quality)
+  if not quality or quality.name == "normal" then
+    return ""
+  end
+  return "-" .. quality.name
+end
+
+local function quality_order(quality)
+  if not quality or quality.name == "normal" then
+    return "a[normal]"
+  end
+  return "b[" .. (quality.order or quality.name) .. "]"
+end
+
+local function quality_item_tag(item_name, quality)
+  if not quality or quality.name == "normal" then
+    return "[item=" .. item_name .. "]"
+  end
+  return "[item=" .. item_name .. ",quality=" .. quality.name .. "]"
+end
+
+local function quality_recipe_name(item_name, quality)
+  return "fw-exchange-from-flux" .. quality_suffix(quality) .. "-" .. item_name
+end
+
+local function make_clone_recipe(item_name, item, flux_value, quality)
   local energy = ((item.subgroup ~= "raw-resource" and original_recipe_time(item_name)) or clone_fallback_time(flux_value)) * 50
   local required_flux = math.max(1, math.floor((flux_value * clone_flux_markup(flux_value)) + 0.5))
   local ingredients = {
@@ -115,12 +140,17 @@ local function make_clone_recipe(item_name, item, flux_value)
     { type = "item", name = item_name, amount = 2 },
   }
 
+  if quality and quality.name ~= "normal" then
+    ingredients[2].quality = quality.name
+    results[1].quality = quality.name
+  end
+
   local recipe = {
     type = "recipe",
-    name = "fw-exchange-from-flux-" .. item_name,
+    name = quality_recipe_name(item_name, quality),
     category = "fw-flux-condensing",
     subgroup = "fw-flux-exchange",
-    order = "z-a[" .. item_name .. "]",
+    order = "z-a[" .. item_name .. "]-" .. quality_order(quality),
     enabled = false,
     hidden = false,
     hide_from_player_crafting = true,
@@ -128,8 +158,9 @@ local function make_clone_recipe(item_name, item, flux_value)
     hide_from_signal_gui = true,
     hidden_in_factoriopedia = false,
     allow_productivity = false,
+    allow_quality = false,
     energy_required = energy,
-    localised_name = { "", "[item=" .. item_name .. "] + [fluid=fw-purple-flux] -> [item=" .. item_name .. "] ", { "item-name." .. item_name } },
+    localised_name = { "", quality_item_tag(item_name, quality), " + [fluid=fw-purple-flux] -> ", quality_item_tag(item_name, quality), " ", { "item-name." .. item_name } },
     ingredients = ingredients,
     results = results,
     main_product = item_name,
@@ -159,10 +190,17 @@ end
 local resolved_values = FluxValuation.resolve_item_values(convertible_items)
 
 for item_name, item in pairs(convertible_items) do
-  local value = resolved_values[item_name] or FluxValuation.estimate_flux_value(item)
-  local clone_recipe = make_clone_recipe(item_name, item, value)
+  local base_value = resolved_values[item_name] or FluxValuation.estimate_flux_value(item)
+  local clone_recipe = make_clone_recipe(item_name, item, base_value)
   table.insert(generated, clone_recipe)
   table.insert(generated_names, clone_recipe.name)
+
+  for _, quality in pairs(FluxValuation.sorted_qualities(false)) do
+    local quality_value = FluxValuation.value_for_quality(base_value, quality)
+    local quality_clone_recipe = make_clone_recipe(item_name, item, quality_value, quality)
+    table.insert(generated, quality_clone_recipe)
+    table.insert(generated_names, quality_clone_recipe.name)
+  end
 end
 
 data:extend(generated)

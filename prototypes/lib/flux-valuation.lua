@@ -37,6 +37,7 @@ M.FLUID_VALUE_OVERRIDES = FluxValues.fluid_values or {}
 M.RECIPE_CATEGORY_VALUE_MULTIPLIERS = FluxValues.recipe_category_multipliers or {}
 M.RECIPE_CATEGORY_TIME_MULTIPLIERS = FluxValues.recipe_category_time_multipliers or {}
 M.DEFAULT_TIME_VALUE = FluxValues.default_time_value or 4
+M.QUALITY_VALUE_BASE = FluxValues.quality_value_base or 2
 
 local function is_hidden(item)
   if item.hidden then
@@ -118,6 +119,37 @@ function M.estimate_flux_value(item)
   end
 
   return math.min(2000, math.max(1, value))
+end
+
+function M.quality_value_multiplier(quality)
+  if not quality or quality.name == "normal" then
+    return 1
+  end
+
+  local level = quality.level or 0
+  return M.QUALITY_VALUE_BASE ^ math.max(0, level)
+end
+
+function M.value_for_quality(base_value, quality)
+  return math.max(1, math.floor((base_value or 1) * M.quality_value_multiplier(quality) + 0.5))
+end
+
+function M.sorted_qualities(include_normal)
+  local qualities = {}
+  for _, quality in pairs(data.raw.quality or {}) do
+    if quality.name ~= "quality-unknown" and (include_normal or quality.name ~= "normal") then
+      table.insert(qualities, quality)
+    end
+  end
+
+  table.sort(qualities, function(a, b)
+    if (a.level or 0) == (b.level or 0) then
+      return (a.order or a.name) < (b.order or b.name)
+    end
+    return (a.level or 0) < (b.level or 0)
+  end)
+
+  return qualities
 end
 
 local function get_entries(recipe, field)
