@@ -130,7 +130,7 @@ local function quality_recipe_name(item_name, quality)
 end
 
 local function make_clone_recipe(item_name, item, flux_value, quality)
-  local energy = ((item.subgroup ~= "raw-resource" and original_recipe_time(item_name)) or clone_fallback_time(flux_value)) * 50
+  local energy = ((item.subgroup ~= "raw-resource" and original_recipe_time(item_name)) or clone_fallback_time(flux_value)) * 5
   local required_flux = math.max(1, math.floor((flux_value * clone_flux_markup(flux_value)) + 0.5))
   local ingredients = {
     { type = "fluid", name = "fw-purple-flux", amount = required_flux },
