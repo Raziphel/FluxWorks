@@ -2,9 +2,9 @@ local resource_autoplace = require("__core__.lualib.resource-autoplace")
 local item_sounds = require("__base__.prototypes.item_sounds")
 
 local ORE_RARITY = {
-  ["fw-lead-ore"] =     { base_density = 5.8, base_spots_per_km2 = 1.4,  starting = true,  regular_rq = 1.25, starting_rq = 1.65 },
+  ["fw-lead-ore"] =     { base_density = 7.4, base_spots_per_km2 = 1.8,  starting = true,  regular_rq = 1.45, starting_rq = 1.95 },
   ["fw-bauxite-ore"] =  { base_density = 2.1, base_spots_per_km2 = 0.65, starting = false, regular_rq = 0.90, starting_rq = 1.0 },
-  ["fw-titanium-ore"] = { base_density = 1.25, base_spots_per_km2 = 0.42, starting = false, regular_rq = 0.85, starting_rq = 1.0 },
+  ["fw-titanium-ore"] = { base_density = 0.72, base_spots_per_km2 = 0.24, starting = false, regular_rq = 0.72, starting_rq = 0.85 },
   ["fw-salt"] =         { base_density = 2.2, base_spots_per_km2 = 0.75, starting = false, regular_rq = 2.9, starting_rq = 3.1 },
 }
 
@@ -359,9 +359,9 @@ data:extend({
     minable = {
       mining_time = 1.1,
       results = {
-        { type = "item", name = "iron-ore", amount_min = 1, amount_max = 2 },
-        { type = "item", name = "copper-ore", amount_min = 1, amount_max = 2, probability = 0.85 },
-        { type = "item", name = "lead-ore", amount = 1, probability = 0.40 },
+        { type = "item", name = "iron-ore", amount_min = 2, amount_max = 3 },
+        { type = "item", name = "copper-ore", amount_min = 1, amount_max = 2, probability = 0.95 },
+        { type = "item", name = "lead-ore", amount = 1, probability = 0.65 },
         { type = "item", name = "tin-ore", amount = 1, probability = 0.30 },
       },
     },
@@ -370,11 +370,11 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-metallic-deposit",
       order = "a-m",
-      base_density = 15.5,
-      base_spots_per_km2 = 0.62,
+      base_density = 19.5,
+      base_spots_per_km2 = 0.82,
       has_starting_area_placement = true,
-      regular_rq_factor_multiplier = 1.60,
-      starting_rq_factor_multiplier = 2.65,
+      regular_rq_factor_multiplier = 1.85,
+      starting_rq_factor_multiplier = 3.05,
     }),
     stage_counts = { 28000, 17000, 10000, 5600, 2500, 900, 280, 120 },
     stages = {
@@ -414,7 +414,7 @@ data:extend({
       fluid_amount = 10,
       results = {
         { type = "item", name = "bauxite-ore", amount = 1 },
-        { type = "item", name = "titanium-ore", amount = 1, probability = 0.35 },
+        { type = "item", name = "titanium-ore", amount = 1, probability = 0.18 },
         { type = "item", name = "silicon-ore", amount = 1, probability = 0.60 },
         { type = "item", name = "stone", amount = 1, probability = 0.55 },
       },
@@ -424,11 +424,11 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-mineral-deposit",
       order = "a-n",
-      base_density = 10.0,
-      base_spots_per_km2 = 0.42,
+      base_density = 8.4,
+      base_spots_per_km2 = 0.34,
       has_starting_area_placement = true,
-      regular_rq_factor_multiplier = 1.45,
-      starting_rq_factor_multiplier = 2.35,
+      regular_rq_factor_multiplier = 1.20,
+      starting_rq_factor_multiplier = 1.95,
     }),
     stage_counts = { 26000, 15500, 9200, 5200, 2300, 820, 260, 110 },
     stages = {
