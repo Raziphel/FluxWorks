@@ -89,7 +89,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-carbon-refining",
-    icon = "__FluxWorksAssets__/graphics/resources/ores/salt.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png",
     icon_size = 128,
     category = "smelting",
     enabled = false,

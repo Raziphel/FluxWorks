@@ -1,93 +1,67 @@
 local resource_autoplace = require("__core__.lualib.resource-autoplace")
 local Common = require("__haul_lib__/utils/common")
 
+local crystallized_flux_icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux.png"
+local crystallized_flux_on_belt_variants = {
+  {
+    icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux-on-belt-1.png",
+    light = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux-on-belt-1-light.png",
+  },
+  {
+    icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux-on-belt-2.png",
+    light = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux-on-belt-2-light.png",
+  },
+  {
+    icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux-on-belt-3.png",
+    light = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux-on-belt-3-light.png",
+  },
+  {
+    icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux-on-belt-4.png",
+    light = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux-on-belt-4-light.png",
+  },
+}
+
+local crystallized_flux_item_pictures = {}
+for _, variant in ipairs(crystallized_flux_on_belt_variants) do
+  crystallized_flux_item_pictures[#crystallized_flux_item_pictures + 1] = {
+    layers = {
+      {
+        size = 64,
+        filename = variant.icon,
+        scale = 0.5,
+      },
+      {
+        draw_as_light = true,
+        blend_mode = "additive",
+        tint = { r = 0.3, g = 0.3, b = 0.3, a = 0.3 },
+        size = 64,
+        filename = variant.light,
+        scale = 0.5,
+      },
+    },
+  }
+end
+
 data:extend({
   {
     -- Mined item from the flux rift.
     type = "item",
     name = "fw-crystalised-flux",
-    icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
+    icon = crystallized_flux_icon,
+    icon_size = 64,
     subgroup = "raw-resource",
     order = "ga[fw-crystalised-flux]",
     stack_size = 50,
     weight = 10000,
-    pictures = {
-      {
-        layers = {
-          {
-            size = 64,
-            filename = "__FluxWorksAssets__/graphics/icons/items/flux.png",
-            scale = 0.5,
-          },
-          {
-            draw_as_light = true,
-            blend_mode = "additive",
-            tint = { r = 0.3, g = 0.3, b = 0.3, a = 0.3 },
-            size = 64,
-            filename = "__FluxWorksAssets__/graphics/icons/items/flux-light.png",
-            scale = 0.5,
-          },
-        },
-      },
-      {
-        layers = {
-          {
-            size = 64,
-            filename = "__FluxWorksAssets__/graphics/icons/items/flux-1.png",
-            scale = 0.5,
-          },
-          {
-            draw_as_light = true,
-            blend_mode = "additive",
-            tint = { r = 0.3, g = 0.3, b = 0.3, a = 0.3 },
-            size = 64,
-            filename = "__FluxWorksAssets__/graphics/icons/items/flux-1-light.png",
-            scale = 0.5,
-          },
-        },
-      },
-      {
-        layers = {
-          {
-            size = 64,
-            filename = "__FluxWorksAssets__/graphics/icons/items/flux-2.png",
-            scale = 0.5,
-          },
-          {
-            draw_as_light = true,
-            blend_mode = "additive",
-            tint = { r = 0.3, g = 0.3, b = 0.3, a = 0.3 },
-            size = 64,
-            filename = "__FluxWorksAssets__/graphics/icons/items/flux-2-light.png",
-            scale = 0.5,
-          },
-        },
-      },
-      {
-        layers = {
-          {
-            size = 64,
-            filename = "__FluxWorksAssets__/graphics/icons/items/flux-3.png",
-            scale = 0.5,
-          },
-          {
-            draw_as_light = true,
-            blend_mode = "additive",
-            tint = { r = 0.3, g = 0.3, b = 0.3, a = 0.3 },
-            size = 64,
-            filename = "__FluxWorksAssets__/graphics/icons/items/flux-3-light.png",
-            scale = 0.5,
-          },
-        },
-      },
-    },
+    pictures = crystallized_flux_item_pictures,
   },
   {
     -- The actual world node.
     type = "resource",
     name = "fw-crystalised-flux",
     category = "fw-flux-rift",
-    icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
+    icon = crystallized_flux_icon,
+    icon_size = 64,
     flags = { "placeable-neutral" },
     order = "a-b-a",
     subgroup = "mineable-fluids",

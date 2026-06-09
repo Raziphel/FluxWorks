@@ -64,7 +64,7 @@ data:extend({
   {
     type = "item",
     name = "fw-carbon",
-    icon = "__FluxWorksAssets__/graphics/resources/ores/salt.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png",
     icon_size = 128,
     inventory_move_sound = item_sounds.resource_inventory_move,
     pick_sound = item_sounds.resource_inventory_pickup,

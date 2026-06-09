@@ -96,7 +96,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-carbon-washing",
-    icon = "__FluxWorksAssets__/graphics/resources/ores/salt.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png",
     icon_size = 128,
     category = "chemistry",
     enabled = false,
@@ -274,21 +274,6 @@ data:extend({
       { type = "item", name = "fw-glass", amount = 1 },
     },
     results = { { type = "item", name = "fw-composite-panel", amount = 1 } },
-  },
-  {
-    type = "recipe",
-    name = "fw-bullet-casing",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bullet-casing.png",
-    icon_size = 1024,
-    category = "crafting",
-    enabled = false,
-    energy_required = 0.8,
-    allow_productivity = true,
-    ingredients = {
-      { type = "item", name = "copper-plate", amount = 1 },
-      { type = "item", name = "iron-plate", amount = 1 },
-    },
-    results = { { type = "item", name = "fw-bullet-casing", amount = 2 } },
   },
   {
     type = "recipe",
@@ -475,10 +460,10 @@ data:extend({
     icon_size = 128,
     category = "crafting",
     enabled = true,
-    energy_required = 1.2,
+    energy_required = 0.8,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "fw-carbon", amount = 2 },
+      { type = "item", name = "coal", amount = 1 },
       { type = "item", name = "fw-salt", amount = 1 },
     },
     results = { { type = "item", name = "fw-gunpowder", amount = 1 } },

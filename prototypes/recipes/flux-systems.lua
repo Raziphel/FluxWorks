@@ -83,25 +83,6 @@ data:extend({
   },
   {
     type = "recipe",
-    name = "fw-flux-chunk-activation",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-chunk-crushing.png",
-    icon_size = 64,
-    category = "chemistry",
-    enabled = false,
-    energy_required = 5,
-    allow_productivity = true,
-    ingredients = {
-      { type = "item", name = "rocket-chunk", amount = 1 },
-      { type = "fluid", name = "fw-purple-flux", amount = 30 },
-    },
-    results = {
-      { type = "item", name = "fw-crystalised-flux", amount = 10 },
-      { type = "item", name = "fw-stabilized-flux-crystal", amount = 1, probability = 0.6 },
-      { type = "item", name = "fw-flux-catalyst", amount = 1, probability = 0.25 },
-    },
-  },
-  {
-    type = "recipe",
     name = "fw-yellow-flux-conditioning",
     icon = "__FluxWorksAssets__/graphics/icons/fluids/ArtisanalReskins_alien-explosive.png",
     icon_size = 64,
@@ -253,7 +234,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-rift-seed-crystallization",
-    icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux.png",
     icon_size = 64,
     category = "chemistry",
     enabled = false,

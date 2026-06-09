@@ -36,6 +36,25 @@ local function patch_recipe_set(patches)
   end
 end
 
+local function remove_ingredient(ingredients, name)
+  local filtered = {}
+  for _, ingredient in pairs(ingredients or {}) do
+    if ingredient_name(ingredient) ~= name then
+      filtered[#filtered + 1] = ingredient
+    end
+  end
+  return filtered
+end
+
+local function remove_recipe_ingredient(recipe_name, name)
+  if not (data.raw.recipe and data.raw.recipe[recipe_name]) then
+    return
+  end
+
+  local recipe = Recipe:get(recipe_name)
+  recipe:setIngredients(remove_ingredient(recipe.ingredients or {}, name))
+end
+
 -- Targeted base-game integration
 -- Keep green circuits early, but make red/blue circuits use the new electronics chain.
 patch_recipe_set({
@@ -51,13 +70,10 @@ patch_recipe_set({
   { "low-density-structure", "fw-light-frame", 1 },
   { "battery", "fw-ceramic-insulator", 1 },
   { "accumulator", "fw-capacitor", 2 },
-  { "firearm-magazine", "fw-bullet-casing", 1 },
   { "firearm-magazine", "fw-gunpowder", 1 },
   { "piercing-rounds-magazine", "firearm-magazine", 1 },
-  { "piercing-rounds-magazine", "fw-bullet-casing", 1 },
   { "piercing-rounds-magazine", "fw-gunpowder", 1 },
   { "uranium-rounds-magazine", "piercing-rounds-magazine", 1 },
-  { "uranium-rounds-magazine", "fw-bullet-casing", 1 },
   { "uranium-rounds-magazine", "fw-gunpowder", 1 },
   { "lab", "fw-glass", 4 },
   { "lab", "fw-ceramic-insulator", 2 },
@@ -269,11 +285,6 @@ patch_many_recipes({
   "tank",
   "car",
 }, "fw-cermet", 2)
-
-patch_many_recipes({
-  "flamethrower-turret",
-  "artillery-turret",
-}, "fw-bullet-casing", 2)
 
 patch_many_recipes({
   "locomotive",
@@ -502,17 +513,9 @@ patch_many_recipes({
   "uranium-rounds-magazine",
 }, "fw-gunpowder", 1)
 
-patch_many_recipes({
-  "grenade",
-  "cluster-grenade",
-  "rocket",
-  "explosive-rocket",
-  "shotgun-shell",
-  "piercing-shotgun-shell",
-  "firearm-magazine",
-  "piercing-rounds-magazine",
-  "uranium-rounds-magazine",
-}, "fw-bullet-casing", 1)
+-- Keep early bullet ammo practical: basic magazines should only pick up the
+-- gunpowder layer instead of extra FluxWorks metalwork.
+remove_recipe_ingredient("firearm-magazine", "tin-plate")
 
 patch_many_recipes({
   "defender-capsule",

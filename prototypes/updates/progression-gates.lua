@@ -22,6 +22,5 @@ local function gate_recipe_to_tech(recipe_name, tech_name)
 end
 
 -- Keep early base-game progression coherent after FluxWorks integration:
--- circuit contacts at electronics, bullet casings at military.
+-- circuit contacts at electronics.
 gate_recipe_to_tech("fw-circuit-contact", "electronics")
-gate_recipe_to_tech("fw-bullet-casing", "military")

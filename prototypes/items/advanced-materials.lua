@@ -167,15 +167,6 @@ data:extend({
   },
   {
     type = "item",
-    name = "fw-bullet-casing",
-    icon = icon_path .. "fw-bullet-casing.png",
-    icon_size = 1024,
-    subgroup = "fw-intermediate-ballistic",
-    order = "a[fw-bullet-casing]",
-    stack_size = 200,
-  },
-  {
-    type = "item",
     name = "fw-glass-lens",
     icon = icon_path .. "fw-glass-lens.png",
     icon_size = 1024,

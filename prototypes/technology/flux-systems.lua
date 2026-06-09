@@ -65,7 +65,6 @@ data:extend({
       time = 40,
     },
     effects = {
-      { type = "unlock-recipe", recipe = "fw-flux-chunk-activation" },
     },
     order = "d-c[fw-flux-asteroid-harvesting]",
   },
