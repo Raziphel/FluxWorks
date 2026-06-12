@@ -37,8 +37,6 @@ M.FLUID_VALUE_OVERRIDES = FluxValues.fluid_values or {}
 M.RECIPE_CATEGORY_VALUE_MULTIPLIERS = FluxValues.recipe_category_multipliers or {}
 M.RECIPE_CATEGORY_TIME_MULTIPLIERS = FluxValues.recipe_category_time_multipliers or {}
 M.DEFAULT_TIME_VALUE = FluxValues.default_time_value or 4
-M.QUALITY_VALUE_BASE = FluxValues.quality_value_base or 2
-
 local function is_hidden(item)
   if item.hidden then
     return true
@@ -122,16 +120,11 @@ function M.estimate_flux_value(item)
 end
 
 function M.quality_value_multiplier(quality)
-  if not quality or quality.name == "normal" then
-    return 1
-  end
-
-  local level = quality.level or 0
-  return M.QUALITY_VALUE_BASE ^ math.max(0, level)
+  return 1
 end
 
 function M.value_for_quality(base_value, quality)
-  return math.max(1, math.floor((base_value or 1) * M.quality_value_multiplier(quality) + 0.5))
+  return math.max(1, math.floor((base_value or 1) + 0.5))
 end
 
 function M.sorted_qualities(include_normal)

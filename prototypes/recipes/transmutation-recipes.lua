@@ -62,7 +62,6 @@ local flux_source_recipe = {
   energy_required = 3,
   ingredients = {
     { type = "item", name = "fw-crystalised-flux", amount = 2 },
-    { type = "fluid", name = "water", amount = 40 },
   },
   results = {
     { type = "fluid", name = "fw-purple-flux", amount = 80 },

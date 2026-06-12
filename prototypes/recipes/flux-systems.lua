@@ -16,7 +16,6 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-crystalised-flux", amount = 1 },
       { type = "item", name = "fw-salt", amount = 1 },
-      { type = "fluid", name = "water", amount = 20 },
     },
     results = {
       { type = "fluid", name = "fw-purple-flux", amount = 40 },

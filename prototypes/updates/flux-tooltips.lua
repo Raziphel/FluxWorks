@@ -10,14 +10,7 @@ local function format_number(value)
 end
 
 local function add_flux_value_to_item_tooltip(item, value)
-  local line = { "", "\n[color=170,120,255][fluid=fw-purple-flux] Flux Value: ", format_number(value), " (normal quality)[/color]" }
-  local quality_lines = {}
-  for _, quality in pairs(FluxValuation.sorted_qualities(false)) do
-    table.insert(quality_lines, "[quality=" .. quality.name .. "] " .. format_number(FluxValuation.value_for_quality(value, quality)))
-  end
-  if #quality_lines > 0 then
-    line = { "", line, "\n[color=170,120,255]Quality: ", table.concat(quality_lines, "  "), "[/color]" }
-  end
+  local line = { "", "\n[color=170,120,255][fluid=fw-purple-flux] Flux Value: ", format_number(value), "[/color]" }
   if item.localised_description then
     item.localised_description = { "", item.localised_description, line }
   else
