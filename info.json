@@ -4,7 +4,7 @@
   "title": "FluxWorks",
   "author": "Raziphel, FluidNatalie",
   "factorio_version": "2.0",
-  "description": "A massive Factorio overhaul mod! Rocket reusability content includes adapted concepts/assets from the Rocket Reusability mod by Lylac (https://mods.factorio.com/mod/rocket-reusability).",
+  "description": "A massive Factorio overhaul mod! Includes adapted third-party art/concepts from brevven's MIT-licensed resource mods, Rocket Reusability by Lylac (https://mods.factorio.com/mod/rocket-reusability), and credited Artisanal Reskins / unused-renders asset work; see credits.md for details.",
   "dependencies": [
     "base >= 2.0.0",
     "space-age >= 2.0.0",

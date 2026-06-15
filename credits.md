@@ -1,29 +1,50 @@
 # Credits
 
-FluxWorks includes adapted resource graphics and prototype inspiration from the following MIT-licensed mods by `brevven`:
+FluxWorks ships a mix of original work and adapted third-party assets. This file tracks the outside source families that are visibly present in the current mod files.
 
-- https://github.com/brevven/silicon
-- https://github.com/brevven/titanium
-- https://github.com/brevven/lead
-- https://github.com/brevven/tin
-- https://github.com/brevven/chlorine
-- https://github.com/brevven/aluminum
-- https://github.com/brevven/carbon
+## Live source families
 
-These source projects are licensed under the MIT License.
+- `brevven` Factorio mods (MIT):
+  - Sources:
+    - https://github.com/brevven/silicon
+    - https://github.com/brevven/titanium
+    - https://github.com/brevven/lead
+    - https://github.com/brevven/tin
+    - https://github.com/brevven/chlorine
+    - https://github.com/brevven/aluminum
+    - https://github.com/brevven/carbon
+  - Used for adapted ore, plate, chemistry, and resource-art foundations across the FluxWorks asset pack, especially:
+    - `FluxWorksAssets/graphics/resources/ores/*`
+    - `FluxWorksAssets/graphics/resources/fluids/chlorine.png`
+    - `FluxWorksAssets/graphics/icons/items/fw-bz-*`
+    - `FluxWorksAssets/graphics/icons/items/*plate*.png`
 
-Additional icon and render assets are adapted from:
+- Rocket Reusability by `Lylac`:
+  - Source:
+    - https://mods.factorio.com/mod/rocket-reusability
+  - Used for adapted rocket-reuse concepts and asset families, especially:
+    - `FluxWorksAssets/graphics/icons/items/reusable-rocket-*.png`
+    - `FluxWorksAssets/graphics/icons/items/fw-rocket-*.png`
+    - `FluxWorksAssets/graphics/resources/asteroids/fw-used-rocket*.png`
+    - `FluxWorksAssets/graphics/resources/asteroids/fw-rocket-chunk*.png`
 
-- https://github.com/malcolmriley/unused-renders
+- Artisanal Reskins alien fluid icons:
+  - Used directly for the colored Flux fluids:
+    - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-acid.png`
+    - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-explosive.png`
+    - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-fire.png`
+    - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-poison.png`
 
-License notes:
+- `unused-renders` by `malcolmriley` (CC BY 4.0):
+  - Source:
+    - https://github.com/malcolmriley/unused-renders
+  - Used for adapted part and component renders, with some leftovers still parked as references under:
+    - `FluxWorksAssets/graphics/icons/items/part-*.png`
+    - `FluxWorksAssets/graphics/icons/items/unused-assets/*`
 
-- `unused-renders` is distributed under CC BY 4.0 and requires attribution.
-- `factorio_free_graphics_for_modders` is a mixed-license catalog; each imported asset must be verified and credited per its original license.
-- Assets under restrictive non-commercial licenses (for example `CC BY-NC` / `CC BY-NC-SA`) are not used unless redistribution terms are explicitly compatible.
+## Notes
 
-Attribution policy for FluxWorks:
-
-1. Verify the original license for each imported asset.
-2. Confirm redistribution is allowed for Factorio mod distribution.
-3. Add source and license attribution to this credits file.
+- `unused-renders` is CC BY 4.0 and requires attribution.
+- The `brevven` repositories listed above are MIT-licensed.
+- Some files have been recolored, renamed, cropped, or folded into larger FluxWorks systems, so the shipped filenames do not always match upstream names exactly.
+- If new third-party assets are imported, add the source family and the specific shipped path pattern here at the same time.

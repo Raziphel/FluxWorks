@@ -71,9 +71,27 @@ data:extend({
   },
   {
     type = "item-subgroup",
-    name = "fw-flux-fluids",
+    name = "fw-flux-purple",
     group = "fw-flux",
-    order = "c[fluids]",
+    order = "c[purple]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-flux-yellow",
+    group = "fw-flux",
+    order = "d[yellow]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-flux-red",
+    group = "fw-flux",
+    order = "e[red]",
+  },
+  {
+    type = "item-subgroup",
+    name = "fw-flux-green",
+    group = "fw-flux",
+    order = "f[green]",
   },
   {
     type = "item-subgroup",

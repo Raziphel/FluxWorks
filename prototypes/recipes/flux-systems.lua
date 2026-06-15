@@ -10,8 +10,8 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/fluids/ArtisanalReskins_alien-acid.png",
     icon_size = 64,
     category = "chemistry",
-    subgroup = "fw-flux-fluids",
-    order = "a[flux-fluids]-a[fw-purple-flux]",
+    subgroup = "fw-flux-purple",
+    order = "a[source]-a[fw-purple-flux]",
     enabled = false,
     energy_required = 2.5,
     allow_productivity = true,
@@ -59,6 +59,7 @@ data:extend({
       { type = "item", name = "fw-crystalised-flux", amount = 3 },
       { type = "item", name = "fw-flux-catalyst", amount = 1 },
       { type = "fluid", name = "fw-purple-flux", amount = 30 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 12 },
       { type = "fluid", name = "fw-chlorine", amount = 15 },
     },
     results = {
@@ -83,6 +84,7 @@ data:extend({
       { type = "item", name = "fw-circuit-contact", amount = 2 },
       { type = "item", name = "fw-glass", amount = 1 },
       { type = "item", name = "fw-solder-wire", amount = 2 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 18 },
     },
     results = {
       { type = "item", name = "fw-flux-lattice", amount = 1 },
@@ -154,6 +156,7 @@ data:extend({
       { type = "item", name = "fw-flux-catalyst", amount = 1 },
       { type = "fluid", name = "fw-yellow-flux", amount = 30 },
       { type = "fluid", name = "fw-red-flux", amount = 60 },
+      { type = "fluid", name = "fw-green-flux", amount = 12 },
     },
     results = {
       { type = "item", name = "fw-flux-resonance-cell", amount = 1 },
@@ -179,6 +182,7 @@ data:extend({
       { type = "item", name = "fw-sensor-package", amount = 2 },
       { type = "fluid", name = "fw-yellow-flux", amount = 80 },
       { type = "fluid", name = "fw-red-flux", amount = 160 },
+      { type = "fluid", name = "fw-green-flux", amount = 20 },
     },
     results = {
       { type = "item", name = "fw-flux-phase-manifold", amount = 1 },
@@ -199,9 +203,10 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-flux-phase-manifold", amount = 1 },
       { type = "item", name = "fw-flux-resonance-cell", amount = 2 },
-      { type = "fluid", name = "fw-purple-flux", amount = 220 },
+      { type = "fluid", name = "fw-purple-flux", amount = 180 },
       { type = "fluid", name = "fw-yellow-flux", amount = 60 },
       { type = "fluid", name = "fw-red-flux", amount = 160 },
+      { type = "fluid", name = "fw-green-flux", amount = 120 },
     },
     results = {
       { type = "item", name = "fw-crystalised-flux", amount = 48 },
@@ -225,6 +230,7 @@ data:extend({
       { type = "item", name = "fw-flux-resonance-cell", amount = 2 },
       { type = "item", name = "fw-condensed-flux-matrix", amount = 2 },
       { type = "fluid", name = "fw-purple-flux", amount = 160 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 80 },
       { type = "fluid", name = "fw-red-flux", amount = 220 },
     },
     results = {
