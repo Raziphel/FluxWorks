@@ -73,7 +73,7 @@ data:extend({
     name = "fw-flux-lattice",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-metal-mesh.png",
     icon_size = 1024,
-    category = "crafting",
+    category = "chemistry",
     subgroup = "fw-flux-systems",
     order = "b[systems]-b[flux-lattice]",
     enabled = false,
