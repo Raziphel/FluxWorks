@@ -16,7 +16,7 @@ data:extend({
     name = "fw-ceramic-engineering",
     icon = "__FluxWorksAssets__/graphics/technology/fw-ceramic-engineering.png",
     icon_size = 1024,
-    prerequisites = { "fw-material-foundations", "stone-wall" },
+    prerequisites = { "fw-structural-fabrication", "stone-wall" },
     unit = tech_unit(110, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -32,7 +32,7 @@ data:extend({
     name = "fw-conductive-networks",
     icon = "__FluxWorksAssets__/graphics/technology/fw-conductive-networks.png",
     icon_size = 1024,
-    prerequisites = { "fw-metals-fabrication", "fw-circuit-foundry" },
+    prerequisites = { "fw-conductive-assembly", "fw-wafer-etching" },
     unit = tech_unit(130, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -48,7 +48,7 @@ data:extend({
     name = "fw-optical-instrumentation",
     icon = "__FluxWorksAssets__/graphics/technology/fw-optical-instrumentation.png",
     icon_size = 1024,
-    prerequisites = { "fw-instrumentation", "fw-circuit-foundry" },
+    prerequisites = { "fw-instrumentation", "fw-wafer-etching" },
     unit = tech_unit(180, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },

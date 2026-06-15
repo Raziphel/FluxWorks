@@ -58,19 +58,14 @@ data:extend({
       },
       time = 35,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-chlorine-pressurization" },
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-latex-suspension" },
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-sulfur-bonding" },
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-acid-synthesis" },
-    },
+    effects = {},
     order = "d-c[fw-flux-yellow-catalysis]",
   },
   {
     type = "technology",
     name = "fw-flux-red-energetics",
     icon = "__FluxWorksAssets__/graphics/technology/fw-arc-furnace.png",
-    icon_size = 256,
+    icon_size = 1024,
     prerequisites = { "fw-flux-stabilization", "fw-power-regulation" },
     unit = {
       count = 360,
@@ -82,9 +77,7 @@ data:extend({
       },
       time = 35,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-red-flux-fuel-compaction" },
-    },
+    effects = {},
     order = "d-d[fw-flux-red-energetics]",
   },
   {
@@ -103,16 +96,14 @@ data:extend({
       },
       time = 35,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-green-flux-spoilage-reclamation" },
-    },
+    effects = {},
     order = "d-e[fw-flux-green-reclamation]",
   },
   {
     type = "technology",
     name = "fw-flux-resonance",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-arc-furnace.png",
-    icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-electromagnetic-architecture.png",
+    icon_size = 1024,
     prerequisites = { "fw-flux-yellow-catalysis", "fw-flux-red-energetics", "fw-systems-integration" },
     unit = {
       count = 520,
@@ -135,7 +126,7 @@ data:extend({
     type = "technology",
     name = "fw-flux-asteroid-harvesting",
     icon = "__FluxWorksAssets__/graphics/technology/fw-rocket-chunk-processing.png",
-    icon_size = 256,
+    icon_size = 190,
     prerequisites = { "fw-flux-resonance", "rocket-chunk-processing", "fw-flux-extraction" },
     unit = {
       count = 450,
@@ -158,8 +149,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-field-theory",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-arc-furnace.png",
-    icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-electromagnetic-architecture.png",
+    icon_size = 1024,
     prerequisites = { "fw-flux-asteroid-harvesting", "fw-electromagnetic-architecture", "utility-science-pack" },
     unit = {
       count = 700,
@@ -197,11 +188,7 @@ data:extend({
       },
       time = 50,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-resin-polymerization" },
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-rubber-vulcanization" },
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-battery-electrolyte" },
-    },
+    effects = {},
     order = "d-i[fw-flux-chemical-synthesis]",
   },
   {
@@ -222,10 +209,7 @@ data:extend({
       },
       time = 55,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-blasting-gel" },
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-reactive-slurry" },
-    },
+    effects = {},
     order = "d-j[fw-flux-reactive-slurries]",
   },
   {
@@ -246,11 +230,7 @@ data:extend({
       },
       time = 50,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-green-flux-bioflux-cultivation" },
-      { type = "unlock-recipe", recipe = "fw-green-flux-biolubricant-culture" },
-      { type = "unlock-recipe", recipe = "fw-green-flux-aquaculture-feed" },
-    },
+    effects = {},
     order = "d-k[fw-flux-green-cultivation]",
   },
   {
@@ -271,18 +251,14 @@ data:extend({
       },
       time = 55,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-green-flux-yumako-seed-propagation" },
-      { type = "unlock-recipe", recipe = "fw-green-flux-jellynut-seed-propagation" },
-      { type = "unlock-recipe", recipe = "fw-green-flux-tree-seed-propagation" },
-    },
+    effects = {},
     order = "d-l[fw-flux-green-propagation]",
   },
   {
     type = "technology",
     name = "fw-flux-thermal-networks",
     icon = "__FluxWorksAssets__/graphics/technology/fw-arc-furnace.png",
-    icon_size = 256,
+    icon_size = 1024,
     prerequisites = { "fw-flux-field-theory", "fw-flux-red-energetics", "fw-cryogenic-control" },
     unit = {
       count = 860,
@@ -296,9 +272,7 @@ data:extend({
       },
       time = 55,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-red-flux-rocket-fuel-infusion" },
-    },
+    effects = {},
     order = "d-m[fw-flux-thermal-networks]",
   },
   {
@@ -329,8 +303,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-overdrive",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-arc-furnace.png",
-    icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-promethium-stabilization.png",
+    icon_size = 1024,
     prerequisites = { "fw-flux-thermal-networks", "fw-flux-phase-engineering", "fw-promethium-stabilization" },
     unit = {
       count = 1250,
@@ -346,16 +320,14 @@ data:extend({
       },
       time = 60,
     },
-    effects = {
-      { type = "unlock-recipe", recipe = "fw-red-flux-nuclear-fuel-staging" },
-    },
+    effects = {},
     order = "d-o[fw-flux-overdrive]",
   },
   {
     type = "technology",
     name = "fw-flux-synthesis",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-arc-furnace.png",
-    icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-synthesizer.png",
+    icon_size = 1024,
     prerequisites = { "fw-flux-phase-engineering", "fw-flux-chemical-synthesis", "fw-flux-green-cultivation", "fw-computational-arrays" },
     unit = {
       count = 1100,

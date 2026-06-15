@@ -55,6 +55,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "plastic-bar", amount = 2 },
+      { type = "item", name = "fw-salt", amount = 1 },
       { type = "fluid", name = "water", amount = 30 },
     },
     results = {
@@ -94,6 +95,7 @@ data:extend({
     energy_required = 4.0,
     allow_productivity = true,
     ingredients = {
+      { type = "item", name = "fw-salt", amount = 1 },
       { type = "item", name = "fw-carbon", amount = 1 },
       { type = "fluid", name = "fw-chlorine", amount = 20 },
     },
@@ -114,6 +116,7 @@ data:extend({
     energy_required = 4.5,
     allow_productivity = true,
     ingredients = {
+      { type = "item", name = "fw-salt", amount = 1 },
       { type = "item", name = "sulfur", amount = 2 },
       { type = "fluid", name = "fw-chlorine", amount = 20 },
       { type = "fluid", name = "water", amount = 50 },
@@ -198,7 +201,8 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "lead-plate", amount = 1 },
-      { type = "item", name = "copper-plate", amount = 1 },
+      { type = "item", name = "tin-plate", amount = 1 },
+      { type = "item", name = "fw-resin", amount = 1 },
       { type = "fluid", name = "sulfuric-acid", amount = 20 },
     },
     results = {
@@ -231,6 +235,7 @@ data:extend({
       { type = "fluid", name = "fw-blasting-gel", amount = 30 },
       { type = "fluid", name = "light-oil", amount = 20 },
       { type = "item", name = "sulfur", amount = 1 },
+      { type = "item", name = "fw-carbon", amount = 1 },
     },
     results = {
       { type = "fluid", name = "fw-napalm", amount = 40 },
