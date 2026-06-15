@@ -87,7 +87,6 @@ data:extend({
       time = 45,
     },
     effects = {
-      { type = "unlock-recipe", recipe = "fw-yellow-flux-conditioning" },
       { type = "unlock-recipe", recipe = "fw-red-flux-conditioning" },
       { type = "unlock-recipe", recipe = "fw-green-flux-conditioning" },
       { type = "unlock-recipe", recipe = "fw-condensed-flux-matrix" },

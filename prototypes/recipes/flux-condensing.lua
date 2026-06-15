@@ -2,28 +2,28 @@ local FluxValuation = require("prototypes.lib.flux-valuation")
 
 local function clone_flux_markup(value)
   if value <= 8 then
-    return 1.10
+    return 1.25
   end
   if value <= 24 then
-    return 1.20
+    return 1.40
   end
   if value <= 60 then
-    return 1.35
+    return 1.60
   end
-  return 1.55
+  return 1.85
 end
 
 local function clone_fallback_time(value)
   if value <= 8 then
-    return 0.8
+    return 1.2
   end
   if value <= 24 then
-    return 1.6
+    return 2.4
   end
   if value <= 60 then
-    return 2.8
+    return 4.0
   end
-  return 4.2
+  return 6.0
 end
 
 local function recipe_entries(recipe, field)
@@ -104,53 +104,116 @@ local function recipe_icon_from_item(item_name)
   return nil
 end
 
-local function quality_suffix(quality)
-  if not quality or quality.name == "normal" then
-    return ""
-  end
-  return "-" .. quality.name
-end
+local FLUX_COLOR_TO_FLUID = {
+  purple = "fw-purple-flux",
+  yellow = "fw-yellow-flux",
+  red = "fw-red-flux",
+  green = "fw-green-flux",
+}
 
-local function quality_order(quality)
-  if not quality or quality.name == "normal" then
-    return "a[normal]"
-  end
-  return "b[" .. (quality.order or quality.name) .. "]"
-end
-
-local function quality_item_tag(item_name, quality)
-  if not quality or quality.name == "normal" then
-    return "[item=" .. item_name .. "]"
-  end
-  return "[item=" .. item_name .. ",quality=" .. quality.name .. "]"
-end
-
-local function quality_recipe_name(item_name, quality)
-  return "fw-exchange-from-flux" .. quality_suffix(quality) .. "-" .. item_name
-end
-
-local function make_clone_recipe(item_name, item, flux_value, quality)
-  local energy = ((item.subgroup ~= "raw-resource" and original_recipe_time(item_name)) or clone_fallback_time(flux_value)) * 5
-  local required_flux = math.max(1, math.floor((flux_value * clone_flux_markup(flux_value)) + 0.5))
-  local ingredients = {
-    { type = "fluid", name = "fw-purple-flux", amount = required_flux },
-    { type = "item", name = item_name, amount = 1 },
+local function round_breakdown_to_total(breakdown, target_total)
+  local rounded = {
+    purple = 0,
+    yellow = 0,
+    red = 0,
+    green = 0,
   }
+  local fractions = {}
+  local running_total = 0
+
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    local raw = math.max(0, breakdown[color] or 0)
+    local whole = math.floor(raw)
+    rounded[color] = whole
+    running_total = running_total + whole
+    table.insert(fractions, { color = color, frac = raw - whole })
+  end
+
+  table.sort(fractions, function(a, b)
+    if a.frac == b.frac then
+      return a.color < b.color
+    end
+    return a.frac > b.frac
+  end)
+
+  local remainder = math.max(0, target_total - running_total)
+  local index = 1
+  while remainder > 0 and index <= #fractions do
+    rounded[fractions[index].color] = rounded[fractions[index].color] + 1
+    remainder = remainder - 1
+    index = index + 1
+    if index > #fractions and remainder > 0 then
+      index = 1
+    end
+  end
+
+  return rounded
+end
+
+local function scaled_flux_ingredients(flux_breakdown, required_flux)
+  local ingredients = {}
+  local total = 0
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    total = total + (flux_breakdown[color] or 0)
+  end
+
+  if total <= 0 then
+    return {
+      { type = "fluid", name = "fw-purple-flux", amount = required_flux },
+    }
+  end
+
+  local scaled = {}
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    scaled[color] = ((flux_breakdown[color] or 0) / total) * required_flux
+  end
+  local rounded = round_breakdown_to_total(scaled, required_flux)
+
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    local amount = rounded[color] or 0
+    if amount > 0 then
+      table.insert(ingredients, {
+        type = "fluid",
+        name = FLUX_COLOR_TO_FLUID[color],
+        amount = amount,
+      })
+    end
+  end
+
+  return ingredients
+end
+
+local function flux_ingredient_tags(flux_breakdown)
+  local tags = {}
+  local total = 0
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    local amount = flux_breakdown[color] or 0
+    total = total + amount
+    if amount > 0 then
+      table.insert(tags, "[fluid=" .. FLUX_COLOR_TO_FLUID[color] .. "]")
+    end
+  end
+  if total <= 0 then
+    return "[fluid=fw-purple-flux]"
+  end
+  return table.concat(tags)
+end
+
+local function make_clone_recipe(item_name, item, flux_value, flux_breakdown)
+  local energy = ((item.subgroup ~= "raw-resource" and original_recipe_time(item_name)) or clone_fallback_time(flux_value)) * 6
+  local required_flux = math.max(1, math.floor((flux_value * clone_flux_markup(flux_value)) + 0.5))
+  local ingredients = scaled_flux_ingredients(flux_breakdown or {}, required_flux)
+  table.insert(ingredients, { type = "item", name = item_name, amount = 1 })
   local results = {
     { type = "item", name = item_name, amount = 2 },
   }
 
-  if quality and quality.name ~= "normal" then
-    ingredients[2].quality = quality.name
-    results[1].quality = quality.name
-  end
-
   local recipe = {
     type = "recipe",
-    name = quality_recipe_name(item_name, quality),
+    name = "fw-exchange-from-flux-" .. item_name,
     category = "fw-flux-condensing",
     subgroup = "fw-flux-exchange",
-    order = "z-a[" .. item_name .. "]-" .. quality_order(quality),
+    order = "z-a[" .. item_name .. "]",
     enabled = false,
     hidden = false,
     hide_from_player_crafting = true,
@@ -160,7 +223,7 @@ local function make_clone_recipe(item_name, item, flux_value, quality)
     allow_productivity = false,
     allow_quality = false,
     energy_required = energy,
-    localised_name = { "", quality_item_tag(item_name, quality), " + [fluid=fw-purple-flux] -> ", quality_item_tag(item_name, quality), " ", { "item-name." .. item_name } },
+    localised_name = { "", "[item=" .. item_name .. "] + ", flux_ingredient_tags(flux_breakdown or {}), " -> [item=" .. item_name .. "] ", { "item-name." .. item_name } },
     ingredients = ingredients,
     results = results,
     main_product = item_name,
@@ -188,19 +251,14 @@ for item_name, item in pairs(FluxValuation.collect_convertible_items()) do
 end
 
 local resolved_values = FluxValuation.resolve_item_values(convertible_items)
+local resolved_breakdowns = FluxValuation.resolve_item_color_amounts(convertible_items, resolved_values)
 
 for item_name, item in pairs(convertible_items) do
   local base_value = resolved_values[item_name] or FluxValuation.estimate_flux_value(item)
-  local clone_recipe = make_clone_recipe(item_name, item, base_value)
+  local flux_breakdown = resolved_breakdowns[item_name]
+  local clone_recipe = make_clone_recipe(item_name, item, base_value, flux_breakdown)
   table.insert(generated, clone_recipe)
   table.insert(generated_names, clone_recipe.name)
-
-  for _, quality in pairs(FluxValuation.sorted_qualities(false)) do
-    local quality_value = FluxValuation.value_for_quality(base_value, quality)
-    local quality_clone_recipe = make_clone_recipe(item_name, item, quality_value, quality)
-    table.insert(generated, quality_clone_recipe)
-    table.insert(generated_names, quality_clone_recipe.name)
-  end
 end
 
 data:extend(generated)

@@ -13,7 +13,7 @@ data:extend({
   order = "a[fluid]-a[water]"
 },
 {
-  -- Reserved variants for later mechanics.
+  -- Chemical-processing spectrum.
   type = "fluid",
   name = "fw-yellow-flux",
   default_temperature = 15,
