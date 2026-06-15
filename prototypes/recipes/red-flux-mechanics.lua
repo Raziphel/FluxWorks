@@ -8,6 +8,26 @@ local function add_recipe(recipe, technology_name)
   Spectrum.add_unlock(unlocks, technology_name, recipe.name)
 end
 
+if Spectrum.item_exists("solid-fuel") and Spectrum.fluid_exists("fw-red-flux") then
+  add_recipe({
+    type = "recipe",
+    name = "fw-red-flux-conditioning",
+    category = "chemistry",
+    subgroup = "fw-flux-fluids",
+    order = "a[flux-fluids]-c0[red-flux-conditioning]",
+    enabled = false,
+    energy_required = 3,
+    allow_productivity = false,
+    ingredients = {
+      { type = "item", name = "solid-fuel", amount = 1 },
+    },
+    results = {
+      { type = "fluid", name = "fw-red-flux", amount = 24 },
+    },
+    main_product = "fw-red-flux",
+  }, "fw-flux-field-theory")
+end
+
 if Spectrum.item_exists("solid-fuel") and Spectrum.item_exists("fw-carbon") and Spectrum.fluid_exists("fw-red-flux") then
   add_recipe({
     type = "recipe",

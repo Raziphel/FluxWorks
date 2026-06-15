@@ -592,6 +592,26 @@ local function normalize_weight_breakdown(weights)
   return breakdown
 end
 
+local function filter_weights_to_signature(weights, signature)
+  local filtered = make_breakdown()
+  local has_match = false
+
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if signature and signature[color] then
+      filtered[color] = weights[color] or 0
+      if filtered[color] > 0 then
+        has_match = true
+      end
+    end
+  end
+
+  if not has_match then
+    return nil
+  end
+
+  return normalize_weight_breakdown(filtered)
+end
+
 local function recipe_category_color_weights(recipe)
   local category = recipe.category or (recipe.normal and recipe.normal.category) or "crafting"
   local weights = M.RECIPE_CATEGORY_COLOR_WEIGHTS[category]
@@ -621,6 +641,16 @@ local function breakdowns_equal(a, b)
     end
   end
   return true
+end
+
+local function signature_from_breakdown(breakdown)
+  local signature = make_signature()
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if breakdown and (breakdown[color] or 0) > 0 then
+      signature[color] = true
+    end
+  end
+  return signature
 end
 
 local function collect_items(predicate)
@@ -790,6 +820,7 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
 
     local ingredient_breakdown = make_breakdown()
     local ingredient_total = 0
+    local inherited_signature = make_signature()
 
     for _, ingredient in pairs(ingredients) do
       local kind = entry_type(ingredient)
@@ -802,6 +833,7 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
         end
         add_to_breakdown(ingredient_breakdown, source, amount)
         ingredient_total = ingredient_total + (total_breakdown_value(source) * amount)
+        merge_signatures(inherited_signature, signature_from_breakdown(source))
       elseif kind == "fluid" then
         local source = fluid_breakdown(name, amount)
         if not source then
@@ -809,6 +841,7 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
         end
         add_to_breakdown(ingredient_breakdown, source)
         ingredient_total = ingredient_total + total_breakdown_value(source)
+        merge_signatures(inherited_signature, fluid_color_signature(name))
       end
     end
 
@@ -822,6 +855,12 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
 
     local process_budget = (cost * process_share) / out_amount
     local process_weights = recipe_category_color_weights(recipe)
+    local constrained_weights = filter_weights_to_signature(process_weights, inherited_signature)
+    if constrained_weights then
+      process_weights = constrained_weights
+    elseif has_any_color(inherited_signature) then
+      process_budget = 0
+    end
     for _, color in ipairs(M.COLOR_ORDER) do
       derived[color] = derived[color] + ((process_weights[color] or 0) * process_budget)
     end
