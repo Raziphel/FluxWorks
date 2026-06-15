@@ -20,12 +20,12 @@ local TRANSMUTATION_BALANCE = {
     { from = "stone",       to = "coal",         input_amount = 14, output_amount = 10, flux_cost = 6,  flux_refund = 1,  energy_required = 4 },
     { from = "coal",        to = "copper-ore",   input_amount = 10, output_amount = 10, flux_cost = 8,  flux_refund = 2,  energy_required = 4, secondary_fluids = { { name = "crude-oil", amount = 10 } } },
     { from = "copper-ore",  to = "iron-ore",     input_amount = 10, output_amount = 10, flux_cost = 6,  flux_refund = 1,  energy_required = 4, secondary_fluids = { { name = "crude-oil", amount = 8 } } },
-    { from = "iron-ore",    to = "lead-ore",     input_amount = 10, output_amount = 10, flux_cost = 14, flux_refund = 4,  energy_required = 6,  unlock_technology = "fw-flux-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.90, secondary_fluids = { { name = "crude-oil", amount = 12 } } },
-    { from = "lead-ore",    to = "tin-ore",      input_amount = 10, output_amount = 10, flux_cost = 16, flux_refund = 5,  energy_required = 6,  unlock_technology = "fw-flux-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.88, secondary_fluids = { { name = "crude-oil", amount = 14 } } },
-    { from = "tin-ore",     to = "bauxite-ore",  input_amount = 10, output_amount = 10, flux_cost = 20, flux_refund = 6,  energy_required = 7,  unlock_technology = "fw-flux-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.85, secondary_fluids = { { name = "crude-oil", amount = 18 } } },
-    { from = "bauxite-ore", to = "silicon-ore",  input_amount = 10, output_amount = 10, flux_cost = 24, flux_refund = 7,  energy_required = 7,  unlock_technology = "fw-flux-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.82, secondary_fluids = { { name = "crude-oil", amount = 22 } } },
-    { from = "silicon-ore", to = "titanium-ore", input_amount = 10, output_amount = 10, flux_cost = 30, flux_refund = 9,  energy_required = 9,  unlock_technology = "fw-flux-field-theory", catalyst_amount = 1, catalyst_return_probability = 0.75, secondary_fluids = { { name = "crude-oil", amount = 28 } } },
-    { from = "titanium-ore", to = "uranium-ore", input_amount = 10, output_amount = 10, flux_cost = 36, flux_refund = 10, energy_required = 10, unlock_technology = "fw-flux-field-theory", catalyst_amount = 1, catalyst_return_probability = 0.70, secondary_fluids = { { name = "crude-oil", amount = 36 } } },
+    { from = "iron-ore",    to = "lead-ore",     input_amount = 10, output_amount = 10, flux_cost = 14, flux_refund = 4,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.90, energy_required = 6, secondary_fluids = { { name = "crude-oil", amount = 12 } } },
+    { from = "lead-ore",    to = "tin-ore",      input_amount = 10, output_amount = 10, flux_cost = 16, flux_refund = 5,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.88, energy_required = 6, secondary_fluids = { { name = "crude-oil", amount = 14 } } },
+    { from = "tin-ore",     to = "bauxite-ore",  input_amount = 10, output_amount = 10, flux_cost = 20, flux_refund = 6,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.85, energy_required = 7, secondary_fluids = { { name = "crude-oil", amount = 18 } } },
+    { from = "bauxite-ore", to = "silicon-ore",  input_amount = 10, output_amount = 10, flux_cost = 24, flux_refund = 7,  flux_fluid = "fw-red-flux", unlock_technology = "fw-flux-red-energetics", catalyst_amount = 1, catalyst_return_probability = 0.82, energy_required = 7, secondary_fluids = { { name = "crude-oil", amount = 22 } } },
+    { from = "silicon-ore", to = "titanium-ore", input_amount = 10, output_amount = 10, flux_cost = 30, flux_refund = 9,  flux_fluid = "fw-green-flux", unlock_technology = "fw-flux-green-reclamation", catalyst_amount = 1, catalyst_return_probability = 0.75, energy_required = 9, secondary_fluids = { { name = "crude-oil", amount = 28 } } },
+    { from = "titanium-ore", to = "uranium-ore", input_amount = 10, output_amount = 10, flux_cost = 36, flux_refund = 10, flux_fluid = "fw-red-flux", unlock_technology = "fw-flux-field-theory", catalyst_amount = 1, catalyst_return_probability = 0.70, energy_required = 10, secondary_fluids = { { name = "crude-oil", amount = 36 } } },
   },
 }
 
@@ -50,24 +50,6 @@ local unlocks_by_technology = {}
 local function item_exists(name)
   return data.raw.item and data.raw.item[name]
 end
-
-local flux_source_recipe = {
-  type = "recipe",
-  name = "fw-purple-flux-reclamation",
-  localised_name = { "fluid-name.fw-purple-flux" },
-  category = "chemistry",
-  subgroup = "fw-transmutation-upcycle",
-  order = "a[chemistry]-a0[fw-purple-flux-reclamation]",
-  enabled = false,
-  energy_required = 3,
-  ingredients = {
-    { type = "item", name = "fw-crystalised-flux", amount = 2 },
-  },
-  results = {
-    { type = "fluid", name = "fw-purple-flux", amount = 80 },
-  },
-  main_product = "fw-purple-flux",
-}
 
 local function has_unlock_effect(effects, recipe_name)
   for _, effect in pairs(effects or {}) do
@@ -206,7 +188,6 @@ for i, step in ipairs(TRANSMUTATION_BALANCE.steps) do
 end
 
 data:extend(recipes)
-data:extend({ flux_source_recipe })
 
 -- Gate each tier behind the Flux system that makes it practical.
 local transmutation_tech = data.raw.technology and (
@@ -231,13 +212,6 @@ local function unlock_recipes_on_technology(technology, recipe_names)
     if not has_unlock_effect(technology.effects, recipe_name) then
       table.insert(technology.effects, { type = "unlock-recipe", recipe = recipe_name })
     end
-  end
-end
-
-if transmutation_tech then
-  transmutation_tech.effects = transmutation_tech.effects or {}
-  if not has_unlock_effect(transmutation_tech.effects, flux_source_recipe.name) then
-    table.insert(transmutation_tech.effects, { type = "unlock-recipe", recipe = flux_source_recipe.name })
   end
 end
 

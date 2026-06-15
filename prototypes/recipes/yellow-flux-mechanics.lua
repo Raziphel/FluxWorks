@@ -23,60 +23,7 @@ local function item_icon(item)
 end
 
 local function add_item_source_recipe(recipe_name, source_name, source_amount, flux_amount, order_suffix, technology_name)
-  local item = data.raw.item[source_name]
-  if not item or item.hidden or not Spectrum.fluid_exists("fw-yellow-flux") then
-    return
-  end
-
-  local recipe = {
-    type = "recipe",
-    name = recipe_name,
-    category = "chemistry",
-    subgroup = "fw-flux-yellow",
-    order = "a[source]-" .. order_suffix .. "[" .. source_name .. "-to-fw-yellow-flux]",
-    enabled = false,
-    energy_required = math.max(2, source_amount * 0.6),
-    allow_productivity = false,
-    ingredients = {
-      { type = "item", name = source_name, amount = source_amount },
-    },
-    results = {
-      { type = "fluid", name = "fw-yellow-flux", amount = flux_amount },
-    },
-    main_product = "fw-yellow-flux",
-    localised_name = { "", { "item-name." .. source_name }, " -> ", { "fluid-name.fw-yellow-flux" } },
-  }
-
-  local icon = item_icon(item)
-  if icon then
-    recipe.icons = icon.icons
-    recipe.icon = icon.icon
-    recipe.icon_size = icon.icon_size
-    recipe.icon_mipmaps = icon.icon_mipmaps
-  end
-
-  add_recipe(recipe, technology_name)
-end
-
-if Spectrum.item_exists("plastic-bar") and Spectrum.item_exists("sulfur") and Spectrum.fluid_exists("fw-yellow-flux") then
-  add_recipe({
-    type = "recipe",
-    name = "fw-yellow-flux-conditioning",
-    category = "chemistry",
-    subgroup = "fw-flux-yellow",
-    order = "a[source]-0[yellow-flux-conditioning]",
-    enabled = false,
-    energy_required = 3,
-    allow_productivity = false,
-    ingredients = {
-      { type = "item", name = "plastic-bar", amount = 3 },
-      { type = "item", name = "sulfur", amount = 2 },
-    },
-    results = {
-      { type = "fluid", name = "fw-yellow-flux", amount = 24 },
-    },
-    main_product = "fw-yellow-flux",
-  }, "fw-flux-field-theory")
+  return recipe_name, source_name, source_amount, flux_amount, order_suffix, technology_name
 end
 
 add_item_source_recipe("fw-yellow-flux-from-sulfur", "sulfur", 4, 20, "1", "fw-flux-field-theory")
@@ -106,7 +53,7 @@ if Spectrum.item_exists("fw-salt") and Spectrum.fluid_exists("water") and Spectr
       { type = "fluid", name = "fw-yellow-flux", amount = 4, ignored_by_stats = 2 },
     },
     main_product = "fw-chlorine",
-  }, "fw-flux-field-theory")
+  }, "fw-flux-yellow-catalysis")
 end
 
 if Spectrum.item_exists("plastic-bar") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") and Spectrum.fluid_exists("fw-latex") then
@@ -129,7 +76,7 @@ if Spectrum.item_exists("plastic-bar") and Spectrum.fluid_exists("water") and Sp
       { type = "fluid", name = "fw-yellow-flux", amount = 4, ignored_by_stats = 2 },
     },
     main_product = "fw-latex",
-  }, "fw-flux-field-theory")
+  }, "fw-flux-yellow-catalysis")
 end
 
 if Spectrum.item_exists("sulfur") and Spectrum.item_exists("fw-carbon") and Spectrum.fluid_exists("fw-chlorine") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
@@ -152,7 +99,7 @@ if Spectrum.item_exists("sulfur") and Spectrum.item_exists("fw-carbon") and Spec
       { type = "fluid", name = "fw-yellow-flux", amount = 5, ignored_by_stats = 2 },
     },
     main_product = "sulfur",
-  }, "fw-flux-field-theory")
+  }, "fw-flux-yellow-catalysis")
 end
 
 if Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("sulfur") and Spectrum.fluid_exists("fw-chlorine") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
@@ -176,7 +123,7 @@ if Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("sulfur") and
       { type = "fluid", name = "fw-yellow-flux", amount = 6, ignored_by_stats = 3 },
     },
     main_product = "sulfuric-acid",
-  }, "fw-flux-field-theory")
+  }, "fw-flux-yellow-catalysis")
 end
 
 if Spectrum.item_exists("fw-resin") and Spectrum.item_exists("fw-carbon") and Spectrum.fluid_exists("fw-latex") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
@@ -199,7 +146,7 @@ if Spectrum.item_exists("fw-resin") and Spectrum.item_exists("fw-carbon") and Sp
       { type = "fluid", name = "fw-yellow-flux", amount = 4, ignored_by_stats = 2 },
     },
     main_product = "fw-resin",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-chemical-synthesis")
 end
 
 if Spectrum.item_exists("fw-rubber-sheet") and Spectrum.item_exists("fw-resin") and Spectrum.item_exists("sulfur") and Spectrum.fluid_exists("fw-latex") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
@@ -223,7 +170,7 @@ if Spectrum.item_exists("fw-rubber-sheet") and Spectrum.item_exists("fw-resin") 
       { type = "fluid", name = "fw-yellow-flux", amount = 4, ignored_by_stats = 2 },
     },
     main_product = "fw-rubber-sheet",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-chemical-synthesis")
 end
 
 if Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.item_exists("explosives") and Spectrum.item_exists("fw-resin") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
@@ -247,7 +194,7 @@ if Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.item_exists("explosives
       { type = "fluid", name = "fw-yellow-flux", amount = 6, ignored_by_stats = 3 },
     },
     main_product = "fw-blasting-gel",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-reactive-slurries")
 end
 
 if Spectrum.item_exists("explosives") and Spectrum.item_exists("cliff-explosives") and Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
@@ -270,7 +217,7 @@ if Spectrum.item_exists("explosives") and Spectrum.item_exists("cliff-explosives
       { type = "fluid", name = "fw-yellow-flux", amount = 4, ignored_by_stats = 2 },
     },
     main_product = "cliff-explosives",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-reactive-slurries")
 end
 
 if Spectrum.item_exists("battery") and Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("lead-plate") and Spectrum.item_exists("copper-plate") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then

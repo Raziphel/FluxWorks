@@ -6,26 +6,6 @@ end
 data:extend({
   {
     type = "recipe",
-    name = "fw-purple-flux",
-    icon = "__FluxWorksAssets__/graphics/icons/fluids/ArtisanalReskins_alien-acid.png",
-    icon_size = 64,
-    category = "chemistry",
-    subgroup = "fw-flux-purple",
-    order = "a[source]-a[fw-purple-flux]",
-    enabled = false,
-    energy_required = 2.5,
-    allow_productivity = true,
-    ingredients = {
-      { type = "item", name = "fw-crystalised-flux", amount = 1 },
-      { type = "item", name = "fw-salt", amount = 2 },
-    },
-    results = {
-      { type = "fluid", name = "fw-purple-flux", amount = 30 },
-    },
-    main_product = "fw-purple-flux",
-  },
-  {
-    type = "recipe",
     name = "fw-flux-catalyst",
     icon = "__FluxWorksAssets__/graphics/icons/items/flux-2.png",
     icon_size = 64,

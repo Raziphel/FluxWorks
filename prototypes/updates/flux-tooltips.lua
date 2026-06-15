@@ -16,27 +16,96 @@ local COLOR_ICONS = {
   green = "[fluid=fw-green-flux]",
 }
 
+local function clone_flux_markup(value)
+  if value <= 8 then
+    return 1.25
+  end
+  if value <= 24 then
+    return 1.40
+  end
+  if value <= 60 then
+    return 1.60
+  end
+  return 1.85
+end
+
+local function round_breakdown_to_total(breakdown, target_total)
+  local rounded = {
+    purple = 0,
+    yellow = 0,
+    red = 0,
+    green = 0,
+  }
+  local fractions = {}
+  local running_total = 0
+
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    local raw = math.max(0, breakdown[color] or 0)
+    local whole = math.floor(raw)
+    rounded[color] = whole
+    running_total = running_total + whole
+    table.insert(fractions, { color = color, frac = raw - whole })
+  end
+
+  table.sort(fractions, function(a, b)
+    if a.frac == b.frac then
+      return a.color < b.color
+    end
+    return a.frac > b.frac
+  end)
+
+  local remainder = math.max(0, target_total - running_total)
+  local index = 1
+  while remainder > 0 and index <= #fractions do
+    rounded[fractions[index].color] = rounded[fractions[index].color] + 1
+    remainder = remainder - 1
+    index = index + 1
+    if index > #fractions and remainder > 0 then
+      index = 1
+    end
+  end
+
+  return rounded
+end
+
+local function condenser_flux_amounts(value, breakdown)
+  local required_flux = math.max(1, math.floor((value * clone_flux_markup(value)) + 0.5))
+  local total = 0
+  local scaled = {}
+
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    total = total + ((breakdown and breakdown[color]) or 0)
+  end
+
+  if total <= 0 then
+    return {
+      purple = required_flux,
+      yellow = 0,
+      red = 0,
+      green = 0,
+    }
+  end
+
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    scaled[color] = (((breakdown and breakdown[color]) or 0) / total) * required_flux
+  end
+
+  return round_breakdown_to_total(scaled, required_flux)
+end
+
 local function add_flux_value_to_item_tooltip(item, value, breakdown)
   local line = { "", "\n[color=210,210,210]" }
-  local any = false
+  local required_amounts = condenser_flux_amounts(value, breakdown)
+
   for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    local amount = breakdown and breakdown[color] or 0
+    local amount = required_amounts[color] or 0
     if amount and amount > 0 then
-      any = true
       table.insert(line, COLOR_ICONS[color])
       table.insert(line, " ")
       table.insert(line, format_number(amount))
       table.insert(line, "  ")
     end
   end
-  if not any then
-    table.insert(line, COLOR_ICONS.purple)
-    table.insert(line, " ")
-    table.insert(line, format_number(value))
-    table.insert(line, "  ")
-  end
-  table.insert(line, "Flux Value: ")
-  table.insert(line, format_number(value))
   table.insert(line, "[/color]")
   if item.localised_description then
     item.localised_description = { "", item.localised_description, line }

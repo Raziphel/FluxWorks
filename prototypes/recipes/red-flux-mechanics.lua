@@ -8,26 +8,6 @@ local function add_recipe(recipe, technology_name)
   Spectrum.add_unlock(unlocks, technology_name, recipe.name)
 end
 
-if Spectrum.item_exists("solid-fuel") and Spectrum.fluid_exists("fw-red-flux") then
-  add_recipe({
-    type = "recipe",
-    name = "fw-red-flux-conditioning",
-    category = "chemistry",
-    subgroup = "fw-flux-red",
-    order = "a[source]-0[red-flux-conditioning]",
-    enabled = false,
-    energy_required = 3,
-    allow_productivity = false,
-    ingredients = {
-      { type = "item", name = "solid-fuel", amount = 1 },
-    },
-    results = {
-      { type = "fluid", name = "fw-red-flux", amount = 24 },
-    },
-    main_product = "fw-red-flux",
-  }, "fw-flux-field-theory")
-end
-
 if Spectrum.item_exists("solid-fuel") and Spectrum.item_exists("fw-carbon") and Spectrum.fluid_exists("fw-red-flux") then
   add_recipe({
     type = "recipe",
@@ -46,7 +26,7 @@ if Spectrum.item_exists("solid-fuel") and Spectrum.item_exists("fw-carbon") and 
       { type = "item", name = "solid-fuel", amount = 1 },
     },
     main_product = "solid-fuel",
-  }, "fw-flux-field-theory")
+  }, "fw-flux-red-energetics")
 end
 
 if Spectrum.item_exists("rocket-fuel") and Spectrum.item_exists("solid-fuel") and Spectrum.item_exists("fw-capacitor") and Spectrum.fluid_exists("fw-red-flux") then
@@ -68,7 +48,7 @@ if Spectrum.item_exists("rocket-fuel") and Spectrum.item_exists("solid-fuel") an
       { type = "item", name = "rocket-fuel", amount = 1 },
     },
     main_product = "rocket-fuel",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-thermal-networks")
 end
 
 if Spectrum.item_exists("nuclear-fuel") and Spectrum.item_exists("rocket-fuel") and Spectrum.item_exists("uranium-235") and Spectrum.item_exists("fw-transformer-core") and Spectrum.fluid_exists("fw-red-flux") then
@@ -91,7 +71,7 @@ if Spectrum.item_exists("nuclear-fuel") and Spectrum.item_exists("rocket-fuel") 
       { type = "item", name = "nuclear-fuel", amount = 1 },
     },
     main_product = "nuclear-fuel",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-overdrive")
 end
 
 Spectrum.publish(recipes, unlocks)

@@ -24,60 +24,7 @@ local function item_icon(item)
 end
 
 local function add_item_source_recipe(recipe_name, source_name, source_amount, flux_amount, order_suffix, technology_name)
-  local item = data.raw.item[source_name]
-  if not item or item.hidden or not Spectrum.fluid_exists("fw-green-flux") then
-    return
-  end
-
-  local recipe = {
-    type = "recipe",
-    name = recipe_name,
-    category = bio_category,
-    subgroup = "fw-flux-green",
-    order = "a[source]-" .. order_suffix .. "[" .. source_name .. "-to-fw-green-flux]",
-    enabled = false,
-    energy_required = math.max(2, source_amount * 0.6),
-    allow_productivity = false,
-    ingredients = {
-      { type = "item", name = source_name, amount = source_amount },
-    },
-    results = {
-      { type = "fluid", name = "fw-green-flux", amount = flux_amount },
-    },
-    main_product = "fw-green-flux",
-    localised_name = { "", { "item-name." .. source_name }, " -> ", { "fluid-name.fw-green-flux" } },
-  }
-
-  local icon = item_icon(item)
-  if icon then
-    recipe.icons = icon.icons
-    recipe.icon = icon.icon
-    recipe.icon_size = icon.icon_size
-    recipe.icon_mipmaps = icon.icon_mipmaps
-  end
-
-  add_recipe(recipe, technology_name)
-end
-
-if Spectrum.item_exists("spoilage") and Spectrum.item_exists("nutrients") and Spectrum.fluid_exists("fw-green-flux") then
-  add_recipe({
-    type = "recipe",
-    name = "fw-green-flux-conditioning",
-    category = bio_category,
-    subgroup = "fw-flux-green",
-    order = "a[source]-0[green-flux-conditioning]",
-    enabled = false,
-    energy_required = 3,
-    allow_productivity = false,
-    ingredients = {
-      { type = "item", name = "spoilage", amount = 6 },
-      { type = "item", name = "nutrients", amount = 6 },
-    },
-    results = {
-      { type = "fluid", name = "fw-green-flux", amount = 24 },
-    },
-    main_product = "fw-green-flux",
-  }, "fw-flux-field-theory")
+  return recipe_name, source_name, source_amount, flux_amount, order_suffix, technology_name
 end
 
 add_item_source_recipe("fw-green-flux-from-spoilage", "spoilage", 8, 20, "1", "fw-flux-field-theory")
@@ -106,7 +53,7 @@ if Spectrum.item_exists("spoilage") and Spectrum.item_exists("nutrients") and Sp
       { type = "item", name = "nutrients", amount = 10 },
     },
     main_product = "nutrients",
-  }, "fw-flux-field-theory")
+  }, "fw-flux-green-reclamation")
 end
 
 if Spectrum.item_exists("bioflux") and Spectrum.item_exists("nutrients") and Spectrum.item_exists("spoilage") and Spectrum.fluid_exists("fw-green-flux") then
@@ -128,7 +75,7 @@ if Spectrum.item_exists("bioflux") and Spectrum.item_exists("nutrients") and Spe
       { type = "item", name = "bioflux", amount = 1 },
     },
     main_product = "bioflux",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-green-cultivation")
 end
 
 if Spectrum.fluid_exists("biolubricant") and Spectrum.item_exists("bioflux") and Spectrum.item_exists("nutrients") and Spectrum.fluid_exists("fw-green-flux") then
@@ -150,7 +97,7 @@ if Spectrum.fluid_exists("biolubricant") and Spectrum.item_exists("bioflux") and
       { type = "fluid", name = "biolubricant", amount = 24 },
     },
     main_product = "biolubricant",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-green-cultivation")
 end
 
 if Spectrum.item_exists("raw-fish") and Spectrum.item_exists("nutrients") and Spectrum.fluid_exists("fw-green-flux") then
@@ -172,7 +119,7 @@ if Spectrum.item_exists("raw-fish") and Spectrum.item_exists("nutrients") and Sp
       { type = "item", name = "raw-fish", amount = 2 },
     },
     main_product = "raw-fish",
-  }, "fw-flux-synthesis")
+  }, "fw-flux-green-cultivation")
 end
 
 local function add_seed_recipe(seed_name, order_suffix)
@@ -195,7 +142,7 @@ local function add_seed_recipe(seed_name, order_suffix)
         { type = "item", name = seed_name, amount = 2 },
       },
       main_product = seed_name,
-    }, "fw-flux-synthesis")
+    }, "fw-flux-green-propagation")
   end
 end
 
