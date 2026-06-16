@@ -119,17 +119,20 @@ ensure_item_subgroup("fw-science-labs", "fw-science", "b[labs]")
 ensure_item_subgroup("fw-bioprocessing-machines", "fw-bioprocessing", "a[machines]")
 ensure_item_subgroup("fw-bioprocessing-products", "fw-bioprocessing", "b[products]")
 ensure_item_subgroup("fw-bioprocessing-processes", "fw-bioprocessing", "c[processes]")
-ensure_item_subgroup("fw-flux-resources", "fw-flux", "a[resources]")
-ensure_item_subgroup("fw-flux-fluids", "fw-flux", "b[fluids]")
-ensure_item_subgroup("fw-flux-machines", "fw-flux", "c[machines]")
-ensure_item_subgroup("fw-flux-systems", "fw-flux", "d[systems]")
-ensure_item_subgroup("fw-transmutation-upcycle", "fw-flux", "e[transmutation]-a[upcycle]")
-ensure_item_subgroup("fw-transmutation-downcycle", "fw-flux", "e[transmutation]-b[downcycle]")
-ensure_item_subgroup("fw-flux-exchange", "fw-flux", "f[exchange]")
-ensure_item_subgroup("fw-chemistry-fluids", "fw-chemistry", "a[fluids]")
-ensure_item_subgroup("fw-chemistry-materials", "fw-chemistry", "b[materials]")
-ensure_item_subgroup("fw-chemistry-processes", "fw-chemistry", "c[processes]")
-ensure_item_subgroup("fw-chemistry-machines", "fw-chemistry", "d[machines]")
+ensure_item_subgroup("fw-flux-machines", "fw-flux", "a[machines]")
+ensure_item_subgroup("fw-flux-resources", "fw-flux", "b[resources]")
+ensure_item_subgroup("fw-flux-purple", "fw-flux", "c[purple]")
+ensure_item_subgroup("fw-flux-yellow", "fw-flux", "d[yellow]")
+ensure_item_subgroup("fw-flux-red", "fw-flux", "e[red]")
+ensure_item_subgroup("fw-flux-green", "fw-flux", "f[green]")
+ensure_item_subgroup("fw-flux-systems", "fw-flux", "g[systems]")
+ensure_item_subgroup("fw-transmutation-upcycle", "fw-flux", "h[transmutation]-a[upcycle]")
+ensure_item_subgroup("fw-transmutation-downcycle", "fw-flux", "i[transmutation]-b[downcycle]")
+ensure_item_subgroup("fw-flux-exchange", "fw-flux", "j[exchange]")
+ensure_item_subgroup("fw-chemistry-machines", "fw-chemistry", "a[machines]")
+ensure_item_subgroup("fw-chemistry-fluids", "fw-chemistry", "b[fluids]")
+ensure_item_subgroup("fw-chemistry-materials", "fw-chemistry", "c[materials]")
+ensure_item_subgroup("fw-chemistry-processes", "fw-chemistry", "d[processes]")
 
 for _, name in pairs({
   "automation-science-pack",
@@ -218,6 +221,7 @@ end
 for _, name in pairs({
   "fw-salt",
   "fw-carbon",
+  "fw-resin",
   "fw-rubber-sheet",
   "sulfur",
   "plastic-bar",
@@ -233,6 +237,9 @@ end
 
 for _, name in pairs({
   "fw-chlorine",
+  "fw-latex",
+  "fw-blasting-gel",
+  "fw-napalm",
   "sulfuric-acid",
   "lubricant",
 }) do
@@ -251,6 +258,12 @@ for _, name in pairs({
   "fw-chlorine",
   "fw-carbon-refining",
   "fw-carbon-washing",
+  "fw-chlorine-pressurization",
+  "fw-latex-polymerization",
+  "fw-resin-polymerization",
+  "fw-sulfur-bonding",
+  "fw-acid-synthesis",
+  "fw-rubber-vulcanization",
   "fw-rubber-sheet",
   "fw-gunpowder",
   "fw-gunpowder-early",
@@ -259,6 +272,10 @@ for _, name in pairs({
   "sulfuric-acid",
   "explosives",
   "battery",
+  "fw-blasting-gel",
+  "fw-reactive-slurry",
+  "fw-battery-electrolyte",
+  "fw-napalm",
   "flamethrower-ammo",
   "solid-fuel-from-light-oil",
   "solid-fuel-from-petroleum-gas",
@@ -314,18 +331,20 @@ for _, name in pairs({
   set_subgroup("item", name, "fw-flux-resources")
 end
 
-for _, name in pairs({
-  "fw-purple-flux",
-  "fw-yellow-flux",
-  "fw-red-flux",
-  "fw-green-flux",
-}) do
-  set_subgroup("fluid", name, "fw-flux-fluids")
-  move_recipe(name, "fw-flux-fluids")
-end
-move_recipe("fw-purple-flux-reclamation", "fw-flux-fluids")
-move_item_and_recipe("fw-purple-flux-barrel", "fw-flux-fluids")
-move_recipe("empty-fw-purple-flux-barrel", "fw-flux-fluids")
+set_subgroup("fluid", "fw-purple-flux", "fw-flux-purple")
+move_recipe("fw-purple-flux", "fw-flux-purple")
+move_recipe("fw-purple-flux-reclamation", "fw-flux-purple")
+move_item_and_recipe("fw-purple-flux-barrel", "fw-flux-purple")
+move_recipe("empty-fw-purple-flux-barrel", "fw-flux-purple")
+
+set_subgroup("fluid", "fw-yellow-flux", "fw-flux-yellow")
+move_recipe("fw-yellow-flux-conditioning", "fw-flux-yellow")
+
+set_subgroup("fluid", "fw-red-flux", "fw-flux-red")
+move_recipe("fw-red-flux-conditioning", "fw-flux-red")
+
+set_subgroup("fluid", "fw-green-flux", "fw-flux-green")
+move_recipe("fw-green-flux-conditioning", "fw-flux-green")
 
 for _, name in pairs({
   "fw-flux-quarry",
@@ -345,11 +364,23 @@ for _, name in pairs({
   move_item_and_recipe(name, "fw-flux-systems")
 end
 move_recipe("fw-flux-asteroid-refining", "fw-flux-systems")
+move_recipe("fw-flux-asteroid-deep-refining", "fw-flux-systems")
+move_recipe("fw-flux-metallic-synthesis", "fw-flux-systems")
 move_recipe("fw-rift-seed-crystallization", "fw-flux-systems")
 
 for recipe_name, recipe in pairs(data.raw.recipe or {}) do
   if string.sub(recipe_name, 1, 22) == "fw-exchange-from-flux-" then
     recipe.subgroup = "fw-flux-exchange"
+  elseif string.sub(recipe_name, 1, 30) == "fw-purple-flux-from-material-" then
+    recipe.subgroup = "fw-flux-purple"
+  elseif string.sub(recipe_name, 1, 15) == "fw-yellow-flux-" then
+    recipe.subgroup = "fw-flux-yellow"
+  elseif string.sub(recipe_name, 1, 24) == "fw-red-flux-from-fuel-" then
+    recipe.subgroup = "fw-flux-red"
+  elseif string.sub(recipe_name, 1, 12) == "fw-red-flux-" then
+    recipe.subgroup = "fw-flux-red"
+  elseif string.sub(recipe_name, 1, 14) == "fw-green-flux-" then
+    recipe.subgroup = "fw-flux-green"
   elseif string.sub(recipe_name, 1, 3) == "fw-" and string.find(recipe_name, "flux", 1, true) then
     recipe.subgroup = recipe.subgroup or "fw-flux-systems"
   end

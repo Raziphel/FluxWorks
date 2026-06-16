@@ -4,24 +4,43 @@ local function ingredient_name(ingredient)
   return ingredient.name or ingredient[1]
 end
 
-local function add_unique_ingredient(ingredients, name, amount)
+local patch_recipe_ingredient_spec
+
+local function clone_ingredient(spec)
+  if spec.type or spec.name then
+    return table.deepcopy(spec)
+  end
+
+  return {
+    type = "item",
+    name = spec[1],
+    amount = spec[2],
+  }
+end
+
+local function add_unique_ingredient(ingredients, spec)
+  local new_ingredient = clone_ingredient(spec)
   for _, ingredient in pairs(ingredients or {}) do
-    if ingredient_name(ingredient) == name then
+    if ingredient_name(ingredient) == new_ingredient.name then
       return ingredients
     end
   end
-  table.insert(ingredients, { type = "item", name = name, amount = amount })
+  table.insert(ingredients, new_ingredient)
   return ingredients
 end
 
 local function patch_recipe_ingredients(recipe_name, name, amount)
+  patch_recipe_ingredient_spec(recipe_name, { type = "item", name = name, amount = amount })
+end
+
+patch_recipe_ingredient_spec = function(recipe_name, ingredient_spec)
   if not (data.raw.recipe and data.raw.recipe[recipe_name]) then
     return
   end
 
   local recipe = Recipe:get(recipe_name)
   local ingredients = recipe.ingredients or {}
-  recipe:setIngredients(add_unique_ingredient(ingredients, name, amount))
+  recipe:setIngredients(add_unique_ingredient(ingredients, ingredient_spec))
 end
 
 local function patch_many_recipes(recipe_names, ingredient_name_value, amount)
@@ -53,6 +72,16 @@ local function remove_recipe_ingredient(recipe_name, name)
 
   local recipe = Recipe:get(recipe_name)
   recipe:setIngredients(remove_ingredient(recipe.ingredients or {}, name))
+end
+
+local function replace_recipe_ingredient(recipe_name, old_name, new_spec)
+  if not (data.raw.recipe and data.raw.recipe[recipe_name]) then
+    return
+  end
+
+  local recipe = Recipe:get(recipe_name)
+  local ingredients = remove_ingredient(recipe.ingredients or {}, old_name)
+  recipe:setIngredients(add_unique_ingredient(ingredients, new_spec))
 end
 
 -- Targeted base-game integration
@@ -134,6 +163,7 @@ patch_recipe_ingredients("nuclear-reactor", "fw-cermet", 8)
 patch_recipe_ingredients("rocket-fuel", "fw-inline-filter", 1)
 patch_recipe_ingredients("utility-science-pack", "fw-sensor-package", 1)
 patch_recipe_ingredients("production-science-pack", "fw-cermet", 1)
+replace_recipe_ingredient("flamethrower-ammo", "crude-oil", { type = "fluid", name = "fw-napalm", amount = 40 })
 
 -- Space Age production chains
 patch_recipe_ingredients("electromagnetic-plant", "fw-transformer-core", 4)
@@ -247,6 +277,17 @@ patch_recipe_set({
   { "superconductor", "silicon", 2 },
   { "carbon-fiber", "carbon", 2 },
   { "plastic-bar", "carbon", 1 },
+})
+
+-- Small coherence pass for chemistry and fire-control surfaces.
+remove_recipe_ingredient("poison-capsule", "fw-sensor-package")
+remove_recipe_ingredient("slowdown-capsule", "fw-sensor-package")
+remove_recipe_ingredient("cliff-explosives", "fw-sensor-package")
+
+patch_recipe_set({
+  { "poison-capsule", "fw-spore-filter", 1 },
+  { "slowdown-capsule", "fw-resin", 1 },
+  { "flamethrower-turret", "fw-flow-regulator", 1 },
 })
 
 -- Wide integration pass across base game + Space Age surfaces.
@@ -581,3 +622,78 @@ patch_many_recipes({
   "cargo-bay",
   "cargo-landing-pad",
 }, "fw-light-frame", 1)
+
+-- Replace broad science-pack stuffing with more targeted progression parts.
+local all_science_packs = {
+  "automation-science-pack",
+  "logistic-science-pack",
+  "military-science-pack",
+  "chemical-science-pack",
+  "production-science-pack",
+  "utility-science-pack",
+  "space-science-pack",
+  "metallurgic-science-pack",
+  "electromagnetic-science-pack",
+  "agricultural-science-pack",
+  "cryogenic-science-pack",
+  "promethium-science-pack",
+}
+
+local late_space_science_packs = {
+  "metallurgic-science-pack",
+  "electromagnetic-science-pack",
+  "agricultural-science-pack",
+  "cryogenic-science-pack",
+  "promethium-science-pack",
+}
+
+for _, recipe_name in ipairs(all_science_packs) do
+  remove_recipe_ingredient(recipe_name, "fw-glass-lens")
+end
+
+for _, recipe_name in ipairs(late_space_science_packs) do
+  remove_recipe_ingredient(recipe_name, "fw-capacitor")
+end
+
+remove_recipe_ingredient("production-science-pack", "fw-cermet")
+remove_recipe_ingredient("utility-science-pack", "fw-sensor-package")
+remove_recipe_ingredient("metallurgic-science-pack", "fw-cermet")
+remove_recipe_ingredient("electromagnetic-science-pack", "fw-sensor-package")
+remove_recipe_ingredient("agricultural-science-pack", "fw-inline-filter")
+remove_recipe_ingredient("cryogenic-science-pack", "fw-glass-lens")
+remove_recipe_ingredient("promethium-science-pack", "fw-transformer-core")
+
+patch_recipe_set({
+  { "production-science-pack", "fw-pressure-housing", 1 },
+  { "utility-science-pack", "fw-power-regulator", 1 },
+  { "space-science-pack", "fw-logic-matrix", 1 },
+  { "metallurgic-science-pack", "fw-smelter-array", 1 },
+  { "electromagnetic-science-pack", "fw-em-core", 1 },
+  { "agricultural-science-pack", "fw-spore-filter", 1 },
+  { "cryogenic-science-pack", "fw-thermal-buffer", 1 },
+  { "promethium-science-pack", "fw-promethium-matrix", 1 },
+  { "promethium-science-pack", "fw-rift-stabilizer", 1 },
+})
+
+-- Use the new staged parts where they fit naturally in base-game and Space Age machines.
+patch_recipe_set({
+  { "lab", "fw-lens-array", 1 },
+  { "radar", "fw-sensor-diode", 1 },
+  { "oil-refinery", "fw-flow-regulator", 1 },
+  { "chemical-plant", "fw-flow-regulator", 1 },
+  { "substation", "fw-power-regulator", 1 },
+  { "beacon", "fw-field-winding", 1 },
+  { "foundry", "fw-foundry-lining", 2 },
+  { "foundry", "fw-smelter-array", 1 },
+  { "biochamber", "fw-nutrient-bed", 1 },
+  { "biochamber", "fw-spore-filter", 1 },
+  { "cryogenic-plant", "fw-cryo-coil", 2 },
+  { "cryogenic-plant", "fw-thermal-buffer", 1 },
+  { "electromagnetic-plant", "fw-em-core", 2 },
+  { "quantum-processor", "fw-logic-matrix", 1 },
+  { "space-platform-hub", "fw-rift-stabilizer", 1 },
+  { "fw-flux-condenser", "fw-power-regulator", 2 },
+  { "fw-flux-resonance-cell", "fw-field-winding", 1 },
+  { "fw-flux-phase-manifold", "fw-em-core", 1 },
+  { "fw-flux-metallic-synthesis", "fw-thermal-buffer", 1 },
+})

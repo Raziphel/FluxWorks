@@ -223,6 +223,7 @@ M.item_values = {
   ["fw-salt"] = 4,
   ["fw-sand"] = 3,
   ["fw-carbon"] = 8,
+  ["fw-resin"] = 20,
   ["fw-crushed-copper-ore"] = 3,
   ["fw-crushed-iron-ore"] = 3,
   ["fw-crushed-lead-ore"] = 4,
@@ -284,6 +285,58 @@ M.fluid_values = {
   ["fw-red-flux"] = 2.2,
   ["fw-green-flux"] = 2.0,
   ["fw-chlorine"] = 0.8,
+  ["fw-latex"] = 0.9,
+  ["fw-blasting-gel"] = 1.6,
+  ["fw-napalm"] = 2.2,
+}
+
+M.item_color_overrides = {
+  ["spoilage"] = { "green" },
+  ["nutrients"] = { "green" },
+  ["bioflux"] = { "green" },
+  ["yumako"] = { "green" },
+  ["jellynut"] = { "green" },
+  ["yumako-mash"] = { "green" },
+  ["jelly"] = { "green" },
+  ["yumako-seed"] = { "green" },
+  ["jellynut-seed"] = { "green" },
+  ["tree-seed"] = { "green" },
+  ["raw-fish"] = { "green" },
+  ["biter-egg"] = { "green" },
+  ["pentapod-egg"] = { "green" },
+  ["copper-bacteria"] = { "green" },
+  ["iron-bacteria"] = { "green" },
+
+  ["solid-fuel"] = { "red" },
+  ["rocket-fuel"] = { "red" },
+  ["nuclear-fuel"] = { "red" },
+
+  ["sulfur"] = { "yellow" },
+  ["plastic-bar"] = { "yellow" },
+  ["explosives"] = { "yellow" },
+  ["battery"] = { "yellow" },
+  ["fw-salt"] = { "yellow" },
+  ["fw-resin"] = { "yellow" },
+  ["fw-rubber-sheet"] = { "yellow" },
+  ["fw-gunpowder"] = { "yellow" },
+}
+
+M.fluid_color_overrides = {
+  ["water"] = {},
+  ["steam"] = {},
+
+  ["petroleum-gas"] = { "yellow" },
+  ["light-oil"] = { "yellow" },
+  ["heavy-oil"] = { "yellow" },
+  ["crude-oil"] = { "yellow" },
+  ["sulfuric-acid"] = { "yellow" },
+  ["lubricant"] = { "yellow" },
+  ["electrolyte"] = { "yellow" },
+  ["fw-chlorine"] = { "yellow" },
+  ["fw-latex"] = { "yellow" },
+  ["fw-blasting-gel"] = { "yellow" },
+  ["fw-napalm"] = { "red", "yellow" },
+  ["biolubricant"] = { "green" },
 }
 
 M.default_time_value = 6
@@ -327,5 +380,27 @@ M.recipe_category_time_multipliers = {
   ["rocket-building"] = 3.0,
   ["fw-flux-condensing"] = 1.0,
 }
+
+M.recipe_category_color_weights = {
+  ["crafting"] = { purple = 0.75, yellow = 0.10, red = 0.10, green = 0.05 },
+  ["advanced-crafting"] = { purple = 0.70, yellow = 0.20, red = 0.05, green = 0.05 },
+  ["crafting-with-fluid"] = { purple = 0.45, yellow = 0.45, red = 0.05, green = 0.05 },
+  ["electronics"] = { purple = 0.50, yellow = 0.35, red = 0.10, green = 0.05 },
+  ["electronics-with-fluid"] = { purple = 0.40, yellow = 0.45, red = 0.10, green = 0.05 },
+  ["smelting"] = { purple = 0.90, yellow = 0.05, red = 0.05, green = 0.00 },
+  ["chemistry"] = { purple = 0.15, yellow = 0.75, red = 0.08, green = 0.02 },
+  ["centrifuging"] = { purple = 0.55, yellow = 0.20, red = 0.20, green = 0.05 },
+  ["electromagnetics"] = { purple = 0.55, yellow = 0.30, red = 0.10, green = 0.05 },
+  ["electromagnetics-or-assembling"] = { purple = 0.55, yellow = 0.30, red = 0.10, green = 0.05 },
+  ["metallurgy"] = { purple = 0.85, yellow = 0.05, red = 0.10, green = 0.00 },
+  ["metallurgy-or-assembling"] = { purple = 0.80, yellow = 0.10, red = 0.10, green = 0.00 },
+  ["organic-or-assembling"] = { purple = 0.15, yellow = 0.10, red = 0.05, green = 0.70 },
+  ["cryogenics"] = { purple = 0.55, yellow = 0.20, red = 0.20, green = 0.05 },
+  ["cryogenics-or-assembling"] = { purple = 0.55, yellow = 0.20, red = 0.20, green = 0.05 },
+  ["rocket-building"] = { purple = 0.35, yellow = 0.15, red = 0.45, green = 0.05 },
+  ["fw-flux-condensing"] = { purple = 0.25, yellow = 0.25, red = 0.25, green = 0.25 },
+}
+
+M.recipe_process_color_share = 0.18
 
 return M

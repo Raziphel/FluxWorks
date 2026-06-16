@@ -1,0 +1,48 @@
+data:extend({
+  {
+    type = "fluid",
+    name = "fw-latex",
+    default_temperature = 15,
+    max_temperature = 100,
+    base_color = { r = 0.94, g = 0.93, b = 0.86 },
+    flow_color = { r = 0.98, g = 0.97, b = 0.92 },
+    icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-latex.png",
+    icon_size = 64,
+    subgroup = "fw-chemistry-fluids",
+    order = "a[fluid]-l[fw-latex]",
+  },
+  {
+    type = "fluid",
+    name = "fw-blasting-gel",
+    default_temperature = 15,
+    max_temperature = 100,
+    base_color = { r = 0.88, g = 0.52, b = 0.18 },
+    flow_color = { r = 0.96, g = 0.64, b = 0.24 },
+    icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-blasting-gel.png",
+    icon_size = 64,
+    subgroup = "fw-chemistry-fluids",
+    order = "a[fluid]-m[fw-blasting-gel]",
+  },
+  {
+    type = "fluid",
+    name = "fw-napalm",
+    default_temperature = 15,
+    max_temperature = 100,
+    base_color = { r = 0.92, g = 0.34, b = 0.08 },
+    flow_color = { r = 1.00, g = 0.55, b = 0.12 },
+    icons = {
+      {
+        icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-blasting-gel.png",
+        icon_size = 64,
+      },
+      {
+        icon = "__base__/graphics/icons/sulfur.png",
+        icon_size = 64,
+        scale = 0.45,
+        shift = { 9, 9 },
+      },
+    },
+    subgroup = "fw-chemistry-fluids",
+    order = "a[fluid]-n[fw-napalm]",
+  },
+})

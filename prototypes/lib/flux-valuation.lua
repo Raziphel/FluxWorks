@@ -12,6 +12,9 @@ M.ITEM_TYPES = {
   "item-with-entity-data",
   "repair-tool",
   "tool",
+  "item-with-label",
+  "item-with-tags",
+  "rail-planner",
 }
 
 M.EXCLUDED_ITEMS = {
@@ -34,9 +37,177 @@ M.NON_CONVERTIBLE_ITEM_PATTERNS = {
 
 M.VALUE_OVERRIDES = FluxValues.item_values or {}
 M.FLUID_VALUE_OVERRIDES = FluxValues.fluid_values or {}
+M.ITEM_COLOR_OVERRIDES = FluxValues.item_color_overrides or {}
+M.FLUID_COLOR_OVERRIDES = FluxValues.fluid_color_overrides or {}
 M.RECIPE_CATEGORY_VALUE_MULTIPLIERS = FluxValues.recipe_category_multipliers or {}
 M.RECIPE_CATEGORY_TIME_MULTIPLIERS = FluxValues.recipe_category_time_multipliers or {}
+M.RECIPE_CATEGORY_COLOR_WEIGHTS = FluxValues.recipe_category_color_weights or {}
+M.RECIPE_PROCESS_COLOR_SHARE = FluxValues.recipe_process_color_share or 0.18
 M.DEFAULT_TIME_VALUE = FluxValues.default_time_value or 4
+M.COLOR_ORDER = { "purple", "yellow", "red", "green" }
+M.FLUX_FLUID_TO_COLOR = {
+  ["fw-purple-flux"] = "purple",
+  ["fw-yellow-flux"] = "yellow",
+  ["fw-red-flux"] = "red",
+  ["fw-green-flux"] = "green",
+}
+
+local function make_signature()
+  return {
+    purple = false,
+    yellow = false,
+    red = false,
+    green = false,
+  }
+end
+
+local function clone_signature(signature)
+  local copy = make_signature()
+  if not signature then
+    return copy
+  end
+  for _, color in ipairs(M.COLOR_ORDER) do
+    copy[color] = signature[color] == true
+  end
+  return copy
+end
+
+local function normalize_signature(colors)
+  local signature = make_signature()
+  if type(colors) == "string" then
+    signature[colors] = true
+    return signature
+  end
+  if not colors then
+    return signature
+  end
+  for _, color in ipairs(colors) do
+    if signature[color] ~= nil then
+      signature[color] = true
+    end
+  end
+  return signature
+end
+
+local function merge_signatures(into, other)
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if other and other[color] then
+      into[color] = true
+    end
+  end
+  return into
+end
+
+local function make_breakdown()
+  return {
+    purple = 0,
+    yellow = 0,
+    red = 0,
+    green = 0,
+  }
+end
+
+local function clone_breakdown(breakdown)
+  local copy = make_breakdown()
+  if not breakdown then
+    return copy
+  end
+  for _, color in ipairs(M.COLOR_ORDER) do
+    copy[color] = breakdown[color] or 0
+  end
+  return copy
+end
+
+local function add_to_breakdown(into, other, scale)
+  local mul = scale or 1
+  for _, color in ipairs(M.COLOR_ORDER) do
+    into[color] = (into[color] or 0) + ((other and other[color] or 0) * mul)
+  end
+  return into
+end
+
+local function scale_breakdown(breakdown, scale)
+  local scaled = make_breakdown()
+  for _, color in ipairs(M.COLOR_ORDER) do
+    scaled[color] = (breakdown[color] or 0) * scale
+  end
+  return scaled
+end
+
+local function total_breakdown_value(breakdown)
+  local total = 0
+  for _, color in ipairs(M.COLOR_ORDER) do
+    total = total + (breakdown[color] or 0)
+  end
+  return total
+end
+
+local function round_breakdown_to_total(breakdown, target_total)
+  local rounded = make_breakdown()
+  local fractions = {}
+  local running_total = 0
+
+  for _, color in ipairs(M.COLOR_ORDER) do
+    local raw = math.max(0, breakdown[color] or 0)
+    local whole = math.floor(raw)
+    rounded[color] = whole
+    running_total = running_total + whole
+    table.insert(fractions, { color = color, frac = raw - whole })
+  end
+
+  table.sort(fractions, function(a, b)
+    if a.frac == b.frac then
+      return a.color < b.color
+    end
+    return a.frac > b.frac
+  end)
+
+  local remainder = math.max(0, target_total - running_total)
+  local index = 1
+  while remainder > 0 and index <= #fractions do
+    rounded[fractions[index].color] = rounded[fractions[index].color] + 1
+    remainder = remainder - 1
+    index = index + 1
+    if index > #fractions and remainder > 0 then
+      index = 1
+    end
+  end
+
+  return rounded
+end
+
+local function signatures_equal(a, b)
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if (a and a[color] or false) ~= (b and b[color] or false) then
+      return false
+    end
+  end
+  return true
+end
+
+local function has_any_color(signature)
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if signature and signature[color] then
+      return true
+    end
+  end
+  return false
+end
+
+local function find_item_prototype(item_name)
+  for _, item_type in ipairs(M.ITEM_TYPES) do
+    local item = data.raw[item_type] and data.raw[item_type][item_name]
+    if item then
+      return item
+    end
+  end
+  return nil
+end
+
+local function find_fluid_prototype(fluid_name)
+  return data.raw.fluid and data.raw.fluid[fluid_name] or nil
+end
+
 local function is_hidden(item)
   if item.hidden then
     return true
@@ -47,6 +218,27 @@ local function is_hidden(item)
     end
   end
   return false
+end
+
+local function parse_energy_to_joules(energy)
+  if type(energy) ~= "string" then
+    return nil
+  end
+  local value, unit = string.match(energy, "^%s*([%d%.]+)%s*([kMGT]?J)%s*$")
+  if not value or not unit then
+    return nil
+  end
+  local scale = ({
+    J = 1,
+    kJ = 1000,
+    MJ = 1000000,
+    GJ = 1000000000,
+    TJ = 1000000000000,
+  })[unit]
+  if not scale then
+    return nil
+  end
+  return tonumber(value) * scale
 end
 
 function M.is_valued_item(item)
@@ -117,6 +309,36 @@ function M.estimate_flux_value(item)
   end
 
   return math.min(2000, math.max(1, value))
+end
+
+function M.estimate_fluid_value(fluid)
+  if not fluid then
+    return nil
+  end
+
+  local value = 0.08
+  local temp_span = math.max(0, (fluid.max_temperature or fluid.default_temperature or 15) - (fluid.default_temperature or 15))
+  value = value + math.min(1.2, temp_span / 250)
+
+  local heat_capacity = parse_energy_to_joules(fluid.heat_capacity)
+  if heat_capacity then
+    value = value + math.min(2.0, heat_capacity / 1000000)
+  end
+
+  if fluid.fuel_value then
+    local fuel = parse_energy_to_joules(fluid.fuel_value)
+    if fuel then
+      value = value + math.min(4.0, fuel / 10000000)
+    else
+      value = value + 1.0
+    end
+  end
+
+  if fluid.gas_temperature then
+    value = value + 0.25
+  end
+
+  return math.max(0.02, math.min(12, value))
 end
 
 function M.quality_value_multiplier(quality)
@@ -217,11 +439,18 @@ local function ingredient_flux_cost(recipe, known_values)
     if kind == "item" then
       local item_value = known_values[name]
       if not item_value then
+        local source_item = find_item_prototype(name)
+        item_value = source_item and M.estimate_flux_value(source_item) or nil
+      end
+      if not item_value then
         return nil
       end
       total = total + (item_value * amount)
     elseif kind == "fluid" then
       local fluid_value = M.FLUID_VALUE_OVERRIDES[name]
+      if not fluid_value then
+        fluid_value = M.estimate_fluid_value(find_fluid_prototype(name))
+      end
       if not fluid_value then
         return nil
       end
@@ -233,6 +462,195 @@ local function ingredient_flux_cost(recipe, known_values)
   local time_mult = M.RECIPE_CATEGORY_TIME_MULTIPLIERS[category] or 1
   local energy = recipe.energy_required or (recipe.normal and recipe.normal.energy_required) or 0.5
   return (total * mult) + (energy * M.DEFAULT_TIME_VALUE * time_mult)
+end
+
+local function default_item_color_signature(item)
+  local override = M.ITEM_COLOR_OVERRIDES[item.name]
+  if override then
+    return normalize_signature(override)
+  end
+  return normalize_signature({ "purple" })
+end
+
+local function default_item_breakdown(item, known_values)
+  local total = known_values[item.name] or M.VALUE_OVERRIDES[item.name] or M.estimate_flux_value(item)
+  local signature = default_item_color_signature(item)
+  local colors = M.signature_to_ordered_colors(signature)
+  local breakdown = make_breakdown()
+
+  if #colors == 0 then
+    breakdown.purple = total
+    return breakdown
+  end
+
+  if #colors == 1 then
+    breakdown[colors[1]] = total
+    return breakdown
+  end
+
+  local share = total / #colors
+  for _, color in ipairs(colors) do
+    breakdown[color] = share
+  end
+  return round_breakdown_to_total(breakdown, math.max(1, math.floor(total + 0.5)))
+end
+
+local function fluid_color_signature(fluid_name)
+  local override = M.FLUID_COLOR_OVERRIDES[fluid_name]
+  if override then
+    return normalize_signature(override)
+  end
+  local flux_color = M.FLUX_FLUID_TO_COLOR[fluid_name]
+  if flux_color then
+    return normalize_signature({ flux_color })
+  end
+  local fluid = find_fluid_prototype(fluid_name)
+  if fluid and fluid.fuel_value then
+    return normalize_signature({ "red" })
+  end
+  return make_signature()
+end
+
+local function fluid_breakdown(fluid_name, amount)
+  local value = M.FLUID_VALUE_OVERRIDES[fluid_name]
+  if not value then
+    value = M.estimate_fluid_value(find_fluid_prototype(fluid_name))
+    if not value then
+      return nil
+    end
+  end
+
+  local total = value * amount
+  local signature = fluid_color_signature(fluid_name)
+  local colors = M.signature_to_ordered_colors(signature)
+  local breakdown = make_breakdown()
+
+  if #colors == 0 then
+    return breakdown
+  end
+
+  if #colors == 1 then
+    breakdown[colors[1]] = total
+    return breakdown
+  end
+
+  local share = total / #colors
+  for _, color in ipairs(colors) do
+    breakdown[color] = share
+  end
+  return breakdown
+end
+
+local function item_color_signature(item_name, known_colors)
+  local override = M.ITEM_COLOR_OVERRIDES[item_name]
+  if override then
+    return normalize_signature(override)
+  end
+  if known_colors[item_name] then
+    return clone_signature(known_colors[item_name])
+  end
+  local item = find_item_prototype(item_name)
+  if item then
+    return default_item_color_signature(item)
+  end
+  return normalize_signature({ "purple" })
+end
+
+local function ingredient_color_signature(recipe, known_colors)
+  local ingredients = get_entries(recipe, "ingredients")
+  if not ingredients then
+    return nil
+  end
+
+  local signature = make_signature()
+  for _, ingredient in pairs(ingredients) do
+    local kind = entry_type(ingredient)
+    local name = entry_name(ingredient)
+    if kind == "item" then
+      merge_signatures(signature, item_color_signature(name, known_colors))
+    elseif kind == "fluid" then
+      merge_signatures(signature, fluid_color_signature(name))
+    end
+  end
+  return signature
+end
+
+local function normalize_weight_breakdown(weights)
+  local breakdown = make_breakdown()
+  local total = 0
+  for _, color in ipairs(M.COLOR_ORDER) do
+    local amount = math.max(0, weights and weights[color] or 0)
+    breakdown[color] = amount
+    total = total + amount
+  end
+  if total <= 0 then
+    return breakdown
+  end
+  for _, color in ipairs(M.COLOR_ORDER) do
+    breakdown[color] = breakdown[color] / total
+  end
+  return breakdown
+end
+
+local function filter_weights_to_signature(weights, signature)
+  local filtered = make_breakdown()
+  local has_match = false
+
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if signature and signature[color] then
+      filtered[color] = weights[color] or 0
+      if filtered[color] > 0 then
+        has_match = true
+      end
+    end
+  end
+
+  if not has_match then
+    return nil
+  end
+
+  return normalize_weight_breakdown(filtered)
+end
+
+local function recipe_category_color_weights(recipe)
+  local category = recipe.category or (recipe.normal and recipe.normal.category) or "crafting"
+  local weights = M.RECIPE_CATEGORY_COLOR_WEIGHTS[category]
+  if weights then
+    return normalize_weight_breakdown(weights)
+  end
+
+  if string.find(category, "chem", 1, true) then
+    return normalize_weight_breakdown({ yellow = 1 })
+  end
+  if string.find(category, "organic", 1, true) or string.find(category, "bio", 1, true) then
+    return normalize_weight_breakdown({ green = 1 })
+  end
+  if string.find(category, "rocket", 1, true) then
+    return normalize_weight_breakdown({ purple = 0.4, red = 0.6 })
+  end
+  if string.find(category, "smelt", 1, true) or string.find(category, "metal", 1, true) then
+    return normalize_weight_breakdown({ purple = 0.9, red = 0.1 })
+  end
+  return normalize_weight_breakdown({ purple = 1 })
+end
+
+local function breakdowns_equal(a, b)
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if math.floor((a and a[color] or 0) + 0.5) ~= math.floor((b and b[color] or 0) + 0.5) then
+      return false
+    end
+  end
+  return true
+end
+
+local function signature_from_breakdown(breakdown)
+  local signature = make_signature()
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if breakdown and (breakdown[color] or 0) > 0 then
+      signature[color] = true
+    end
+  end
+  return signature
 end
 
 local function collect_items(predicate)
@@ -319,6 +737,12 @@ function M.resolve_item_values(candidate_items)
   end
 
   for item_name, item in pairs(candidate_items) do
+    if not values[item_name] then
+      values[item_name] = M.estimate_flux_value(item)
+    end
+  end
+
+  for item_name, item in pairs(candidate_items) do
     if item.subgroup ~= "raw-resource" then
       local candidates = recipes_by_result[item_name] or {}
       local best = nil
@@ -341,6 +765,167 @@ function M.resolve_item_values(candidate_items)
   end
 
   return values
+end
+
+function M.resolve_item_color_amounts(candidate_items, known_values)
+  local recipes_by_result = {}
+  for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+    if not recipe.hidden and recipe_name ~= "fw-flux-condenser" and string.sub(recipe_name, 1, 12) ~= "fw-exchange-" and recipe.category ~= "recycling" then
+      local results = get_entries(recipe, "results")
+      if results then
+        local seen_result_names = {}
+        for _, result in pairs(results) do
+          if entry_type(result) == "item" then
+            local name = entry_name(result)
+            if name and candidate_items[name] and not seen_result_names[name] then
+              seen_result_names[name] = true
+              recipes_by_result[name] = recipes_by_result[name] or {}
+              table.insert(recipes_by_result[name], recipe)
+            end
+          end
+        end
+      else
+        local single = recipe.result or (recipe.normal and recipe.normal.result)
+        if single and candidate_items[single] then
+          recipes_by_result[single] = recipes_by_result[single] or {}
+          table.insert(recipes_by_result[single], recipe)
+        end
+      end
+    end
+  end
+
+  local breakdowns = {}
+  for item_name, item in pairs(candidate_items) do
+    breakdowns[item_name] = default_item_breakdown(item, known_values or {})
+  end
+
+  local function item_breakdown_by_name(item_name)
+    if breakdowns[item_name] then
+      return breakdowns[item_name]
+    end
+    local source_item = find_item_prototype(item_name)
+    if source_item then
+      return default_item_breakdown(source_item, known_values or {})
+    end
+    return nil
+  end
+
+  local function derive_recipe_breakdown(recipe, item_name)
+    local ingredients = get_entries(recipe, "ingredients")
+    local cost = ingredient_flux_cost(recipe, known_values or {})
+    local out_amount = result_amount_for(recipe, item_name)
+    if not (ingredients and cost and out_amount and out_amount > 0) then
+      return nil, nil
+    end
+
+    local ingredient_breakdown = make_breakdown()
+    local ingredient_total = 0
+    local inherited_signature = make_signature()
+
+    for _, ingredient in pairs(ingredients) do
+      local kind = entry_type(ingredient)
+      local name = entry_name(ingredient)
+      local amount = entry_amount(ingredient)
+      if kind == "item" then
+        local source = item_breakdown_by_name(name)
+        if not source then
+          return nil, nil
+        end
+        add_to_breakdown(ingredient_breakdown, source, amount)
+        ingredient_total = ingredient_total + (total_breakdown_value(source) * amount)
+        merge_signatures(inherited_signature, signature_from_breakdown(source))
+      elseif kind == "fluid" then
+        local source = fluid_breakdown(name, amount)
+        if not source then
+          return nil, nil
+        end
+        add_to_breakdown(ingredient_breakdown, source)
+        ingredient_total = ingredient_total + total_breakdown_value(source)
+        merge_signatures(inherited_signature, fluid_color_signature(name))
+      end
+    end
+
+    local derived = make_breakdown()
+    local process_share = ingredient_total > 0 and M.RECIPE_PROCESS_COLOR_SHARE or 1
+    if ingredient_total > 0 then
+      local ingredient_budget = cost * (1 - process_share)
+      local ingredient_scale = ingredient_budget > 0 and (ingredient_budget / ingredient_total) or 0
+      add_to_breakdown(derived, ingredient_breakdown, ingredient_scale / out_amount)
+    end
+
+    local process_budget = (cost * process_share) / out_amount
+    local process_weights = recipe_category_color_weights(recipe)
+    local constrained_weights = filter_weights_to_signature(process_weights, inherited_signature)
+    if constrained_weights then
+      process_weights = constrained_weights
+    elseif has_any_color(inherited_signature) then
+      process_budget = 0
+    end
+    for _, color in ipairs(M.COLOR_ORDER) do
+      derived[color] = derived[color] + ((process_weights[color] or 0) * process_budget)
+    end
+
+    return derived, cost / out_amount
+  end
+
+  local changed = true
+  local pass = 0
+  while changed and pass < 40 do
+    changed = false
+    pass = pass + 1
+    for item_name, item in pairs(candidate_items) do
+      local best_breakdown = nil
+      local best_cost = nil
+      local candidates = recipes_by_result[item_name] or {}
+
+      for _, recipe in pairs(candidates) do
+        local derived, derived_cost = derive_recipe_breakdown(recipe, item_name)
+        if derived and (not best_breakdown or (derived_cost and derived_cost < best_cost)) then
+          best_breakdown = derived
+          best_cost = derived_cost
+        end
+      end
+
+      local total_value = known_values[item_name] or M.VALUE_OVERRIDES[item_name] or M.estimate_flux_value(item)
+      local resolved = best_breakdown or default_item_breakdown(item, known_values or {})
+      local rounded = round_breakdown_to_total(resolved, math.max(1, math.floor(total_value + 0.5)))
+      if not breakdowns_equal(breakdowns[item_name], rounded) then
+        breakdowns[item_name] = rounded
+        changed = true
+      end
+    end
+  end
+
+  return breakdowns
+end
+
+function M.resolve_item_colors(candidate_items, known_values)
+  local breakdowns = M.resolve_item_color_amounts(candidate_items, known_values)
+  local colors = {}
+  for item_name, item in pairs(candidate_items) do
+    local signature = make_signature()
+    local breakdown = breakdowns[item_name]
+    for _, color in ipairs(M.COLOR_ORDER) do
+      if breakdown and (breakdown[color] or 0) > 0 then
+        signature[color] = true
+      end
+    end
+    if not has_any_color(signature) then
+      signature = default_item_color_signature(item)
+    end
+    colors[item_name] = signature
+  end
+  return colors
+end
+
+function M.signature_to_ordered_colors(signature)
+  local ordered = {}
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if signature and signature[color] then
+      table.insert(ordered, color)
+    end
+  end
+  return ordered
 end
 
 return M
