@@ -208,6 +208,20 @@ local function find_fluid_prototype(fluid_name)
   return data.raw.fluid and data.raw.fluid[fluid_name] or nil
 end
 
+local function resolve_recipe_category(recipe)
+  local category = recipe.category
+  if type(category) ~= "string" or category == "" then
+    category = recipe.normal and recipe.normal.category or category
+  end
+  if type(category) ~= "string" or category == "" then
+    category = recipe.expensive and recipe.expensive.category or category
+  end
+  if type(category) ~= "string" or category == "" then
+    return "crafting"
+  end
+  return category
+end
+
 local function is_hidden(item)
   if item.hidden then
     return true
@@ -457,7 +471,7 @@ local function ingredient_flux_cost(recipe, known_values)
       total = total + (fluid_value * amount)
     end
   end
-  local category = recipe.category or (recipe.normal and recipe.normal.category) or "crafting"
+  local category = resolve_recipe_category(recipe)
   local mult = M.RECIPE_CATEGORY_VALUE_MULTIPLIERS[category] or 1
   local time_mult = M.RECIPE_CATEGORY_TIME_MULTIPLIERS[category] or 1
   local energy = recipe.energy_required or (recipe.normal and recipe.normal.energy_required) or 0.5
@@ -613,7 +627,7 @@ local function filter_weights_to_signature(weights, signature)
 end
 
 local function recipe_category_color_weights(recipe)
-  local category = recipe.category or (recipe.normal and recipe.normal.category) or "crafting"
+  local category = resolve_recipe_category(recipe)
   local weights = M.RECIPE_CATEGORY_COLOR_WEIGHTS[category]
   if weights then
     return normalize_weight_breakdown(weights)
