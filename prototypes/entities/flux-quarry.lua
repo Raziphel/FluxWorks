@@ -55,39 +55,6 @@ flux_quarry.graphics_set = {
         }
       }
     }
-  },
-  working_visualisations = {
-    {
-      fadeout = true,
-      animation = {
-        layers = {
-          {
-            priority = "high",
-            draw_as_glow = true,
-            blend_mode = "additive",
-            width = 704,
-            height = 704,
-            frame_count = 120,
-            lines_per_file = 8,
-            animation_speed = 1,
-            shift = util.by_pixel(0, -8),
-            scale = 0.5,
-            stripes = {
-              {
-                filename = "__FluxWorksAssets__/graphics/entity/flux-quarry/core-miner-hr-emission-1.png",
-                width_in_frames = 8,
-                height_in_frames = 8
-              },
-              {
-                filename = "__FluxWorksAssets__/graphics/entity/flux-quarry/core-miner-hr-emission-2.png",
-                width_in_frames = 8,
-                height_in_frames = 7
-              }
-            }
-          }
-        }
-      }
-    }
   }
 }
 flux_quarry.working_sound = {

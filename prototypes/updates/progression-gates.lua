@@ -21,6 +21,5 @@ local function gate_recipe_to_tech(recipe_name, tech_name)
   end
 end
 
--- Keep early base-game progression coherent after FluxWorks integration:
--- circuit contacts at electronics.
+-- Tiny sanity patch: circuit contacts belong at electronics, not floating around in limbo.
 gate_recipe_to_tech("fw-circuit-contact", "electronics")

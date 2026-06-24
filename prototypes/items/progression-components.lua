@@ -1,4 +1,5 @@
 local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
+local resource_icon_path = "__FluxWorksAssets__/graphics/icons/resources/"
 
 data:extend({
   {
@@ -165,11 +166,33 @@ data:extend({
   },
   {
     type = "item",
+    name = "fw-promethium-shard",
+    icons = {
+      { icon = icon_path .. "crystallized-flux.png", icon_size = 64, tint = { r = 0.96, g = 0.76, b = 1.00, a = 1 } },
+      { icon = resource_icon_path .. "fw-mineral-deposit.png", icon_size = 64, scale = 0.30, shift = { -7, 7 }, tint = { r = 0.72, g = 0.50, b = 0.82, a = 1 } },
+    },
+    subgroup = "fw-flux-resources",
+    order = "f[fw-promethium-shard]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
+    name = "fw-promethium-primer",
+    icons = {
+      { icon = icon_path .. "fw-logic-matrix.png", icon_size = 1024, tint = { r = 0.94, g = 0.82, b = 1.00, a = 1 } },
+      { icon = icon_path .. "fw-promethium-matrix.png", icon_size = 1024, scale = 0.55, shift = { 120, -120 }, tint = { r = 1.00, g = 0.86, b = 1.00, a = 0.95 } },
+    },
+    subgroup = "fw-flux-systems",
+    order = "g[fw-promethium-primer]",
+    stack_size = 50,
+  },
+  {
+    type = "item",
     name = "fw-promethium-matrix",
     icon = icon_path .. "fw-promethium-matrix.png",
     icon_size = 1024,
     subgroup = "fw-flux-systems",
-    order = "g[fw-promethium-matrix]",
+    order = "h[fw-promethium-matrix]",
     stack_size = 50,
   },
   {
@@ -178,7 +201,7 @@ data:extend({
     icon = icon_path .. "fw-rift-stabilizer.png",
     icon_size = 1024,
     subgroup = "fw-flux-systems",
-    order = "h[fw-rift-stabilizer]",
+    order = "i[fw-rift-stabilizer]",
     stack_size = 50,
   },
 })

@@ -68,26 +68,38 @@ local function round_breakdown_to_total(breakdown, target_total)
   return rounded
 end
 
-local function condenser_flux_amounts(value, breakdown)
-  local required_flux = math.max(1, math.floor((value * clone_flux_markup(value)) + 0.5))
+local function normalized_clone_breakdown(breakdown)
+  local normalized = {}
   local total = 0
-  local scaled = {}
 
   for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    total = total + ((breakdown and breakdown[color]) or 0)
+    local amount = math.max(0, (breakdown and breakdown[color]) or 0)
+    normalized[color] = amount
+    total = total + amount
   end
 
   if total <= 0 then
-    return {
-      purple = required_flux,
-      yellow = 0,
-      red = 0,
-      green = 0,
-    }
+    for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+      normalized[color] = 1
+    end
+    return normalized, #FluxValuation.COLOR_ORDER
   end
 
   for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    scaled[color] = (((breakdown and breakdown[color]) or 0) / total) * required_flux
+    normalized[color] = normalized[color] + 1
+    total = total + 1
+  end
+
+  return normalized, total
+end
+
+local function condenser_flux_amounts(value, breakdown)
+  local required_flux = math.max(1, math.floor((value * clone_flux_markup(value)) + 0.5))
+  local normalized, total = normalized_clone_breakdown(breakdown)
+  local scaled = {}
+
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    scaled[color] = ((normalized[color] or 0) / total) * required_flux
   end
 
   return round_breakdown_to_total(scaled, required_flux)

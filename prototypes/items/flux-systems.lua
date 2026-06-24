@@ -42,6 +42,39 @@ data:extend({
   },
   {
     type = "item",
+    name = "fw-harvester-head",
+    icons = {
+      { icon = icon_path .. "fw-flux-harvester.png", icon_size = 64 },
+      { icon = icon_path .. "flux-2-light.png", icon_size = 64, scale = 0.5, shift = { 8, 8 } },
+    },
+    subgroup = "fw-flux-systems",
+    order = "c1[fw-harvester-head]",
+    stack_size = 50,
+  },
+  {
+    type = "item",
+    name = "fw-annealed-cermet",
+    icons = {
+      { icon = icon_path .. "fw-cermet.png", icon_size = 1024 },
+      { icon = icon_path .. "flux-1-light.png", icon_size = 64, scale = 7.5, shift = { 136, -136 }, tint = { r = 1.0, g = 0.65, b = 0.55, a = 0.85 } },
+    },
+    subgroup = "fw-flux-systems",
+    order = "c2[fw-annealed-cermet]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
+    name = "fw-resonance-substrate",
+    icons = {
+      { icon = icon_path .. "fw-circuit-substrate.png", icon_size = 1024 },
+      { icon = icon_path .. "flux-2-light.png", icon_size = 64, scale = 7.25, shift = { 136, -136 }, tint = { r = 0.95, g = 1.0, b = 1.0, a = 0.9 } },
+    },
+    subgroup = "fw-flux-systems",
+    order = "c3[fw-resonance-substrate]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
     name = "fw-condensed-flux-matrix",
     icon = icon_path .. "flux-1-light.png",
     icon_size = 64,

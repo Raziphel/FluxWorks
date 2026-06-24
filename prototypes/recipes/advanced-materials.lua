@@ -1,3 +1,15 @@
+local function recipe_overlay_icons(base_icon, base_size, overlay_icon, overlay_size, overlay_scale, overlay_shift)
+  return {
+    { icon = base_icon, icon_size = base_size },
+    {
+      icon = overlay_icon,
+      icon_size = overlay_size,
+      scale = overlay_scale,
+      shift = overlay_shift,
+    },
+  }
+end
+
 data:extend({
   { type = "recipe-category", name = "basic-crushing" },
 })
@@ -66,8 +78,14 @@ data:extend({
   {
     type = "recipe",
     name = "fw-metallic-beneficiation",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-crushed-lead-ore.png",
-    icon_size = 128,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-crushed-lead-ore.png",
+      128,
+      "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore.png",
+      64,
+      0.5,
+      { 8, -8 }
+    ),
     category = "basic-crushing",
     enabled = false,
     energy_required = 1.2,
@@ -81,8 +99,14 @@ data:extend({
   {
     type = "recipe",
     name = "fw-silicon-beneficiation",
-    icon = "__FluxWorksAssets__/graphics/resources/ores/bauxite-ore.png",
-    icon_size = 64,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore.png",
+      64,
+      "__FluxWorksAssets__/graphics/icons/items/fw-sand.png",
+      1024,
+      0.22,
+      { 8, 8 }
+    ),
     category = "basic-crushing",
     enabled = false,
     energy_required = 1.4,
@@ -96,8 +120,14 @@ data:extend({
   {
     type = "recipe",
     name = "fw-carbon-washing",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png",
-    icon_size = 128,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png",
+      128,
+      "__base__/graphics/icons/fluid/water.png",
+      64,
+      0.45,
+      { 8, 8 }
+    ),
     category = "chemistry",
     enabled = false,
     energy_required = 1.0,
@@ -120,8 +150,8 @@ data:extend({
     enabled = false,
     energy_required = 2.2,
     allow_productivity = true,
-    ingredients = { { type = "item", name = "fw-sand", amount = 5 } },
-    results = { { type = "item", name = "fw-glass", amount = 2 } },
+    ingredients = { { type = "item", name = "fw-sand", amount = 4 } },
+    results = { { type = "item", name = "fw-glass", amount = 3 } },
   },
   {
     type = "recipe",
@@ -132,8 +162,11 @@ data:extend({
     enabled = false,
     energy_required = 1.0,
     allow_productivity = true,
-    ingredients = { { type = "item", name = "iron-plate", amount = 2 } },
-    results = { { type = "item", name = "fw-iron-beam", amount = 1 } },
+    ingredients = {
+      { type = "item", name = "iron-plate", amount = 2 },
+      { type = "item", name = "lead-plate", amount = 1 },
+    },
+    results = { { type = "item", name = "fw-iron-beam", amount = 2 } },
   },
   {
     type = "recipe",
@@ -145,10 +178,10 @@ data:extend({
     energy_required = 1.6,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "steel-plate", amount = 2 },
+      { type = "item", name = "steel-plate", amount = 1 },
       { type = "item", name = "fw-iron-beam", amount = 1 },
     },
-    results = { { type = "item", name = "fw-steel-beam", amount = 1 } },
+    results = { { type = "item", name = "fw-steel-beam", amount = 2 } },
   },
   {
     type = "recipe",
@@ -160,10 +193,10 @@ data:extend({
     energy_required = 1.4,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "aluminum-plate", amount = 2 },
+      { type = "item", name = "aluminum-plate", amount = 1 },
       { type = "item", name = "fw-glass", amount = 1 },
     },
-    results = { { type = "item", name = "fw-aluminum-beam", amount = 1 } },
+    results = { { type = "item", name = "fw-aluminum-beam", amount = 2 } },
   },
   {
     type = "recipe",
@@ -175,11 +208,11 @@ data:extend({
     energy_required = 1.0,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "copper-cable", amount = 6 },
+      { type = "item", name = "copper-cable", amount = 4 },
       { type = "item", name = "fw-tinned-cable", amount = 1 },
       { type = "item", name = "fw-rubber-sheet", amount = 1 },
     },
-    results = { { type = "item", name = "fw-cable-harness", amount = 2 } },
+    results = { { type = "item", name = "fw-cable-harness", amount = 3 } },
   },
   {
     type = "recipe",
@@ -206,12 +239,12 @@ data:extend({
     energy_required = 1.6,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "copper-cable", amount = 6 },
+      { type = "item", name = "copper-cable", amount = 4 },
       { type = "item", name = "tin-plate", amount = 1 },
       { type = "item", name = "iron-plate", amount = 1 },
       { type = "item", name = "fw-ceramic-insulator", amount = 1 },
     },
-    results = { { type = "item", name = "fw-inductor-coil", amount = 1 } },
+    results = { { type = "item", name = "fw-inductor-coil", amount = 2 } },
   },
   {
     type = "recipe",
@@ -223,12 +256,12 @@ data:extend({
     energy_required = 1.0,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "fw-solder-wire", amount = 1 },
       { type = "item", name = "fw-glass", amount = 1 },
       { type = "item", name = "silicon", amount = 1 },
+      { type = "item", name = "aluminum-plate", amount = 1 },
       { type = "item", name = "fw-copper-tube", amount = 1 },
     },
-    results = { { type = "item", name = "fw-circuit-substrate", amount = 1 } },
+    results = { { type = "item", name = "fw-circuit-substrate", amount = 2 } },
   },
   {
     type = "recipe",
@@ -240,7 +273,7 @@ data:extend({
     energy_required = 1.2,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "iron-plate", amount = 1 },
+      { type = "item", name = "fw-iron-beam", amount = 1 },
       { type = "item", name = "aluminum-plate", amount = 1 },
       { type = "item", name = "tin-plate", amount = 1 },
     },
@@ -251,16 +284,16 @@ data:extend({
     name = "fw-rubber-sheet",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-rubber-sheet.png",
     icon_size = 1024,
-    category = "chemistry",
+    category = "crafting",
     enabled = false,
-    energy_required = 1.8,
+    energy_required = 1.4,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "plastic-bar", amount = 2 },
-      { type = "item", name = "sulfur", amount = 1 },
-      { type = "fluid", name = "water", amount = 20 },
+      { type = "item", name = "coal", amount = 2 },
+      { type = "item", name = "fw-salt", amount = 1 },
+      { type = "item", name = "fw-glass", amount = 1 },
     },
-    results = { { type = "item", name = "fw-rubber-sheet", amount = 3 } },
+    results = { { type = "item", name = "fw-rubber-sheet", amount = 2 } },
   },
   {
     type = "recipe",
@@ -275,6 +308,7 @@ data:extend({
       { type = "item", name = "fw-metal-mesh", amount = 2 },
       { type = "item", name = "fw-rubber-sheet", amount = 2 },
       { type = "item", name = "fw-glass", amount = 1 },
+      { type = "item", name = "aluminum-plate", amount = 1 },
       { type = "item", name = "fw-resin", amount = 1 },
     },
     results = { { type = "item", name = "fw-composite-panel", amount = 1 } },
@@ -290,6 +324,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-glass", amount = 2 },
+      { type = "item", name = "silicon", amount = 1 },
       { type = "item", name = "fw-copper-tube", amount = 1 },
     },
     results = { { type = "item", name = "fw-glass-lens", amount = 1 } },
@@ -304,12 +339,12 @@ data:extend({
     energy_required = 1.2,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "copper-cable", amount = 4 },
+      { type = "item", name = "copper-cable", amount = 2 },
       { type = "item", name = "fw-tinned-cable", amount = 1 },
+      { type = "item", name = "aluminum-plate", amount = 1 },
       { type = "item", name = "fw-cable-harness", amount = 1 },
-      { type = "item", name = "fw-circuit-contact", amount = 1 },
     },
-    results = { { type = "item", name = "fw-ribbon-cable", amount = 2 } },
+    results = { { type = "item", name = "fw-ribbon-cable", amount = 3 } },
   },
   {
     type = "recipe",
@@ -324,10 +359,11 @@ data:extend({
       { type = "item", name = "electronic-circuit", amount = 1 },
       { type = "item", name = "fw-circuit-substrate", amount = 1 },
       { type = "item", name = "fw-glass-lens", amount = 1 },
+      { type = "item", name = "silicon", amount = 1 },
+      { type = "item", name = "aluminum-plate", amount = 1 },
       { type = "item", name = "fw-capacitor", amount = 1 },
-      { type = "item", name = "fw-circuit-contact", amount = 1 },
     },
-    results = { { type = "item", name = "fw-sensor-package", amount = 1 } },
+    results = { { type = "item", name = "fw-sensor-package", amount = 2 } },
   },
   {
     type = "recipe",
@@ -360,7 +396,7 @@ data:extend({
       { type = "item", name = "fw-carbon", amount = 1 },
       { type = "item", name = "fw-rubber-sheet", amount = 1 },
     },
-    results = { { type = "item", name = "fw-inline-filter", amount = 1 } },
+    results = { { type = "item", name = "fw-inline-filter", amount = 2 } },
   },
   {
     type = "recipe",
@@ -373,12 +409,12 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-steel-beam", amount = 1 },
-      { type = "item", name = "copper-cable", amount = 6 },
+      { type = "item", name = "copper-cable", amount = 4 },
       { type = "item", name = "fw-tinned-cable", amount = 1 },
+      { type = "item", name = "silicon", amount = 1 },
       { type = "item", name = "fw-inductor-coil", amount = 1 },
-      { type = "item", name = "fw-circuit-contact", amount = 1 },
     },
-    results = { { type = "item", name = "fw-transformer-core", amount = 1 } },
+    results = { { type = "item", name = "fw-transformer-core", amount = 2 } },
   },
   {
     type = "recipe",
@@ -390,11 +426,10 @@ data:extend({
     energy_required = 2.0,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "lead-plate", amount = 1 },
+      { type = "item", name = "lead-plate", amount = 2 },
       { type = "item", name = "tin-plate", amount = 1 },
-      { type = "item", name = "copper-plate", amount = 1 },
     },
-    results = { { type = "item", name = "fw-solder-alloy", amount = 2 } },
+    results = { { type = "item", name = "fw-solder-alloy", amount = 3 } },
   },
   {
     type = "recipe",
@@ -442,7 +477,9 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "stone-brick", amount = 2 },
-      { type = "item", name = "plastic-bar", amount = 1 },
+      { type = "item", name = "fw-glass", amount = 1 },
+      { type = "item", name = "silicon", amount = 1 },
+      { type = "item", name = "lead-plate", amount = 1 },
     },
     results = { { type = "item", name = "fw-ceramic-insulator", amount = 2 } },
   },
@@ -459,16 +496,22 @@ data:extend({
       { type = "item", name = "fw-solder-alloy", amount = 1 },
       { type = "item", name = "fw-ceramic-insulator", amount = 1 },
       { type = "item", name = "silicon", amount = 1 },
-      { type = "item", name = "copper-cable", amount = 4 },
-      { type = "item", name = "fw-circuit-contact", amount = 1 },
+      { type = "item", name = "aluminum-plate", amount = 1 },
+      { type = "item", name = "copper-cable", amount = 3 },
     },
-    results = { { type = "item", name = "fw-capacitor", amount = 1 } },
+    results = { { type = "item", name = "fw-capacitor", amount = 2 } },
   },
   {
     type = "recipe",
     name = "fw-gunpowder-early",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
-    icon_size = 128,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
+      128,
+      "__base__/graphics/icons/coal.png",
+      64,
+      0.45,
+      { 8, 8 }
+    ),
     category = "crafting",
     enabled = true,
     energy_required = 0.8,
@@ -482,8 +525,14 @@ data:extend({
   {
     type = "recipe",
     name = "fw-gunpowder",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
-    icon_size = 128,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
+      128,
+      "__base__/graphics/icons/sulfur.png",
+      64,
+      0.45,
+      { 8, 8 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 1.6,
@@ -508,12 +557,12 @@ data:extend({
       { type = "item", name = "fw-solder-alloy", amount = 1 },
       { type = "item", name = "copper-cable", amount = 2 },
     },
-    results = { { type = "item", name = "fw-solder-wire", amount = 2 } },
+    results = { { type = "item", name = "fw-solder-wire", amount = 3 } },
   },
   {
     type = "recipe",
     name = "fw-tinned-cable",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-solder-wire.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-cable-harness.png",
     icon_size = 1024,
     category = "crafting",
     enabled = false,
@@ -523,13 +572,19 @@ data:extend({
       { type = "item", name = "tin-plate", amount = 1 },
       { type = "item", name = "copper-cable", amount = 4 },
     },
-    results = { { type = "item", name = "fw-tinned-cable", amount = 3 } },
+    results = { { type = "item", name = "fw-tinned-cable", amount = 4 } },
   },
   {
     type = "recipe",
     name = "fw-conductor-bundle",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-conductor-bundle.png",
-    icon_size = 1024,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-conductor-bundle.png",
+      1024,
+      "__FluxWorksAssets__/graphics/icons/items/fw-ribbon-cable.png",
+      1024,
+      0.22,
+      { 120, -120 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 1.0,
@@ -537,14 +592,21 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-solder-wire", amount = 1 },
       { type = "item", name = "fw-ribbon-cable", amount = 1 },
+      { type = "item", name = "tin-plate", amount = 1 },
     },
     results = { { type = "item", name = "fw-conductor-bundle", amount = 2 } },
   },
   {
     type = "recipe",
     name = "fw-chip-carrier",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-chip-carrier.png",
-    icon_size = 1024,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-chip-carrier.png",
+      1024,
+      "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-wafer.png",
+      1024,
+      0.22,
+      { 120, -120 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 1.2,
@@ -552,15 +614,22 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-circuit-substrate", amount = 1 },
       { type = "item", name = "fw-circuit-contact", amount = 1 },
+      { type = "item", name = "tin-plate", amount = 1 },
       { type = "item", name = "fw-silicon-wafer", amount = 1 },
     },
-    results = { { type = "item", name = "fw-chip-carrier", amount = 1 } },
+    results = { { type = "item", name = "fw-chip-carrier", amount = 2 } },
   },
   {
     type = "recipe",
     name = "fw-microchip",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-microchip.png",
-    icon_size = 1024,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-microchip.png",
+      1024,
+      "__base__/graphics/icons/advanced-circuit.png",
+      64,
+      0.45,
+      { 8, 8 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 1.8,
@@ -570,32 +639,44 @@ data:extend({
       { type = "item", name = "fw-conductor-bundle", amount = 1 },
       { type = "item", name = "silicon", amount = 1 },
       { type = "item", name = "advanced-circuit", amount = 1 },
-      { type = "item", name = "fw-circuit-contact", amount = 1 },
     },
-    results = { { type = "item", name = "fw-microchip", amount = 1 } },
+    results = { { type = "item", name = "fw-microchip", amount = 2 } },
   },
   {
     type = "recipe",
     name = "fw-memory-die",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-memory-die.png",
-    icon_size = 1024,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-memory-die.png",
+      1024,
+      "__FluxWorksAssets__/graphics/icons/items/fw-microchip.png",
+      1024,
+      0.22,
+      { 120, -120 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 2.4,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "fw-microchip", amount = 2 },
+      { type = "item", name = "fw-microchip", amount = 1 },
       { type = "item", name = "fw-chip-carrier", amount = 1 },
       { type = "item", name = "fw-silicon-wafer", amount = 1 },
       { type = "item", name = "fw-ceramic-wafer", amount = 1 },
+      { type = "item", name = "aluminum-plate", amount = 1 },
     },
-    results = { { type = "item", name = "fw-memory-die", amount = 1 } },
+    results = { { type = "item", name = "fw-memory-die", amount = 2 } },
   },
   {
     type = "recipe",
     name = "fw-ceramic-wafer",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-wafer.png",
-    icon_size = 1024,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-wafer.png",
+      1024,
+      "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-insulator.png",
+      128,
+      1.8,
+      { 120, -120 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 1.6,
@@ -611,8 +692,14 @@ data:extend({
   {
     type = "recipe",
     name = "fw-silicon-wafer",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-wafer.png",
-    icon_size = 1024,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-wafer.png",
+      1024,
+      "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png",
+      64,
+      5.5,
+      { 120, -120 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 1.2,
@@ -626,8 +713,14 @@ data:extend({
   {
     type = "recipe",
     name = "fw-circuit-contact",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
-    icon_size = 1024,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
+      1024,
+      "__base__/graphics/icons/copper-cable.png",
+      64,
+      0.45,
+      { 8, 8 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 0.5,
@@ -642,8 +735,14 @@ data:extend({
   {
     type = "recipe",
     name = "fw-circuit-contact-leaded",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
-    icon_size = 1024,
+    icons = recipe_overlay_icons(
+      "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
+      1024,
+      "__FluxWorksAssets__/graphics/icons/items/metal-plate-lead.png",
+      1024,
+      0.22,
+      { 120, -120 }
+    ),
     category = "crafting",
     enabled = false,
     energy_required = 0.6,
@@ -666,7 +765,9 @@ data:extend({
     ingredients = {
       { type = "item", name = "engine-unit", amount = 1 },
       { type = "item", name = "electric-engine-unit", amount = 1 },
+      { type = "item", name = "aluminum-plate", amount = 2 },
       { type = "item", name = "titanium-plate", amount = 2 },
+      { type = "item", name = "silicon", amount = 1 },
       { type = "item", name = "fw-light-frame", amount = 1 },
       { type = "item", name = "fw-bearing", amount = 2 },
       { type = "item", name = "fw-memory-die", amount = 1 },

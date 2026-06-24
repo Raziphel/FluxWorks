@@ -1,6 +1,7 @@
 require("prototypes.resources.flux-rift-resource")
 require("prototypes.resources.ores")
 require("prototypes.entities.flux-quarry")
+require("prototypes.entities.flux-processing-machines")
 require("prototypes.entities.flux-condenser")
 require("prototypes.items.crafting-tabs")
 require("prototypes.items.advanced-materials")

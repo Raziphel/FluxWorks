@@ -89,8 +89,10 @@ data:extend({
   {
     type = "recipe",
     name = "fw-carbon-refining",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png",
-    icon_size = 128,
+    icons = {
+      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png", icon_size = 128 },
+      { icon = "__base__/graphics/icons/stone-furnace.png", icon_size = 64, scale = 0.42, shift = { 8, 8 } },
+    },
     category = "smelting",
     enabled = false,
     energy_required = 2.8,

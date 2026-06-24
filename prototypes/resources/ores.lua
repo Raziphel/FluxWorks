@@ -19,6 +19,8 @@ local BAUXITE_TINT = { r = 0.86, g = 0.42, b = 0.18, a = 1 }
 local METALLIC_DEPOSIT_TINT = { r = 0.86, g = 0.90, b = 0.96, a = 1 }
 local MINERAL_DEPOSIT_TINT = { r = 1.00, g = 0.82, b = 0.46, a = 1 }
 local CARBONIC_DEPOSIT_TINT = { r = 0.20, g = 0.20, b = 0.22, a = 1 }
+local PROMETHIUM_IMPACT_TINT = { r = 0.94, g = 0.82, b = 1.00, a = 1 }
+local SILICA_VEIN_TINT = { r = 0.83, g = 0.94, b = 0.78, a = 1 }
 local NO_TINT = { r = 1, g = 1, b = 1, a = 1 }
 
 -- Reuse stone particles and tint them white so salt mining reads clearly.
@@ -266,10 +268,10 @@ data:extend({
         starting_rq_factor_multiplier = ORE_RARITY["fw-salt"].starting_rq,
       })
 
-      -- Strongly bias salt toward moist/wet regions so it naturally
-      -- forms coastal and humidity-driven deposits.
+      -- On wetter worlds salt forms in coastal/brine deposits, while on
+      -- harsher planets the aux fallback still allows isolated evaporite seams.
       autoplace.probability_expression =
-        "(" .. autoplace.probability_expression .. ") * (0.05 + 0.95 * clamp((moisture - 0.48) * 3.2, 0, 1))"
+        "(" .. autoplace.probability_expression .. ") * (0.18 + 0.82 * max(clamp((moisture - 0.48) * 3.2, 0, 1), clamp(aux * 1.35, 0, 1)))"
       return autoplace
     end)(),
     stage_counts = { 15000, 9500, 5500, 2900, 1300, 400, 150, 80 },
@@ -340,6 +342,57 @@ data:extend({
   {
     type = "autoplace-control",
     category = "resource",
+    name = "fw-silica-vein",
+    localised_name = { "", "[item=silicon-ore] ", { "autoplace-control-names.fw-silica-vein" } },
+    richness = true,
+    order = "a-v",
+  },
+  {
+    type = "resource",
+    name = "fw-silica-vein",
+    icons = {
+      { icon = bz_icon_path .. "fw-bz-silicon-ore.png", icon_size = 64, tint = SILICA_VEIN_TINT },
+      { icon = "__base__/graphics/icons/stone.png", icon_size = 64, scale = 0.30, shift = { -8, 8 }, tint = { r = 0.90, g = 0.84, b = 0.72, a = 1.00 } },
+    },
+    flags = { "placeable-neutral" },
+    order = "a-b-bb",
+    map_color = { r = 0.70, g = 0.82, b = 0.64 },
+    minable = {
+      mining_time = 1.4,
+      required_fluid = "water",
+      fluid_amount = 10,
+      results = {
+        { type = "item", name = "silicon-ore", amount = 2 },
+        { type = "item", name = "stone", amount = 1, probability = 0.55 },
+      },
+    },
+    collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
+    selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
+    autoplace = resource_autoplace.resource_autoplace_settings({
+      name = "fw-silica-vein",
+      order = "a-v",
+      base_density = 5.2,
+      base_spots_per_km2 = 0.32,
+      has_starting_area_placement = false,
+      regular_rq_factor_multiplier = 1.10,
+      starting_rq_factor_multiplier = 0.60,
+    }),
+    stage_counts = { 18000, 11000, 6500, 3600, 1650, 600, 220, 90 },
+    stages = {
+      sheet = {
+        filename = mixed_deposit_path .. "mineral-deposit-sheet-vivid.png",
+        priority = "extra-high",
+        size = 128,
+        frame_count = 8,
+        variation_count = 8,
+        scale = 0.5,
+        tint = SILICA_VEIN_TINT,
+      },
+    },
+  },
+  {
+    type = "autoplace-control",
+    category = "resource",
     name = "fw-metallic-deposit",
     localised_name = { "", "[entity=fw-metallic-deposit] ", { "autoplace-control-names.fw-metallic-deposit" } },
     richness = true,
@@ -402,8 +455,8 @@ data:extend({
     name = "fw-mineral-deposit",
     icons = {
       { icon = resource_icon_path .. "fw-mineral-deposit.png", icon_size = 64, tint = MINERAL_DEPOSIT_TINT },
-      { icon = "__base__/graphics/icons/stone.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 1.00, g = 0.86, b = 0.62, a = 1.00 } },
-      { icon = "__base__/graphics/icons/uranium-ore.png", icon_size = 64, scale = 0.34, shift = { 8, 8 }, tint = { r = 0.80, g = 1.00, b = 0.72, a = 1.00 } },
+      { icon = ore_path .. "bauxite-ore.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 1.00, g = 0.76, b = 0.40, a = 1.00 } },
+      { icon = bz_icon_path .. "fw-bz-silicon-ore.png", icon_size = 64, scale = 0.34, shift = { 8, 8 }, tint = { r = 0.84, g = 1.00, b = 0.76, a = 1.00 } },
     },
     flags = { "placeable-neutral" },
     order = "a-b-c",
@@ -496,6 +549,61 @@ data:extend({
     },
   },
 })
+
+if data.raw.item["promethium-asteroid-chunk"] then
+  data:extend({
+    {
+      type = "autoplace-control",
+      category = "resource",
+      name = "fw-promethium-impact",
+      localised_name = { "", "[entity=fw-promethium-impact] ", { "autoplace-control-names.fw-promethium-impact" } },
+      richness = true,
+      order = "a-p",
+    },
+    {
+      type = "resource",
+      name = "fw-promethium-impact",
+      icons = {
+        { icon = resource_icon_path .. "fw-mineral-deposit.png", icon_size = 64, tint = PROMETHIUM_IMPACT_TINT },
+      },
+      flags = { "placeable-neutral" },
+      order = "a-b-e",
+      map_color = { r = 0.64, g = 0.48, b = 0.72 },
+      minable = {
+        mining_time = 2.6,
+        results = {
+          { type = "item", name = "fw-promethium-shard", amount = 1 },
+          { type = "item", name = "stone", amount = 1, probability = 0.70 },
+        },
+      },
+      collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
+      selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
+      autoplace = (function()
+        return resource_autoplace.resource_autoplace_settings({
+          name = "fw-promethium-impact",
+          order = "a-p",
+          base_density = 0.20,
+          base_spots_per_km2 = 0.024,
+          has_starting_area_placement = false,
+          regular_rq_factor_multiplier = 0.42,
+          starting_rq_factor_multiplier = 0.14,
+        })
+      end)(),
+      stage_counts = { 9000, 6500, 4200, 2600, 1500, 800, 320, 100 },
+      stages = {
+        sheet = {
+          filename = mixed_deposit_path .. "mineral-deposit-sheet-vivid.png",
+          priority = "extra-high",
+          size = 128,
+          frame_count = 8,
+          variation_count = 8,
+          scale = 0.5,
+          tint = PROMETHIUM_IMPACT_TINT,
+        },
+      },
+    },
+  })
+end
 
 if not data.raw.item["tin-ore"] then
   data:extend({

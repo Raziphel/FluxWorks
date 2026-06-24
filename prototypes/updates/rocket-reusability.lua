@@ -406,26 +406,18 @@ local technology = {
         type = "technology",
         name = "rocket-chunk-processing",
         icon = "__FluxWorksAssets__/graphics/technology/fw-rocket-chunk-processing.png",
-        icon_size = 256,
+        icon_size = 190,
         effects =
         {
             {
                 type = "unlock-recipe",
                 recipe = "rocket-chunk-processing"
             },
-            {
-                type = "unlock-recipe",
-                recipe = "fw-rocket-avionics"
-            },
-            {
-                type = "unlock-recipe",
-                recipe = "fw-rocket-heatshield"
-            },
         },
-        prerequisites = { "production-science-pack", "utility-science-pack", "space-science-pack" },
+        prerequisites = { "fw-orbital-hardening", "rocket-silo", "space-science-pack" },
         unit =
         {
-            count = 2000,
+            count = 1600,
             ingredients =
             {
                 { "automation-science-pack", 1 },

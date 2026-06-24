@@ -1,10 +1,10 @@
--- Flux transmutation chain.
--- If we rebalance later, do it here once and every recipe follows.
+-- The whole transmutation ladder lives here.
+-- If this gets rebalanced later, I only want to do it one time and let the rest follow along.
 
 local TRANSMUTATION_BALANCE = {
-  default_unlock_technology = "fw-liquid-mining",
+  default_unlock_technology = "fw-flux-catalysis",
 
-  -- Defaults for any step that does not override values.
+  -- Safe defaults for any step that does not get fancy.
   defaults = {
     input_amount = 10,
     output_amount = 10,
@@ -13,19 +13,19 @@ local TRANSMUTATION_BALANCE = {
     flux_fluid = "fw-purple-flux",
   },
 
-  -- Ordered rough-material ladder from common -> rare. Early recipes are simple
-  -- shortage smoothing, while deeper transmutation spends catalysts and
-  -- spectrum-conditioned Flux so rare ores are not printed from easy materials.
+  -- Rough material ladder from common -> rare.
+  -- Early steps are just there to smooth out shortages.
+  -- Deep steps are where we start charging real Flux and catalyst costs so rare ores are not magically free.
   steps = {
     { from = "stone",       to = "coal",         input_amount = 14, output_amount = 10, flux_cost = 6,  flux_refund = 1,  energy_required = 4 },
     { from = "coal",        to = "copper-ore",   input_amount = 10, output_amount = 10, flux_cost = 8,  flux_refund = 2,  energy_required = 4, secondary_fluids = { { name = "crude-oil", amount = 10 } } },
     { from = "copper-ore",  to = "iron-ore",     input_amount = 10, output_amount = 10, flux_cost = 6,  flux_refund = 1,  energy_required = 4, secondary_fluids = { { name = "crude-oil", amount = 8 } } },
-    { from = "iron-ore",    to = "lead-ore",     input_amount = 10, output_amount = 10, flux_cost = 14, flux_refund = 4,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.90, energy_required = 6, secondary_fluids = { { name = "crude-oil", amount = 12 } } },
-    { from = "lead-ore",    to = "tin-ore",      input_amount = 10, output_amount = 10, flux_cost = 16, flux_refund = 5,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.88, energy_required = 6, secondary_fluids = { { name = "crude-oil", amount = 14 } } },
-    { from = "tin-ore",     to = "bauxite-ore",  input_amount = 10, output_amount = 10, flux_cost = 20, flux_refund = 6,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.85, energy_required = 7, secondary_fluids = { { name = "crude-oil", amount = 18 } } },
-    { from = "bauxite-ore", to = "silicon-ore",  input_amount = 10, output_amount = 10, flux_cost = 24, flux_refund = 7,  flux_fluid = "fw-red-flux", unlock_technology = "fw-flux-red-energetics", catalyst_amount = 1, catalyst_return_probability = 0.82, energy_required = 7, secondary_fluids = { { name = "crude-oil", amount = 22 } } },
-    { from = "silicon-ore", to = "titanium-ore", input_amount = 10, output_amount = 10, flux_cost = 30, flux_refund = 9,  flux_fluid = "fw-green-flux", unlock_technology = "fw-flux-green-reclamation", catalyst_amount = 1, catalyst_return_probability = 0.75, energy_required = 9, secondary_fluids = { { name = "crude-oil", amount = 28 } } },
-    { from = "titanium-ore", to = "uranium-ore", input_amount = 10, output_amount = 10, flux_cost = 36, flux_refund = 10, flux_fluid = "fw-red-flux", unlock_technology = "fw-flux-field-theory", catalyst_amount = 1, catalyst_return_probability = 0.70, energy_required = 10, secondary_fluids = { { name = "crude-oil", amount = 36 } } },
+    { from = "iron-ore",    to = "lead-ore",     input_amount = 12, output_amount = 10, flux_cost = 16, flux_refund = 3,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.88, energy_required = 6.5, secondary_fluids = { { name = "crude-oil", amount = 12 } } },
+    { from = "lead-ore",    to = "tin-ore",      input_amount = 12, output_amount = 10, flux_cost = 18, flux_refund = 4,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.85, energy_required = 7, secondary_fluids = { { name = "crude-oil", amount = 14 } } },
+    { from = "tin-ore",     to = "bauxite-ore",  input_amount = 12, output_amount = 10, flux_cost = 22, flux_refund = 5,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.82, energy_required = 7.5, secondary_fluids = { { name = "crude-oil", amount = 18 } } },
+    { from = "bauxite-ore", to = "silicon-ore",  input_amount = 14, output_amount = 10, flux_cost = 28, flux_refund = 6,  flux_fluid = "fw-red-flux", unlock_technology = "fw-flux-red-energetics", catalyst_amount = 1, catalyst_return_probability = 0.78, energy_required = 8.5, secondary_fluids = { { name = "crude-oil", amount = 22 } } },
+    { from = "silicon-ore", to = "titanium-ore", input_amount = 16, output_amount = 8,  flux_cost = 38, flux_refund = 7,  flux_fluid = "fw-green-flux", unlock_technology = "fw-flux-green-reclamation", catalyst_amount = 2, catalyst_return_probability = 0.72, energy_required = 10.5, secondary_fluids = { { name = "crude-oil", amount = 30 } } },
+    { from = "titanium-ore", to = "uranium-ore", input_amount = 18, output_amount = 8,  flux_cost = 48, flux_refund = 8,  flux_fluid = "fw-red-flux", unlock_technology = "fw-flux-field-theory", catalyst_amount = 2, catalyst_return_probability = 0.66, energy_required = 12, secondary_fluids = { { name = "crude-oil", amount = 38 } } },
   },
 }
 
@@ -124,9 +124,9 @@ local function to_upcycle_recipe(step, index)
     type = "recipe",
     name = name,
     localised_name = { "", { "item-name." .. step.from }, " -> ", { "item-name." .. step.to } },
-    category = "chemistry",
+    category = "fw-flux-harvesting",
     subgroup = "fw-transmutation-upcycle",
-    order = "a[chemistry]-a" .. suffix .. "[" .. name .. "]",
+    order = "a[harvesting]-a" .. suffix .. "[" .. name .. "]",
     enabled = false,
     allow_productivity = false,
     energy_required = energy_required,
@@ -164,9 +164,9 @@ local function to_downcycle_recipe(step, index)
     type = "recipe",
     name = name,
     localised_name = { "", { "item-name." .. step.to }, " -> ", { "item-name." .. step.from } },
-    category = "chemistry",
+    category = "fw-flux-harvesting",
     subgroup = "fw-transmutation-downcycle",
-    order = "a[chemistry]-b" .. suffix .. "[" .. name .. "]",
+    order = "a[harvesting]-b" .. suffix .. "[" .. name .. "]",
     enabled = false,
     allow_productivity = false,
     energy_required = energy_required,
@@ -189,7 +189,7 @@ end
 
 data:extend(recipes)
 
--- Gate each tier behind the Flux system that makes it practical.
+-- Each tier should unlock when the matching Flux lane actually makes it reasonable.
 local transmutation_tech = data.raw.technology and (
   data.raw.technology["fw-liquid-mining"]
   or data.raw.technology["fw-material-foundations"]

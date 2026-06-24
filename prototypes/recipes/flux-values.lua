@@ -1,10 +1,10 @@
 local M = {}
 
--- Hand-tuned starting points for the flux economy.
--- The resolver can build from recipes, but these keep important items from
--- landing at silly stack-size fallback values.
+-- Hand-tuned starter numbers for the flux economy.
+-- Yes, the resolver can figure a lot out on its own.
+-- No, I do not trust it to avoid goofy fallback values on the important stuff.
 M.item_values = {
-  -- Rocks, scraps, and other things pulled straight from the world.
+  -- Dirt-tier world junk and other things you mostly just yank out of the ground.
   ["stone"] = 2,
   ["coal"] = 3,
   ["copper-ore"] = 4,
@@ -20,7 +20,7 @@ M.item_values = {
   ["biter-egg"] = 3500,
   ["pentapod-egg"] = 8000,
 
-  -- Plain old factory staples.
+  -- The usual factory bread-and-butter.
   ["iron-plate"] = 8,
   ["copper-plate"] = 8,
   ["steel-plate"] = 28,
@@ -30,7 +30,7 @@ M.item_values = {
   ["sulfur"] = 45,
   ["battery"] = 90,
 
-  -- Science packs are progression keys, not just their ingredient list.
+  -- Science packs are progression keys, not just a grocery list.
   ["automation-science-pack"] = 160,
   ["logistic-science-pack"] = 380,
   ["military-science-pack"] = 700,
@@ -39,7 +39,7 @@ M.item_values = {
   ["utility-science-pack"] = 2600,
   ["space-science-pack"] = 4500,
 
-  -- Modules need hard floors because tier 3 recipes can depend on odd late-game ingredients.
+  -- Modules need hard floors or tier 3 starts doing weird clown math.
   ["speed-module"] = 6000,
   ["speed-module-2"] = 60000,
   ["speed-module-3"] = 350000,
@@ -53,7 +53,7 @@ M.item_values = {
   ["quality-module-2"] = 60000,
   ["quality-module-3"] = 350000,
 
-  -- Moving parts and power-chain intermediates.
+  -- Moving bits, power bits, and all the normal factory guts.
   ["iron-gear-wheel"] = 14,
   ["iron-stick"] = 5,
   ["copper-cable"] = 8,
@@ -96,7 +96,7 @@ M.item_values = {
   ["submachine-gun"] = 900,
   ["flamethrower"] = 1800,
 
-  -- Personal equipment is progression-gated hardware, even when it stacks.
+  -- Personal equipment is still progression hardware even if it stacks in your pocket.
   ["night-vision-equipment"] = 3000,
   ["belt-immunity-equipment"] = 2200,
   ["solar-panel-equipment"] = 7000,
@@ -113,7 +113,7 @@ M.item_values = {
   ["fission-reactor-equipment"] = 650000,
   ["fusion-reactor-equipment"] = 4200000,
 
-  -- Vehicles are valued for tooltips only; the condenser does not clone entity-data items.
+  -- Vehicles are tooltip values only. The condenser is not cloning cars. Relax.
   ["car"] = 12000,
   ["tank"] = 35000,
   ["locomotive"] = 20000,
@@ -122,13 +122,13 @@ M.item_values = {
   ["artillery-wagon"] = 90000,
   ["spidertron"] = 250000,
 
-  -- Circuits are deliberately punchy so blue chips do not feel free.
+  -- Circuits stay a little spicy so blue chips do not end up feeling free.
   ["electronic-circuit"] = 180,
   ["advanced-circuit"] = 700,
   ["processing-unit"] = 3000,
   ["quantum-processor"] = 12000,
 
-  -- Ammo and combat consumables need real costs or cloning becomes a free war chest.
+  -- Combat junk needs real prices or the condenser turns into a war-crimes printer.
   ["firearm-magazine"] = 120,
   ["piercing-rounds-magazine"] = 280,
   ["uranium-rounds-magazine"] = 900,
@@ -152,7 +152,7 @@ M.item_values = {
   ["distractor-capsule"] = 2800,
   ["destroyer-capsule"] = 9000,
 
-  -- Rocket and late-base-game staples.
+  -- Rocket bits and other late vanilla staples.
   ["low-density-structure"] = 160,
   ["rocket-fuel"] = 700,
   ["rocket-part"] = 2400,
@@ -160,7 +160,7 @@ M.item_values = {
   ["uranium-235"] = 1500,
   ["capture-robot-rocket"] = 2500,
 
-  -- Space Age anchors, with promethium treated like the endgame trophy it is.
+  -- Space Age anchors, and promethium still gets treated like the scary endgame trophy.
   ["bioflux"] = 450,
   ["nutrients"] = 120,
   ["jelly"] = 25,
@@ -189,10 +189,15 @@ M.item_values = {
   ["agricultural-science-pack"] = 2500,
   ["metallurgic-science-pack"] = 2500,
   ["cryogenic-science-pack"] = 5000,
+  ["fw-promethium-shard"] = 900,
+  ["fw-promethium-primer"] = 4200,
+  ["fw-harvester-head"] = 600,
+  ["fw-annealed-cermet"] = 950,
+  ["fw-resonance-substrate"] = 1400,
   ["promethium-asteroid-chunk"] = 6000,
   ["promethium-science-pack"] = 25000,
 
-  -- Late-game buildings, weapons, and power hardware.
+  -- Big late-game toys, angry weapons, and power bricks.
   ["teslagun"] = 40000,
   ["tesla-ammo"] = 8000,
   ["tesla-turret"] = 180000,
@@ -211,9 +216,9 @@ M.item_values = {
   ["fusion-generator"] = 1200000,
   ["fusion-reactor"] = 4200000,
 
-  -- FluxWorks raws and intermediates.
-  -- Mixed deposits make most of these ores practical peers by midgame, so keep
-  -- their floors tight and reserve the real premium for titanium's chlorine gate.
+  -- FluxWorks raw stuff and early-middle intermediates.
+  -- Mixed deposits flatten a lot of these by midgame, so keep the floors close together
+  -- and save the real tax for titanium and its chlorine nonsense.
   ["lead-ore"] = 4,
   ["bauxite-ore"] = 5,
   ["tin-ore"] = 5,
@@ -234,25 +239,31 @@ M.item_values = {
   ["aluminum-plate"] = 12,
   ["silicon"] = 10,
 
-  -- The home-grown FluxWorks component chain.
+  -- The proper home-grown FluxWorks part ladder.
   ["fw-glass"] = 7,
   ["fw-circuit-contact"] = 12,
-  ["fw-solder-wire"] = 10,
-  ["fw-tinned-cable"] = 18,
-  ["fw-conductor-bundle"] = 36,
-  ["fw-ribbon-cable"] = 60,
-  ["fw-capacitor"] = 110,
-  ["fw-inductor-coil"] = 95,
-  ["fw-transformer-core"] = 220,
-  ["fw-sensor-package"] = 420,
-  ["fw-microchip"] = 320,
-  ["fw-memory-die"] = 800,
+  ["fw-solder-wire"] = 7,
+  ["fw-tinned-cable"] = 11,
+  ["fw-conductor-bundle"] = 28,
+  ["fw-ribbon-cable"] = 42,
+  ["fw-capacitor"] = 72,
+  ["fw-inductor-coil"] = 60,
+  ["fw-transformer-core"] = 120,
+  ["fw-sensor-package"] = 180,
+  ["fw-microchip"] = 150,
+  ["fw-memory-die"] = 260,
   ["fw-flux-catalyst"] = 24,
   ["fw-stabilized-flux-crystal"] = 34,
   ["fw-flux-lattice"] = 60,
   ["fw-condensed-flux-matrix"] = 150,
   ["fw-flux-resonance-cell"] = 280,
   ["fw-flux-phase-manifold"] = 760,
+  ["fw-aquilo-cryogel"] = 520,
+  ["fw-gleba-spore-resin"] = 540,
+  ["fw-fulgora-static-mesh"] = 760,
+  ["fw-vulcanus-slag-cermet"] = 820,
+  ["fw-logic-matrix"] = 980,
+  ["fw-rift-stabilizer"] = 5200,
   ["fw-flux-condenser"] = 2200,
 }
 
@@ -358,6 +369,9 @@ M.recipe_category_multipliers = {
   ["cryogenics"] = 1.25,
   ["cryogenics-or-assembling"] = 1.25,
   ["rocket-building"] = 1.30,
+  ["fw-flux-harvesting"] = 1.16,
+  ["fw-arc-smelting"] = 1.24,
+  ["fw-flux-synthesis"] = 1.38,
   ["fw-flux-condensing"] = 1.35,
 }
 
@@ -378,6 +392,9 @@ M.recipe_category_time_multipliers = {
   ["cryogenics"] = 2.5,
   ["cryogenics-or-assembling"] = 2.5,
   ["rocket-building"] = 3.0,
+  ["fw-flux-harvesting"] = 2.0,
+  ["fw-arc-smelting"] = 2.15,
+  ["fw-flux-synthesis"] = 2.45,
   ["fw-flux-condensing"] = 1.0,
 }
 
@@ -398,6 +415,9 @@ M.recipe_category_color_weights = {
   ["cryogenics"] = { purple = 0.55, yellow = 0.20, red = 0.20, green = 0.05 },
   ["cryogenics-or-assembling"] = { purple = 0.55, yellow = 0.20, red = 0.20, green = 0.05 },
   ["rocket-building"] = { purple = 0.35, yellow = 0.15, red = 0.45, green = 0.05 },
+  ["fw-flux-harvesting"] = { purple = 0.30, yellow = 0.45, red = 0.20, green = 0.05 },
+  ["fw-arc-smelting"] = { purple = 0.15, yellow = 0.10, red = 0.70, green = 0.05 },
+  ["fw-flux-synthesis"] = { purple = 0.28, yellow = 0.24, red = 0.26, green = 0.22 },
   ["fw-flux-condensing"] = { purple = 0.25, yellow = 0.25, red = 0.25, green = 0.25 },
 }
 

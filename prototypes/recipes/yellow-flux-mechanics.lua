@@ -1,4 +1,5 @@
 local Spectrum = require("prototypes.lib.flux-spectrum")
+local RecipeIcons = require("prototypes.lib.flux-recipe-icons")
 
 local recipes = {}
 local unlocks = {}
@@ -8,22 +9,42 @@ local function add_recipe(recipe, technology_name)
   Spectrum.add_unlock(unlocks, technology_name, recipe.name)
 end
 
-local function item_icon(item)
-  if item.icons then
-    return { icons = table.deepcopy(item.icons) }
-  end
-  if item.icon then
-    return {
-      icon = item.icon,
-      icon_size = item.icon_size or 64,
-      icon_mipmaps = item.icon_mipmaps,
-    }
-  end
-  return nil
-end
-
 local function add_item_source_recipe(recipe_name, source_name, source_amount, flux_amount, order_suffix, technology_name)
-  return recipe_name, source_name, source_amount, flux_amount, order_suffix, technology_name
+  if not (
+    Spectrum.item_exists(source_name)
+    and Spectrum.fluid_exists("fw-yellow-flux")
+  ) then
+    return
+  end
+
+  local recipe = {
+    type = "recipe",
+    name = recipe_name,
+    enabled = false,
+    localised_name = { "", { "fluid-name.fw-yellow-flux" }, " <- ", { "item-name." .. source_name } },
+    category = "chemistry",
+    subgroup = "fw-flux-yellow",
+    order = "a[source]-" .. order_suffix .. "[" .. source_name .. "]",
+    energy_required = 3.5,
+    allow_productivity = false,
+    ingredients = {
+      { type = "item", name = source_name, amount = source_amount },
+      { type = "fluid", name = "water", amount = 10 },
+    },
+    results = {
+      { type = "fluid", name = "fw-yellow-flux", amount = flux_amount },
+    },
+    main_product = "fw-yellow-flux",
+  }
+
+  local icons = RecipeIcons.source_to_flux_icons(source_name, "fw-yellow-flux")
+  if icons then
+    for key, value in pairs(icons) do
+      recipe[key] = value
+    end
+  end
+
+  add_recipe(recipe, technology_name)
 end
 
 add_item_source_recipe("fw-yellow-flux-from-sulfur", "sulfur", 4, 20, "1", "fw-flux-field-theory")
@@ -33,7 +54,7 @@ add_item_source_recipe("fw-yellow-flux-from-explosives", "explosives", 3, 24, "4
 add_item_source_recipe("fw-yellow-flux-from-fw-resin", "fw-resin", 3, 20, "5", "fw-flux-field-theory")
 add_item_source_recipe("fw-yellow-flux-from-fw-rubber-sheet", "fw-rubber-sheet", 4, 20, "6", "fw-flux-field-theory")
 
-if Spectrum.item_exists("fw-salt") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-chlorine") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
+if Spectrum.item_exists("fw-salt") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-chlorine") and Spectrum.fluid_exists("fw-yellow-flux") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-chlorine-pressurization",
@@ -46,7 +67,7 @@ if Spectrum.item_exists("fw-salt") and Spectrum.fluid_exists("water") and Spectr
     ingredients = {
       { type = "item", name = "fw-salt", amount = 3 },
       { type = "fluid", name = "water", amount = 40 },
-      { type = "fluid", name = "fw-purple-flux", amount = 12 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 12 },
     },
     results = {
       { type = "fluid", name = "fw-chlorine", amount = 32 },
@@ -56,7 +77,7 @@ if Spectrum.item_exists("fw-salt") and Spectrum.fluid_exists("water") and Spectr
   }, "fw-flux-yellow-catalysis")
 end
 
-if Spectrum.item_exists("plastic-bar") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") and Spectrum.fluid_exists("fw-latex") then
+if Spectrum.item_exists("plastic-bar") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-yellow-flux") and Spectrum.fluid_exists("fw-latex") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-latex-suspension",
@@ -69,7 +90,7 @@ if Spectrum.item_exists("plastic-bar") and Spectrum.fluid_exists("water") and Sp
     ingredients = {
       { type = "item", name = "plastic-bar", amount = 3 },
       { type = "fluid", name = "water", amount = 30 },
-      { type = "fluid", name = "fw-purple-flux", amount = 10 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 10 },
     },
     results = {
       { type = "fluid", name = "fw-latex", amount = 48 },
@@ -79,7 +100,7 @@ if Spectrum.item_exists("plastic-bar") and Spectrum.fluid_exists("water") and Sp
   }, "fw-flux-yellow-catalysis")
 end
 
-if Spectrum.item_exists("sulfur") and Spectrum.item_exists("fw-carbon") and Spectrum.fluid_exists("fw-chlorine") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
+if Spectrum.item_exists("sulfur") and Spectrum.item_exists("fw-carbon") and Spectrum.fluid_exists("fw-chlorine") and Spectrum.fluid_exists("fw-yellow-flux") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-sulfur-bonding",
@@ -92,7 +113,7 @@ if Spectrum.item_exists("sulfur") and Spectrum.item_exists("fw-carbon") and Spec
     ingredients = {
       { type = "item", name = "fw-carbon", amount = 1 },
       { type = "fluid", name = "fw-chlorine", amount = 24 },
-      { type = "fluid", name = "fw-purple-flux", amount = 10 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 10 },
     },
     results = {
       { type = "item", name = "sulfur", amount = 3 },
@@ -102,7 +123,7 @@ if Spectrum.item_exists("sulfur") and Spectrum.item_exists("fw-carbon") and Spec
   }, "fw-flux-yellow-catalysis")
 end
 
-if Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("sulfur") and Spectrum.fluid_exists("fw-chlorine") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
+if Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("sulfur") and Spectrum.fluid_exists("fw-chlorine") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-yellow-flux") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-acid-synthesis",
@@ -116,7 +137,7 @@ if Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("sulfur") and
       { type = "item", name = "sulfur", amount = 2 },
       { type = "fluid", name = "fw-chlorine", amount = 20 },
       { type = "fluid", name = "water", amount = 50 },
-      { type = "fluid", name = "fw-purple-flux", amount = 14 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 14 },
     },
     results = {
       { type = "fluid", name = "sulfuric-acid", amount = 120 },
@@ -126,7 +147,7 @@ if Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("sulfur") and
   }, "fw-flux-yellow-catalysis")
 end
 
-if Spectrum.item_exists("fw-resin") and Spectrum.item_exists("fw-carbon") and Spectrum.fluid_exists("fw-latex") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
+if Spectrum.item_exists("fw-resin") and Spectrum.item_exists("fw-carbon") and Spectrum.fluid_exists("fw-latex") and Spectrum.fluid_exists("fw-yellow-flux") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-resin-polymerization",
@@ -139,7 +160,7 @@ if Spectrum.item_exists("fw-resin") and Spectrum.item_exists("fw-carbon") and Sp
     ingredients = {
       { type = "item", name = "fw-carbon", amount = 1 },
       { type = "fluid", name = "fw-latex", amount = 30 },
-      { type = "fluid", name = "fw-purple-flux", amount = 10 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 10 },
     },
     results = {
       { type = "item", name = "fw-resin", amount = 2 },
@@ -149,7 +170,7 @@ if Spectrum.item_exists("fw-resin") and Spectrum.item_exists("fw-carbon") and Sp
   }, "fw-flux-chemical-synthesis")
 end
 
-if Spectrum.item_exists("fw-rubber-sheet") and Spectrum.item_exists("fw-resin") and Spectrum.item_exists("sulfur") and Spectrum.fluid_exists("fw-latex") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
+if Spectrum.item_exists("fw-rubber-sheet") and Spectrum.item_exists("fw-resin") and Spectrum.item_exists("sulfur") and Spectrum.fluid_exists("fw-latex") and Spectrum.fluid_exists("fw-yellow-flux") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-rubber-vulcanization",
@@ -163,7 +184,7 @@ if Spectrum.item_exists("fw-rubber-sheet") and Spectrum.item_exists("fw-resin") 
       { type = "item", name = "fw-resin", amount = 1 },
       { type = "item", name = "sulfur", amount = 1 },
       { type = "fluid", name = "fw-latex", amount = 20 },
-      { type = "fluid", name = "fw-purple-flux", amount = 8 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 8 },
     },
     results = {
       { type = "item", name = "fw-rubber-sheet", amount = 5 },
@@ -173,7 +194,7 @@ if Spectrum.item_exists("fw-rubber-sheet") and Spectrum.item_exists("fw-resin") 
   }, "fw-flux-chemical-synthesis")
 end
 
-if Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.item_exists("explosives") and Spectrum.item_exists("fw-resin") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
+if Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.item_exists("explosives") and Spectrum.item_exists("fw-resin") and Spectrum.fluid_exists("water") and Spectrum.fluid_exists("fw-yellow-flux") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-blasting-gel",
@@ -187,7 +208,7 @@ if Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.item_exists("explosives
       { type = "item", name = "explosives", amount = 1 },
       { type = "item", name = "fw-resin", amount = 1 },
       { type = "fluid", name = "water", amount = 20 },
-      { type = "fluid", name = "fw-purple-flux", amount = 12 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 12 },
     },
     results = {
       { type = "fluid", name = "fw-blasting-gel", amount = 40 },
@@ -197,7 +218,7 @@ if Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.item_exists("explosives
   }, "fw-flux-reactive-slurries")
 end
 
-if Spectrum.item_exists("explosives") and Spectrum.item_exists("cliff-explosives") and Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
+if Spectrum.item_exists("explosives") and Spectrum.item_exists("cliff-explosives") and Spectrum.fluid_exists("fw-blasting-gel") and Spectrum.fluid_exists("fw-yellow-flux") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-reactive-slurry",
@@ -210,7 +231,7 @@ if Spectrum.item_exists("explosives") and Spectrum.item_exists("cliff-explosives
     ingredients = {
       { type = "item", name = "explosives", amount = 1 },
       { type = "fluid", name = "fw-blasting-gel", amount = 30 },
-      { type = "fluid", name = "fw-purple-flux", amount = 8 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 8 },
     },
     results = {
       { type = "item", name = "cliff-explosives", amount = 2 },
@@ -220,7 +241,7 @@ if Spectrum.item_exists("explosives") and Spectrum.item_exists("cliff-explosives
   }, "fw-flux-reactive-slurries")
 end
 
-if Spectrum.item_exists("battery") and Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("lead-plate") and Spectrum.item_exists("copper-plate") and Spectrum.fluid_exists("fw-purple-flux") and Spectrum.fluid_exists("fw-yellow-flux") then
+if Spectrum.item_exists("battery") and Spectrum.fluid_exists("sulfuric-acid") and Spectrum.item_exists("lead-plate") and Spectrum.item_exists("copper-plate") and Spectrum.fluid_exists("fw-yellow-flux") then
   add_recipe({
     type = "recipe",
     name = "fw-yellow-flux-battery-electrolyte",
@@ -234,7 +255,7 @@ if Spectrum.item_exists("battery") and Spectrum.fluid_exists("sulfuric-acid") an
       { type = "item", name = "lead-plate", amount = 1 },
       { type = "item", name = "copper-plate", amount = 1 },
       { type = "fluid", name = "sulfuric-acid", amount = 20 },
-      { type = "fluid", name = "fw-purple-flux", amount = 10 },
+      { type = "fluid", name = "fw-yellow-flux", amount = 10 },
     },
     results = {
       { type = "item", name = "battery", amount = 2 },

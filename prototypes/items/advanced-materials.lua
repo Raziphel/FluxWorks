@@ -1,5 +1,17 @@
 local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
 
+local function layered_item_icons(base_icon, base_size, overlay_icon, overlay_size, overlay_scale, overlay_shift)
+  return {
+    { icon = base_icon, icon_size = base_size },
+    {
+      icon = overlay_icon,
+      icon_size = overlay_size,
+      scale = overlay_scale,
+      shift = overlay_shift,
+    },
+  }
+end
+
 data:extend({
   { type = "item-subgroup", name = "fw-intermediate-structural", group = "intermediate-products", order = "fa" },
   { type = "item-subgroup", name = "fw-intermediate-electrical", group = "intermediate-products", order = "fb" },
@@ -285,7 +297,7 @@ data:extend({
   {
     type = "item",
     name = "fw-tinned-cable",
-    icon = icon_path .. "fw-solder-wire.png",
+    icon = icon_path .. "fw-cable-harness.png",
     icon_size = 1024,
     subgroup = "fw-intermediate-electrical",
     order = "ea[fw-tinned-cable]",
@@ -339,8 +351,14 @@ data:extend({
   {
     type = "item",
     name = "fw-silicon-wafer",
-    icon = icon_path .. "fw-ceramic-wafer.png",
-    icon_size = 1024,
+    icons = layered_item_icons(
+      icon_path .. "fw-ceramic-wafer.png",
+      1024,
+      icon_path .. "fw-bz-silicon.png",
+      64,
+      5.5,
+      { 120, -120 }
+    ),
     subgroup = "fw-intermediate-precision",
     order = "ea[fw-silicon-wafer]",
     stack_size = 200,

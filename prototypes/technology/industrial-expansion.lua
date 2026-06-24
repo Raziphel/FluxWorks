@@ -22,6 +22,7 @@ data:extend({
       { type = "unlock-recipe", recipe = "fw-arc-glass-recast" },
       { type = "unlock-recipe", recipe = "fw-synthesized-gunpowder" },
       { type = "unlock-recipe", recipe = "fw-synthesized-filter-core" },
+      { type = "unlock-recipe", recipe = "fw-salt-brine-clarification" },
     },
     order = "c-f[fw-industrial-expansion]",
   },

@@ -1,6 +1,6 @@
 local Recipe = require("__haul_lib__/utils/recipe")
 
--- Make base crusher play nicely with FluxWorks/BZ-style crushing on any surface.
+-- Make the base crusher stop acting precious and just work with our crushing chain everywhere.
 
 local function remove_surface_conditions(prototype)
   if prototype then
@@ -8,14 +8,14 @@ local function remove_surface_conditions(prototype)
   end
 end
 
--- Keep this category around for mods/recipes that expect it.
+-- Leave this category hanging around because other stuff will absolutely expect it.
 if not (data.raw["recipe-category"] and data.raw["recipe-category"]["basic-crushing"]) then
   data:extend({
     { type = "recipe-category", name = "basic-crushing" },
   })
 end
 
--- Open up the base crusher so it works in our full crushing chain.
+-- Open the crusher up so it can do the full job instead of the tiny vanilla version of it.
 local crusher_entity = data.raw["assembling-machine"] and data.raw["assembling-machine"]["crusher"]
 if crusher_entity then
   remove_surface_conditions(crusher_entity)
@@ -51,7 +51,7 @@ if crusher_recipe then
   end
 end
 
--- If vanilla still gates crusher on Vulcanus discovery, remove that lock.
+-- If vanilla is still being weird about locking crusher behind Vulcanus, snip that.
 local vulcanus_discovery = data.raw["technology"] and data.raw["technology"]["planet-discovery-vulcanus"]
 if vulcanus_discovery and vulcanus_discovery.effects then
   local filtered = {}

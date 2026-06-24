@@ -14,7 +14,7 @@ condenser.icon_draw_specification = { shift = {0, -0.3} }
 condenser.circuit_wire_max_distance = assembling_machine_circuit_wire_max_distance
 condenser.circuit_connector = circuit_connector_definitions["assembling-machine"]
 condenser.crafting_categories = { "fw-flux-condensing" }
-condenser.crafting_speed = 1
+condenser.crafting_speed = 0.65
 condenser.fluid_boxes = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"].fluid_boxes)
 local fluid_box_positions = {
   { position = { -1.5, -2.59 }, direction = defines.direction.north },
@@ -24,8 +24,10 @@ local fluid_box_positions = {
 }
 for index, fluid_box in pairs(condenser.fluid_boxes) do
   if type(fluid_box) == "table" then
+    fluid_box.production_type = "input"
     fluid_box.volume = 10000
     if fluid_box.pipe_connections and fluid_box.pipe_connections[1] and fluid_box_positions[index] then
+      fluid_box.pipe_connections[1].flow_direction = "input"
       fluid_box.pipe_connections[1].position = fluid_box_positions[index].position
       fluid_box.pipe_connections[1].direction = fluid_box_positions[index].direction
     end
@@ -37,7 +39,7 @@ condenser.energy_source = {
   usage_priority = "secondary-input",
   emissions_per_minute = { pollution = 0 },
 }
-condenser.energy_usage = "750kW"
+condenser.energy_usage = "2.4MW"
 condenser.ingredient_count = 40
 condenser.max_item_product_count = 40
 condenser.module_slots = 0
@@ -78,10 +80,56 @@ condenser.graphics_set = {
       },
     },
   },
+  working_visualisations = {
+    {
+      fadeout = true,
+      animation = {
+        filename = "__FluxWorksAssets__/graphics/entity/flux-condenser/quantum-computer-hr-emission-1.png",
+        width = 400,
+        height = 400,
+        frame_count = 1,
+        line_length = 1,
+        shift = util.by_pixel(0, -10),
+        scale = 0.5,
+        draw_as_glow = true,
+        blend_mode = "additive",
+      },
+    },
+    {
+      light = {
+        intensity = 0.95,
+        size = 10,
+        shift = { 0.0, -0.3 },
+        color = { r = 0.5, g = 0.85, b = 1.0 },
+      },
+    },
+    {
+      light = {
+        intensity = 0.45,
+        size = 6,
+        shift = { 1.1, 0.4 },
+        color = { r = 0.95, g = 0.35, b = 1.0 },
+      },
+    },
+  },
 }
 
-condenser.open_sound = { filename = "__base__/sound/open-close/lab-open.ogg", volume = 0.6 }
-condenser.close_sound = { filename = "__base__/sound/open-close/lab-close.ogg", volume = 0.6 }
+condenser.open_sound = { filename = "__base__/sound/open-close/electric-large-open.ogg", volume = 0.6 }
+condenser.close_sound = { filename = "__base__/sound/open-close/electric-large-close.ogg", volume = 0.6 }
+condenser.working_sound = {
+  sound = {
+    filename = "__space-age__/sound/entity/fusion/fusion-generator.ogg",
+    volume = 0.38,
+    audible_distance_modifier = 0.55,
+  },
+  fade_in_ticks = 6,
+  fade_out_ticks = 30,
+  max_sounds_per_prototype = 2,
+  sound_accents = {
+    { sound = { filename = "__space-age__/sound/entity/electromagnetic-plant/electromagnetic-plant-warmup.ogg", volume = 0.35, audible_distance_modifier = 0.25 }, frame = 1 },
+    { sound = { filename = "__space-age__/sound/entity/electromagnetic-plant/emp-electric-4.ogg", volume = 0.36, audible_distance_modifier = 0.28 }, frame = 1 },
+  },
+}
 
 
 data:extend({
@@ -110,12 +158,14 @@ data:extend({
     enabled = false,
     energy_required = 12,
     ingredients = {
-      { type = "item", name = "chemical-plant", amount = 2 },
-      { type = "item", name = "fw-condensed-flux-matrix", amount = 4 },
-      { type = "item", name = "fw-flux-resonance-cell", amount = 2 },
-      { type = "item", name = "fw-flux-phase-manifold", amount = 1 },
-      { type = "item", name = "processing-unit", amount = 20 },
-      { type = "item", name = "electric-engine-unit", amount = 10 },
+      { type = "item", name = "fw-annealed-cermet", amount = 8 },
+      { type = "item", name = "fw-resonance-substrate", amount = 4 },
+      { type = "item", name = "fw-harvester-head", amount = 2 },
+      { type = "item", name = "fw-condensed-flux-matrix", amount = 6 },
+      { type = "item", name = "fw-flux-resonance-cell", amount = 4 },
+      { type = "item", name = "fw-flux-phase-manifold", amount = 2 },
+      { type = "item", name = "fw-power-regulator", amount = 2 },
+      { type = "item", name = "fw-em-core", amount = 2 },
     },
     results = {
       { type = "item", name = "fw-flux-condenser", amount = 1 },

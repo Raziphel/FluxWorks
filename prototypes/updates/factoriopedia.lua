@@ -1,8 +1,23 @@
+local content = require("prototypes.updates.factoriopedia-content")
+
 local function set_factoriopedia_description(prototype_type, prototype_name, locale_key)
   if not (data.raw[prototype_type] and data.raw[prototype_type][prototype_name]) then
     return
   end
   data.raw[prototype_type][prototype_name].factoriopedia_description = { "fw-factoriopedia." .. locale_key }
+end
+
+local function set_factoriopedia_simulation(prototype_type, prototype_name, simulation_key)
+  if not (data.raw[prototype_type] and data.raw[prototype_type][prototype_name]) then
+    return
+  end
+
+  local simulation = content.simulations[simulation_key]
+  if not simulation then
+    return
+  end
+
+  data.raw[prototype_type][prototype_name].factoriopedia_simulation = simulation
 end
 
 -- Rocket reusability entries
@@ -29,20 +44,72 @@ set_factoriopedia_description("item", "fw-rocket-engine", "fw-rocket-engine-item
 set_factoriopedia_description("item", "fw-transformer-core", "fw-transformer-core-item")
 set_factoriopedia_description("item", "fw-flux-resonance-cell", "fw-flux-resonance-cell-item")
 set_factoriopedia_description("item", "fw-flux-phase-manifold", "fw-flux-phase-manifold-item")
+set_factoriopedia_description("item", "fw-harvester-head", "fw-harvester-head-item")
+set_factoriopedia_description("item", "fw-annealed-cermet", "fw-annealed-cermet-item")
+set_factoriopedia_description("item", "fw-resonance-substrate", "fw-resonance-substrate-item")
+set_factoriopedia_description("item", "fw-flux-harvester", "fw-flux-harvester-item")
+set_factoriopedia_description("item", "fw-arc-foundry", "fw-arc-foundry-item")
+set_factoriopedia_description("item", "fw-synthesis-plant", "fw-synthesis-plant-item")
 set_factoriopedia_description("item", "fw-flux-condenser", "fw-flux-condenser-item")
+set_factoriopedia_description("item", "fw-promethium-shard", "fw-promethium-shard-item")
+set_factoriopedia_description("item", "fw-promethium-primer", "fw-promethium-primer-item")
+set_factoriopedia_description("item", "fw-stabilized-flux-crystal", "fw-stabilized-flux-crystal-item")
+set_factoriopedia_description("item", "fw-flux-lattice", "fw-flux-lattice-item")
+set_factoriopedia_description("item", "fw-condensed-flux-matrix", "fw-condensed-flux-matrix-item")
+set_factoriopedia_description("item", "fw-flux-catalyst", "fw-flux-catalyst-item")
 set_factoriopedia_description("resource", "fw-crystalised-flux", "fw-crystalised-flux-resource")
 set_factoriopedia_description("resource", "fw-metallic-deposit", "fw-metallic-deposit-resource")
 set_factoriopedia_description("resource", "fw-mineral-deposit", "fw-mineral-deposit-resource")
 set_factoriopedia_description("resource", "fw-carbonic-deposit", "fw-carbonic-deposit-resource")
+set_factoriopedia_description("resource", "fw-promethium-impact", "fw-promethium-impact-resource")
+set_factoriopedia_description("resource", "fw-silica-vein", "fw-silica-vein-resource")
 set_factoriopedia_description("recipe", "fw-flux-quarry", "fw-flux-quarry-recipe")
+set_factoriopedia_description("recipe", "fw-flux-harvester", "fw-flux-harvester-recipe")
+set_factoriopedia_description("recipe", "fw-arc-foundry", "fw-arc-foundry-recipe")
+set_factoriopedia_description("recipe", "fw-synthesis-plant", "fw-synthesis-plant-recipe")
 set_factoriopedia_description("recipe", "fw-flux-condenser", "fw-flux-condenser-recipe")
+set_factoriopedia_description("recipe", "fw-promethium-primer", "fw-promethium-primer-recipe")
+set_factoriopedia_description("recipe", "fw-stabilized-flux-crystal", "fw-stabilized-flux-crystal-recipe")
+set_factoriopedia_description("recipe", "fw-flux-lattice", "fw-flux-lattice-recipe")
+set_factoriopedia_description("recipe", "fw-condensed-flux-matrix", "fw-condensed-flux-matrix-recipe")
 set_factoriopedia_description("mining-drill", "fw-flux-quarry", "fw-flux-quarry-entity")
+set_factoriopedia_description("assembling-machine", "fw-flux-harvester", "fw-flux-harvester-entity")
+set_factoriopedia_description("assembling-machine", "fw-arc-foundry", "fw-arc-foundry-entity")
+set_factoriopedia_description("assembling-machine", "fw-synthesis-plant", "fw-synthesis-plant-entity")
 set_factoriopedia_description("assembling-machine", "fw-flux-condenser", "fw-flux-condenser-entity")
 set_factoriopedia_description("fluid", "fw-purple-flux", "fw-purple-flux-fluid")
+set_factoriopedia_description("fluid", "fw-yellow-flux", "fw-yellow-flux-fluid")
+set_factoriopedia_description("fluid", "fw-red-flux", "fw-red-flux-fluid")
+set_factoriopedia_description("fluid", "fw-green-flux", "fw-green-flux-fluid")
 set_factoriopedia_description("technology", "fw-comminution", "fw-comminution-technology")
 set_factoriopedia_description("technology", "fw-flux-extraction", "fw-flux-extraction-technology")
 set_factoriopedia_description("technology", "fw-flux-mining-productivity", "fw-flux-mining-productivity-technology")
 set_factoriopedia_description("technology", "fw-material-foundations", "fw-material-foundations-technology")
 set_factoriopedia_description("technology", "fw-systems-integration", "fw-systems-integration-technology")
+set_factoriopedia_description("technology", "fw-harvester-systems", "fw-harvester-systems-technology")
+set_factoriopedia_description("technology", "fw-flux-metallurgy", "fw-flux-metallurgy-technology")
 set_factoriopedia_description("technology", "fw-flux-resonance", "fw-flux-resonance-technology")
+set_factoriopedia_description("technology", "fw-resonance-assemblies", "fw-resonance-assemblies-technology")
+set_factoriopedia_description("technology", "fw-flux-asteroid-harvesting", "fw-flux-asteroid-harvesting-technology")
+set_factoriopedia_description("technology", "fw-flux-field-theory", "fw-flux-field-theory-technology")
 set_factoriopedia_description("technology", "fw-flux-synthesis", "fw-flux-synthesis-technology")
+
+set_factoriopedia_simulation("resource", "fw-crystalised-flux", "fw_crystalised_flux")
+set_factoriopedia_simulation("resource", "fw-metallic-deposit", "fw_metallic_deposit")
+set_factoriopedia_simulation("resource", "fw-mineral-deposit", "fw_mineral_deposit")
+set_factoriopedia_simulation("resource", "fw-carbonic-deposit", "fw_carbonic_deposit")
+set_factoriopedia_simulation("resource", "fw-promethium-impact", "fw_promethium_impact")
+set_factoriopedia_simulation("resource", "fw-silica-vein", "fw_silica_vein")
+set_factoriopedia_simulation("item", "fw-flux-quarry", "fw_flux_quarry")
+set_factoriopedia_simulation("mining-drill", "fw-flux-quarry", "fw_flux_quarry")
+set_factoriopedia_simulation("item", "fw-flux-harvester", "fw_flux_harvester")
+set_factoriopedia_simulation("assembling-machine", "fw-flux-harvester", "fw_flux_harvester")
+set_factoriopedia_simulation("item", "fw-arc-foundry", "fw_arc_foundry")
+set_factoriopedia_simulation("assembling-machine", "fw-arc-foundry", "fw_arc_foundry")
+set_factoriopedia_simulation("item", "fw-synthesis-plant", "fw_synthesis_plant")
+set_factoriopedia_simulation("assembling-machine", "fw-synthesis-plant", "fw_synthesis_plant")
+set_factoriopedia_simulation("item", "fw-flux-condenser", "fw_flux_condenser")
+set_factoriopedia_simulation("assembling-machine", "fw-flux-condenser", "fw_flux_condenser")
+set_factoriopedia_simulation("item", "remnant-beacon", "fw_orbital_salvage")
+set_factoriopedia_simulation("radar", "remnant-beacon", "fw_orbital_salvage")
+set_factoriopedia_simulation("technology", "rocket-chunk-processing", "fw_orbital_salvage")

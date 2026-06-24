@@ -17,7 +17,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/technology/fw-ceramic-engineering.png",
     icon_size = 1024,
     prerequisites = { "fw-structural-fabrication", "stone-wall" },
-    unit = tech_unit(110, {
+    unit = tech_unit(95, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 25),
@@ -32,8 +32,8 @@ data:extend({
     name = "fw-conductive-networks",
     icon = "__FluxWorksAssets__/graphics/technology/fw-conductive-networks.png",
     icon_size = 1024,
-    prerequisites = { "fw-conductive-assembly", "fw-wafer-etching" },
-    unit = tech_unit(130, {
+    prerequisites = { "fw-conductive-assembly", "fw-electromechanical-systems" },
+    unit = tech_unit(115, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 25),
@@ -49,7 +49,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/technology/fw-optical-instrumentation.png",
     icon_size = 1024,
     prerequisites = { "fw-instrumentation", "fw-wafer-etching" },
-    unit = tech_unit(180, {
+    unit = tech_unit(155, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -65,8 +65,8 @@ data:extend({
     name = "fw-sealed-systems",
     icon = "__FluxWorksAssets__/graphics/technology/fw-sealed-systems.png",
     icon_size = 1024,
-    prerequisites = { "fw-material-refinement", "fw-electromechanical-systems" },
-    unit = tech_unit(210, {
+    prerequisites = { "fw-material-refinement", "fw-conductive-networks" },
+    unit = tech_unit(185, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -79,11 +79,30 @@ data:extend({
   },
   {
     type = "technology",
+    name = "fw-polymer-chemistry",
+    icon = "__FluxWorksAssets__/graphics/technology/fw-sealed-systems.png",
+    icon_size = 1024,
+    prerequisites = { "fw-liquid-mining", "fw-material-foundations", "sulfur-processing" },
+    unit = tech_unit(170, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+    }, 30),
+    effects = {
+      unlock("fw-resin-polymerization"),
+      unlock("fw-sulfur-bonding"),
+      unlock("fw-acid-synthesis"),
+      unlock("fw-rubber-vulcanization"),
+    },
+    order = "c-ja[fw-polymer-chemistry]",
+  },
+  {
+    type = "technology",
     name = "fw-power-regulation",
     icon = "__FluxWorksAssets__/graphics/technology/fw-power-regulation.png",
     icon_size = 1024,
-    prerequisites = { "fw-systems-integration", "fw-conductive-networks" },
-    unit = tech_unit(260, {
+    prerequisites = { "fw-systems-integration", "fw-sealed-systems" },
+    unit = tech_unit(230, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -97,11 +116,31 @@ data:extend({
   },
   {
     type = "technology",
+    name = "fw-energetic-compounds",
+    icon = "__FluxWorksAssets__/graphics/technology/fw-arc-furnace.png",
+    icon_size = 1024,
+    prerequisites = { "fw-polymer-chemistry", "fw-advanced-fabrication", "military-3", "production-science-pack" },
+    unit = tech_unit(300, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+      { "production-science-pack", 1 },
+    }, 40),
+    effects = {
+      unlock("fw-blasting-gel"),
+      unlock("fw-reactive-slurry"),
+      unlock("fw-battery-electrolyte"),
+      unlock("fw-napalm"),
+    },
+    order = "c-ka[fw-energetic-compounds]",
+  },
+  {
+    type = "technology",
     name = "fw-metallurgic-assemblies",
     icon = "__FluxWorksAssets__/graphics/technology/fw-metallurgic-assemblies.png",
     icon_size = 1024,
-    prerequisites = { "fw-industrial-expansion", "fw-ceramic-engineering" },
-    unit = tech_unit(420, {
+    prerequisites = { "fw-industrial-expansion", "fw-ceramic-engineering", "foundry", "metallurgic-science-pack" },
+    unit = tech_unit(390, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -111,7 +150,6 @@ data:extend({
     }, 40),
     effects = {
       unlock("fw-foundry-lining"),
-      unlock("fw-smelter-array"),
     },
     order = "d-f[fw-metallurgic-assemblies]",
   },
@@ -120,8 +158,8 @@ data:extend({
     name = "fw-biosystems-engineering",
     icon = "__FluxWorksAssets__/graphics/technology/fw-biosystems-engineering.png",
     icon_size = 1024,
-    prerequisites = { "fw-industrial-expansion", "fw-optical-instrumentation", "space-science-pack" },
-    unit = tech_unit(420, {
+    prerequisites = { "fw-industrial-expansion", "fw-optical-instrumentation", "biochamber", "agricultural-science-pack" },
+    unit = tech_unit(390, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -140,7 +178,7 @@ data:extend({
     name = "fw-cryogenic-control",
     icon = "__FluxWorksAssets__/graphics/technology/fw-cryogenic-control.png",
     icon_size = 1024,
-    prerequisites = { "fw-flux-catalysis", "fw-power-regulation", "space-science-pack" },
+    prerequisites = { "fw-flux-catalysis", "fw-power-regulation", "cryogenic-plant", "cryogenic-science-pack" },
     unit = tech_unit(520, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -160,7 +198,7 @@ data:extend({
     name = "fw-electromagnetic-architecture",
     icon = "__FluxWorksAssets__/graphics/technology/fw-electromagnetic-architecture.png",
     icon_size = 1024,
-    prerequisites = { "fw-flux-resonance", "fw-computational-arrays", "space-science-pack" },
+    prerequisites = { "fw-flux-resonance", "fw-computational-arrays", "electromagnetic-plant", "electromagnetic-science-pack" },
     unit = tech_unit(560, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -177,10 +215,38 @@ data:extend({
   },
   {
     type = "technology",
+    name = "fw-orbital-hardening",
+    icon = "__FluxWorksAssets__/graphics/technology/fw-rocket-chunk-processing.png",
+    icon_size = 190,
+    prerequisites = { "fw-computational-arrays", "fw-advanced-fabrication", "utility-science-pack", "space-science-pack" },
+    unit = tech_unit(500, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+      { "production-science-pack", 1 },
+      { "utility-science-pack", 1 },
+      { "space-science-pack", 1 },
+    }, 40),
+    effects = {
+      unlock("fw-rocket-avionics"),
+      unlock("fw-rocket-heatshield"),
+    },
+    order = "d-ia[fw-orbital-hardening]",
+  },
+  {
+    type = "technology",
     name = "fw-promethium-stabilization",
     icon = "__FluxWorksAssets__/graphics/technology/fw-promethium-stabilization.png",
     icon_size = 1024,
-    prerequisites = { "fw-flux-field-theory", "fw-electromagnetic-architecture", "fw-cryogenic-control" },
+    prerequisites = {
+      "fw-flux-field-theory",
+      "fw-aquilo-cryochemistry",
+      "fw-gleba-biochemistry",
+      "fw-fulgora-electrochemistry",
+      "fw-vulcanus-pyrochemistry",
+      "fw-electromagnetic-architecture",
+      "fw-cryogenic-control"
+    },
     unit = tech_unit(900, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -192,10 +258,9 @@ data:extend({
       { "agricultural-science-pack", 1 },
       { "electromagnetic-science-pack", 1 },
       { "cryogenic-science-pack", 1 },
-    }, 50),
+    }, 60),
     effects = {
-      unlock("fw-promethium-matrix"),
-      unlock("fw-rift-stabilizer"),
+      unlock("fw-promethium-primer"),
     },
     order = "d-j[fw-promethium-stabilization]",
   },

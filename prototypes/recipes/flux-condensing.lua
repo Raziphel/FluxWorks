@@ -2,28 +2,28 @@ local FluxValuation = require("prototypes.lib.flux-valuation")
 
 local function clone_flux_markup(value)
   if value <= 8 then
-    return 1.25
-  end
-  if value <= 24 then
     return 1.40
   end
-  if value <= 60 then
+  if value <= 24 then
     return 1.60
   end
-  return 1.85
+  if value <= 60 then
+    return 1.85
+  end
+  return 2.20
 end
 
 local function clone_fallback_time(value)
   if value <= 8 then
-    return 1.2
+    return 1.8
   end
   if value <= 24 then
-    return 2.4
+    return 3.5
   end
   if value <= 60 then
-    return 4.0
+    return 5.5
   end
-  return 6.0
+  return 8.5
 end
 
 local function recipe_entries(recipe, field)
@@ -104,12 +104,82 @@ local function recipe_icon_from_item(item_name)
   return nil
 end
 
+local CONDENSER_EXCLUDED_ITEMS = {
+  ["iron-ore"] = true,
+  ["copper-ore"] = true,
+  ["coal"] = true,
+  ["stone"] = true,
+  ["iron-plate"] = true,
+  ["copper-plate"] = true,
+  ["steel-plate"] = true,
+  ["stone-brick"] = true,
+  ["plastic-bar"] = true,
+  ["sulfur"] = true,
+  ["battery"] = true,
+  ["copper-cable"] = true,
+  ["electronic-circuit"] = true,
+  ["advanced-circuit"] = true,
+  ["processing-unit"] = true,
+  ["engine-unit"] = true,
+  ["electric-engine-unit"] = true,
+}
+
+local CONDENSER_EXCLUDED_SUBGROUPS = {
+  ["raw-material"] = true,
+}
+
+local function item_is_complex_enough(item_name, item, base_value)
+  if CONDENSER_EXCLUDED_ITEMS[item_name] then
+    return false
+  end
+  if item and item.subgroup and CONDENSER_EXCLUDED_SUBGROUPS[item.subgroup] then
+    return false
+  end
+  if string.match(item_name, "%-science%-pack$") then
+    return false
+  end
+  if item and item.place_result then
+    return true
+  end
+  if string.sub(item_name, 1, 3) == "fw-" then
+    return true
+  end
+  return (base_value or 0) >= 120 and (original_recipe_time(item_name) or 0) >= 3
+end
+
 local FLUX_COLOR_TO_FLUID = {
   purple = "fw-purple-flux",
   yellow = "fw-yellow-flux",
   red = "fw-red-flux",
   green = "fw-green-flux",
 }
+
+local function normalized_clone_breakdown(flux_breakdown)
+  local breakdown = {}
+  local total = 0
+
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    local amount = math.max(0, (flux_breakdown and flux_breakdown[color]) or 0)
+    breakdown[color] = amount
+    total = total + amount
+  end
+
+  if total <= 0 then
+    for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+      breakdown[color] = 1
+    end
+    return breakdown, #FluxValuation.COLOR_ORDER
+  end
+
+  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
+    -- Every condenser recipe should consume all four spectra, even if the
+    -- valued item leans heavily toward one branch.
+    breakdown[color] = breakdown[color] + 1
+    total = total + 1
+  end
+
+  return breakdown, total
+end
 
 local function round_breakdown_to_total(breakdown, target_total)
   local rounded = {
@@ -152,20 +222,11 @@ end
 
 local function scaled_flux_ingredients(flux_breakdown, required_flux)
   local ingredients = {}
-  local total = 0
-  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    total = total + (flux_breakdown[color] or 0)
-  end
-
-  if total <= 0 then
-    return {
-      { type = "fluid", name = "fw-purple-flux", amount = required_flux },
-    }
-  end
+  local normalized_breakdown, total = normalized_clone_breakdown(flux_breakdown)
 
   local scaled = {}
   for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    scaled[color] = ((flux_breakdown[color] or 0) / total) * required_flux
+    scaled[color] = ((normalized_breakdown[color] or 0) / total) * required_flux
   end
   local rounded = round_breakdown_to_total(scaled, required_flux)
 
@@ -185,22 +246,17 @@ end
 
 local function flux_ingredient_tags(flux_breakdown)
   local tags = {}
-  local total = 0
+  local normalized_breakdown = normalized_clone_breakdown(flux_breakdown)
   for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    local amount = flux_breakdown[color] or 0
-    total = total + amount
-    if amount > 0 then
+    if (normalized_breakdown[color] or 0) > 0 then
       table.insert(tags, "[fluid=" .. FLUX_COLOR_TO_FLUID[color] .. "]")
     end
-  end
-  if total <= 0 then
-    return "[fluid=fw-purple-flux]"
   end
   return table.concat(tags)
 end
 
 local function make_clone_recipe(item_name, item, flux_value, flux_breakdown)
-  local energy = ((item.subgroup ~= "raw-resource" and original_recipe_time(item_name)) or clone_fallback_time(flux_value)) * 6
+  local energy = ((item.subgroup ~= "raw-resource" and original_recipe_time(item_name)) or clone_fallback_time(flux_value)) * 8
   local required_flux = math.max(1, math.floor((flux_value * clone_flux_markup(flux_value)) + 0.5))
   local ingredients = scaled_flux_ingredients(flux_breakdown or {}, required_flux)
   table.insert(ingredients, { type = "item", name = item_name, amount = 1 })
@@ -256,9 +312,11 @@ local resolved_breakdowns = FluxValuation.resolve_item_color_amounts(convertible
 for item_name, item in pairs(convertible_items) do
   local base_value = resolved_values[item_name] or FluxValuation.estimate_flux_value(item)
   local flux_breakdown = resolved_breakdowns[item_name]
-  local clone_recipe = make_clone_recipe(item_name, item, base_value, flux_breakdown)
-  table.insert(generated, clone_recipe)
-  table.insert(generated_names, clone_recipe.name)
+  if item_is_complex_enough(item_name, item, base_value) then
+    local clone_recipe = make_clone_recipe(item_name, item, base_value, flux_breakdown)
+    table.insert(generated, clone_recipe)
+    table.insert(generated_names, clone_recipe.name)
+  end
 end
 
 data:extend(generated)

@@ -1,13 +1,46 @@
--- Resource placement rules for FluxWorks.
--- Flux can appear everywhere; ore deposits stay on Nauvis.
+-- Worldgen notes for the mess we are making here.
+-- Flux and promethium can show up anywhere, but the mixed deposits and weird specialty bits
+-- should still lean toward planets that feel right for them.
 local global_resource_names = {
   "fw-crystalised-flux",
 }
+
+if data.raw.resource and data.raw.resource["fw-promethium-impact"] then
+  table.insert(global_resource_names, "fw-promethium-impact")
+end
 
 local nauvis_resource_names = {
   "fw-metallic-deposit",
   "fw-mineral-deposit",
   "fw-carbonic-deposit",
+}
+
+local planet_specific_resource_names = {
+  aquilo = {
+    "fw-salt",
+    "fw-mineral-deposit",
+  },
+  gleba = {
+    "fw-silica-vein",
+    "fw-carbonic-deposit",
+  },
+  fulgora = {
+    "fw-metallic-deposit",
+  },
+  vulcanus = {
+    "fw-mineral-deposit",
+    "fw-carbonic-deposit",
+  },
+}
+
+local preset_control_defaults = {
+  ["fw-metallic-deposit"] = { frequency = "normal", size = "big", richness = "very-good" },
+  ["fw-mineral-deposit"] = { frequency = "normal", size = "normal", richness = "very-good" },
+  ["fw-carbonic-deposit"] = { frequency = "normal", size = "normal", richness = "very-good" },
+  ["fw-crystalised-flux"] = { frequency = "normal", size = "normal", richness = "normal" },
+  ["fw-promethium-impact"] = { frequency = "very-low", size = "small", richness = "good" },
+  ["fw-silica-vein"] = { frequency = "very-low", size = "small", richness = "normal" },
+  ["fw-salt"] = { frequency = "very-low", size = "small", richness = "normal" },
 }
 
 local legacy_hidden_controls = {
@@ -73,7 +106,13 @@ if data.raw.planet and data.raw.planet["nauvis"] then
   end
 end
 
--- Keep worldgen preset sliders populated so the UI stays consistent.
+for planet_name, resource_names in pairs(planet_specific_resource_names) do
+  if data.raw.planet and data.raw.planet[planet_name] then
+    register_resources_on_planet(data.raw.planet[planet_name], resource_names)
+  end
+end
+
+-- Keep the preset sliders filled out so the worldgen UI does not look busted.
 for _, preset_group in pairs(data.raw["map-gen-presets"] or {}) do
   if type(preset_group) == "table" then
     for _, preset in pairs(preset_group) do
@@ -84,10 +123,15 @@ for _, preset_group in pairs(data.raw["map-gen-presets"] or {}) do
           preset.basic_settings.starting_area = "normal"
 
           for _, resource_name in pairs(global_resource_names) do
-            controls[resource_name] = controls[resource_name] or { frequency = "normal", size = "normal", richness = "normal" }
+            controls[resource_name] = controls[resource_name] or table.deepcopy(preset_control_defaults[resource_name] or { frequency = "normal", size = "normal", richness = "normal" })
           end
           for _, resource_name in pairs(nauvis_resource_names) do
-            controls[resource_name] = controls[resource_name] or { frequency = "normal", size = "normal", richness = "normal" }
+            controls[resource_name] = controls[resource_name] or table.deepcopy(preset_control_defaults[resource_name] or { frequency = "normal", size = "normal", richness = "normal" })
+          end
+          for _, resource_names in pairs(planet_specific_resource_names) do
+            for _, resource_name in pairs(resource_names) do
+              controls[resource_name] = controls[resource_name] or table.deepcopy(preset_control_defaults[resource_name] or { frequency = "normal", size = "normal", richness = "normal" })
+            end
           end
           for _, resource_name in pairs(legacy_hidden_controls) do
             controls[resource_name] = nil
@@ -115,16 +159,19 @@ if default_preset_group then
       starting_area = "normal",
       autoplace_controls = {
         ["enemy-base"] = { frequency = "very-low", size = "very-low", richness = "very-low" },
-        ["fw-metallic-deposit"] = { frequency = "normal", size = "big", richness = "very-good" },
-        ["fw-mineral-deposit"] = { frequency = "normal", size = "normal", richness = "very-good" },
-        ["fw-carbonic-deposit"] = { frequency = "normal", size = "normal", richness = "very-good" },
-        ["fw-crystalised-flux"] = { frequency = "normal", size = "normal", richness = "normal" },
       },
     },
   }
+
+  for resource_name, defaults in pairs(preset_control_defaults) do
+    if data.raw.resource and data.raw.resource[resource_name] then
+      default_preset_group["fluxworks-default"].basic_settings.autoplace_controls[resource_name] = table.deepcopy(defaults)
+    end
+  end
 end
 
--- Hide legacy standalone ore sliders globally so only mixed-deposit sliders are shown.
+-- Hide the old standalone ore sliders.
+-- If we are doing mixed deposits, the UI should commit to the bit.
 for _, resource_name in pairs(legacy_hidden_controls) do
   local control = data.raw["autoplace-control"] and data.raw["autoplace-control"][resource_name]
   if control then
