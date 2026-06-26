@@ -402,9 +402,19 @@ end
 move_item_and_recipe("fw-rocket-avionics", "space-material")
 move_item_and_recipe("fw-rocket-heatshield", "space-material")
 move_item_and_recipe("fw-rocket-engine", "space-material")
+move_item_and_recipe("incomplete-rocket-part", "space-material")
 move_item_and_recipe("remnant-beacon", "space-platform")
 
 if organize_flux then
+  for _, name in pairs({
+  "fw-rift-coupler",
+  "fw-phase-vault",
+  "fw-spectral-reservoir",
+  "fw-rift-exchange-gate",
+  }) do
+    move_item_and_recipe(name, "fw-flux-exchange")
+  end
+
   for _, name in pairs({
   "fw-flux-catalyst",
   "fw-stabilized-flux-crystal",

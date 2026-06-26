@@ -158,7 +158,7 @@ data:extend({
   {
     type = "item",
     name = "fw-logic-matrix",
-    icon = icon_path .. "fw-logic-matrix.png",
+    icon = "__FluxWorks__/graphics/icons/items/fw-logic-matrix.png",
     icon_size = 1024,
     subgroup = "fw-intermediate-precision",
     order = "o[fw-logic-matrix]",
@@ -179,7 +179,7 @@ data:extend({
     type = "item",
     name = "fw-promethium-primer",
     icons = {
-      { icon = icon_path .. "fw-logic-matrix.png", icon_size = 1024, tint = { r = 0.94, g = 0.82, b = 1.00, a = 1 } },
+      { icon = "__FluxWorks__/graphics/icons/items/fw-logic-matrix.png", icon_size = 1024, tint = { r = 0.94, g = 0.82, b = 1.00, a = 1 } },
       { icon = icon_path .. "fw-promethium-matrix.png", icon_size = 1024, scale = 0.55, shift = { 120, -120 }, tint = { r = 1.00, g = 0.86, b = 1.00, a = 0.95 } },
     },
     subgroup = "fw-flux-systems",

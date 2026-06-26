@@ -359,42 +359,6 @@ data:extend({
   },
   {
     type = "recipe",
-    name = "fw-fulgora-scrap-sorting",
-    icon = "__space-age__/graphics/icons/scrap.png",
-    icon_size = 64,
-    category = "chemistry",
-    subgroup = "fw-chemistry-processes",
-    order = "f[late-chemistry]-f[fulgora-scrap-sorting]",
-    enabled = false,
-    energy_required = 9.0,
-    allow_productivity = true,
-    ingredients = {
-      { type = "item", name = "scrap", amount = 6 },
-      { type = "item", name = "fw-inline-filter", amount = 1 },
-      { type = "fluid", name = "electrolyte", amount = 20 },
-      { type = "fluid", name = "fw-yellow-flux", amount = 14 },
-      { type = "fluid", name = "fw-red-flux", amount = 10 },
-    },
-    results = {
-      { type = "item", name = "bauxite-ore", amount = 2 },
-      { type = "item", name = "silicon-ore", amount = 2 },
-      { type = "item", name = "tin-ore", amount = 1 },
-      { type = "item", name = "lead-ore", amount = 1 },
-      { type = "item", name = "aluminum-plate", amount = 1, probability = 0.8 },
-      { type = "item", name = "silicon", amount = 1, probability = 0.7 },
-      { type = "item", name = "fw-solder-alloy", amount = 1, probability = 0.55 },
-      { type = "item", name = "fw-ceramic-insulator", amount = 1, probability = 0.5 },
-      { type = "item", name = "fw-bearing", amount = 1, probability = 0.4 },
-      { type = "item", name = "fw-capacitor", amount = 1, probability = 0.35 },
-      { type = "item", name = "fw-light-frame", amount = 1, probability = 0.18 },
-      { type = "item", name = "fw-sensor-package", amount = 1, probability = 0.16 },
-      { type = "item", name = "fw-transformer-core", amount = 1, probability = 0.1 },
-      { type = "item", name = "holmium-ore", amount = 1, probability = 0.35 },
-      { type = "item", name = "fw-inline-filter", amount = 1, probability = 0.75 },
-    },
-  },
-  {
-    type = "recipe",
     name = "fw-fulgora-static-mesh",
     icons = data.raw.item["fw-fulgora-static-mesh"].icons,
     category = "chemistry",
@@ -553,7 +517,6 @@ add_unlock("fw-aquilo-cryochemistry", "fw-lithium-adsorption")
 add_unlock("fw-aquilo-cryochemistry", "fw-fluoroketone-synthesis")
 add_unlock("fw-aquilo-cryochemistry", "fw-aquilo-cryogel")
 add_unlock("fw-gleba-biochemistry", "fw-gleba-spore-resin")
-add_unlock("fw-fulgora-electrochemistry", "fw-fulgora-scrap-sorting")
 add_unlock("fw-fulgora-electrochemistry", "fw-fulgora-static-mesh")
 add_unlock("fw-vulcanus-pyrochemistry", "fw-vulcanus-slag-cermet")
 add_unlock("fw-superconductive-systems", "fw-superconductor-bath")

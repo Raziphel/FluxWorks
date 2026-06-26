@@ -10,6 +10,8 @@ local function recipe_icon(item_name)
   }
 end
 
+local K = 1000
+
 data:extend({
   {
     type = "recipe",
@@ -342,7 +344,7 @@ data:extend({
     icons = recipe_icon("fw-promethium-primer").icons,
     category = "fw-flux-condensing",
     enabled = false,
-    energy_required = 8.0,
+    energy_required = 20.0,
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-promethium-shard", amount = 6 },
@@ -351,10 +353,10 @@ data:extend({
       { type = "item", name = "fw-aquilo-cryogel", amount = 1 },
       { type = "item", name = "fw-gleba-spore-resin", amount = 1 },
       { type = "item", name = "fw-flux-catalyst", amount = 1 },
-      { type = "fluid", name = "fw-purple-flux", amount = 32 },
-      { type = "fluid", name = "fw-yellow-flux", amount = 26 },
-      { type = "fluid", name = "fw-red-flux", amount = 42 },
-      { type = "fluid", name = "fw-green-flux", amount = 20 },
+      { type = "fluid", name = "fw-purple-flux", amount = 40 * K },
+      { type = "fluid", name = "fw-yellow-flux", amount = 30 * K },
+      { type = "fluid", name = "fw-red-flux", amount = 60 * K },
+      { type = "fluid", name = "fw-green-flux", amount = 25 * K },
     },
     results = {
       { type = "item", name = "fw-promethium-primer", amount = 1 },
@@ -368,7 +370,7 @@ data:extend({
     icon_size = recipe_icon("fw-promethium-matrix").icon_size,
     category = "fw-flux-condensing",
     enabled = false,
-    energy_required = 11.0,
+    energy_required = 36.0,
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "promethium-asteroid-chunk", amount = 1 },
@@ -379,10 +381,10 @@ data:extend({
       { type = "item", name = "fw-logic-matrix", amount = 1 },
       { type = "item", name = "fw-fulgora-static-mesh", amount = 1 },
       { type = "item", name = "fw-vulcanus-slag-cermet", amount = 1 },
-      { type = "fluid", name = "fw-purple-flux", amount = 64 },
-      { type = "fluid", name = "fw-yellow-flux", amount = 52 },
-      { type = "fluid", name = "fw-red-flux", amount = 76 },
-      { type = "fluid", name = "fw-green-flux", amount = 30 },
+      { type = "fluid", name = "fw-purple-flux", amount = 120 * K },
+      { type = "fluid", name = "fw-yellow-flux", amount = 90 * K },
+      { type = "fluid", name = "fw-red-flux", amount = 180 * K },
+      { type = "fluid", name = "fw-green-flux", amount = 70 * K },
     },
     results = { { type = "item", name = "fw-promethium-matrix", amount = 1 } },
   },
@@ -393,7 +395,7 @@ data:extend({
     icon_size = recipe_icon("fw-rift-stabilizer").icon_size,
     category = "fw-flux-condensing",
     enabled = false,
-    energy_required = 14.0,
+    energy_required = 60.0,
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-flux-phase-manifold", amount = 1 },
@@ -405,10 +407,10 @@ data:extend({
       { type = "item", name = "fw-gleba-spore-resin", amount = 1 },
       { type = "item", name = "fw-fulgora-static-mesh", amount = 1 },
       { type = "item", name = "fw-vulcanus-slag-cermet", amount = 1 },
-      { type = "fluid", name = "fw-purple-flux", amount = 110 },
-      { type = "fluid", name = "fw-yellow-flux", amount = 84 },
-      { type = "fluid", name = "fw-red-flux", amount = 120 },
-      { type = "fluid", name = "fw-green-flux", amount = 70 },
+      { type = "fluid", name = "fw-purple-flux", amount = 350 * K },
+      { type = "fluid", name = "fw-yellow-flux", amount = 280 * K },
+      { type = "fluid", name = "fw-red-flux", amount = 520 * K },
+      { type = "fluid", name = "fw-green-flux", amount = 210 * K },
     },
     results = { { type = "item", name = "fw-rift-stabilizer", amount = 1 } },
   },

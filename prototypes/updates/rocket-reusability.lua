@@ -281,7 +281,7 @@ local reusable_rocket_components = {
     {
         type = "item",
         name = "fw-rocket-avionics",
-        icon = "__FluxWorksAssets__/graphics/icons/items/reusable-rocket-avionics.png",
+        icon = "__FluxWorks__/graphics/icons/items/fw-rocket-avionics.png",
         icon_size = 64,
         icon_mipmaps = 0,
         subgroup = "fw-intermediate-aerospace",
@@ -304,7 +304,7 @@ local reusable_rocket_component_recipes = {
     {
         type = "recipe",
         name = "fw-rocket-avionics",
-        icon = "__FluxWorksAssets__/graphics/icons/items/reusable-rocket-avionics.png",
+        icon = "__FluxWorks__/graphics/icons/items/fw-rocket-avionics.png",
         icon_size = 64,
         icon_mipmaps = 0,
         energy_required = 8,

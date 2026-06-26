@@ -10,6 +10,7 @@ local enable_core_material_replacements = Startup.enabled("fw-enable-core-materi
 local enable_combat_recipe_integration = Startup.enabled("fw-enable-combat-recipe-integration", true)
 local enable_orbital_and_planetary_integration = Startup.enabled("fw-enable-orbital-and-planetary-integration", true)
 local enable_machine_part_rehoming = Startup.enabled("fw-enable-machine-part-rehoming", true)
+local enable_incomplete_rocket_parts = Startup.enabled("enable-incomplete-rocket-parts", true)
 
 local function ingredient_name(ingredient)
   return ingredient.name or ingredient[1]
@@ -529,6 +530,33 @@ if enable_orbital_and_planetary_integration then
     "cryogenic-science-pack",
     "promethium-science-pack",
   }, "fw-capacitor", 1)
+
+  if enable_incomplete_rocket_parts then
+    for _, recipe_name in ipairs({
+      "space-platform-hub",
+      "cargo-landing-pad",
+    }) do
+      remove_recipe_ingredient(recipe_name, "fw-rocket-engine")
+      remove_recipe_ingredient(recipe_name, "fw-rocket-avionics")
+      remove_recipe_ingredient(recipe_name, "fw-rocket-heatshield")
+      patch_recipe_ingredients(recipe_name, "incomplete-rocket-part", 1)
+    end
+
+    remove_recipe_ingredient("space-platform-starter-pack", "fw-rocket-avionics")
+    remove_recipe_ingredient("space-platform-starter-pack", "fw-rocket-heatshield")
+    patch_recipe_ingredients("space-platform-starter-pack", "incomplete-rocket-part", 1)
+  end
+
+  patch_many_recipes({
+    "cryogenic-plant",
+    "fusion-generator",
+    "fusion-reactor",
+  }, "fw-spectral-reservoir", 1)
+
+  patch_many_recipes({
+    "space-platform-hub",
+    "cargo-bay",
+  }, "fw-rift-exchange-gate", 1)
 
   patch_many_recipes({
     "fusion-generator",

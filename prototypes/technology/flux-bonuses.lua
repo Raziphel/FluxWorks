@@ -299,7 +299,6 @@ data:extend({
     ),
     0.08,
     {
-      "fw-fulgora-scrap-sorting",
       "fw-fulgora-static-mesh",
     },
     "e-l[fw-fulgora-electrochemistry-productivity]"

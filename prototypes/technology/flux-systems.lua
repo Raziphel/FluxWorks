@@ -522,6 +522,94 @@ data:extend({
   },
   {
     type = "technology",
+    name = "fw-deep-phase-storage",
+    icon = "__FluxWorks__/graphics/technology/deep-storage-unit/memory-unit.png",
+    icon_size = 128,
+    prerequisites = { "fw-flux-synthesis", "fw-superconductive-systems", "fw-electromagnetic-architecture", "fw-flux-phase-engineering", "fw-fusion-lattices", "fw-flux-convergence" },
+    unit = {
+      count = 3200,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+        { "production-science-pack", 1 },
+        { "utility-science-pack", 1 },
+        { "space-science-pack", 1 },
+        { "agricultural-science-pack", 1 },
+        { "metallurgic-science-pack", 1 },
+        { "electromagnetic-science-pack", 1 },
+        { "cryogenic-science-pack", 1 },
+      },
+      time = 90,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-phase-anchor" },
+      { type = "unlock-recipe", recipe = "fw-entanglement-core" },
+      { type = "unlock-recipe", recipe = "fw-compression-baffle" },
+      { type = "unlock-recipe", recipe = "fw-phase-vault" },
+    },
+    order = "d-ta[fw-deep-phase-storage]",
+  },
+  {
+    type = "technology",
+    name = "fw-spectral-fluid-retention",
+    icon = "__FluxWorks__/graphics/technology/fluid-memory-storage/fluid-memory-storage.png",
+    icon_size = 128,
+    prerequisites = { "fw-deep-phase-storage", "fw-aquilo-cryochemistry", "fw-flux-thermal-networks", "fw-flux-chemical-synthesis", "fw-fusion-lattices", "fw-flux-convergence" },
+    unit = {
+      count = 4200,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+        { "production-science-pack", 1 },
+        { "utility-science-pack", 1 },
+        { "space-science-pack", 1 },
+        { "agricultural-science-pack", 1 },
+        { "metallurgic-science-pack", 1 },
+        { "electromagnetic-science-pack", 1 },
+        { "cryogenic-science-pack", 1 },
+      },
+      time = 105,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-reservoir-lining" },
+      { type = "unlock-recipe", recipe = "fw-thermal-phase-gasket" },
+      { type = "unlock-recipe", recipe = "fw-spectral-reservoir" },
+    },
+    order = "d-tb[fw-spectral-fluid-retention]",
+  },
+  {
+    type = "technology",
+    name = "fw-rift-logistics",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-rift-stabilizer.png",
+    icon_size = 1024,
+    prerequisites = { "fw-flux-convergence", "fw-fusion-lattices", "fw-rift-harmonics", "fw-spectral-fluid-retention", "fw-promethium-stabilization", "promethium-science-pack" },
+    unit = {
+      count = 6000,
+      ingredients = {
+        { "automation-science-pack", 1 },
+        { "logistic-science-pack", 1 },
+        { "chemical-science-pack", 1 },
+        { "production-science-pack", 1 },
+        { "utility-science-pack", 1 },
+        { "space-science-pack", 1 },
+        { "metallurgic-science-pack", 1 },
+        { "agricultural-science-pack", 1 },
+        { "electromagnetic-science-pack", 1 },
+        { "cryogenic-science-pack", 1 },
+        { "promethium-science-pack", 1 },
+      },
+      time = 120,
+    },
+    effects = {
+      { type = "unlock-recipe", recipe = "fw-rift-coupler" },
+      { type = "unlock-recipe", recipe = "fw-rift-exchange-gate" },
+    },
+    order = "d-tc[fw-rift-logistics]",
+  },
+  {
+    type = "technology",
     name = "fw-flux-overdrive",
     icon = "__FluxWorksAssets__/graphics/technology/fw-promethium-stabilization.png",
     icon_size = 1024,
@@ -789,6 +877,24 @@ Tech:get("fw-flux-phase-engineering")
   :setColors("RGBPYWFC")
   :setTime(65)
   :setPrerequisites({ "fw-flux-field-theory", "fw-flux-resonance", "fw-cryogenic-control", "fw-flux-synthesis" })
+
+Tech:get("fw-deep-phase-storage")
+  :setCost(1280)
+  :setColors("RGBPYWEC")
+  :setTime(60)
+  :setPrerequisites({ "fw-flux-synthesis", "fw-superconductive-systems", "fw-electromagnetic-architecture", "fw-flux-phase-engineering" })
+
+Tech:get("fw-spectral-fluid-retention")
+  :setCost(1420)
+  :setColors("RGBPYWEC")
+  :setTime(65)
+  :setPrerequisites({ "fw-deep-phase-storage", "fw-aquilo-cryochemistry", "fw-flux-thermal-networks", "fw-flux-chemical-synthesis" })
+
+Tech:get("fw-rift-logistics")
+  :setCost(1760)
+  :setColors("RGBPYWVEACP")
+  :setTime(70)
+  :setPrerequisites({ "fw-flux-convergence", "fw-fusion-lattices", "fw-rift-harmonics", "promethium-science-pack" })
 
 Tech:get("fw-flux-overdrive")
   :setCost(1320)
