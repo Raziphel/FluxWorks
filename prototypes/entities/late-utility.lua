@@ -37,7 +37,7 @@ circuit_wire_connection_points = {
 }
 
 local nothing = {
-  filename = "__FluxWorks__/graphics/late-utility/deep-storage-unit/nothing.png",
+  filename = "__FluxWorksAssets__/graphics/late-utility/deep-storage-unit/nothing.png",
   priority = "extra-high",
   size = 1,
 }
@@ -45,18 +45,18 @@ local nothing = {
 local phase_vault = {
   type = "container",
   name = "fw-phase-vault",
-  icon = "__FluxWorks__/graphics/icons/items/deep-storage-unit/memory-unit.png",
+  icon = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/memory-unit.png",
   icon_size = 64,
   icon_mipmaps = 4,
   inventory_size = 300,
   picture = {
-    filename = "__FluxWorks__/graphics/late-utility/deep-storage-unit/memory-unit.png",
+    filename = "__FluxWorksAssets__/graphics/late-utility/deep-storage-unit/memory-unit.png",
     height = 256,
     width = 256,
     priority = "high",
     shift = { 0.59375, 0 },
     hr_version = {
-      filename = "__FluxWorks__/graphics/late-utility/deep-storage-unit/hr-memory-unit.png",
+      filename = "__FluxWorksAssets__/graphics/late-utility/deep-storage-unit/hr-memory-unit.png",
       height = 512,
       width = 512,
       priority = "high",
@@ -86,7 +86,7 @@ local phase_vault = {
 local spectral_reservoir = {
   type = "storage-tank",
   name = "fw-spectral-reservoir",
-  icon = "__FluxWorks__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
+  icon = "__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
   icon_size = 64,
   icon_mipmaps = 4,
   fluid_box = {
@@ -107,7 +107,7 @@ local spectral_reservoir = {
   window_bounding_box = { { -1, -1 }, { 1, 1 } },
   pictures = {
     picture = {
-      filename = "__FluxWorks__/graphics/late-utility/fluid-memory-storage/fluid-memory-unit.png",
+      filename = "__FluxWorksAssets__/graphics/late-utility/fluid-memory-storage/fluid-memory-unit.png",
       priority = "high",
       size = { 256, 256 },
       shift = { 0.25, -0.0625 },
@@ -126,11 +126,11 @@ local spectral_reservoir = {
 local rift_exchange_gate = {
   type = "container",
   name = "fw-rift-exchange-gate",
-  icon = "__FluxWorks__/graphics/icons/items/late-utility/fw-rift-exchange-gate.png",
+  icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-exchange-gate.png",
   icon_size = 1024,
   inventory_size = 48,
   picture = {
-    filename = "__FluxWorks__/graphics/late-utility/rift-exchange-gate/rift-exchange-gate.png",
+    filename = "__FluxWorksAssets__/graphics/late-utility/rift-exchange-gate/rift-exchange-gate.png",
     width = 1024,
     height = 1024,
     shift = util.by_pixel(0, -6),
@@ -160,12 +160,12 @@ data:extend({
     name = "fw-phase-vault-packed",
     icons = {
       {
-        icon = "__FluxWorks__/graphics/icons/items/deep-storage-unit/memory-unit.png",
+        icon = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/memory-unit.png",
         icon_size = 64,
         scale = 0.5,
       },
       {
-        icon = "__FluxWorks__/graphics/icons/items/deep-storage-unit/packing-tape-50.png",
+        icon = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/packing-tape-50.png",
         icon_size = 64,
         icon_mipmaps = 4,
       },
@@ -185,12 +185,12 @@ data:extend({
     name = "fw-spectral-reservoir-packed",
     icons = {
       {
-        icon = "__FluxWorks__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
+        icon = "__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
         icon_size = 64,
         scale = 0.5,
       },
       {
-        icon = "__FluxWorks__/graphics/icons/items/fluid-memory-storage/packing-tape-50.png",
+        icon = "__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/packing-tape-50.png",
         icon_size = 64,
         icon_mipmaps = 4,
       },
@@ -208,7 +208,7 @@ data:extend({
   {
     type = "animation",
     name = "fw-spectral-reservoir-fluid-animation",
-    filename = "__FluxWorks__/graphics/late-utility/fluid-memory-storage/fluid-background.png",
+    filename = "__FluxWorksAssets__/graphics/late-utility/fluid-memory-storage/fluid-background.png",
     priority = "extra-high",
     size = { 256, 256 },
     shift = { 0.25, -0.0625 },
@@ -232,14 +232,14 @@ data:extend({
   {
     type = "sprite",
     name = "fw-bulk-insert",
-    filename = "__FluxWorks__/graphics/icons/items/deep-storage-unit/insert.png",
+    filename = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/insert.png",
     size = { 100, 100 },
     flags = { "gui-icon" },
   },
   {
     type = "sprite",
     name = "fw-bulk-extract",
-    filename = "__FluxWorks__/graphics/icons/items/deep-storage-unit/extract.png",
+    filename = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/extract.png",
     size = { 100, 100 },
     flags = { "gui-icon" },
   },
@@ -258,7 +258,7 @@ data:extend({
     collision_mask = { layers = {} },
     selectable_in_game = false,
     remove_decoratives = "false",
-    icon = "__FluxWorks__/graphics/icons/items/deep-storage-unit/memory-unit.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/memory-unit.png",
     icon_size = 64,
     icon_mipmaps = 4,
     quality_indicator_scale = 0,
@@ -286,7 +286,7 @@ data:extend({
     collision_mask = { layers = {} },
     selectable_in_game = false,
     remove_decoratives = "false",
-    icon = "__FluxWorks__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
     icon_size = 64,
     icon_mipmaps = 4,
     quality_indicator_scale = 0,
@@ -330,7 +330,7 @@ data:extend({
   {
     type = "constant-combinator",
     name = "fw-phase-vault-combinator",
-    icon = "__FluxWorks__/graphics/icons/items/deep-storage-unit/memory-unit.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/memory-unit.png",
     icon_size = 64,
     icon_mipmaps = 4,
     quality_indicator_scale = 0,
@@ -360,7 +360,7 @@ data:extend({
   {
     type = "constant-combinator",
     name = "fw-spectral-reservoir-combinator",
-    icon = "__FluxWorks__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
     icon_size = 64,
     icon_mipmaps = 4,
     quality_indicator_scale = 0,

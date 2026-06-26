@@ -1,5 +1,5 @@
 local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
-local late_utility_icon_path = "__FluxWorks__/graphics/icons/items/late-utility/"
+local late_utility_icon_path = "__FluxWorksAssets__/graphics/icons/items/late-utility/"
 
 data:extend({
   {
@@ -158,7 +158,7 @@ data:extend({
   {
     type = "item",
     name = "fw-phase-vault",
-    icon = "__FluxWorks__/graphics/icons/items/deep-storage-unit/memory-unit.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/memory-unit.png",
     icon_size = 64,
     icon_mipmaps = 4,
     subgroup = "fw-flux-exchange",
@@ -169,7 +169,7 @@ data:extend({
   {
     type = "item",
     name = "fw-spectral-reservoir",
-    icon = "__FluxWorks__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
     icon_size = 64,
     icon_mipmaps = 4,
     subgroup = "fw-flux-exchange",

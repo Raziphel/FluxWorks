@@ -523,7 +523,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-deep-phase-storage",
-    icon = "__FluxWorks__/graphics/technology/deep-storage-unit/memory-unit.png",
+    icon = "__FluxWorksAssets__/graphics/technology/deep-storage-unit/memory-unit.png",
     icon_size = 128,
     prerequisites = { "fw-flux-synthesis", "fw-superconductive-systems", "fw-electromagnetic-architecture", "fw-flux-phase-engineering", "fw-fusion-lattices", "fw-flux-convergence" },
     unit = {
@@ -553,7 +553,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-spectral-fluid-retention",
-    icon = "__FluxWorks__/graphics/technology/fluid-memory-storage/fluid-memory-storage.png",
+    icon = "__FluxWorksAssets__/graphics/technology/fluid-memory-storage/fluid-memory-storage.png",
     icon_size = 128,
     prerequisites = { "fw-deep-phase-storage", "fw-aquilo-cryochemistry", "fw-flux-thermal-networks", "fw-flux-chemical-synthesis", "fw-fusion-lattices", "fw-flux-convergence" },
     unit = {
