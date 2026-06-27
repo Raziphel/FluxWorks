@@ -430,7 +430,6 @@ if organize_flux then
     move_item_and_recipe(name, "fw-flux-systems")
   end
   move_recipe("fw-flux-asteroid-refining", "fw-flux-systems")
-  move_recipe("fw-flux-asteroid-deep-refining", "fw-flux-systems")
   move_recipe("fw-flux-metallic-synthesis", "fw-flux-systems")
   move_recipe("fw-rift-seed-crystallization", "fw-flux-systems")
   move_recipe("fw-condensed-flux-matrix", "fw-flux-condensing-core")

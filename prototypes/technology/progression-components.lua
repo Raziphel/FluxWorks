@@ -80,7 +80,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-polymer-chemistry",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-sealed-systems.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-rubber-sheet.png",
     icon_size = 1024,
     prerequisites = { "fw-liquid-mining", "fw-material-foundations", "sulfur-processing" },
     unit = tech_unit(170, {
@@ -117,8 +117,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-energetic-compounds",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-arc-furnace.png",
-    icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
+    icon_size = 128,
     prerequisites = { "fw-polymer-chemistry", "fw-advanced-fabrication", "military-3", "production-science-pack" },
     unit = tech_unit(300, {
       { "automation-science-pack", 1 },
@@ -216,8 +216,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-orbital-hardening",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-rocket-chunk-processing.png",
-    icon_size = 190,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-avionics.png",
+    icon_size = 1024,
     prerequisites = { "fw-computational-arrays", "fw-advanced-fabrication", "utility-science-pack", "space-science-pack" },
     unit = tech_unit(500, {
       { "automation-science-pack", 1 },

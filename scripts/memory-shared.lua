@@ -23,6 +23,7 @@ local base_usage = 1000000 / 60
 
 M.update_rate = 15
 M.update_slots = 4
+M.spoilage_item = "spoilage"
 
 function M.compactify(n)
   n = floor(n)
@@ -118,6 +119,48 @@ end
 
 function M.is_spoilable(item_name)
   return prototypes.item[item_name].get_spoil_ticks() ~= 0
+end
+
+function M.can_emit_spoilage()
+  return prototypes.item[M.spoilage_item] ~= nil
+end
+
+function M.emit_spoilage(entity, amount)
+  if not (entity and entity.valid and amount and amount > 0 and M.can_emit_spoilage()) then
+    return 0
+  end
+
+  entity.surface.create_trivial_smoke({
+    name = "smoke-fast",
+    position = entity.position,
+  })
+  entity.surface.create_entity({
+    name = "spark-explosion-higher",
+    position = entity.position,
+  })
+
+  local spilled = entity.surface.spill_item_stack({
+    position = entity.position,
+    stack = { name = M.spoilage_item, count = amount },
+    enable_looted = false,
+    force = entity.force_index,
+    allow_belts = false,
+    use_start_position_on_failure = true,
+  })
+
+  if spilled then
+    rendering.draw_text({
+      surface = entity.surface,
+      target = entity,
+      text = "Flux contamination",
+      color = { r = 0.7, g = 0.95, b = 0.55 },
+      scale = 1.0,
+      time_to_live = 120,
+      alignment = "center",
+    })
+  end
+
+  return spilled and amount or 0
 end
 
 function M.combine_temperatures(first_count, first_temperature, second_count, second_temperature)

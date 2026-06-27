@@ -181,7 +181,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-computational-arrays",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-sensor-package.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-memory-die.png",
     icon_size = 1024,
     prerequisites = { "fw-signal-architecture", "processing-unit", "modules", "electric-engine" },
     unit = tech_unit(165, {
@@ -215,7 +215,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-instrumentation",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-sensor-package.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-lens-array.png",
     icon_size = 1024,
     prerequisites = { "fw-electromechanical-systems", "solar-energy", "radar" },
     unit = tech_unit(170, {

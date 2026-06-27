@@ -9,6 +9,7 @@ local COMBINATOR_NAME = "fw-phase-vault-combinator"
 local GUI_NAME = "fw_phase_vault_gui"
 local COMBINATOR_SHIFT_X = 2.25
 local COMBINATOR_SHIFT_Y = 1.75
+local CONTAMINATION_INTERVAL = 60 * 20
 
 local function ensure_state()
   storage.phase_vault_units = storage.phase_vault_units or {}
@@ -140,6 +141,47 @@ local function update_unit(unit_data, unit_number, force)
   if force or changed then
     unit_data.inventory.sort_and_merge()
     update_unit_exterior(unit_data, inventory_count)
+  end
+end
+
+local function vault_load(unit_data)
+  if not unit_data.item then
+    return 0
+  end
+
+  return unit_data.count + unit_data.inventory.get_item_count({
+    name = unit_data.item,
+    quality = unit_data.quality,
+  })
+end
+
+local function maybe_emit_contamination(unit_data, tick)
+  if not (unit_data.item and Shared.can_emit_spoilage()) then
+    return
+  end
+
+  if tick < (unit_data.next_contamination_tick or 0) then
+    return
+  end
+
+  local powersource = unit_data.powersource
+  if not (powersource and powersource.valid and powersource.electric_buffer_size > 0) then
+    return
+  end
+
+  local total_count = vault_load(unit_data)
+  if total_count < unit_data.comfortable * 3 then
+    return
+  end
+
+  local ratio = powersource.energy / powersource.electric_buffer_size
+  if ratio > 0.35 then
+    return
+  end
+
+  local amount = math.max(2, math.min(12, math.ceil(total_count / math.max(unit_data.stack_size or 1, 1) / 8)))
+  if Shared.emit_spoilage(unit_data.entity, amount) > 0 then
+    unit_data.next_contamination_tick = tick + CONTAMINATION_INTERVAL
   end
 end
 
@@ -368,7 +410,11 @@ local function update_gui(gui, fresh_gui)
     end
     sprite = "utility/status_not_working"
   elseif powersource.energy < powersource.electric_buffer_size * 0.9 then
-    status = { "entity-status.low-power" }
+    if unit_data.item and vault_load(unit_data) >= unit_data.comfortable * 3 then
+      status = "Flux leak risk"
+    else
+      status = { "entity-status.low-power" }
+    end
     sprite = "utility/status_yellow"
   else
     status = { "entity-status.working" }
@@ -489,6 +535,7 @@ function M.register_events(registrar)
     local smooth_ups = event.tick % Shared.update_slots
     for unit_number, unit_data in pairs(storage.phase_vault_units or {}) do
       if unit_data.lag_id == smooth_ups then
+        maybe_emit_contamination(unit_data, event.tick)
         update_unit(unit_data, unit_number)
       end
     end

@@ -8,6 +8,7 @@ local POWER_NAME = "fw-spectral-reservoir-power-interface"
 local COMBINATOR_NAME = "fw-spectral-reservoir-combinator"
 local GUI_NAME = "fw_spectral_reservoir_gui"
 local FLUID_DIVISOR = 1000
+local CONTAMINATION_INTERVAL = 60 * 20
 
 local function ensure_state()
   storage.spectral_reservoir_units = storage.spectral_reservoir_units or {}
@@ -140,6 +141,44 @@ local function update_unit(unit_data, unit_number, force)
 
   if force or changed then
     update_unit_exterior(unit_data, inventory_count)
+  end
+end
+
+local function reservoir_load(unit_data)
+  if not unit_data.item then
+    return 0
+  end
+
+  return unit_data.count + unit_data.entity.get_fluid_count(unit_data.item)
+end
+
+local function maybe_emit_contamination(unit_data, tick)
+  if not (unit_data.item and Shared.can_emit_spoilage()) then
+    return
+  end
+
+  if tick < (unit_data.next_contamination_tick or 0) then
+    return
+  end
+
+  local powersource = unit_data.powersource
+  if not (powersource and powersource.valid and powersource.electric_buffer_size > 0) then
+    return
+  end
+
+  local total_count = reservoir_load(unit_data)
+  if total_count < unit_data.comfortable * 3 then
+    return
+  end
+
+  local ratio = powersource.energy / powersource.electric_buffer_size
+  if ratio > 0.35 then
+    return
+  end
+
+  local amount = math.max(4, math.min(20, math.ceil(total_count / 25000)))
+  if Shared.emit_spoilage(unit_data.entity, amount) > 0 then
+    unit_data.next_contamination_tick = tick + CONTAMINATION_INTERVAL
   end
 end
 
@@ -357,7 +396,11 @@ local function update_gui(gui, fresh_gui)
     status = { "entity-status.no-input-fluid" }
     sprite = "utility/status_not_working"
   elseif powersource.energy < powersource.electric_buffer_size * 0.9 then
-    status = { "entity-status.low-power" }
+    if unit_data.item and reservoir_load(unit_data) >= unit_data.comfortable * 3 then
+      status = "Flux leak risk"
+    else
+      status = { "entity-status.low-power" }
+    end
     sprite = "utility/status_yellow"
   else
     status = { "entity-status.working" }
@@ -396,6 +439,7 @@ function M.register_events(registrar)
     local smooth_ups = event.tick % Shared.update_slots
     for unit_number, unit_data in pairs(storage.spectral_reservoir_units or {}) do
       if unit_data.lag_id == smooth_ups then
+        maybe_emit_contamination(unit_data, event.tick)
         update_unit(unit_data, unit_number)
       end
     end

@@ -4,7 +4,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-industrial-expansion",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-cermet.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-composite-panel.png",
     icon_size = 1024,
     prerequisites = { "fw-material-refinement", "fw-advanced-fabrication", "advanced-material-processing-2" },
     unit = {

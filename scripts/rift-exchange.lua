@@ -8,6 +8,7 @@ local CYCLE_ENERGY = 3000000000
 local CYCLE_POWER_USAGE = 150000000
 local BAR_LEFT_TOP = { x = 2.45, y = -1.5 }
 local BAR_RIGHT_BOTTOM = { x = 2.75, y = 1.5 }
+local CONTAMINATION_INTERVAL = 60 * 25
 local WILDCARD_IDS = {
   [""] = true,
   anything = true,
@@ -424,6 +425,16 @@ local function process_gates()
           entry.stalled_ticks = (entry.stalled_ticks or 0) + 1
           if entry.stalled_ticks >= 4 then
             entry.last_message = "Insufficient power"
+            if Shared.can_emit_spoilage() and game.tick >= (entry.next_contamination_tick or 0) then
+              local inventory = entry.entity.get_inventory(defines.inventory.chest)
+              local stored = inventory and inventory.get_item_count() or 0
+              if stored > 0 then
+                local amount = math.max(4, math.min(18, math.ceil(stored / 8)))
+                if Shared.emit_spoilage(entry.entity, amount) > 0 then
+                  entry.next_contamination_tick = game.tick + CONTAMINATION_INTERVAL
+                end
+              end
+            end
           end
         else
           entry.stalled_ticks = 0
