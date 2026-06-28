@@ -1,3 +1,5 @@
+local Shared = require("scripts.memory-shared")
+
 local M = {}
 
 local GATE_NAME = "fw-rift-exchange-gate"
@@ -17,6 +19,15 @@ local WILDCARD_IDS = {
 }
 
 local TARGET_STATES = { "Any", "Empty", "Full" }
+local TARGET_STATE_ITEMS = {
+  { "mod-gui.fw-rift-target-any" },
+  { "mod-gui.fw-rift-target-empty" },
+  { "mod-gui.fw-rift-target-full" },
+}
+
+local function gate_text(key, ...)
+  return { "mod-gui." .. key, ... }
+end
 
 local function ensure_state()
   storage.rift_exchange = storage.rift_exchange or {}
@@ -72,11 +83,11 @@ end
 local function current_status(entry)
   if entry.active then
     if not (entry.target_unit_number and storage.rift_exchange[entry.target_unit_number]) then
-      return "Lost target"
+      return gate_text("fw-rift-status-lost-target")
     end
-    return string.format("Charging %.1f%%", (entry.powersource.energy / CYCLE_ENERGY) * 100)
+    return gate_text("fw-rift-status-charging", string.format("%.1f", (entry.powersource.energy / CYCLE_ENERGY) * 100))
   end
-  return "Idle"
+  return gate_text("fw-rift-status-idle")
 end
 
 local function charge_ratio(entry)
@@ -126,7 +137,13 @@ local function update_progress_bar(entry)
 end
 
 local function update_display_text(entry)
-  local text = entry.active and "Warping" or (entry.destination_name ~= "" and entry.destination_name or "Unset")
+  local text = gate_text("fw-rift-display-unset")
+  if entry.active then
+    text = gate_text("fw-rift-display-warping")
+  elseif entry.destination_name ~= "" then
+    local surface = game.get_surface(entry.destination_name)
+    text = surface and surface_label(surface) or entry.destination_name
+  end
   if entry.text then
     local render_object = rendering.get_object_by_id(entry.text)
     if render_object then
@@ -269,7 +286,7 @@ local function start_cycle(entry)
 
   local target = find_target(entry)
   if not target then
-    entry.last_message = "No valid target"
+    entry.last_message = gate_text("fw-rift-message-no-valid-target")
     return
   end
 
@@ -278,7 +295,7 @@ local function start_cycle(entry)
   entry.started_tick = game.tick
   entry.stalled_ticks = 0
   entry.last_energy = 0
-  entry.last_message = "Cycle started"
+  entry.last_message = gate_text("fw-rift-message-cycle-started")
   set_cycle_power(entry)
   update_display_text(entry)
 end
@@ -286,13 +303,13 @@ end
 local function complete_cycle(entry)
   local target = entry.target_unit_number and storage.rift_exchange[entry.target_unit_number] or nil
   if not (target and target.entity.valid and link_ids_match(entry, target) and quality_matches(entry, target)) then
-    entry.last_message = "Target unavailable"
+    entry.last_message = gate_text("fw-rift-message-target-unavailable")
   else
     local source_inventory = entry.entity.get_inventory(defines.inventory.chest)
     local target_inventory = target.entity.get_inventory(defines.inventory.chest)
     swap_inventories(source_inventory, target_inventory)
     play_teleport_effect(entry, target)
-    entry.last_message = "Teleport complete"
+    entry.last_message = gate_text("fw-rift-message-teleport-complete")
   end
 
   entry.active = false
@@ -327,7 +344,7 @@ local function add_gate(entity, tags)
     active = false,
     target_unit_number = nil,
     started_tick = nil,
-    last_message = "Idle",
+    last_message = gate_text("fw-rift-message-idle"),
   }
   storage.rift_exchange[entity.unit_number] = entry
   set_idle_power(entry)
@@ -414,7 +431,7 @@ local function process_gates()
         entry.started_tick = nil
         entry.stalled_ticks = 0
         entry.last_energy = 0
-        entry.last_message = "Target unavailable"
+        entry.last_message = gate_text("fw-rift-message-target-unavailable")
         entry.powersource.energy = 0
         set_idle_power(entry)
         update_display_text(entry)
@@ -424,7 +441,7 @@ local function process_gates()
         if current_energy <= (entry.last_energy or 0) + 1000 then
           entry.stalled_ticks = (entry.stalled_ticks or 0) + 1
           if entry.stalled_ticks >= 4 then
-            entry.last_message = "Insufficient power"
+            entry.last_message = gate_text("fw-rift-message-insufficient-power")
             if Shared.can_emit_spoilage() and game.tick >= (entry.next_contamination_tick or 0) then
               local inventory = entry.entity.get_inventory(defines.inventory.chest)
               local stored = inventory and inventory.get_item_count() or 0
@@ -438,9 +455,7 @@ local function process_gates()
           end
         else
           entry.stalled_ticks = 0
-          if entry.last_message == "Insufficient power" then
-            entry.last_message = "Cycle started"
-          end
+          entry.last_message = gate_text("fw-rift-message-cycle-started")
         end
         entry.last_energy = current_energy
         update_progress_bar(entry)
@@ -474,8 +489,8 @@ local function update_gui(gui)
   gui.controls.teleport_when_full.state = entry.auto_activate
   gui.controls.link_id.text = entry.link_id or ""
   gui.controls.destination.selected_index = dropdown_index_for(entry, names)
-  gui.controls.power.caption = string.format("Power draw: %.1f MW", CYCLE_POWER_USAGE / 1000000)
-  gui.controls.buffer.caption = string.format("Charge: %.1f / %.1f MJ", (entry.powersource.energy or 0) / 1000000, CYCLE_ENERGY / 1000000)
+  gui.controls.power.caption = gate_text("fw-rift-power-draw", string.format("%.1f", CYCLE_POWER_USAGE / 1000000))
+  gui.controls.buffer.caption = gate_text("fw-rift-charge", string.format("%.1f", (entry.powersource.energy or 0) / 1000000), string.format("%.1f", CYCLE_ENERGY / 1000000))
   gui.controls.status.caption = current_status(entry)
   gui.controls.message.caption = entry.last_message or ""
   gui.controls.progress.value = charge_ratio(entry)
@@ -541,29 +556,29 @@ function M.register_events(registrar)
 
     local inner = frame.add({ type = "frame", style = "inside_shallow_frame_with_padding", direction = "vertical", name = "controls" })
     inner.style.vertically_stretchable = true
-    inner.add({ type = "label", caption = "Controls" }).style.font = "default-bold"
+    inner.add({ type = "label", caption = gate_text("fw-rift-controls") }).style.font = "default-bold"
 
-    inner.add({ type = "label", caption = "Link ID" })
+    inner.add({ type = "label", caption = gate_text("fw-rift-link-id") })
     local link = inner.add({ type = "textfield", name = "link_id", text = entry.link_id or "" })
     link.tags = { unit_number = event.entity.unit_number }
 
-    inner.add({ type = "label", caption = "Target state" })
-    local target_state = inner.add({ type = "drop-down", name = "target_state", items = TARGET_STATES })
+    inner.add({ type = "label", caption = gate_text("fw-rift-target-state") })
+    local target_state = inner.add({ type = "drop-down", name = "target_state", items = TARGET_STATE_ITEMS })
     target_state.tags = { unit_number = event.entity.unit_number }
 
-    inner.add({ type = "label", caption = "Destination" })
+    inner.add({ type = "label", caption = gate_text("fw-rift-destination") })
     local destination = inner.add({ type = "drop-down", name = "destination", items = labels })
     destination.tags = { unit_number = event.entity.unit_number, destination_names = names }
 
     local checkbox = inner.add({
       type = "checkbox",
       name = "teleport_when_full",
-      caption = "Teleport when full",
+      caption = gate_text("fw-rift-teleport-when-full"),
       state = entry.auto_activate or false,
     })
     checkbox.tags = { unit_number = event.entity.unit_number }
 
-    inner.add({ type = "button", name = "activate", caption = "Activate" }).tags = { unit_number = event.entity.unit_number }
+    inner.add({ type = "button", name = "activate", caption = gate_text("fw-rift-activate") }).tags = { unit_number = event.entity.unit_number }
     inner.add({ type = "progressbar", name = "progress" }).style.width = 230
     inner.add({ type = "label", name = "power", caption = "" })
     inner.add({ type = "label", name = "buffer", caption = "" })

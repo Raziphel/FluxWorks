@@ -411,7 +411,7 @@ local function update_gui(gui, fresh_gui)
     sprite = "utility/status_not_working"
   elseif powersource.energy < powersource.electric_buffer_size * 0.9 then
     if unit_data.item and vault_load(unit_data) >= unit_data.comfortable * 3 then
-      status = "Flux leak risk"
+      status = { "entity-status.fw-flux-leak-risk" }
     else
       status = { "entity-status.low-power" }
     end

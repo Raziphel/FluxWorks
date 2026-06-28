@@ -552,8 +552,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-spectral-fluid-retention",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/technology/fluid-memory-storage/fluid-memory-storage.png",
+    icon_size = 128,
     prerequisites = { "fw-deep-phase-storage", "fw-aquilo-cryochemistry", "fw-flux-thermal-networks", "fw-flux-chemical-synthesis", "fw-fusion-lattices", "fw-flux-convergence" },
     unit = {
       count = 4200,

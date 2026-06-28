@@ -416,6 +416,16 @@ if organize_flux then
   end
 
   for _, name in pairs({
+  "fw-phase-anchor",
+  "fw-entanglement-core",
+  "fw-reservoir-lining",
+  "fw-compression-baffle",
+  "fw-thermal-phase-gasket",
+  }) do
+    move_item_and_recipe(name, "fw-flux-exchange")
+  end
+
+  for _, name in pairs({
   "fw-flux-catalyst",
   "fw-stabilized-flux-crystal",
   "fw-flux-lattice",
@@ -428,6 +438,19 @@ if organize_flux then
   "fw-arc-insulator-vitrification",
   }) do
     move_item_and_recipe(name, "fw-flux-systems")
+  end
+  for _, name in pairs({
+  "fw-condensed-flux-matrix",
+  "fw-flux-phase-manifold",
+  }) do
+    move_item_and_recipe(name, "fw-flux-condensing-core")
+  end
+  for _, name in pairs({
+  "fw-promethium-primer",
+  "fw-promethium-matrix",
+  "fw-rift-stabilizer",
+  }) do
+    move_item_and_recipe(name, "fw-flux-condensing-promethium")
   end
   move_recipe("fw-flux-asteroid-refining", "fw-flux-systems")
   move_recipe("fw-flux-metallic-synthesis", "fw-flux-systems")
