@@ -52,7 +52,6 @@ M.item_values = {
   ["quality-module"] = 6000,
   ["quality-module-2"] = 60000,
   ["quality-module-3"] = 350000,
-
   -- Moving bits, power bits, and all the normal factory guts.
   ["iron-gear-wheel"] = 14,
   ["iron-stick"] = 5,
@@ -193,7 +192,18 @@ M.item_values = {
   ["fw-promethium-primer"] = 4200,
   ["fw-harvester-head"] = 600,
   ["fw-annealed-cermet"] = 950,
-  ["fw-resonance-substrate"] = 1400,
+  ["fw-resonance-substrate"] = 220,
+  ["fw-origin-forge"] = 220000,
+  ["fw-storm-spine-segment"] = 18000,
+  ["fw-origin-crucible-lining"] = 22000,
+  ["fw-harmonic-lattice-core"] = 28000,
+  ["fw-living-reactor-weave"] = 32000,
+  ["fw-origin-catalyst-manifold"] = 42000,
+  ["fw-storm-spine"] = 140000,
+  ["fw-origin-crucible"] = 170000,
+  ["fw-universal-collapse-core"] = 4000000000,
+  ["fw-genesis-ark"] = 5000000000000,
+  ["fw-origin-singularity"] = 15000000000000,
   ["promethium-asteroid-chunk"] = 6000,
   ["promethium-science-pack"] = 25000,
 
@@ -254,10 +264,10 @@ M.item_values = {
   ["fw-memory-die"] = 260,
   ["fw-flux-catalyst"] = 24,
   ["fw-stabilized-flux-crystal"] = 34,
-  ["fw-flux-lattice"] = 60,
-  ["fw-condensed-flux-matrix"] = 150,
-  ["fw-flux-resonance-cell"] = 280,
-  ["fw-flux-phase-manifold"] = 760,
+  ["fw-flux-lattice"] = 90,
+  ["fw-condensed-flux-matrix"] = 180,
+  ["fw-flux-resonance-cell"] = 320,
+  ["fw-flux-phase-manifold"] = 860,
   ["fw-aquilo-cryogel"] = 520,
   ["fw-gleba-spore-resin"] = 540,
   ["fw-fulgora-static-mesh"] = 760,
@@ -265,6 +275,7 @@ M.item_values = {
   ["fw-logic-matrix"] = 980,
   ["fw-rift-stabilizer"] = 5200,
   ["fw-flux-condenser"] = 2200,
+  ["fw-shattered-convergence-array"] = 18000,
 }
 
 M.fluid_values = {
@@ -372,6 +383,9 @@ M.recipe_category_multipliers = {
   ["fw-flux-harvesting"] = 1.16,
   ["fw-arc-smelting"] = 1.24,
   ["fw-flux-synthesis"] = 1.38,
+  ["fw-petrochemistry"] = 1.24,
+  ["fw-hydraulics"] = 1.28,
+  ["fw-atomic-enrichment"] = 1.34,
   ["fw-flux-condensing"] = 1.35,
 }
 
@@ -395,6 +409,9 @@ M.recipe_category_time_multipliers = {
   ["fw-flux-harvesting"] = 2.0,
   ["fw-arc-smelting"] = 2.15,
   ["fw-flux-synthesis"] = 2.45,
+  ["fw-petrochemistry"] = 2.1,
+  ["fw-hydraulics"] = 2.2,
+  ["fw-atomic-enrichment"] = 2.6,
   ["fw-flux-condensing"] = 1.0,
 }
 
@@ -418,6 +435,9 @@ M.recipe_category_color_weights = {
   ["fw-flux-harvesting"] = { purple = 0.30, yellow = 0.45, red = 0.20, green = 0.05 },
   ["fw-arc-smelting"] = { purple = 0.15, yellow = 0.10, red = 0.70, green = 0.05 },
   ["fw-flux-synthesis"] = { purple = 0.28, yellow = 0.24, red = 0.26, green = 0.22 },
+  ["fw-petrochemistry"] = { purple = 0.12, yellow = 0.68, red = 0.15, green = 0.05 },
+  ["fw-hydraulics"] = { purple = 0.22, yellow = 0.48, red = 0.25, green = 0.05 },
+  ["fw-atomic-enrichment"] = { purple = 0.40, yellow = 0.15, red = 0.40, green = 0.05 },
   ["fw-flux-condensing"] = { purple = 0.25, yellow = 0.25, red = 0.25, green = 0.25 },
 }
 

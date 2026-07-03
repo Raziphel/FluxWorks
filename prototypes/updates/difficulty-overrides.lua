@@ -14,29 +14,29 @@ local affect_flux_core_recipes = Startup.enabled("fw-difficulty-affects-flux-cor
 local affect_crafting_time = Startup.enabled("fw-difficulty-affects-crafting-time", true)
 
 local PROFILE = difficulty == "hard" and {
-  fw_core = 1.6,
-  harvesting = 1.75,
-  synthesis = 1.95,
-  condensing = 2.25,
-  integrated = 1.65,
-  science = 1.55,
-  fluid = 1.6,
-  control = 1.75,
-  late = 1.95,
-  orbital = 2.1,
-  time = 1.35,
+  fw_core = 1.28,
+  harvesting = 1.38,
+  synthesis = 1.52,
+  condensing = 1.72,
+  integrated = 1.24,
+  science = 1.2,
+  fluid = 1.24,
+  control = 1.3,
+  late = 1.4,
+  orbital = 1.52,
+  time = 1.16,
 } or {
-  fw_core = 0.78,
-  harvesting = 0.72,
-  synthesis = 0.68,
-  condensing = 0.62,
-  integrated = 0.8,
-  science = 0.72,
-  fluid = 0.8,
-  control = 0.82,
-  late = 0.78,
-  orbital = 0.74,
-  time = 0.8,
+  fw_core = 0.84,
+  harvesting = 0.8,
+  synthesis = 0.76,
+  condensing = 0.72,
+  integrated = 0.86,
+  science = 0.84,
+  fluid = 0.88,
+  control = 0.86,
+  late = 0.82,
+  orbital = 0.8,
+  time = 0.88,
 }
 
 local SCIENCE_RECIPES = {
@@ -293,6 +293,12 @@ local function recipe_time_multiplier(recipe_name, category)
       multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.15 or -0.08))
     elseif category == "fw-flux-harvesting" then
       multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.1 or -0.06))
+    elseif category == "fw-petrochemistry" then
+      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.06 or -0.03))
+    elseif category == "fw-hydraulics" then
+      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.08 or -0.04))
+    elseif category == "fw-atomic-enrichment" then
+      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.12 or -0.05))
     end
   end
   if affect_science_recipes and SCIENCE_RECIPES[recipe_name] then
@@ -319,6 +325,12 @@ local function ingredient_multiplier(recipe_name, category, ingredient)
       multiplier = combine_multiplier(multiplier, PROFILE.synthesis)
     elseif category == "fw-flux-condensing" then
       multiplier = combine_multiplier(multiplier, PROFILE.condensing)
+    elseif category == "fw-petrochemistry" then
+      multiplier = combine_multiplier(multiplier, difficulty == "hard" and 1.34 or 0.82)
+    elseif category == "fw-hydraulics" then
+      multiplier = combine_multiplier(multiplier, difficulty == "hard" and 1.4 or 0.8)
+    elseif category == "fw-atomic-enrichment" then
+      multiplier = combine_multiplier(multiplier, difficulty == "hard" and 1.5 or 0.78)
     end
   end
 

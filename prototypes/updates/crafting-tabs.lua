@@ -144,6 +144,7 @@ ensure_item_subgroup("fw-transmutation-downcycle", "fw-flux", "i[transmutation]-
 ensure_item_subgroup("fw-flux-condensing-core", "fw-flux", "j[condensing]-a[core]")
 ensure_item_subgroup("fw-flux-condensing-promethium", "fw-flux", "k[condensing]-b[promethium]")
 ensure_item_subgroup("fw-flux-exchange", "fw-flux", "l[exchange]")
+ensure_item_subgroup("fw-flux-origin-projects", "fw-flux", "m[origin-projects]")
 ensure_item_subgroup("fw-chemistry-machines", "fw-chemistry", "a[machines]")
 ensure_item_subgroup("fw-chemistry-fluids", "fw-chemistry", "b[fluids]")
 ensure_item_subgroup("fw-chemistry-materials", "fw-chemistry", "c[materials]")
@@ -380,9 +381,10 @@ if organize_flux then
   move_recipe("fw-green-flux-conditioning", "fw-flux-green")
 
   for _, name in pairs({
-  "fw-flux-quarry",
-  "fw-flux-harvester",
-  "fw-flux-condenser",
+    "fw-flux-quarry",
+    "fw-flux-harvester",
+    "fw-flux-condenser",
+    "fw-origin-forge",
   }) do
     move_item_and_recipe(name, "fw-flux-machines")
   end
@@ -416,13 +418,28 @@ if organize_flux then
   end
 
   for _, name in pairs({
-  "fw-phase-anchor",
-  "fw-entanglement-core",
-  "fw-reservoir-lining",
+    "fw-phase-anchor",
+    "fw-entanglement-core",
+    "fw-reservoir-lining",
   "fw-compression-baffle",
   "fw-thermal-phase-gasket",
   }) do
     move_item_and_recipe(name, "fw-flux-exchange")
+  end
+
+  for _, name in pairs({
+    "fw-storm-spine-segment",
+    "fw-origin-crucible-lining",
+    "fw-harmonic-lattice-core",
+    "fw-living-reactor-weave",
+    "fw-origin-catalyst-manifold",
+    "fw-storm-spine",
+    "fw-origin-crucible",
+    "fw-universal-collapse-core",
+    "fw-genesis-ark",
+    "fw-origin-singularity",
+  }) do
+    move_item_and_recipe(name, "fw-flux-origin-projects")
   end
 
   for _, name in pairs({

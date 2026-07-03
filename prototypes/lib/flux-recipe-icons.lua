@@ -33,6 +33,29 @@ local function prototype_icon_data(prototype)
   return nil
 end
 
+local function clone_icon_layers(icon_data, scale_multiplier, shift_override, tint_override)
+  if not icon_data then
+    return {}
+  end
+
+  local icons = {}
+  for _, icon in ipairs(icon_data.icons or { icon_data }) do
+    local entry = table.deepcopy(icon)
+    if scale_multiplier then
+      entry.scale = (entry.scale or 1) * scale_multiplier
+    end
+    if shift_override then
+      entry.shift = shift_override
+    end
+    if tint_override then
+      entry.tint = tint_override
+    end
+    icons[#icons + 1] = entry
+  end
+
+  return icons
+end
+
 function M.item_icon(item_name)
   for _, item_type in ipairs(ITEM_TYPES) do
     local prototype = data.raw[item_type] and data.raw[item_type][item_name]
@@ -47,27 +70,48 @@ function M.fluid_icon(fluid_name)
   return prototype_icon_data(data.raw.fluid and data.raw.fluid[fluid_name])
 end
 
+function M.item_overlay(item_name, scale, shift, tint)
+  return { item = item_name, scale = scale, shift = shift, tint = tint }
+end
+
+function M.fluid_overlay(fluid_name, scale, shift, tint)
+  return { fluid = fluid_name, scale = scale, shift = shift, tint = tint }
+end
+
+function M.path_overlay(icon, icon_size, scale, shift, tint)
+  return {
+    icon_data = {
+      icon = icon,
+      icon_size = icon_size,
+    },
+    scale = scale,
+    shift = shift,
+    tint = tint,
+  }
+end
+
+function M.compose(base_icon_data, overlays, base_scale)
+  if not base_icon_data then
+    return nil
+  end
+
+  return { icons = clone_icon_layers(base_icon_data) }
+end
+
+function M.product_item_icons(item_name, overlays, base_scale)
+  return M.compose(M.item_icon(item_name), overlays, base_scale)
+end
+
+function M.product_fluid_icons(fluid_name, overlays, base_scale)
+  return M.compose(M.fluid_icon(fluid_name), overlays, base_scale)
+end
+
 function M.source_to_flux_icons(source_name, flux_fluid_name)
-  local source_icon = M.item_icon(source_name)
   local flux_icon = M.fluid_icon(flux_fluid_name)
-  if not (source_icon and flux_icon) then
-    return source_icon or flux_icon
+  if not flux_icon then
+    return M.item_icon(source_name)
   end
-
-  local icons = {}
-  for _, icon in ipairs(source_icon.icons or { source_icon }) do
-    local entry = table.deepcopy(icon)
-    entry.scale = (entry.scale or 1) * 0.92
-    icons[#icons + 1] = entry
-  end
-  for _, icon in ipairs(flux_icon.icons or { flux_icon }) do
-    local entry = table.deepcopy(icon)
-    entry.scale = (entry.scale or 1) * 0.48
-    entry.shift = entry.shift or { 9, -9 }
-    icons[#icons + 1] = entry
-  end
-
-  return { icons = icons }
+  return { icons = clone_icon_layers(flux_icon) }
 end
 
 return M

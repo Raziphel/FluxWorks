@@ -33,7 +33,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/technology/fw-conductive-networks.png",
     icon_size = 1024,
     prerequisites = { "fw-conductive-assembly", "fw-electromechanical-systems" },
-    unit = tech_unit(115, {
+    unit = tech_unit(85, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 25),
@@ -47,9 +47,9 @@ data:extend({
     type = "technology",
     name = "fw-optical-instrumentation",
     icon = "__FluxWorksAssets__/graphics/technology/fw-optical-instrumentation.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-instrumentation", "fw-wafer-etching" },
-    unit = tech_unit(155, {
+    unit = tech_unit(120, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -57,6 +57,7 @@ data:extend({
     effects = {
       unlock("fw-lens-array"),
       unlock("fw-sensor-diode"),
+      unlock("fw-promethium-sensor-diode-doping"),
     },
     order = "c-i[fw-optical-instrumentation]",
   },
@@ -66,7 +67,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/technology/fw-sealed-systems.png",
     icon_size = 1024,
     prerequisites = { "fw-material-refinement", "fw-conductive-networks" },
-    unit = tech_unit(185, {
+    unit = tech_unit(140, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -83,7 +84,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-rubber-sheet.png",
     icon_size = 1024,
     prerequisites = { "fw-liquid-mining", "fw-material-foundations", "sulfur-processing" },
-    unit = tech_unit(170, {
+    unit = tech_unit(130, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -100,9 +101,9 @@ data:extend({
     type = "technology",
     name = "fw-power-regulation",
     icon = "__FluxWorksAssets__/graphics/technology/fw-power-regulation.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-systems-integration", "fw-sealed-systems" },
-    unit = tech_unit(230, {
+    unit = tech_unit(180, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -120,7 +121,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
     icon_size = 128,
     prerequisites = { "fw-polymer-chemistry", "fw-advanced-fabrication", "military-3", "production-science-pack" },
-    unit = tech_unit(300, {
+    unit = tech_unit(220, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -150,6 +151,7 @@ data:extend({
     }, 40),
     effects = {
       unlock("fw-foundry-lining"),
+      unlock("fw-smelter-array"),
     },
     order = "d-f[fw-metallurgic-assemblies]",
   },

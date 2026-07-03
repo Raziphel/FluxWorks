@@ -18,10 +18,10 @@ data:extend({
     name = "fw-comminution",
     icon = "__FluxWorksAssets__/graphics/technology/comminution.png",
     icon_size = 968,
-    prerequisites = { "automation" },
-    unit = tech_unit(20, {
+    prerequisites = { "automation", "steel-processing" },
+    unit = tech_unit(16, {
       { "automation-science-pack", 1 },
-    }, 15),
+    }, 12),
     effects = {
       unlock("crusher"),
       unlock("fw-crushed-iron-ore"),
@@ -32,20 +32,35 @@ data:extend({
   },
   {
     type = "technology",
+    name = "fw-basic-separation",
+    icon = "__FluxWorksAssets__/graphics/resources/ores/salt.png",
+    icon_size = 128,
+    prerequisites = { "fw-comminution", "logistics" },
+    unit = tech_unit(18, {
+      { "automation-science-pack", 1 },
+    }, 15),
+    effects = {
+      unlock("fw-carbon-refining"),
+      unlock("fw-salt-from-water"),
+    },
+    order = "a-b-d[fw-basic-separation]",
+  },
+  {
+    type = "technology",
     name = "fw-ore-crushing",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-crushed-lead-ore.png",
     icon_size = 128,
-    prerequisites = { "fw-comminution", "steel-processing" },
-    unit = tech_unit(35, {
+    prerequisites = { "fw-basic-separation" },
+    unit = tech_unit(28, {
       { "automation-science-pack", 1 },
-    }, 20),
+    }, 18),
     effects = {
       unlock("fw-crushed-lead-ore"),
       unlock("fw-crushed-titanium-ore"),
       unlock("lead-plate-from-crushed"),
       unlock("titanium-plate-from-crushed"),
     },
-    order = "a-b-d[fw-ore-crushing]",
+    order = "a-b-e[fw-ore-crushing]",
   },
   {
     type = "technology",
@@ -53,34 +68,37 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png",
     icon_size = 128,
     prerequisites = { "fw-ore-crushing", "logistics" },
-    unit = tech_unit(55, {
+    unit = tech_unit(40, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
-    }, 20),
+    }, 18),
     effects = {
-      unlock("fw-carbon-refining"),
-      unlock("fw-salt-from-water"),
-      unlock("fw-metallic-beneficiation"),
       unlock("fw-silicon-beneficiation"),
     },
-    order = "a-b-e[fw-mineral-beneficiation]",
+    order = "a-b-f[fw-mineral-beneficiation]",
   },
 })
 
 Tech:get("fw-comminution")
-  :setCost(20)
+  :setCost(16)
+  :setColors("R")
+  :setTime(12)
+  :setPrerequisites({ "automation", "steel-processing" })
+
+Tech:get("fw-basic-separation")
+  :setCost(18)
   :setColors("R")
   :setTime(15)
-  :setPrerequisites({ "automation" })
+  :setPrerequisites({ "fw-comminution", "logistics" })
 
 Tech:get("fw-ore-crushing")
-  :setCost(35)
+  :setCost(28)
   :setColors("R")
-  :setTime(20)
-  :setPrerequisites({ "fw-comminution", "steel-processing" })
+  :setTime(18)
+  :setPrerequisites({ "fw-basic-separation" })
 
 Tech:get("fw-mineral-beneficiation")
-  :setCost(55)
+  :setCost(40)
   :setColors("RG")
-  :setTime(20)
+  :setTime(18)
   :setPrerequisites({ "fw-ore-crushing", "logistics" })

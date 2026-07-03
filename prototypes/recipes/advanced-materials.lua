@@ -1,12 +1,6 @@
 local function recipe_overlay_icons(base_icon, base_size, overlay_icon, overlay_size, overlay_scale, overlay_shift)
   return {
     { icon = base_icon, icon_size = base_size },
-    {
-      icon = overlay_icon,
-      icon_size = overlay_size,
-      scale = overlay_scale,
-      shift = overlay_shift,
-    },
   }
 end
 
@@ -77,30 +71,9 @@ data:extend({
   },
   {
     type = "recipe",
-    name = "fw-metallic-beneficiation",
-    icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-crushed-lead-ore.png",
-      128,
-      "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore.png",
-      64,
-      0.5,
-      { 8, -8 }
-    ),
-    category = "basic-crushing",
-    enabled = false,
-    energy_required = 1.2,
-    allow_productivity = true,
-    ingredients = { { type = "item", name = "lead-ore", amount = 1 }, { type = "item", name = "tin-ore", amount = 1 } },
-    results = {
-      { type = "item", name = "fw-crushed-lead-ore", amount = 2 },
-      { type = "item", name = "iron-ore", amount = 1, probability = 0.5 },
-    },
-  },
-  {
-    type = "recipe",
     name = "fw-silicon-beneficiation",
     icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore.png",
+      "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore-square.png",
       64,
       "__FluxWorksAssets__/graphics/icons/items/fw-sand.png",
       1024,
@@ -133,7 +106,7 @@ data:extend({
     energy_required = 1.0,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "carbon", amount = 2 },
+      { type = "item", name = "coal", amount = 2 },
       { type = "fluid", name = "water", amount = 20 },
     },
     results = {
@@ -144,13 +117,13 @@ data:extend({
   {
     type = "recipe",
     name = "fw-glass",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-glass.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/glass-panes/fw-glass-pane-1.png",
     icon_size = 1024,
     category = "smelting",
     enabled = false,
-    energy_required = 2.2,
+    energy_required = 1.8,
     allow_productivity = true,
-    ingredients = { { type = "item", name = "fw-sand", amount = 4 } },
+    ingredients = { { type = "item", name = "fw-sand", amount = 3 } },
     results = { { type = "item", name = "fw-glass", amount = 3 } },
   },
   {
@@ -208,7 +181,7 @@ data:extend({
     energy_required = 1.0,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "copper-cable", amount = 4 },
+      { type = "item", name = "copper-cable", amount = 3 },
       { type = "item", name = "fw-tinned-cable", amount = 1 },
       { type = "item", name = "fw-rubber-sheet", amount = 1 },
     },
@@ -227,7 +200,7 @@ data:extend({
       { type = "item", name = "copper-plate", amount = 2 },
       { type = "item", name = "tin-plate", amount = 1 },
     },
-    results = { { type = "item", name = "fw-copper-tube", amount = 2 } },
+    results = { { type = "item", name = "fw-copper-tube", amount = 3 } },
   },
   {
     type = "recipe",
@@ -239,7 +212,7 @@ data:extend({
     energy_required = 1.6,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "copper-cable", amount = 4 },
+      { type = "item", name = "copper-cable", amount = 3 },
       { type = "item", name = "tin-plate", amount = 1 },
       { type = "item", name = "iron-plate", amount = 1 },
       { type = "item", name = "fw-ceramic-insulator", amount = 1 },
@@ -286,14 +259,13 @@ data:extend({
     icon_size = 1024,
     category = "crafting",
     enabled = false,
-    energy_required = 1.4,
+    energy_required = 1.2,
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "coal", amount = 2 },
       { type = "item", name = "fw-salt", amount = 1 },
-      { type = "item", name = "fw-glass", amount = 1 },
     },
-    results = { { type = "item", name = "fw-rubber-sheet", amount = 2 } },
+    results = { { type = "item", name = "fw-rubber-sheet", amount = 4 } },
   },
   {
     type = "recipe",
@@ -306,12 +278,12 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-metal-mesh", amount = 2 },
-      { type = "item", name = "fw-rubber-sheet", amount = 2 },
+      { type = "item", name = "fw-rubber-sheet", amount = 1 },
       { type = "item", name = "fw-glass", amount = 1 },
       { type = "item", name = "aluminum-plate", amount = 1 },
       { type = "item", name = "fw-resin", amount = 1 },
     },
-    results = { { type = "item", name = "fw-composite-panel", amount = 1 } },
+    results = { { type = "item", name = "fw-composite-panel", amount = 2 } },
   },
   {
     type = "recipe",
@@ -396,7 +368,7 @@ data:extend({
       { type = "item", name = "fw-carbon", amount = 1 },
       { type = "item", name = "fw-rubber-sheet", amount = 1 },
     },
-    results = { { type = "item", name = "fw-inline-filter", amount = 2 } },
+    results = { { type = "item", name = "fw-inline-filter", amount = 3 } },
   },
   {
     type = "recipe",

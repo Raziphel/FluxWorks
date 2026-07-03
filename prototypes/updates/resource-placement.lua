@@ -33,10 +33,17 @@ local planet_specific_resource_names = {
   },
 }
 
+local shattered_planet_resource_names = {
+  "fw-shattered-yellow-flux-vent",
+  "fw-shattered-red-flux-vent",
+  "fw-shattered-green-flux-vent",
+  "fw-shattered-purple-flux-vent",
+}
+
 local preset_control_defaults = {
-  ["fw-metallic-deposit"] = { frequency = "normal", size = "big", richness = "very-good" },
-  ["fw-mineral-deposit"] = { frequency = "normal", size = "normal", richness = "very-good" },
-  ["fw-carbonic-deposit"] = { frequency = "normal", size = "normal", richness = "very-good" },
+  ["fw-metallic-deposit"] = { frequency = "good", size = "very-big", richness = "very-good" },
+  ["fw-mineral-deposit"] = { frequency = "good", size = "big", richness = "very-good" },
+  ["fw-carbonic-deposit"] = { frequency = "good", size = "big", richness = "very-good" },
   ["fw-crystalised-flux"] = { frequency = "normal", size = "normal", richness = "normal" },
   ["fw-promethium-impact"] = { frequency = "very-low", size = "small", richness = "good" },
   ["fw-silica-vein"] = { frequency = "very-low", size = "small", richness = "normal" },
@@ -70,7 +77,14 @@ local function ensure_map_gen_tables(planet)
 end
 
 local function register_resource_on_planet(planet, resource_name)
-  planet.map_gen_settings.autoplace_controls[resource_name] = planet.map_gen_settings.autoplace_controls[resource_name] or {}
+  local resource = data.raw.resource and data.raw.resource[resource_name]
+  local control_name = resource_name
+
+  if resource and resource.autoplace and resource.autoplace.control then
+    control_name = resource.autoplace.control
+  end
+
+  planet.map_gen_settings.autoplace_controls[control_name] = planet.map_gen_settings.autoplace_controls[control_name] or {}
   planet.map_gen_settings.autoplace_settings.entity.settings[resource_name] = planet.map_gen_settings.autoplace_settings.entity.settings[resource_name] or {}
 end
 
@@ -78,7 +92,15 @@ local function unregister_resource_on_planet(planet, resource_name)
   if not ensure_map_gen_tables(planet) then
     return
   end
-  planet.map_gen_settings.autoplace_controls[resource_name] = nil
+
+  local resource = data.raw.resource and data.raw.resource[resource_name]
+  local control_name = resource_name
+
+  if resource and resource.autoplace and resource.autoplace.control then
+    control_name = resource.autoplace.control
+  end
+
+  planet.map_gen_settings.autoplace_controls[control_name] = nil
   planet.map_gen_settings.autoplace_settings.entity.settings[resource_name] = nil
 end
 
@@ -110,6 +132,26 @@ for planet_name, resource_names in pairs(planet_specific_resource_names) do
   if data.raw.planet and data.raw.planet[planet_name] then
     register_resources_on_planet(data.raw.planet[planet_name], resource_names)
   end
+end
+
+if data.raw.planet and data.raw.planet["shattered-planet"] then
+  local shattered_planet = data.raw.planet["shattered-planet"]
+
+  for _, resource_name in pairs(global_resource_names) do
+    unregister_resource_on_planet(shattered_planet, resource_name)
+  end
+
+  for _, resource_name in pairs(nauvis_resource_names) do
+    unregister_resource_on_planet(shattered_planet, resource_name)
+  end
+
+  for _, resource_names in pairs(planet_specific_resource_names) do
+    for _, resource_name in pairs(resource_names) do
+      unregister_resource_on_planet(shattered_planet, resource_name)
+    end
+  end
+
+  register_resources_on_planet(shattered_planet, shattered_planet_resource_names)
 end
 
 -- Keep the preset sliders filled out so the worldgen UI does not look busted.

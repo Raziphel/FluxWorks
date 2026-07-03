@@ -154,6 +154,37 @@ local rift_exchange_gate = {
   not_inventory_moveable = true,
 }
 
+local origin_singularity = {
+  type = "container",
+  name = "fw-origin-singularity",
+  icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-exchange-gate.png",
+  icon_size = 1024,
+  inventory_size = 1,
+  picture = {
+    filename = "__FluxWorksAssets__/graphics/late-utility/rift-exchange-gate/rift-exchange-gate.png",
+    width = 1024,
+    height = 1024,
+    shift = util.by_pixel(0, -8),
+    scale = 0.24,
+  },
+  max_health = 5000,
+  minable = { mining_time = 1, result = "fw-origin-singularity" },
+  corpse = "big-remnants",
+  close_sound = {
+    filename = "__base__/sound/metallic-chest-close.ogg",
+    volume = 0.9,
+  },
+  open_sound = {
+    filename = "__base__/sound/metallic-chest-open.ogg",
+    volume = 0.6,
+  },
+  selection_box = { { -3.0, -3.0 }, { 3.0, 3.0 } },
+  collision_box = { { -2.6, -2.6 }, { 2.6, 2.6 } },
+  flags = { "placeable-neutral", "player-creation", "not-rotatable" },
+  enable_inventory_bar = false,
+  not_inventory_moveable = true,
+}
+
 data:extend({
   {
     type = "item-with-tags",
@@ -328,6 +359,34 @@ data:extend({
     },
   },
   {
+    type = "electric-energy-interface",
+    name = "fw-origin-singularity-power-interface",
+    localised_name = { "entity-name.fw-origin-singularity" },
+    localised_description = { "entity-description.fw-origin-singularity" },
+    energy_source = {
+      type = "electric",
+      usage_priority = "secondary-input",
+      buffer_capacity = "60GJ",
+      input_flow_limit = "300MW",
+    },
+    energy_usage = "0W",
+    collision_box = { { -2.6, -2.6 }, { 2.6, 2.6 } },
+    collision_mask = { layers = {} },
+    selectable_in_game = false,
+    remove_decoratives = "false",
+    icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-exchange-gate.png",
+    icon_size = 1024,
+    quality_indicator_scale = 0,
+    hidden = true,
+    flags = {
+      "placeable-neutral",
+      "not-selectable-in-game",
+      "not-rotatable",
+      "not-flammable",
+      "placeable-off-grid",
+    },
+  },
+  {
     type = "constant-combinator",
     name = "fw-phase-vault-combinator",
     icon = "__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/memory-unit.png",
@@ -390,4 +449,5 @@ data:extend({
   phase_vault,
   spectral_reservoir,
   rift_exchange_gate,
+  origin_singularity,
 })

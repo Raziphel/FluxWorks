@@ -71,6 +71,7 @@ add_recipe_if_valid(recipes, {
     {
       icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-blasting-gel.png",
       icon_size = 64,
+      icon_mipmaps = 4,
     },
     {
       icon = "__base__/graphics/icons/fluid/light-oil.png",

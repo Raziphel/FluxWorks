@@ -3,12 +3,6 @@ local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
 local function layered_item_icons(base_icon, base_size, overlay_icon, overlay_size, overlay_scale, overlay_shift)
   return {
     { icon = base_icon, icon_size = base_size },
-    {
-      icon = overlay_icon,
-      icon_size = overlay_size,
-      scale = overlay_scale,
-      shift = overlay_shift,
-    },
   }
 end
 
@@ -69,7 +63,7 @@ data:extend({
   {
     type = "item",
     name = "fw-glass",
-    icon = icon_path .. "fw-glass.png",
+    icon = icon_path .. "glass-panes/fw-glass-pane-1.png",
     icon_size = 1024,
     pictures = {
       { filename = icon_path .. "glass-panes/fw-glass-pane-1.png", size = 1024 },

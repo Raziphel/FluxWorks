@@ -32,6 +32,7 @@ assert_many({ "item", "recipe" }, {
   "fw-flux-quarry",
   "fw-flux-harvester",
   "fw-flux-condenser",
+  "fw-origin-forge",
 }, "fw-flux-machines")
 
 assert_many({ "item", "recipe" }, {
@@ -61,3 +62,16 @@ assert_many({ "item", "recipe" }, {
   "fw-promethium-matrix",
   "fw-rift-stabilizer",
 }, "fw-flux-condensing-promethium")
+
+assert_many({ "item", "recipe" }, {
+  "fw-storm-spine-segment",
+  "fw-origin-crucible-lining",
+  "fw-harmonic-lattice-core",
+  "fw-living-reactor-weave",
+  "fw-origin-catalyst-manifold",
+  "fw-storm-spine",
+  "fw-origin-crucible",
+  "fw-universal-collapse-core",
+  "fw-genesis-ark",
+  "fw-origin-singularity",
+}, "fw-flux-origin-projects")

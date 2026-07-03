@@ -132,7 +132,7 @@ data:extend({
 if data.raw["autoplace-control"] and data.raw["autoplace-control"]["iron-ore"] then
   -- Copy iron-ore's map-gen control so this looks/behaves like a normal ore slider.
   local flux_autoplace = Common.cloneInto("autoplace-control", "iron-ore", "fw-crystalised-flux")
-  flux_autoplace.localised_name = { "", "[entity=fw-crystalised-flux] ", { "autoplace-control-names.fw-crystalised-flux" } }
+  flux_autoplace.localised_name = { "", "[item=fw-crystalised-flux] ", { "autoplace-control-names.fw-crystalised-flux" } }
   flux_autoplace.richness = true
   flux_autoplace.order = "b-k"
   flux_autoplace.category = "resource"
@@ -142,7 +142,7 @@ else
     {
       type = "autoplace-control",
       name = "fw-crystalised-flux",
-      localised_name = { "", "[entity=fw-crystalised-flux] ", { "autoplace-control-names.fw-crystalised-flux" } },
+      localised_name = { "", "[item=fw-crystalised-flux] ", { "autoplace-control-names.fw-crystalised-flux" } },
       richness = true,
       order = "b-k",
       category = "resource",

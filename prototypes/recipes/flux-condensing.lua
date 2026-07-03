@@ -122,6 +122,9 @@ local CONDENSER_EXCLUDED_ITEMS = {
   ["processing-unit"] = true,
   ["engine-unit"] = true,
   ["electric-engine-unit"] = true,
+  ["fw-universal-collapse-core"] = true,
+  ["fw-genesis-ark"] = true,
+  ["fw-origin-singularity"] = true,
 }
 
 local CONDENSER_EXCLUDED_SUBGROUPS = {

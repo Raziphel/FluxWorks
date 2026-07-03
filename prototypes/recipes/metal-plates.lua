@@ -76,6 +76,7 @@ data:extend({
     name = "silicon",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png",
     icon_size = 64,
+    icon_mipmaps = 4,
     category = "smelting",
     enabled = false,
     energy_required = 3.6,
@@ -97,7 +98,7 @@ data:extend({
     enabled = false,
     energy_required = 2.8,
     allow_productivity = true,
-    ingredients = { { type = "item", name = "carbon", amount = 2 } },
+    ingredients = { { type = "item", name = "coal", amount = 2 } },
     results = { { type = "item", name = "fw-carbon", amount = 1 } },
   },
 })

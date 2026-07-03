@@ -2,12 +2,13 @@
   "name": "FluxWorks",
   "version": "0.0.1",
   "title": "FluxWorks",
-  "author": "Raziphel, FluidNatalie",
+  "author": "Raziphel, FluidNatalie, tirisabella",
   "factorio_version": "2.0",
   "description": "A massive Factorio overhaul mod! Includes adapted third-party art/concepts from brevven's MIT-licensed resource mods, Rocket Reusability by Lylac, notnotmelon's MIT-licensed deep-storage-unit and fluid-memory-storage mods, plus credited Artisanal Reskins / unused-renders asset work; late teleporter behavior is also inspired by Telogistics by S6X. See credits.md for details.",
   "dependencies": [
     "base >= 2.0.0",
     "space-age >= 2.0.0",
+    "alien-biomes-graphics >= 0.7.1",
     "? quality >= 2.0.0",
     "FluxWorksAssets >= 0.0.1",
     "haul_lib >= 2.0.0"

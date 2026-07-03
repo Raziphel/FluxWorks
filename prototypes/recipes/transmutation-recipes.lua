@@ -2,30 +2,28 @@
 -- If this gets rebalanced later, I only want to do it one time and let the rest follow along.
 
 local TRANSMUTATION_BALANCE = {
-  default_unlock_technology = "fw-flux-catalysis",
+  default_unlock_technology = "fw-harvester-systems",
 
   -- Safe defaults for any step that does not get fancy.
   defaults = {
-    input_amount = 10,
+    input_amount = 12,
     output_amount = 10,
-    energy_required = 5,
-    flux_refund = 1,
+    energy_required = 4.5,
+    flux_refund = 4,
     flux_fluid = "fw-purple-flux",
   },
 
-  -- Rough material ladder from common -> rare.
-  -- Early steps are just there to smooth out shortages.
-  -- Deep steps are where we start charging real Flux and catalyst costs so rare ores are not magically free.
+  -- The Harvester's core job is pushing ores up the ladder with purple Flux,
+  -- then breaking them back down for a partial purple refund when supply shifts.
   steps = {
-    { from = "stone",       to = "coal",         input_amount = 14, output_amount = 10, flux_cost = 6,  flux_refund = 1,  energy_required = 4 },
-    { from = "coal",        to = "copper-ore",   input_amount = 10, output_amount = 10, flux_cost = 8,  flux_refund = 2,  energy_required = 4, secondary_fluids = { { name = "crude-oil", amount = 10 } } },
-    { from = "copper-ore",  to = "iron-ore",     input_amount = 10, output_amount = 10, flux_cost = 6,  flux_refund = 1,  energy_required = 4, secondary_fluids = { { name = "crude-oil", amount = 8 } } },
-    { from = "iron-ore",    to = "lead-ore",     input_amount = 12, output_amount = 10, flux_cost = 16, flux_refund = 3,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.88, energy_required = 6.5, secondary_fluids = { { name = "crude-oil", amount = 12 } } },
-    { from = "lead-ore",    to = "tin-ore",      input_amount = 12, output_amount = 10, flux_cost = 18, flux_refund = 4,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.85, energy_required = 7, secondary_fluids = { { name = "crude-oil", amount = 14 } } },
-    { from = "tin-ore",     to = "bauxite-ore",  input_amount = 12, output_amount = 10, flux_cost = 22, flux_refund = 5,  flux_fluid = "fw-yellow-flux", unlock_technology = "fw-flux-yellow-catalysis", catalyst_amount = 1, catalyst_return_probability = 0.82, energy_required = 7.5, secondary_fluids = { { name = "crude-oil", amount = 18 } } },
-    { from = "bauxite-ore", to = "silicon-ore",  input_amount = 14, output_amount = 10, flux_cost = 28, flux_refund = 6,  flux_fluid = "fw-red-flux", unlock_technology = "fw-flux-red-energetics", catalyst_amount = 1, catalyst_return_probability = 0.78, energy_required = 8.5, secondary_fluids = { { name = "crude-oil", amount = 22 } } },
-    { from = "silicon-ore", to = "titanium-ore", input_amount = 16, output_amount = 8,  flux_cost = 38, flux_refund = 7,  flux_fluid = "fw-green-flux", unlock_technology = "fw-flux-green-reclamation", catalyst_amount = 2, catalyst_return_probability = 0.72, energy_required = 10.5, secondary_fluids = { { name = "crude-oil", amount = 30 } } },
-    { from = "titanium-ore", to = "uranium-ore", input_amount = 18, output_amount = 8,  flux_cost = 48, flux_refund = 8,  flux_fluid = "fw-red-flux", unlock_technology = "fw-flux-field-theory", catalyst_amount = 2, catalyst_return_probability = 0.66, energy_required = 12, secondary_fluids = { { name = "crude-oil", amount = 38 } } },
+    { from = "coal",         to = "copper-ore",   input_amount = 12, output_amount = 10, flux_cost = 6,  flux_refund = 3,  energy_required = 4.0 },
+    { from = "copper-ore",   to = "iron-ore",     input_amount = 12, output_amount = 10, flux_cost = 8,  flux_refund = 4,  energy_required = 4.5 },
+    { from = "iron-ore",     to = "lead-ore",     input_amount = 12, output_amount = 10, flux_cost = 12, flux_refund = 6,  energy_required = 5.5 },
+    { from = "lead-ore",     to = "tin-ore",      input_amount = 12, output_amount = 10, flux_cost = 14, flux_refund = 7,  energy_required = 6.0 },
+    { from = "tin-ore",      to = "bauxite-ore",  input_amount = 14, output_amount = 10, flux_cost = 18, flux_refund = 9,  energy_required = 6.5 },
+    { from = "bauxite-ore",  to = "silicon-ore",  input_amount = 14, output_amount = 10, flux_cost = 22, flux_refund = 11, energy_required = 7.0 },
+    { from = "silicon-ore",  to = "titanium-ore", input_amount = 16, output_amount = 8,  flux_cost = 30, flux_refund = 15, energy_required = 8.5 },
+    { from = "titanium-ore", to = "uranium-ore",  input_amount = 18, output_amount = 8,  flux_cost = 42, flux_refund = 18, unlock_technology = "fw-flux-field-theory", energy_required = 10.5 },
   },
 }
 
@@ -77,29 +75,6 @@ local function add_recipe_unlock(technology_name, recipe_name)
   table.insert(unlocks_by_technology[technology_name], recipe_name)
 end
 
-local function add_catalyst_ingredient(ingredients, step)
-  if step.catalyst_amount then
-    table.insert(ingredients, { type = "item", name = "fw-flux-catalyst", amount = step.catalyst_amount })
-  end
-end
-
-local function add_catalyst_return(results, step)
-  if step.catalyst_amount then
-    table.insert(results, {
-      type = "item",
-      name = "fw-flux-catalyst",
-      amount = step.catalyst_amount,
-      probability = step.catalyst_return_probability or 1,
-    })
-  end
-end
-
-local function add_secondary_fluids(ingredients, step)
-  for _, fluid in ipairs(step.secondary_fluids or {}) do
-    table.insert(ingredients, { type = "fluid", name = fluid.name, amount = fluid.amount })
-  end
-end
-
 local function to_upcycle_recipe(step, index)
   local defaults = TRANSMUTATION_BALANCE.defaults
   local input_amount = step.input_amount or defaults.input_amount
@@ -116,9 +91,6 @@ local function to_upcycle_recipe(step, index)
   local results = {
     { type = "item", name = step.to, amount = output_amount },
   }
-  add_secondary_fluids(ingredients, step)
-  add_catalyst_ingredient(ingredients, step)
-  add_catalyst_return(results, step)
 
   return {
     type = "recipe",
@@ -154,8 +126,6 @@ local function to_downcycle_recipe(step, index)
   local results = {
     { type = "item", name = step.from, amount = output_amount },
   }
-  add_catalyst_ingredient(ingredients, step)
-  add_catalyst_return(results, step)
   if flux_refund > 0 then
     table.insert(results, { type = "fluid", name = flux_fluid, amount = flux_refund })
   end

@@ -6,18 +6,15 @@ data:extend({
     name = "fw-flux-extraction",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-quarry.png",
     icon_size = 64,
-    prerequisites = { "rocket-silo", "fw-systems-integration", "fw-material-refinement" },
+    prerequisites = { "fw-liquid-mining", "fw-material-refinement", "fw-sealed-systems" },
     unit = {
-      count = 1800,
+      count = 160,
       ingredients = {
         { "automation-science-pack", 1 },
         { "logistic-science-pack", 1 },
         { "chemical-science-pack", 1 },
-        { "production-science-pack", 1 },
-        { "utility-science-pack", 1 },
-        { "space-science-pack", 1 },
       },
-      time = 45,
+      time = 32,
     },
     effects = {
       { type = "unlock-recipe", recipe = "fw-flux-quarry" },
@@ -27,7 +24,7 @@ data:extend({
 })
 
 Tech:get("fw-flux-extraction")
-  :setCost(1800)
-  :setColors("RGBPWS")
-  :setTime(45)
-  :setPrerequisites({ "rocket-silo", "fw-systems-integration", "fw-material-refinement" })
+  :setCost(160)
+  :setColors("RGC")
+  :setTime(32)
+  :setPrerequisites({ "fw-liquid-mining", "fw-material-refinement", "fw-sealed-systems" })

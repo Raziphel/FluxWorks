@@ -15,76 +15,111 @@ end
 data:extend({
   {
     type = "technology",
-    name = "fw-material-foundations",
+    name = "fw-glassworking",
     icon = "__FluxWorksAssets__/graphics/technology/fw-glassworking.png",
     icon_size = 1024,
-    prerequisites = { "fw-comminution", "automation-2", "electronics" },
-    unit = tech_unit(60, {
+    prerequisites = { "fw-basic-separation" },
+    unit = tech_unit(28, {
       { "automation-science-pack", 1 },
-      { "logistic-science-pack", 1 },
-    }, 20),
+    }, 15),
     effects = {
       unlock("fw-glass"),
+    },
+    order = "c-a[fw-glassworking]",
+  },
+  {
+    type = "technology",
+    name = "fw-material-foundations",
+    icons = {
+      { icon = "__FluxWorksAssets__/graphics/technology/fw-glassworking.png", icon_size = 1024 },
+      {
+        icon = "__FluxWorksAssets__/graphics/icons/items/fw-rubber-sheet.png",
+        icon_size = 1024,
+        scale = 0.26,
+        shift = { 10, 10 },
+      },
+    },
+    prerequisites = { "fw-glassworking", "electronics" },
+    unit = tech_unit(42, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+    }, 18),
+    effects = {
       unlock("fw-rubber-sheet"),
     },
-    order = "c-a[fw-material-foundations]",
+    order = "c-b[fw-material-foundations]",
   },
   {
     type = "technology",
     name = "fw-structural-fabrication",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-iron-beam.png",
     icon_size = 1024,
-    prerequisites = { "fw-material-foundations", "logistics-2", "steel-processing" },
-    unit = tech_unit(75, {
+    prerequisites = { "fw-material-foundations", "logistics", "steel-processing" },
+    unit = tech_unit(42, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
-    }, 25),
+    }, 20),
     effects = {
-      unlock("fw-copper-tube"),
       unlock("fw-metal-mesh"),
       unlock("fw-iron-beam"),
     },
-    order = "c-b[fw-structural-fabrication]",
+    order = "c-c[fw-structural-fabrication]",
+  },
+  {
+    type = "technology",
+    name = "fw-sealed-components",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-copper-tube.png",
+    icon_size = 1024,
+    prerequisites = { "fw-structural-fabrication", "fw-basic-separation", "fw-material-foundations" },
+    unit = tech_unit(48, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+    }, 20),
+    effects = {
+      unlock("fw-copper-tube"),
+      unlock("fw-inline-filter"),
+    },
+    order = "c-d[fw-sealed-components]",
   },
   {
     type = "technology",
     name = "fw-contact-casting",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
     icon_size = 1024,
-    prerequisites = { "fw-structural-fabrication", "electronics", "logistics-2" },
-    unit = tech_unit(55, {
+    prerequisites = { "fw-sealed-components", "electronics" },
+    unit = tech_unit(34, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
-    }, 20),
+    }, 18),
     effects = {
       unlock("fw-circuit-contact-leaded"),
     },
-    order = "c-c[fw-contact-casting]",
+    order = "c-e[fw-contact-casting]",
   },
   {
     type = "technology",
     name = "fw-metals-fabrication",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-solder-alloy.png",
     icon_size = 128,
-    prerequisites = { "fw-structural-fabrication", "engine", "military-2", "toolbelt" },
-    unit = tech_unit(95, {
+    prerequisites = { "fw-structural-fabrication", "engine", "steel-processing" },
+    unit = tech_unit(48, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
-    }, 30),
+    }, 24),
     effects = {
       unlock("fw-solder-alloy"),
       unlock("fw-bearing"),
       unlock("fw-ceramic-insulator"),
     },
-    order = "c-d[fw-metals-fabrication]",
+    order = "c-f[fw-metals-fabrication]",
   },
   {
     type = "technology",
     name = "fw-circuit-foundry",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-solder-wire.png",
     icon_size = 1024,
-    prerequisites = { "fw-contact-casting", "fw-metals-fabrication", "automation-2", "logistics-2" },
-    unit = tech_unit(70, {
+    prerequisites = { "fw-contact-casting", "fw-metals-fabrication", "automation-2", "logistics" },
+    unit = tech_unit(50, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 20),
@@ -92,7 +127,7 @@ data:extend({
       unlock("fw-solder-wire"),
       unlock("fw-ceramic-wafer"),
     },
-    order = "c-e[fw-circuit-foundry]",
+    order = "c-g[fw-circuit-foundry]",
   },
   {
     type = "technology",
@@ -100,7 +135,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-steel-beam.png",
     icon_size = 1024,
     prerequisites = { "fw-metals-fabrication", "fw-material-foundations" },
-    unit = tech_unit(100, {
+    unit = tech_unit(65, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 30),
@@ -108,7 +143,7 @@ data:extend({
       unlock("fw-steel-beam"),
       unlock("fw-aluminum-beam"),
     },
-    order = "c-f[fw-beam-engineering]",
+    order = "c-h[fw-beam-engineering]",
   },
   {
     type = "technology",
@@ -116,7 +151,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-cable-harness.png",
     icon_size = 1024,
     prerequisites = { "fw-metals-fabrication", "fw-material-foundations" },
-    unit = tech_unit(100, {
+    unit = tech_unit(65, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 25),
@@ -124,7 +159,7 @@ data:extend({
       unlock("fw-tinned-cable"),
       unlock("fw-cable-harness"),
     },
-    order = "c-g[fw-conductive-assembly]",
+    order = "c-i[fw-conductive-assembly]",
   },
   {
     type = "technology",
@@ -132,7 +167,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-chip-carrier.png",
     icon_size = 1024,
     prerequisites = { "fw-circuit-foundry", "fw-material-foundations", "advanced-circuit" },
-    unit = tech_unit(110, {
+    unit = tech_unit(80, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 25),
@@ -140,7 +175,7 @@ data:extend({
       unlock("fw-silicon-wafer"),
       unlock("fw-chip-carrier"),
     },
-    order = "c-h[fw-wafer-etching]",
+    order = "c-j[fw-wafer-etching]",
   },
   {
     type = "technology",
@@ -166,8 +201,8 @@ data:extend({
     name = "fw-signal-architecture",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-ribbon-cable.png",
     icon_size = 1024,
-    prerequisites = { "fw-wafer-etching", "fw-conductive-assembly", "battery", "radar" },
-    unit = tech_unit(125, {
+    prerequisites = { "fw-wafer-etching", "fw-conductive-assembly", "battery" },
+    unit = tech_unit(95, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -184,7 +219,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-memory-die.png",
     icon_size = 1024,
     prerequisites = { "fw-signal-architecture", "processing-unit", "modules", "electric-engine" },
-    unit = tech_unit(165, {
+    unit = tech_unit(140, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -200,15 +235,14 @@ data:extend({
     name = "fw-material-refinement",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-cermet.png",
     icon_size = 1024,
-    prerequisites = { "fw-metals-fabrication", "fw-beam-engineering", "concrete", "sulfur-processing", "fluid-handling" },
-    unit = tech_unit(150, {
+    prerequisites = { "fw-metals-fabrication", "fw-beam-engineering", "sulfur-processing", "fluid-handling" },
+    unit = tech_unit(105, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
     }, 30),
     effects = {
       unlock("fw-cermet"),
-      unlock("fw-inline-filter"),
     },
     order = "c-l[fw-material-refinement]",
   },
@@ -217,8 +251,8 @@ data:extend({
     name = "fw-instrumentation",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-lens-array.png",
     icon_size = 1024,
-    prerequisites = { "fw-electromechanical-systems", "solar-energy", "radar" },
-    unit = tech_unit(170, {
+    prerequisites = { "fw-electromechanical-systems", "solar-energy" },
+    unit = tech_unit(120, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -235,7 +269,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-transformer-core.png",
     icon_size = 1024,
     prerequisites = { "fw-instrumentation", "robotics", "electric-energy-accumulators", "electric-engine" },
-    unit = tech_unit(220, {
+    unit = tech_unit(170, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -253,7 +287,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-light-frame.png",
     icon_size = 128,
     prerequisites = { "fw-electromechanical-systems", "fw-material-refinement", "fw-systems-integration", "military-3", "production-science-pack" },
-    unit = tech_unit(240, {
+    unit = tech_unit(190, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
       { "chemical-science-pack", 1 },
@@ -268,92 +302,104 @@ data:extend({
   },
 })
 
+Tech:get("fw-glassworking")
+  :setCost(28)
+  :setColors("R")
+  :setTime(15)
+  :setPrerequisites({ "fw-basic-separation" })
+
 Tech:get("fw-material-foundations")
-  :setCost(60)
+  :setCost(42)
   :setColors("RG")
-  :setTime(20)
-  :setPrerequisites({ "fw-comminution", "automation-2", "electronics" })
+  :setTime(18)
+  :setPrerequisites({ "fw-glassworking", "electronics" })
 
 Tech:get("fw-structural-fabrication")
-  :setCost(75)
+  :setCost(42)
   :setColors("RG")
-  :setTime(25)
-  :setPrerequisites({ "fw-material-foundations", "logistics-2", "steel-processing" })
+  :setTime(20)
+  :setPrerequisites({ "fw-material-foundations", "logistics", "steel-processing" })
+
+Tech:get("fw-sealed-components")
+  :setCost(48)
+  :setColors("RG")
+  :setTime(20)
+  :setPrerequisites({ "fw-structural-fabrication", "fw-basic-separation", "fw-material-foundations" })
 
 Tech:get("fw-contact-casting")
-  :setCost(55)
+  :setCost(34)
   :setColors("RG")
-  :setTime(20)
-  :setPrerequisites({ "fw-structural-fabrication", "electronics", "logistics-2" })
+  :setTime(18)
+  :setPrerequisites({ "fw-sealed-components", "electronics" })
 
 Tech:get("fw-metals-fabrication")
-  :setCost(70)
+  :setCost(48)
   :setColors("RG")
   :setTime(24)
-  :setPrerequisites({ "fw-structural-fabrication", "engine" })
+  :setPrerequisites({ "fw-structural-fabrication", "engine", "steel-processing" })
 
 Tech:get("fw-circuit-foundry")
-  :setCost(70)
+  :setCost(50)
   :setColors("RG")
-  :setTime(20)
-  :setPrerequisites({ "fw-contact-casting", "fw-metals-fabrication", "automation-2", "logistics-2" })
+  :setTime(18)
+  :setPrerequisites({ "fw-contact-casting", "fw-metals-fabrication", "automation-2", "logistics" })
 
 Tech:get("fw-beam-engineering")
-  :setCost(80)
+  :setCost(65)
   :setColors("RG")
-  :setTime(24)
+  :setTime(22)
   :setPrerequisites({ "fw-metals-fabrication", "fw-material-foundations" })
 
 Tech:get("fw-conductive-assembly")
-  :setCost(75)
+  :setCost(65)
   :setColors("RG")
-  :setTime(20)
+  :setTime(22)
   :setPrerequisites({ "fw-metals-fabrication", "fw-material-foundations" })
 
 Tech:get("fw-wafer-etching")
-  :setCost(90)
+  :setCost(80)
   :setColors("RG")
-  :setTime(20)
+  :setTime(22)
   :setPrerequisites({ "fw-circuit-foundry", "fw-material-foundations", "advanced-circuit" })
 
 Tech:get("fw-electromechanical-systems")
   :setCost(110)
   :setColors("RGB")
-  :setTime(24)
+  :setTime(26)
   :setPrerequisites({ "fw-beam-engineering", "fw-wafer-etching", "electric-energy-distribution-1", "battery" })
 
 Tech:get("fw-signal-architecture")
-  :setCost(100)
+  :setCost(95)
   :setColors("RGB")
-  :setTime(22)
+  :setTime(24)
   :setPrerequisites({ "fw-wafer-etching", "fw-conductive-assembly", "battery" })
 
 Tech:get("fw-computational-arrays")
-  :setCost(130)
+  :setCost(140)
   :setColors("RGB")
   :setTime(24)
   :setPrerequisites({ "fw-signal-architecture", "processing-unit", "modules", "electric-engine" })
 
 Tech:get("fw-material-refinement")
-  :setCost(115)
+  :setCost(105)
   :setColors("RGB")
   :setTime(24)
-  :setPrerequisites({ "fw-metals-fabrication", "fw-beam-engineering", "concrete", "sulfur-processing", "fluid-handling" })
+  :setPrerequisites({ "fw-metals-fabrication", "fw-beam-engineering", "sulfur-processing", "fluid-handling" })
 
 Tech:get("fw-instrumentation")
-  :setCost(125)
+  :setCost(120)
   :setColors("RGB")
   :setTime(24)
   :setPrerequisites({ "fw-electromechanical-systems", "solar-energy" })
 
 Tech:get("fw-systems-integration")
-  :setCost(160)
+  :setCost(170)
   :setColors("RGB")
-  :setTime(28)
+  :setTime(30)
   :setPrerequisites({ "fw-instrumentation", "electric-energy-accumulators", "electric-engine" })
 
 Tech:get("fw-advanced-fabrication")
-  :setCost(180)
+  :setCost(190)
   :setColors("RGBP")
-  :setTime(30)
+  :setTime(28)
   :setPrerequisites({ "fw-electromechanical-systems", "fw-material-refinement", "fw-systems-integration", "production-science-pack" })

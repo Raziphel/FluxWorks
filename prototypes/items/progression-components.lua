@@ -141,7 +141,7 @@ data:extend({
     type = "item",
     name = "fw-thermal-buffer",
     icon = icon_path .. "fw-thermal-buffer.png",
-    icon_size = 1024,
+    icon_size = 64,
     subgroup = "fw-intermediate-structural",
     order = "q[fw-thermal-buffer]",
     stack_size = 100,

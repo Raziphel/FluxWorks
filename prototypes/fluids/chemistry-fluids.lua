@@ -8,6 +8,7 @@ data:extend({
     flow_color = { r = 0.98, g = 0.97, b = 0.92 },
     icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-latex.png",
     icon_size = 64,
+    icon_mipmaps = 4,
     subgroup = "fw-chemistry-fluids",
     order = "a[fluid]-l[fw-latex]",
   },
@@ -20,6 +21,7 @@ data:extend({
     flow_color = { r = 0.96, g = 0.64, b = 0.24 },
     icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-blasting-gel.png",
     icon_size = 64,
+    icon_mipmaps = 4,
     subgroup = "fw-chemistry-fluids",
     order = "a[fluid]-m[fw-blasting-gel]",
   },
@@ -34,6 +36,7 @@ data:extend({
       {
         icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-blasting-gel.png",
         icon_size = 64,
+        icon_mipmaps = 4,
       },
       {
         icon = "__base__/graphics/icons/sulfur.png",

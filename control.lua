@@ -3,6 +3,8 @@ local modules = {
   require("scripts.phase-vaults"),
   require("scripts.spectral-reservoirs"),
   require("scripts.rift-exchange"),
+  require("scripts.shattered-planet"),
+  require("scripts.true-ending"),
 }
 
 local event_handlers = {}

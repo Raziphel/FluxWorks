@@ -351,7 +351,7 @@ data:extend({
     type = "resource",
     name = "fw-silica-vein",
     icons = {
-      { icon = bz_icon_path .. "fw-bz-silicon-ore.png", icon_size = 64, tint = SILICA_VEIN_TINT },
+      { icon = bz_icon_path .. "fw-bz-silicon-ore-square.png", icon_size = 64, tint = SILICA_VEIN_TINT },
       { icon = "__base__/graphics/icons/stone.png", icon_size = 64, scale = 0.30, shift = { -8, 8 }, tint = { r = 0.90, g = 0.84, b = 0.72, a = 1.00 } },
     },
     flags = { "placeable-neutral" },
@@ -394,7 +394,7 @@ data:extend({
     type = "autoplace-control",
     category = "resource",
     name = "fw-metallic-deposit",
-    localised_name = { "", "[entity=fw-metallic-deposit] ", { "autoplace-control-names.fw-metallic-deposit" } },
+    localised_name = { "", "[item=iron-ore] [item=copper-ore] ", { "autoplace-control-names.fw-metallic-deposit" } },
     richness = true,
     order = "a-m",
   },
@@ -423,14 +423,14 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-metallic-deposit",
       order = "a-m",
-      base_density = 10.5,
-      richness_multiplier = 0.34,
-      base_spots_per_km2 = 0.42,
+      base_density = 12.0,
+      richness_multiplier = 0.40,
+      base_spots_per_km2 = 0.56,
       has_starting_area_placement = true,
-      richness_post_multiplier = 0.62,
-      additional_richness = 180,
-      regular_rq_factor_multiplier = 1.40,
-      starting_rq_factor_multiplier = 2.15,
+      richness_post_multiplier = 0.70,
+      additional_richness = 240,
+      regular_rq_factor_multiplier = 1.55,
+      starting_rq_factor_multiplier = 2.80,
     }),
     stage_counts = { 28000, 17000, 10000, 5600, 2500, 900, 280, 120 },
     stages = {
@@ -459,7 +459,7 @@ data:extend({
     icons = {
       { icon = resource_icon_path .. "fw-mineral-deposit.png", icon_size = 64, tint = MINERAL_DEPOSIT_TINT },
       { icon = ore_path .. "bauxite-ore.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 1.00, g = 0.76, b = 0.40, a = 1.00 } },
-      { icon = bz_icon_path .. "fw-bz-silicon-ore.png", icon_size = 64, scale = 0.34, shift = { 8, 8 }, tint = { r = 0.84, g = 1.00, b = 0.76, a = 1.00 } },
+      { icon = bz_icon_path .. "fw-bz-silicon-ore-square.png", icon_size = 64, scale = 0.34, shift = { 8, 8 }, tint = { r = 0.84, g = 1.00, b = 0.76, a = 1.00 } },
     },
     flags = { "placeable-neutral" },
     order = "a-b-c",
@@ -480,14 +480,14 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-mineral-deposit",
       order = "a-n",
-      base_density = 5.1,
-      richness_multiplier = 0.32,
-      base_spots_per_km2 = 0.18,
+      base_density = 6.6,
+      richness_multiplier = 0.38,
+      base_spots_per_km2 = 0.30,
       has_starting_area_placement = true,
-      richness_post_multiplier = 0.60,
-      additional_richness = 120,
-      regular_rq_factor_multiplier = 0.95,
-      starting_rq_factor_multiplier = 1.60,
+      richness_post_multiplier = 0.68,
+      additional_richness = 190,
+      regular_rq_factor_multiplier = 1.10,
+      starting_rq_factor_multiplier = 2.35,
     }),
     stage_counts = { 26000, 15500, 9200, 5200, 2300, 820, 260, 110 },
     stages = {
@@ -534,14 +534,14 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-carbonic-deposit",
       order = "a-o",
-      base_density = 6.4,
-      richness_multiplier = 0.32,
-      base_spots_per_km2 = 0.20,
+      base_density = 7.8,
+      richness_multiplier = 0.36,
+      base_spots_per_km2 = 0.32,
       has_starting_area_placement = true,
-      richness_post_multiplier = 0.60,
-      additional_richness = 140,
-      regular_rq_factor_multiplier = 1.20,
-      starting_rq_factor_multiplier = 1.70,
+      richness_post_multiplier = 0.68,
+      additional_richness = 200,
+      regular_rq_factor_multiplier = 1.32,
+      starting_rq_factor_multiplier = 2.30,
     }),
     stage_counts = { 24000, 14500, 8600, 4800, 2100, 760, 240, 100 },
     stages = {
@@ -564,7 +564,7 @@ if data.raw.item["promethium-asteroid-chunk"] then
       type = "autoplace-control",
       category = "resource",
       name = "fw-promethium-impact",
-      localised_name = { "", "[entity=fw-promethium-impact] ", { "autoplace-control-names.fw-promethium-impact" } },
+      localised_name = { "", "[item=fw-promethium-shard] [item=stone] ", { "autoplace-control-names.fw-promethium-impact" } },
       richness = true,
       order = "a-p",
     },
@@ -572,7 +572,7 @@ if data.raw.item["promethium-asteroid-chunk"] then
       type = "resource",
       name = "fw-promethium-impact",
       icons = {
-        { icon = resource_icon_path .. "fw-mineral-deposit.png", icon_size = 64, tint = PROMETHIUM_IMPACT_TINT },
+        { icon = resource_icon_path .. "fw-promethium-impact.png", icon_size = 64, tint = PROMETHIUM_IMPACT_TINT },
       },
       flags = { "placeable-neutral" },
       order = "a-b-e",
@@ -618,7 +618,7 @@ if not data.raw.item["tin-ore"] then
     {
       type = "item",
       name = "tin-ore",
-      icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore.png",
+      icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore-square.png",
       icon_size = 64,
       subgroup = "raw-resource",
       order = "z[tin-ore]",
@@ -632,7 +632,7 @@ if not data.raw.item["silicon-ore"] then
     {
       type = "item",
       name = "silicon-ore",
-      icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore.png",
+      icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore-square.png",
       icon_size = 64,
       subgroup = "raw-resource",
       order = "z[silicon-ore]",
@@ -655,9 +655,9 @@ local function override_ore_item_icon(name, icon_file, icon_size)
   item.icon_mipmaps = nil
 end
 
-override_ore_item_icon("titanium-ore", "fw-bz-titanium-ore.png", 64)
-override_ore_item_icon("tin-ore", "fw-bz-tin-ore.png", 64)
-override_ore_item_icon("silicon-ore", "fw-bz-silicon-ore.png", 64)
+override_ore_item_icon("titanium-ore", "fw-bz-titanium-ore-square.png", 64)
+override_ore_item_icon("tin-ore", "fw-bz-tin-ore-square.png", 64)
+override_ore_item_icon("silicon-ore", "fw-bz-silicon-ore-square.png", 64)
 override_ore_item_icon("carbon-ore", "fw-bz-carbon-ore.png", 128)
 
 -- Disable legacy standalone ore worldgen so Nauvis stays focused on mixed deposits.

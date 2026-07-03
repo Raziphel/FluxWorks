@@ -4,19 +4,19 @@ data:extend({
   {
     type = "technology",
     name = "fw-liquid-mining",
-    icon = "__FluxWorksAssets__/graphics/resources/fluids/chlorine.png",
-    icon_size = 128,
-    prerequisites = { "fw-electromechanical-systems", "fluid-handling" },
+    icon = "__FluxWorksAssets__/graphics/technology/fw-liquid-mining.png",
+    icon_size = 256,
+    prerequisites = { "fw-sealed-components", "fluid-handling", "sulfur-processing" },
     unit = {
-      count = 150,
+      count = 70,
       ingredients = {
         { "automation-science-pack", 1 },
         { "logistic-science-pack", 1 },
-        { "chemical-science-pack", 1 },
       },
-      time = 30,
+      time = 24,
     },
     effects = {
+      { type = "mining-with-fluid", modifier = true },
       { type = "unlock-recipe", recipe = "fw-chlorine" },
       { type = "unlock-recipe", recipe = "fw-carbon-washing" },
     },
@@ -25,7 +25,7 @@ data:extend({
 })
 
 Tech:get("fw-liquid-mining")
-  :setCost(150)
-  :setColors("RGB")
-  :setTime(30)
-  :setPrerequisites({ "fw-electromechanical-systems", "fluid-handling" })
+  :setCost(70)
+  :setColors("RG")
+  :setTime(24)
+  :setPrerequisites({ "fw-sealed-components", "fluid-handling", "sulfur-processing" })

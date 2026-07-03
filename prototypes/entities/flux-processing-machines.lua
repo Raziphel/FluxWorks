@@ -136,10 +136,10 @@ harvester.collision_box = { { -1.7, -1.7 }, { 1.7, 1.7 } }
 harvester.selection_box = { { -2, -2 }, { 2, 2 } }
 harvester.fast_replaceable_group = "fw-flux-processing"
 harvester.crafting_categories = { "fw-flux-harvesting" }
-harvester.crafting_speed = 1.8
-harvester.energy_usage = "1.9MW"
+harvester.crafting_speed = 2.2
+harvester.energy_usage = "2.2MW"
 harvester.ingredient_count = 12
-harvester.module_slots = 3
+harvester.module_slots = 4
 harvester.allowed_effects = { "consumption", "speed", "productivity", "pollution" }
 harvester.fluid_boxes = make_medium_fluid_boxes()
 harvester.fluid_boxes_off_when_no_fluid_recipe = true
@@ -213,11 +213,11 @@ arc_foundry.collision_box = { { -2.1, -2.1 }, { 2.1, 2.1 } }
 arc_foundry.selection_box = { { -2.5, -2.5 }, { 2.5, 2.5 } }
 arc_foundry.fast_replaceable_group = "fw-flux-processing"
 arc_foundry.crafting_categories = { "fw-arc-smelting" }
-arc_foundry.crafting_speed = 2.5
-arc_foundry.energy_usage = "5MW"
+arc_foundry.crafting_speed = 3.2
+arc_foundry.energy_usage = "6.2MW"
 arc_foundry.ingredient_count = 16
-arc_foundry.module_slots = 4
-arc_foundry.allowed_effects = { "consumption", "speed", "productivity", "pollution" }
+arc_foundry.module_slots = 5
+arc_foundry.allowed_effects = { "consumption", "speed", "productivity", "pollution", "quality" }
 arc_foundry.fluid_boxes = make_large_fluid_boxes()
 arc_foundry.fluid_boxes_off_when_no_fluid_recipe = true
 arc_foundry.graphics_set = {
@@ -274,7 +274,7 @@ arc_foundry.graphics_set = {
 }
 arc_foundry.working_sound = {
   sound = {
-    filename = "__space-age__/sound/entity/foundry/foundry.ogg",
+    filename = "__FluxWorksAssets__/sounds/arc-furnace.ogg",
     volume = 0.5,
     audible_distance_modifier = 0.6,
   },
@@ -303,11 +303,11 @@ synthesis_plant.collision_box = { { -1.6, -1.6 }, { 1.6, 1.6 } }
 synthesis_plant.selection_box = { { -2, -2 }, { 2, 2 } }
 synthesis_plant.fast_replaceable_group = "fw-flux-processing"
 synthesis_plant.crafting_categories = { "fw-flux-synthesis" }
-synthesis_plant.crafting_speed = 2.3
-synthesis_plant.energy_usage = "3.8MW"
+synthesis_plant.crafting_speed = 2.9
+synthesis_plant.energy_usage = "4.6MW"
 synthesis_plant.ingredient_count = 20
-synthesis_plant.module_slots = 4
-synthesis_plant.allowed_effects = { "consumption", "speed", "productivity", "pollution" }
+synthesis_plant.module_slots = 5
+synthesis_plant.allowed_effects = { "consumption", "speed", "productivity", "pollution", "quality" }
 synthesis_plant.fluid_boxes = make_medium_fluid_boxes()
 synthesis_plant.fluid_boxes_off_when_no_fluid_recipe = true
 synthesis_plant.graphics_set = {
@@ -387,7 +387,7 @@ synthesis_plant.graphics_set = {
 }
 synthesis_plant.working_sound = {
   sound = {
-    filename = "__space-age__/sound/entity/electromagnetic-plant/electromagnetic-plant-loop.ogg",
+    filename = "__FluxWorksAssets__/sounds/advanced-assembling-machine.ogg",
     volume = 0.45,
     audible_distance_modifier = 0.55,
   },
@@ -457,12 +457,12 @@ data:extend({
     ingredients = {
       { type = "item", name = "crusher", amount = 1 },
       { type = "item", name = "chemical-plant", amount = 1 },
-      { type = "item", name = "fw-pressure-housing", amount = 2 },
-      { type = "item", name = "fw-flow-regulator", amount = 2 },
-      { type = "item", name = "fw-transformer-core", amount = 2 },
-      { type = "item", name = "fw-harvester-head", amount = 2 },
-      { type = "item", name = "fw-steel-beam", amount = 12 },
-      { type = "item", name = "fw-cermet", amount = 8 },
+      { type = "item", name = "fw-pressure-housing", amount = 1 },
+      { type = "item", name = "fw-flow-regulator", amount = 1 },
+      { type = "item", name = "fw-transformer-core", amount = 1 },
+      { type = "item", name = "fw-harvester-head", amount = 1 },
+      { type = "item", name = "fw-steel-beam", amount = 8 },
+      { type = "item", name = "fw-cermet", amount = 6 },
     },
     results = { { type = "item", name = "fw-flux-harvester", amount = 1 } },
   },
@@ -492,13 +492,13 @@ data:extend({
     energy_required = 12,
     ingredients = {
       { type = "item", name = "chemical-plant", amount = 2 },
-      { type = "item", name = "fw-pressure-housing", amount = 4 },
-      { type = "item", name = "fw-flow-regulator", amount = 3 },
-      { type = "item", name = "fw-circuit-substrate", amount = 4 },
-      { type = "item", name = "fw-coil-block", amount = 3 },
-      { type = "item", name = "fw-lens-array", amount = 2 },
-      { type = "item", name = "fw-cermet", amount = 6 },
-      { type = "item", name = "advanced-circuit", amount = 8 },
+      { type = "item", name = "fw-pressure-housing", amount = 3 },
+      { type = "item", name = "fw-flow-regulator", amount = 2 },
+      { type = "item", name = "fw-circuit-substrate", amount = 3 },
+      { type = "item", name = "fw-coil-block", amount = 2 },
+      { type = "item", name = "fw-lens-array", amount = 1 },
+      { type = "item", name = "fw-cermet", amount = 4 },
+      { type = "item", name = "advanced-circuit", amount = 6 },
     },
     results = { { type = "item", name = "fw-synthesis-plant", amount = 1 } },
   },
