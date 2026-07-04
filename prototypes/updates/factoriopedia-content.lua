@@ -928,7 +928,7 @@ if mods["space-age"] then
     {
       type = "tips-and-tricks-item",
       name = "shattered-origin-projects",
-      tag = "[item=fw-origin-singularity]",
+      tag = "[entity=fw-origin-singularity]",
       category = "fluxworks",
       order = "r1",
       indent = 1,

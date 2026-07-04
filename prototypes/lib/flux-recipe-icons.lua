@@ -108,10 +108,17 @@ end
 
 function M.source_to_flux_icons(source_name, flux_fluid_name)
   local flux_icon = M.fluid_icon(flux_fluid_name)
+  local source_icon = M.item_icon(source_name)
   if not flux_icon then
-    return M.item_icon(source_name)
+    return source_icon
   end
-  return { icons = clone_icon_layers(flux_icon) }
+
+  local icons = clone_icon_layers(flux_icon)
+  for _, layer in ipairs(clone_icon_layers(source_icon, 0.38, { 10, 10 })) do
+    icons[#icons + 1] = layer
+  end
+
+  return { icons = icons }
 end
 
 return M

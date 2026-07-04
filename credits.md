@@ -74,6 +74,19 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
     - `FluxWorksAssets/graphics/icons/items/part-*.png`
     - `FluxWorksAssets/graphics/icons/items/unused-assets/*`
 
+- 248k mod graphics:
+  - Source:
+    - `/mnt/omega/Coding/Assets/248k-Redux-graphics`
+  - Used for adapted gravitation-endgame iconography in:
+    - `FluxWorksAssets/graphics/icons/items/late-utility/fw-origin-singularity.png`
+
+- Krastorio 2 assets:
+  - Sources:
+    - `/mnt/omega/Coding/Assets/Krastorio2_2.0.16`
+    - `/mnt/omega/Coding/Assets/Krastorio2Assets_2.0.4`
+  - Used for adapted singularity-megastructure building art in:
+    - `FluxWorksAssets/graphics/late-utility/origin-singularity/*`
+
 ## Notes
 
 - `unused-renders` is CC BY 4.0 and requires attribution.

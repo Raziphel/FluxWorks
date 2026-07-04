@@ -26,7 +26,7 @@ data:extend({
     type = "recipe",
     name = "fw-silica-beneficiation",
     icons = {
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png", icon_size = 64, icon_mipmaps = 4 },
+      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png", icon_size = 64 },
       { icon = "__FluxWorksAssets__/graphics/icons/items/flux-2.png", icon_size = 64, scale = 0.45, shift = { 8, -8 } },
     },
     category = "fw-flux-harvesting",
@@ -103,7 +103,7 @@ data:extend({
     type = "recipe",
     name = "fw-tin-ore-beneficiation",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore-square.png",
-    icon_size = 128,
+    icon_size = 64,
     category = "fw-flux-harvesting",
     subgroup = "fw-chemistry-materials",
     order = "a[harvesting]-e[tin-ore-beneficiation]",

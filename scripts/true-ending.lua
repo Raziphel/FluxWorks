@@ -3,7 +3,7 @@ local M = {}
 local STRUCTURE_NAME = "fw-origin-singularity"
 local POWER_NAME = "fw-origin-singularity-power-interface"
 local SURFACE_NAME = "shattered-planet"
-local ACTIVATION_ENERGY = 60000000000
+local ACTIVATION_ENERGY = 120000000000
 local PROCESS_INTERVAL = 30
 local BAR_LEFT_TOP = { x = 3.0, y = -1.9 }
 local BAR_RIGHT_BOTTOM = { x = 3.35, y = 1.9 }
@@ -203,7 +203,7 @@ end
 
 local function on_removed(event)
   local entity = event.entity
-  if not (entity and entity.valid and entity.name == STRUCTURE_NAME and entity.unit_number) then
+  if not (entity and entity.name == STRUCTURE_NAME and entity.unit_number) then
     return
   end
 

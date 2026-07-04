@@ -203,7 +203,7 @@ M.item_values = {
   ["fw-origin-crucible"] = 170000,
   ["fw-universal-collapse-core"] = 4000000000,
   ["fw-genesis-ark"] = 5000000000000,
-  ["fw-origin-singularity"] = 15000000000000,
+  ["fw-origin-singularity"] = 9000000000000,
   ["promethium-asteroid-chunk"] = 6000,
   ["promethium-science-pack"] = 25000,
 
@@ -277,6 +277,11 @@ M.item_values = {
   ["fw-flux-condenser"] = 2200,
   ["fw-shattered-convergence-array"] = 18000,
 }
+
+-- Hard locks are the "do not argue with me" tier.
+-- Useful for raw resources, weird modded trophies, and anything we know the
+-- generic resolver should not try to outsmart.
+M.item_value_locks = {}
 
 M.fluid_values = {
   ["water"] = 0.02,

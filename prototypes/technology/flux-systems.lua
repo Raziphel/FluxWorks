@@ -742,8 +742,11 @@ data:extend({
   {
     type = "technology",
     name = "fw-origin-infrastructure",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png",
-    icon_size = 64,
+    icons = {
+      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png", icon_size = 64 },
+      { icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-coupler.png", icon_size = 1024, scale = 0.3, shift = { 10, -10 } },
+      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-matrix.png", icon_size = 1024, scale = 0.22, shift = { -10, 10 } },
+    },
     prerequisites = { "fw-rift-harmonics", "fw-rift-logistics", "fw-superconductive-systems" },
     unit = {
       count = 2200,
@@ -773,8 +776,11 @@ data:extend({
   {
     type = "technology",
     name = "fw-storm-megastructures",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-matrix.png",
-    icon_size = 1024,
+    icons = {
+      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-matrix.png", icon_size = 1024 },
+      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-harvester.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
+      { icon = "__FluxWorksAssets__/graphics/icons/items/flux-1-light.png", icon_size = 64, scale = 0.38, shift = { 10, -10 }, tint = { r = 1.0, g = 0.42, b = 0.25, a = 0.95 } },
+    },
     prerequisites = { "fw-origin-infrastructure", "fw-fusion-lattices", "fw-flux-convergence" },
     unit = {
       count = 2800,
@@ -804,8 +810,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-origin-transcendence",
-    icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-exchange-gate.png",
-    icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-origin-singularity.png",
+    icon_size = 64,
     prerequisites = { "fw-storm-megastructures" },
     unit = {
       count = 3600,

@@ -16,6 +16,14 @@ local COLOR_ICONS = {
   green = "[fluid=fw-green-flux]",
 }
 
+local CONFIDENCE_LABELS = {
+  locked = "Locked",
+  anchored = "Anchored",
+  derived = "Derived",
+  inferred = "Estimated",
+  unknown = "Unknown",
+}
+
 local function clone_flux_markup(value)
   if value <= 8 then
     return 1.25
@@ -126,12 +134,51 @@ local function add_flux_value_to_item_tooltip(item, value, breakdown)
   end
 end
 
+local function add_flux_status_to_item_tooltip(item, metadata)
+  local confidence = metadata and metadata.confidence or FluxValuation.VALUE_CONFIDENCE.unknown
+  local label = CONFIDENCE_LABELS[confidence] or "Unknown"
+  local line
+
+  if confidence == FluxValuation.VALUE_CONFIDENCE.unknown then
+    line = {
+      "",
+      "\n[color=255,190,120]Flux valuation: Unknown[/color] ",
+      "[color=200,200,200](needs a compatibility pass before clone costs are trusted)[/color]",
+    }
+  elseif confidence == FluxValuation.VALUE_CONFIDENCE.inferred then
+    line = {
+      "",
+      "\n[color=255,220,150]Flux valuation: ",
+      label,
+      "[/color] [color=200,200,200](using a partial or messy recipe path; review if this looks off)[/color]",
+    }
+  else
+    line = {
+      "",
+      "\n[color=180,220,255]Flux valuation: ",
+      label,
+      "[/color]",
+    }
+  end
+
+  if item.localised_description then
+    item.localised_description = { "", item.localised_description, line }
+  else
+    item.localised_description = line
+  end
+end
+
 local valued_items = FluxValuation.collect_valued_items()
 local resolved_values = FluxValuation.resolve_item_values(valued_items)
 local resolved_breakdowns = FluxValuation.resolve_item_color_amounts(valued_items, resolved_values)
+local resolved_metadata = FluxValuation._last_resolution_metadata or {}
 
 for item_name, item in pairs(valued_items) do
   local value = resolved_values[item_name] or FluxValuation.estimate_flux_value(item)
   local breakdown = resolved_breakdowns[item_name]
-  add_flux_value_to_item_tooltip(item, value, breakdown)
+  local metadata = resolved_metadata[item_name]
+  if metadata and metadata.confidence ~= FluxValuation.VALUE_CONFIDENCE.unknown then
+    add_flux_value_to_item_tooltip(item, value, breakdown)
+  end
+  add_flux_status_to_item_tooltip(item, metadata)
 end

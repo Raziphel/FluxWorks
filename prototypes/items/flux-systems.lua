@@ -306,10 +306,9 @@ data:extend({
     type = "item",
     name = "fw-origin-singularity",
     icons = {
-      { icon = late_utility_icon_path .. "fw-rift-exchange-gate.png", icon_size = 1024 },
-      { icon = icon_path .. "fw-condensed-flux-matrix.png", icon_size = 1024, scale = 0.24, shift = { -10, -10 } },
-      { icon = icon_path .. "flux-1-light.png", icon_size = 64, scale = 0.34, shift = { -10, 10 } },
-      { icon = icon_path .. "flux-2-light.png", icon_size = 64, scale = 0.34, shift = { 10, -10 } },
+      { icon = late_utility_icon_path .. "fw-origin-singularity.png", icon_size = 64 },
+      { icon = icon_path .. "fw-promethium-matrix.png", icon_size = 1024, scale = 0.24, shift = { -10, -10 } },
+      { icon = icon_path .. "flux-1-light.png", icon_size = 64, scale = 0.34, shift = { 10, 10 } },
     },
     subgroup = "fw-flux-origin-projects",
     order = "j[origin-singularity]",

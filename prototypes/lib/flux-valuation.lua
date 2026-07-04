@@ -36,6 +36,7 @@ M.NON_CONVERTIBLE_ITEM_PATTERNS = {
 }
 
 M.VALUE_OVERRIDES = FluxValues.item_values or {}
+M.VALUE_LOCKS = FluxValues.item_value_locks or {}
 M.FLUID_VALUE_OVERRIDES = FluxValues.fluid_values or {}
 M.ITEM_COLOR_OVERRIDES = FluxValues.item_color_overrides or {}
 M.FLUID_COLOR_OVERRIDES = FluxValues.fluid_color_overrides or {}
@@ -45,11 +46,26 @@ M.RECIPE_CATEGORY_COLOR_WEIGHTS = FluxValues.recipe_category_color_weights or {}
 M.RECIPE_PROCESS_COLOR_SHARE = FluxValues.recipe_process_color_share or 0.18
 M.DEFAULT_TIME_VALUE = FluxValues.default_time_value or 4
 M.COLOR_ORDER = { "purple", "yellow", "red", "green" }
+M.VALUE_CONFIDENCE = {
+  locked = "locked",
+  anchored = "anchored",
+  derived = "derived",
+  inferred = "inferred",
+  unknown = "unknown",
+}
 M.FLUX_FLUID_TO_COLOR = {
   ["fw-purple-flux"] = "purple",
   ["fw-yellow-flux"] = "yellow",
   ["fw-red-flux"] = "red",
   ["fw-green-flux"] = "green",
+}
+
+local CONFIDENCE_RANK = {
+  locked = 5,
+  anchored = 4,
+  derived = 3,
+  inferred = 2,
+  unknown = 1,
 }
 
 local function make_signature()
@@ -59,6 +75,17 @@ local function make_signature()
     red = false,
     green = false,
   }
+end
+
+local function confidence_rank(confidence)
+  return CONFIDENCE_RANK[confidence] or 0
+end
+
+local function weaker_confidence(a, b)
+  if confidence_rank(a) <= confidence_rank(b) then
+    return a
+  end
+  return b
 end
 
 local function clone_signature(signature)
@@ -439,7 +466,130 @@ local function result_amount_for(recipe, item_name)
   return 0
 end
 
-local function ingredient_flux_cost(recipe, known_values)
+local function recipe_result_profile(recipe, item_name)
+  local profile = {
+    target_amount = 0,
+    target_has_range = false,
+    target_probability = 1,
+    distinct_item_results = 0,
+    distinct_non_target_item_results = 0,
+    has_non_target_fluid_results = false,
+    has_any_range = false,
+  }
+
+  local seen_item_names = {}
+  local results = get_entries(recipe, "results")
+  if results then
+    for _, result in pairs(results) do
+      local kind = entry_type(result)
+      local name = entry_name(result)
+      local probability = result.probability or 1
+      local has_range = result.amount_min ~= nil or result.amount_max ~= nil
+
+      if has_range then
+        profile.has_any_range = true
+      end
+
+      if kind == "item" then
+        if not seen_item_names[name] then
+          seen_item_names[name] = true
+          profile.distinct_item_results = profile.distinct_item_results + 1
+          if name ~= item_name then
+            profile.distinct_non_target_item_results = profile.distinct_non_target_item_results + 1
+          end
+        end
+
+        if name == item_name then
+          profile.target_amount = profile.target_amount + (entry_amount(result) * probability)
+          if has_range then
+            profile.target_has_range = true
+          end
+          profile.target_probability = math.min(profile.target_probability, probability)
+        end
+      elseif kind == "fluid" then
+        profile.has_non_target_fluid_results = true
+      end
+    end
+    return profile
+  end
+
+  local single = recipe.result or (recipe.normal and recipe.normal.result)
+  if single == item_name then
+    profile.target_amount = recipe.result_count or (recipe.normal and recipe.normal.result_count) or 1
+    profile.distinct_item_results = 1
+  end
+  return profile
+end
+
+local function is_primary_valuation_recipe(recipe, item_name)
+  local profile = recipe_result_profile(recipe, item_name)
+  if profile.target_amount <= 0 then
+    return false
+  end
+
+  if recipe.main_product and recipe.main_product ~= item_name then
+    return false
+  end
+
+  if profile.target_has_range or profile.target_probability < 1 or profile.has_any_range then
+    return false
+  end
+
+  if profile.has_non_target_fluid_results then
+    return false
+  end
+
+  if profile.distinct_non_target_item_results > 0 then
+    return false
+  end
+
+  return true
+end
+
+local function base_item_value(item_name, item)
+  if M.VALUE_LOCKS[item_name] then
+    return M.VALUE_LOCKS[item_name]
+  end
+
+  if M.VALUE_OVERRIDES[item_name] then
+    return M.VALUE_OVERRIDES[item_name]
+  end
+
+  return M.estimate_flux_value(item)
+end
+
+local function is_resource_anchored_item(item)
+  return item and item.subgroup == "raw-resource"
+end
+
+local function override_floor_value(item_name)
+  if M.VALUE_LOCKS[item_name] then
+    return M.VALUE_LOCKS[item_name]
+  end
+  return M.VALUE_OVERRIDES[item_name]
+end
+
+local function explicit_value_confidence(item_name)
+  if M.VALUE_LOCKS[item_name] then
+    return M.VALUE_CONFIDENCE.locked
+  end
+  if M.VALUE_OVERRIDES[item_name] then
+    return M.VALUE_CONFIDENCE.anchored
+  end
+  return nil
+end
+
+local function lookup_item_value(item_name, provider)
+  if type(provider) == "function" then
+    return provider(item_name)
+  end
+  if type(provider) == "table" then
+    return provider[item_name]
+  end
+  return nil
+end
+
+local function ingredient_flux_cost(recipe, value_provider)
   local ingredients = get_entries(recipe, "ingredients")
   if not ingredients then
     return nil
@@ -451,7 +601,7 @@ local function ingredient_flux_cost(recipe, known_values)
     local name = entry_name(ingredient)
     local amount = entry_amount(ingredient)
     if kind == "item" then
-      local item_value = known_values[name]
+      local item_value = lookup_item_value(name, value_provider)
       if not item_value then
         local source_item = find_item_prototype(name)
         item_value = source_item and M.estimate_flux_value(source_item) or nil
@@ -476,6 +626,45 @@ local function ingredient_flux_cost(recipe, known_values)
   local time_mult = M.RECIPE_CATEGORY_TIME_MULTIPLIERS[category] or 1
   local energy = recipe.energy_required or (recipe.normal and recipe.normal.energy_required) or 0.5
   return (total * mult) + (energy * M.DEFAULT_TIME_VALUE * time_mult)
+end
+
+local function collect_recipe_candidates(candidate_items)
+  local primary_recipes_by_result = {}
+  local fallback_recipes_by_result = {}
+
+  for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+    if not recipe.hidden and recipe_name ~= "fw-flux-condenser" and string.sub(recipe_name, 1, 12) ~= "fw-exchange-" and recipe.category ~= "recycling" then
+      local function register_result(name)
+        if not name or not candidate_items[name] then
+          return
+        end
+        fallback_recipes_by_result[name] = fallback_recipes_by_result[name] or {}
+        table.insert(fallback_recipes_by_result[name], recipe)
+        if is_primary_valuation_recipe(recipe, name) then
+          primary_recipes_by_result[name] = primary_recipes_by_result[name] or {}
+          table.insert(primary_recipes_by_result[name], recipe)
+        end
+      end
+
+      local results = get_entries(recipe, "results")
+      if results then
+        local seen_result_names = {}
+        for _, result in pairs(results) do
+          if entry_type(result) == "item" then
+            local name = entry_name(result)
+            if name and not seen_result_names[name] then
+              seen_result_names[name] = true
+              register_result(name)
+            end
+          end
+        end
+      else
+        register_result(recipe.result or (recipe.normal and recipe.normal.result))
+      end
+    end
+  end
+
+  return primary_recipes_by_result, fallback_recipes_by_result
 end
 
 local function default_item_color_signature(item)
@@ -689,131 +878,143 @@ function M.collect_convertible_items()
   return collect_items(M.is_convertible)
 end
 
+function M.is_confident_value(metadata)
+  local confidence = metadata and metadata.confidence or M.VALUE_CONFIDENCE.unknown
+  return confidence == M.VALUE_CONFIDENCE.locked
+    or confidence == M.VALUE_CONFIDENCE.anchored
+    or confidence == M.VALUE_CONFIDENCE.derived
+end
+
 function M.resolve_item_values(candidate_items)
   local values = {}
-  for name, value in pairs(M.VALUE_OVERRIDES) do
-    values[name] = value
-  end
+  local chosen_recipes = {}
+  local metadata = {}
+  local primary_recipes_by_result, fallback_recipes_by_result = collect_recipe_candidates(candidate_items)
+  local visiting = {}
 
-  local recipes_by_result = {}
-  for recipe_name, recipe in pairs(data.raw.recipe or {}) do
-    if not recipe.hidden and recipe_name ~= "fw-flux-condenser" and string.sub(recipe_name, 1, 12) ~= "fw-exchange-" and recipe.category ~= "recycling" then
-      local results = get_entries(recipe, "results")
-      if results then
-        local seen_result_names = {}
-        for _, result in pairs(results) do
-          if entry_type(result) == "item" then
-            local name = entry_name(result)
-            if name and candidate_items[name] and not seen_result_names[name] then
-              seen_result_names[name] = true
-              recipes_by_result[name] = recipes_by_result[name] or {}
-              table.insert(recipes_by_result[name], recipe)
+  local function resolve_item_value(item_name)
+    if values[item_name] then
+      return values[item_name]
+    end
+
+    if M.VALUE_LOCKS[item_name] then
+      values[item_name] = M.VALUE_LOCKS[item_name]
+      metadata[item_name] = {
+        confidence = M.VALUE_CONFIDENCE.locked,
+        source = "manual-lock",
+      }
+      return values[item_name]
+    end
+
+    if visiting[item_name] then
+      return nil
+    end
+
+    visiting[item_name] = true
+
+    local item = candidate_items[item_name] or find_item_prototype(item_name)
+    local fallback_value = base_item_value(item_name, item)
+    local override_floor = override_floor_value(item_name) or 0
+    local explicit_confidence = explicit_value_confidence(item_name)
+
+    if is_resource_anchored_item(item) then
+      visiting[item_name] = nil
+      values[item_name] = math.max(fallback_value or 1, override_floor)
+      metadata[item_name] = {
+        confidence = explicit_confidence or M.VALUE_CONFIDENCE.anchored,
+        source = explicit_confidence and "manual-anchor" or "resource-anchor",
+      }
+      chosen_recipes[item_name] = nil
+      return values[item_name]
+    end
+
+    local candidate_groups = {
+      { recipes = primary_recipes_by_result[item_name], confidence = M.VALUE_CONFIDENCE.derived, source = "primary-recipe" },
+      { recipes = fallback_recipes_by_result[item_name], confidence = M.VALUE_CONFIDENCE.inferred, source = "fallback-recipe" },
+    }
+
+    local best_value = nil
+    local best_recipe = nil
+    local best_metadata = nil
+
+    for _, candidate_group in ipairs(candidate_groups) do
+      local candidates = candidate_group.recipes
+      if candidates and #candidates > 0 then
+        for _, recipe in pairs(candidates) do
+          local recipe_confidence = candidate_group.confidence
+          local ingredient_failed = false
+          for _, ingredient in pairs(get_entries(recipe, "ingredients") or {}) do
+            if entry_type(ingredient) == "item" then
+              local ingredient_name = entry_name(ingredient)
+              local ingredient_value = resolve_item_value(ingredient_name)
+              local ingredient_meta = metadata[ingredient_name]
+              if not ingredient_value or not ingredient_meta or ingredient_meta.confidence == M.VALUE_CONFIDENCE.unknown then
+                ingredient_failed = true
+                break
+              end
+              recipe_confidence = weaker_confidence(recipe_confidence, ingredient_meta.confidence)
             end
           end
-        end
-      else
-        local single = recipe.result or (recipe.normal and recipe.normal.result)
-        if single and candidate_items[single] then
-          recipes_by_result[single] = recipes_by_result[single] or {}
-          table.insert(recipes_by_result[single], recipe)
-        end
-      end
-    end
-  end
 
-  local changed = true
-  local pass = 0
-  while changed and pass < 30 do
-    changed = false
-    pass = pass + 1
-    for item_name, _ in pairs(candidate_items) do
-      if not values[item_name] then
-        local candidates = recipes_by_result[item_name] or {}
-        local best = nil
-        for _, recipe in pairs(candidates) do
-          local ing_cost = ingredient_flux_cost(recipe, values)
+          if not ingredient_failed then
+          local ing_cost = ingredient_flux_cost(recipe, resolve_item_value)
           if ing_cost then
             local out_amount = result_amount_for(recipe, item_name)
             if out_amount and out_amount > 0 then
               local derived = math.max(1, math.floor((ing_cost / out_amount) + 0.5))
-              if not best or derived < best then
-                best = derived
+              if override_floor > 0 then
+                derived = math.max(derived, override_floor)
+              end
+              if not best_value or derived < best_value then
+                best_value = derived
+                best_recipe = recipe
+                best_metadata = {
+                  confidence = recipe_confidence,
+                  source = candidate_group.source,
+                }
               end
             end
           end
-        end
-        if best then
-          values[item_name] = best
-          changed = true
-        end
-      end
-    end
-  end
-
-  for item_name, item in pairs(candidate_items) do
-    if not values[item_name] then
-      values[item_name] = M.estimate_flux_value(item)
-    end
-  end
-
-  for item_name, item in pairs(candidate_items) do
-    if item.subgroup ~= "raw-resource" then
-      local candidates = recipes_by_result[item_name] or {}
-      local best = nil
-      for _, recipe in pairs(candidates) do
-        local ing_cost = ingredient_flux_cost(recipe, values)
-        if ing_cost then
-          local out_amount = result_amount_for(recipe, item_name)
-          if out_amount and out_amount > 0 then
-            local derived = math.max(1, math.floor((ing_cost / out_amount) + 0.5))
-            if not best or derived < best then
-              best = derived
-            end
           end
         end
-      end
-      if best and (not values[item_name] or best > values[item_name]) then
-        values[item_name] = best
+        if best_value then
+          break
+        end
       end
     end
+
+    visiting[item_name] = nil
+
+    values[item_name] = best_value or fallback_value
+    chosen_recipes[item_name] = best_recipe
+    metadata[item_name] = best_metadata or {
+      confidence = explicit_confidence or M.VALUE_CONFIDENCE.unknown,
+      source = explicit_confidence and "manual-anchor" or "heuristic-fallback",
+    }
+    return values[item_name]
   end
 
+  for item_name, _ in pairs(candidate_items) do
+    resolve_item_value(item_name)
+  end
+
+  M._last_resolved_value_recipes = chosen_recipes
+  M._last_resolution_metadata = metadata
   return values
 end
 
 function M.resolve_item_color_amounts(candidate_items, known_values)
-  local recipes_by_result = {}
-  for recipe_name, recipe in pairs(data.raw.recipe or {}) do
-    if not recipe.hidden and recipe_name ~= "fw-flux-condenser" and string.sub(recipe_name, 1, 12) ~= "fw-exchange-" and recipe.category ~= "recycling" then
-      local results = get_entries(recipe, "results")
-      if results then
-        local seen_result_names = {}
-        for _, result in pairs(results) do
-          if entry_type(result) == "item" then
-            local name = entry_name(result)
-            if name and candidate_items[name] and not seen_result_names[name] then
-              seen_result_names[name] = true
-              recipes_by_result[name] = recipes_by_result[name] or {}
-              table.insert(recipes_by_result[name], recipe)
-            end
-          end
-        end
-      else
-        local single = recipe.result or (recipe.normal and recipe.normal.result)
-        if single and candidate_items[single] then
-          recipes_by_result[single] = recipes_by_result[single] or {}
-          table.insert(recipes_by_result[single], recipe)
-        end
-      end
-    end
-  end
-
+  local primary_recipes_by_result, fallback_recipes_by_result = collect_recipe_candidates(candidate_items)
   local breakdowns = {}
   for item_name, item in pairs(candidate_items) do
     breakdowns[item_name] = default_item_breakdown(item, known_values or {})
   end
 
+  local resolve_breakdown
   local function item_breakdown_by_name(item_name)
+    if candidate_items[item_name] and resolve_breakdown then
+      return resolve_breakdown(item_name)
+    end
     if breakdowns[item_name] then
       return breakdowns[item_name]
     end
@@ -822,6 +1023,45 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
       return default_item_breakdown(source_item, known_values or {})
     end
     return nil
+  end
+
+  local recipe_choice_cache = {}
+  local recipe_choice_visiting = {}
+  local function choose_recipe(item_name)
+    if recipe_choice_cache[item_name] ~= nil then
+      return recipe_choice_cache[item_name]
+    end
+    if recipe_choice_visiting[item_name] then
+      return nil
+    end
+
+    recipe_choice_visiting[item_name] = true
+    local locked_choice = M._last_resolved_value_recipes and M._last_resolved_value_recipes[item_name]
+    if locked_choice then
+      recipe_choice_visiting[item_name] = nil
+      recipe_choice_cache[item_name] = locked_choice
+      return locked_choice
+    end
+
+    local candidates = primary_recipes_by_result[item_name] or fallback_recipes_by_result[item_name] or {}
+    local best_recipe = nil
+    local best_cost = nil
+
+    for _, recipe in pairs(candidates) do
+      local cost = ingredient_flux_cost(recipe, known_values or {})
+      local out_amount = result_amount_for(recipe, item_name)
+      if cost and out_amount and out_amount > 0 then
+        local per_unit = cost / out_amount
+        if not best_cost or per_unit < best_cost then
+          best_cost = per_unit
+          best_recipe = recipe
+        end
+      end
+    end
+
+    recipe_choice_visiting[item_name] = nil
+    recipe_choice_cache[item_name] = best_recipe or false
+    return recipe_choice_cache[item_name] or nil
   end
 
   local function derive_recipe_breakdown(recipe, item_name)
@@ -882,31 +1122,39 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
     return derived, cost / out_amount
   end
 
-  local changed = true
-  local pass = 0
-  while changed and pass < 40 do
-    changed = false
-    pass = pass + 1
-    for item_name, item in pairs(candidate_items) do
-      local best_breakdown = nil
-      local best_cost = nil
-      local candidates = recipes_by_result[item_name] or {}
+  local breakdown_cache = {}
+  local breakdown_visiting = {}
 
-      for _, recipe in pairs(candidates) do
-        local derived, derived_cost = derive_recipe_breakdown(recipe, item_name)
-        if derived and (not best_breakdown or (derived_cost and derived_cost < best_cost)) then
-          best_breakdown = derived
-          best_cost = derived_cost
-        end
-      end
+  function resolve_breakdown(item_name)
+    if breakdown_cache[item_name] then
+      return breakdown_cache[item_name]
+    end
+    if breakdown_visiting[item_name] then
+      return breakdowns[item_name]
+    end
 
-      local total_value = known_values[item_name] or M.VALUE_OVERRIDES[item_name] or M.estimate_flux_value(item)
-      local resolved = best_breakdown or default_item_breakdown(item, known_values or {})
-      local rounded = round_breakdown_to_total(resolved, math.max(1, math.floor(total_value + 0.5)))
-      if not breakdowns_equal(breakdowns[item_name], rounded) then
-        breakdowns[item_name] = rounded
-        changed = true
-      end
+    breakdown_visiting[item_name] = true
+
+    local item = candidate_items[item_name] or find_item_prototype(item_name)
+    local recipe = choose_recipe(item_name)
+    local derived = recipe and select(1, derive_recipe_breakdown(recipe, item_name)) or nil
+    local total_value = known_values[item_name] or M.VALUE_OVERRIDES[item_name] or (item and M.estimate_flux_value(item)) or 1
+    local resolved = derived or (item and default_item_breakdown(item, known_values or {})) or make_breakdown()
+    local rounded = round_breakdown_to_total(resolved, math.max(1, math.floor(total_value + 0.5)))
+
+    breakdown_visiting[item_name] = nil
+    breakdown_cache[item_name] = rounded
+    breakdowns[item_name] = rounded
+    return rounded
+  end
+
+  for item_name, _ in pairs(candidate_items) do
+    resolve_breakdown(item_name)
+  end
+
+  for item_name, item in pairs(candidate_items) do
+    if not breakdowns[item_name] then
+      breakdowns[item_name] = default_item_breakdown(item, known_values or {})
     end
   end
 

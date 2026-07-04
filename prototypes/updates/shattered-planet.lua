@@ -187,42 +187,42 @@ data:extend({
   {
     type = "noise-expression",
     name = "fw_shattered_red_vent_probability",
-    expression = "(control:fw_red_flux_vent:size > 0) * 0.00085 * clamp((fw_shattered_red_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4501, octaves = 2, input_scale = 1/15}))",
+    expression = "(control:fw_shattered_flux_vents:size > 0) * 0.00085 * clamp((fw_shattered_red_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4501, octaves = 2, input_scale = 1/15}))",
   },
   {
     type = "noise-expression",
     name = "fw_shattered_red_vent_richness",
-    expression = "(fw_shattered_red_biome > 0) * 125000 * control:fw_red_flux_vent:richness",
+    expression = "(fw_shattered_red_biome > 0) * 125000 * control:fw_shattered_flux_vents:richness",
   },
   {
     type = "noise-expression",
     name = "fw_shattered_purple_vent_probability",
-    expression = "(control:fw_purple_flux_vent:size > 0) * 0.00085 * clamp((fw_shattered_purple_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4502, octaves = 2, input_scale = 1/15}))",
+    expression = "(control:fw_shattered_flux_vents:size > 0) * 0.00085 * clamp((fw_shattered_purple_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4502, octaves = 2, input_scale = 1/15}))",
   },
   {
     type = "noise-expression",
     name = "fw_shattered_purple_vent_richness",
-    expression = "(fw_shattered_purple_biome > 0) * 125000 * control:fw_purple_flux_vent:richness",
+    expression = "(fw_shattered_purple_biome > 0) * 125000 * control:fw_shattered_flux_vents:richness",
   },
   {
     type = "noise-expression",
     name = "fw_shattered_yellow_vent_probability",
-    expression = "(control:fw_yellow_flux_vent:size > 0) * 0.00085 * clamp((fw_shattered_yellow_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4503, octaves = 2, input_scale = 1/15}))",
+    expression = "(control:fw_shattered_flux_vents:size > 0) * 0.00085 * clamp((fw_shattered_yellow_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4503, octaves = 2, input_scale = 1/15}))",
   },
   {
     type = "noise-expression",
     name = "fw_shattered_yellow_vent_richness",
-    expression = "(fw_shattered_yellow_biome > 0) * 125000 * control:fw_yellow_flux_vent:richness",
+    expression = "(fw_shattered_yellow_biome > 0) * 125000 * control:fw_shattered_flux_vents:richness",
   },
   {
     type = "noise-expression",
     name = "fw_shattered_green_vent_probability",
-    expression = "(control:fw_green_flux_vent:size > 0) * 0.00085 * clamp((fw_shattered_green_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4504, octaves = 2, input_scale = 1/15}))",
+    expression = "(control:fw_shattered_flux_vents:size > 0) * 0.00085 * clamp((fw_shattered_green_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4504, octaves = 2, input_scale = 1/15}))",
   },
   {
     type = "noise-expression",
     name = "fw_shattered_green_vent_richness",
-    expression = "(fw_shattered_green_biome > 0) * 125000 * control:fw_green_flux_vent:richness",
+    expression = "(fw_shattered_green_biome > 0) * 125000 * control:fw_shattered_flux_vents:richness",
   },
   {
     type = "noise-expression",
@@ -448,10 +448,7 @@ shattered_planet.map_gen_settings = {
     ["decorative:aqulio-snowy-decal:probability"] = "fw_shattered_purple_snowy_decal_probability",
   },
   autoplace_controls = {
-    ["fw_yellow_flux_vent"] = {},
-    ["fw_red_flux_vent"] = {},
-    ["fw_green_flux_vent"] = {},
-    ["fw_purple_flux_vent"] = {},
+    ["fw_shattered_flux_vents"] = {},
   },
   cliff_settings = {
     name = "cliff",

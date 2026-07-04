@@ -54,7 +54,6 @@ data:extend({
     name = "silicon",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png",
     icon_size = 64,
-    icon_mipmaps = 4,
     inventory_move_sound = item_sounds.resource_inventory_move,
     pick_sound = item_sounds.resource_inventory_pickup,
     drop_sound = item_sounds.resource_inventory_move,

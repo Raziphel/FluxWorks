@@ -311,11 +311,13 @@ end
 
 local resolved_values = FluxValuation.resolve_item_values(convertible_items)
 local resolved_breakdowns = FluxValuation.resolve_item_color_amounts(convertible_items, resolved_values)
+local resolved_metadata = FluxValuation._last_resolution_metadata or {}
 
 for item_name, item in pairs(convertible_items) do
   local base_value = resolved_values[item_name] or FluxValuation.estimate_flux_value(item)
   local flux_breakdown = resolved_breakdowns[item_name]
-  if item_is_complex_enough(item_name, item, base_value) then
+  local metadata = resolved_metadata[item_name]
+  if FluxValuation.is_confident_value(metadata) and item_is_complex_enough(item_name, item, base_value) then
     local clone_recipe = make_clone_recipe(item_name, item, base_value, flux_breakdown)
     table.insert(generated, clone_recipe)
     table.insert(generated_names, clone_recipe.name)

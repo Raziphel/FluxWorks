@@ -1,11 +1,11 @@
 local base_tile_sounds = require("__base__/prototypes/tile/tile-sounds")
 
 local icon_path = "__FluxWorksAssets__/graphics/icons/fluids/"
+local SHARED_CONTROL = "fw_shattered_flux_vents"
 
 local vents = {
   {
     name = "fw-shattered-yellow-flux-vent",
-    control = "fw_yellow_flux_vent",
     tile = "fw-shattered-yellow-land",
     probability = "fw_shattered_yellow_vent_probability",
     richness = "fw_shattered_yellow_vent_richness",
@@ -18,7 +18,6 @@ local vents = {
   },
   {
     name = "fw-shattered-red-flux-vent",
-    control = "fw_red_flux_vent",
     tile = "fw-shattered-red-land",
     probability = "fw_shattered_red_vent_probability",
     richness = "fw_shattered_red_vent_richness",
@@ -31,7 +30,6 @@ local vents = {
   },
   {
     name = "fw-shattered-green-flux-vent",
-    control = "fw_green_flux_vent",
     tile = "fw-shattered-green-land",
     probability = "fw_shattered_green_vent_probability",
     richness = "fw_shattered_green_vent_richness",
@@ -44,7 +42,6 @@ local vents = {
   },
   {
     name = "fw-shattered-purple-flux-vent",
-    control = "fw_purple_flux_vent",
     tile = "fw-shattered-purple-land",
     probability = "fw_shattered_purple_vent_probability",
     richness = "fw_shattered_purple_vent_richness",
@@ -56,17 +53,6 @@ local vents = {
     order = "d",
   },
 }
-
-local function make_control(def)
-  return {
-    type = "autoplace-control",
-    category = "resource",
-    name = def.control,
-    richness = true,
-    order = "z-" .. def.order,
-    localised_name = { "autoplace-control-names." .. def.control },
-  }
-end
 
 local function make_vent(def)
   return {
@@ -103,7 +89,7 @@ local function make_vent(def)
     collision_box = { { -1.4, -1.4 }, { 1.4, 1.4 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
     autoplace = {
-      control = def.control,
+      control = SHARED_CONTROL,
       order = "z[flux-vent]-" .. def.order,
       probability_expression = def.probability,
       richness_expression = def.richness,
@@ -156,10 +142,25 @@ local function make_vent(def)
   }
 end
 
-local prototypes = {}
+local prototypes = {
+  {
+    type = "autoplace-control",
+    category = "resource",
+    name = SHARED_CONTROL,
+    richness = true,
+    order = "z-a[shattered-flux-vents]",
+    localised_name = {
+      "",
+      "[entity=fw-shattered-yellow-flux-vent] ",
+      "[entity=fw-shattered-red-flux-vent] ",
+      "[entity=fw-shattered-green-flux-vent] ",
+      "[entity=fw-shattered-purple-flux-vent] ",
+      { "autoplace-control-names." .. SHARED_CONTROL },
+    },
+  },
+}
 
 for _, def in ipairs(vents) do
-  prototypes[#prototypes + 1] = make_control(def)
   prototypes[#prototypes + 1] = make_vent(def)
 end
 
