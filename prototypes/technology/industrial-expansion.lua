@@ -4,8 +4,10 @@ data:extend({
   {
     type = "technology",
     name = "fw-industrial-expansion",
-    icon = "__base__/graphics/technology/advanced-material-processing-2.png",
-    icon_size = 256,
+    icons = {
+      { icon = "__Age-of-Production-Graphics__/graphics/icons/petrochemical-facility.png", icon_size = 64 },
+      { icon = "__Age-of-Production-Graphics__/graphics/icons/hydraulic-plant.png", icon_size = 64, scale = 0.38, shift = { 12, 12 } },
+    },
     prerequisites = { "fw-material-refinement", "fw-advanced-fabrication", "advanced-material-processing-2" },
     unit = {
       count = 190,

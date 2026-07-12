@@ -95,7 +95,7 @@ data:extend({
     stage_counts = { 0 },
     stages = {
       sheet = {
-        filename = "__FluxWorksAssets__/graphics/resources/flux/flux-rift.png",
+        filename = "__Krastorio2Assets__/resources/imersite/imersite-rift.png",
         priority = "extra-high",
         width = 500,
         height = 500,
@@ -107,7 +107,7 @@ data:extend({
     stages_effect = {
       sheets = {
         {
-          filename = "__FluxWorksAssets__/graphics/resources/flux/flux-rift-glow.png",
+          filename = "__Krastorio2Assets__/resources/imersite/imersite-rift-glow.png",
           priority = "extra-high",
           width = 500,
           height = 500,

@@ -4,7 +4,7 @@ data:extend({
   {
     type = "item",
     name = "fw-petrochemical-facility",
-    icon = icon_path .. "fw-petrochemical-facility.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/petrochemical-facility.png",
     icon_size = 64,
     subgroup = "fw-chemistry-machines",
     order = "a[fw-petrochemical-facility]",
@@ -14,7 +14,7 @@ data:extend({
   {
     type = "item",
     name = "fw-hydraulic-plant",
-    icon = icon_path .. "fw-hydraulic-plant.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/hydraulic-plant.png",
     icon_size = 64,
     subgroup = "fw-fabrication-machines",
     order = "b[fw-hydraulic-plant]",

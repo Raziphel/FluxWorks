@@ -9,6 +9,15 @@ local tile_spritesheet_layout = tile_graphics.tile_spritesheet_layout
 local tile_layer_offset = 60
 local shattered_surface_width = 3200
 local shattered_surface_height = 3200
+local alien_biomes_loaded = mods["alien-biomes-graphics"] ~= nil
+
+local function shattered_tile_texture(alien_biomes_texture, fallback_texture)
+  if alien_biomes_loaded then
+    return alien_biomes_texture
+  end
+
+  return fallback_texture
+end
 
 local empty_space_transitions =
 {
@@ -349,7 +358,10 @@ data:extend({
     "b[natural]-z[shattered]-a[red]",
     tile_layer_offset + 1,
     { 176, 74, 58 },
-    "__alien-biomes-graphics__/graphics/terrain/mineral-red-dirt-1.png",
+    shattered_tile_texture(
+      "__alien-biomes-graphics__/graphics/terrain/mineral-red-dirt-1.png",
+      "__base__/graphics/terrain/red-desert-0.png"
+    ),
     "fw_shattered_red_tile_probability"
   ),
   make_tile(
@@ -357,7 +369,10 @@ data:extend({
     "b[natural]-z[shattered]-b[purple]",
     tile_layer_offset + 2,
     { 166, 126, 201 },
-    "__alien-biomes-graphics__/graphics/terrain/vegetation-purple-grass-1.png",
+    shattered_tile_texture(
+      "__alien-biomes-graphics__/graphics/terrain/vegetation-purple-grass-1.png",
+      "__base__/graphics/terrain/dirt-1.png"
+    ),
     "fw_shattered_purple_tile_probability"
   ),
   make_tile(
@@ -365,7 +380,10 @@ data:extend({
     "b[natural]-z[shattered]-c[yellow]",
     tile_layer_offset + 3,
     { 222, 196, 94 },
-    "__alien-biomes-graphics__/graphics/terrain/vegetation-yellow-grass-1.png",
+    shattered_tile_texture(
+      "__alien-biomes-graphics__/graphics/terrain/vegetation-yellow-grass-1.png",
+      "__base__/graphics/terrain/grass-1.png"
+    ),
     "fw_shattered_yellow_tile_probability"
   ),
   make_tile(
@@ -373,7 +391,10 @@ data:extend({
     "b[natural]-z[shattered]-d[green]",
     tile_layer_offset + 4,
     { 79, 187, 77 },
-    "__alien-biomes-graphics__/graphics/terrain/vegetation-green-grass-1.png",
+    shattered_tile_texture(
+      "__alien-biomes-graphics__/graphics/terrain/vegetation-green-grass-1.png",
+      "__base__/graphics/terrain/grass-1.png"
+    ),
     "fw_shattered_green_tile_probability"
   ),
 })

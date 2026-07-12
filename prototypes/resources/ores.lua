@@ -14,13 +14,13 @@ local mixed_deposit_path = "__FluxWorksAssets__/graphics/resources/deposits/"
 local resource_icon_path = "__FluxWorksAssets__/graphics/icons/resources/"
 local fluid_path = "__FluxWorksAssets__/graphics/resources/fluids/"
 local bz_icon_path = "__FluxWorksAssets__/graphics/icons/items/"
-local TITANIUM_TINT = { r = 0.80, g = 0.80, b = 0.78, a = 1 }
-local BAUXITE_TINT = { r = 0.86, g = 0.42, b = 0.18, a = 1 }
-local METALLIC_DEPOSIT_TINT = { r = 0.86, g = 0.90, b = 0.96, a = 1 }
-local MINERAL_DEPOSIT_TINT = { r = 1.00, g = 0.82, b = 0.46, a = 1 }
-local CARBONIC_DEPOSIT_TINT = { r = 0.20, g = 0.20, b = 0.22, a = 1 }
-local PROMETHIUM_IMPACT_TINT = { r = 0.94, g = 0.82, b = 1.00, a = 1 }
-local SILICA_VEIN_TINT = { r = 0.83, g = 0.94, b = 0.78, a = 1 }
+local TITANIUM_TINT = { r = 0.44, g = 0.66, b = 0.96, a = 1 }
+local BAUXITE_TINT = { r = 1.00, g = 0.63, b = 0.40, a = 1 }
+local METALLIC_DEPOSIT_TINT = { r = 0.47, g = 0.56, b = 0.62, a = 1 }
+local MINERAL_DEPOSIT_TINT = { r = 0.96, g = 0.70, b = 0.42, a = 1 }
+local CARBONIC_DEPOSIT_TINT = { r = 0.18, g = 0.19, b = 0.22, a = 1 }
+local PROMETHIUM_IMPACT_TINT = { r = 0.86, g = 0.58, b = 1.00, a = 1 }
+local SILICA_VEIN_TINT = { r = 0.48, g = 0.78, b = 1.00, a = 1 }
 local NO_TINT = { r = 1, g = 1, b = 1, a = 1 }
 
 -- Reuse stone particles and tint them white so salt mining reads clearly.
@@ -48,11 +48,11 @@ data:extend({
     type = "resource",
     name = "fw-titanium-ore",
     icons = {
-      { icon = ore_path .. "titanium-ore.png", icon_size = 64, tint = TITANIUM_TINT },
+      { icon = bz_icon_path .. "fw-bz-titanium-ore.png", icon_size = 64, tint = TITANIUM_TINT },
     },
     flags = { "placeable-neutral" },
     order = "a-b-a",
-    map_color = { r = 0.66, g = 0.66, b = 0.64 },
+    map_color = { r = 0.58, g = 0.70, b = 0.84 },
     minable = {
       mining_time = 2,
       result = "titanium-ore",
@@ -87,15 +87,8 @@ data:extend({
   {
     type = "item",
     name = "titanium-ore",
-    icons = {
-      { icon = ore_path .. "titanium-ore.png", icon_size = 64, tint = TITANIUM_TINT },
-    },
-    pictures = {
-      { filename = ore_path .. "titanium-ore.png", size = 64, scale = 0.5, tint = TITANIUM_TINT },
-      { filename = ore_path .. "titanium-ore-2.png", size = 64, scale = 0.5, tint = TITANIUM_TINT },
-      { filename = ore_path .. "titanium-ore-3.png", size = 64, scale = 0.5, tint = TITANIUM_TINT },
-      { filename = ore_path .. "titanium-ore-4.png", size = 64, scale = 0.5, tint = TITANIUM_TINT },
-    },
+    icon = bz_icon_path .. "fw-bz-titanium-ore.png",
+    icon_size = 64,
     inventory_move_sound = item_sounds.resource_inventory_move,
     pick_sound = item_sounds.resource_inventory_pickup,
     drop_sound = item_sounds.resource_inventory_move,
@@ -149,15 +142,8 @@ data:extend({
   {
     type = "item",
     name = "lead-ore",
-    icons = {
-      { icon = ore_path .. "lead-ore.png", icon_size = 64, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
-    },
-    pictures = {
-      { filename = ore_path .. "lead-ore.png", size = 64, scale = 0.5, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
-      { filename = ore_path .. "lead-ore-1.png", size = 64, scale = 0.5, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
-      { filename = ore_path .. "lead-ore-2.png", size = 64, scale = 0.5, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
-      { filename = ore_path .. "lead-ore-3.png", size = 64, scale = 0.5, tint = { r = 0.78, g = 0.66, b = 0.88, a = 1 } },
-    },
+    icon = ore_path .. "lead-ore.png",
+    icon_size = 64,
     inventory_move_sound = item_sounds.resource_inventory_move,
     pick_sound = item_sounds.resource_inventory_pickup,
     drop_sound = item_sounds.resource_inventory_move,
@@ -178,11 +164,11 @@ data:extend({
     type = "resource",
     name = "fw-bauxite-ore",
     icons = {
-      { icon = ore_path .. "bauxite-ore.png", icon_size = 64, tint = BAUXITE_TINT },
+      { icon = bz_icon_path .. "fw-bauxite-ore.png", icon_size = 64, tint = BAUXITE_TINT },
     },
     flags = { "placeable-neutral" },
     order = "a-b-a",
-    map_color = { r = 0.82, g = 0.40, b = 0.18 },
+    map_color = { r = 0.90, g = 0.68, b = 0.56 },
     minable = {
       mining_time = 1,
       result = "bauxite-ore",
@@ -216,15 +202,8 @@ data:extend({
   {
     type = "item",
     name = "bauxite-ore",
-    icons = {
-      { icon = ore_path .. "bauxite-ore.png", icon_size = 64, tint = BAUXITE_TINT },
-    },
-    pictures = {
-      { filename = ore_path .. "bauxite-ore.png", size = 64, scale = 0.5, tint = BAUXITE_TINT },
-      { filename = ore_path .. "bauxite-ore-2.png", size = 64, scale = 0.5, tint = BAUXITE_TINT },
-      { filename = ore_path .. "bauxite-ore-3.png", size = 64, scale = 0.5, tint = BAUXITE_TINT },
-      { filename = ore_path .. "bauxite-ore-4.png", size = 64, scale = 0.5, tint = BAUXITE_TINT },
-    },
+    icon = bz_icon_path .. "fw-bauxite-ore.png",
+    icon_size = 64,
     inventory_move_sound = item_sounds.resource_inventory_move,
     pick_sound = item_sounds.resource_inventory_pickup,
     drop_sound = item_sounds.resource_inventory_move,
@@ -291,13 +270,6 @@ data:extend({
     name = "fw-salt",
     icon = ore_path .. "salt.png",
     icon_size = 128,
-    pictures = {
-      { filename = ore_path .. "salt.png", size = 128, scale = 0.125 },
-      { filename = ore_path .. "salt-1.png", size = 128, scale = 0.125 },
-      { filename = ore_path .. "salt-2.png", size = 128, scale = 0.125 },
-      { filename = ore_path .. "salt-3.png", size = 128, scale = 0.125 },
-      { filename = ore_path .. "salt-4.png", size = 128, scale = 0.125 },
-    },
     subgroup = "raw-resource",
     order = "z[fw-salt]",
     stack_size = 50,
@@ -319,15 +291,15 @@ data:extend({
     heat_capacity = "0.1kJ",
     base_color = { r = 0.60, g = 0.90, b = 0.50 },
     flow_color = { r = 0.60, g = 1.00, b = 0.50 },
-    icon = fluid_path .. "chlorine.png",
-    icon_size = 128,
+    icon = "__Krastorio2Assets__/icons/fluids/chlorine.png",
+    icon_size = 64,
     order = "a[fluid]-f[fw-chlorine]",
   },
   {
     type = "recipe",
     name = "fw-chlorine",
-    icon = fluid_path .. "chlorine.png",
-    icon_size = 128,
+    icon = "__Krastorio2Assets__/icons/fluids/chlorine.png",
+    icon_size = 64,
     category = "chemistry",
     ingredients = { { type = "item", name = "fw-salt", amount = 2 } },
     results = { { type = "fluid", name = "fw-chlorine", amount = 10 } },
@@ -351,12 +323,12 @@ data:extend({
     type = "resource",
     name = "fw-silica-vein",
     icons = {
-      { icon = bz_icon_path .. "fw-bz-silicon-ore-square.png", icon_size = 64, tint = SILICA_VEIN_TINT },
+      { icon = bz_icon_path .. "fw-bz-silicon-ore.png", icon_size = 64, tint = SILICA_VEIN_TINT },
       { icon = "__base__/graphics/icons/stone.png", icon_size = 64, scale = 0.30, shift = { -8, 8 }, tint = { r = 0.90, g = 0.84, b = 0.72, a = 1.00 } },
     },
     flags = { "placeable-neutral" },
     order = "a-b-bb",
-    map_color = { r = 0.70, g = 0.82, b = 0.64 },
+    map_color = { r = 0.82, g = 0.90, b = 0.98 },
     minable = {
       mining_time = 1.4,
       required_fluid = "water",
@@ -380,7 +352,7 @@ data:extend({
     stage_counts = { 18000, 11000, 6500, 3600, 1650, 600, 220, 90 },
     stages = {
       sheet = {
-        filename = mixed_deposit_path .. "mineral-deposit-sheet-vivid.png",
+        filename = ore_path .. "hr-silica-vein.png",
         priority = "extra-high",
         size = 128,
         frame_count = 8,
@@ -404,11 +376,11 @@ data:extend({
     icons = {
       { icon = resource_icon_path .. "fw-metallic-deposit.png", icon_size = 64, tint = METALLIC_DEPOSIT_TINT },
       { icon = "__base__/graphics/icons/iron-ore.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 0.82, g = 0.86, b = 0.90, a = 1.00 } },
-      { icon = "__base__/graphics/icons/copper-ore.png", icon_size = 64, scale = 0.34, shift = { 8, 8 }, tint = { r = 0.84, g = 0.56, b = 0.38, a = 1.00 } },
+      { icon = "__base__/graphics/icons/copper-ore.png", icon_size = 64, scale = 0.34, shift = { 8, 8 }, tint = { r = 0.68, g = 0.54, b = 0.44, a = 1.00 } },
     },
     flags = { "placeable-neutral" },
     order = "a-b-b",
-    map_color = { r = 0.45, g = 0.53, b = 0.62 },
+    map_color = { r = 0.44, g = 0.53, b = 0.58 },
     minable = {
       mining_time = 1.1,
       results = {
@@ -435,7 +407,7 @@ data:extend({
     stage_counts = { 28000, 17000, 10000, 5600, 2500, 900, 280, 120 },
     stages = {
       sheet = {
-        filename = "__base__/graphics/entity/iron-ore/iron-ore.png",
+        filename = mixed_deposit_path .. "metallic-deposit-sheet.png",
         priority = "extra-high",
         size = 128,
         frame_count = 8,
@@ -458,12 +430,12 @@ data:extend({
     name = "fw-mineral-deposit",
     icons = {
       { icon = resource_icon_path .. "fw-mineral-deposit.png", icon_size = 64, tint = MINERAL_DEPOSIT_TINT },
-      { icon = ore_path .. "bauxite-ore.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 1.00, g = 0.76, b = 0.40, a = 1.00 } },
-      { icon = bz_icon_path .. "fw-bz-silicon-ore-square.png", icon_size = 64, scale = 0.34, shift = { 8, 8 }, tint = { r = 0.84, g = 1.00, b = 0.76, a = 1.00 } },
+      { icon = bz_icon_path .. "fw-bauxite-ore.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 1.00, g = 0.82, b = 0.74, a = 1.00 } },
+      { icon = bz_icon_path .. "fw-bz-silicon-ore.png", icon_size = 64, scale = 0.34, shift = { 8, 8 }, tint = { r = 0.92, g = 0.98, b = 1.00, a = 1.00 } },
     },
     flags = { "placeable-neutral" },
     order = "a-b-c",
-    map_color = { r = 0.86, g = 0.64, b = 0.30 },
+    map_color = { r = 0.86, g = 0.80, b = 0.72 },
     minable = {
       mining_time = 1.8,
       required_fluid = "water",
@@ -471,8 +443,8 @@ data:extend({
       results = {
         { type = "item", name = "bauxite-ore", amount = 1 },
         { type = "item", name = "titanium-ore", amount = 1, probability = 0.18 },
-        { type = "item", name = "silicon-ore", amount = 1, probability = 0.60 },
-        { type = "item", name = "stone", amount = 1, probability = 0.55 },
+        { type = "item", name = "silicon-ore", amount = 1, probability = 0.75 },
+        { type = "item", name = "stone", amount = 1, probability = 0.35 },
       },
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
@@ -492,7 +464,7 @@ data:extend({
     stage_counts = { 26000, 15500, 9200, 5200, 2300, 820, 260, 110 },
     stages = {
       sheet = {
-        filename = mixed_deposit_path .. "mineral-deposit-sheet-vivid.png",
+        filename = mixed_deposit_path .. "mineral-deposit-sheet.png",
         priority = "extra-high",
         size = 128,
         frame_count = 8,
@@ -526,7 +498,7 @@ data:extend({
       mining_particle = "fw-salt-particle",
       results = {
         { type = "item", name = "coal", amount = 1 },
-        { type = "item", name = "fw-salt", amount = 1, probability = 0.35 },
+        { type = "item", name = "fw-salt", amount = 1, probability = 0.50 },
       },
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
@@ -618,7 +590,7 @@ if not data.raw.item["tin-ore"] then
     {
       type = "item",
       name = "tin-ore",
-      icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore-square.png",
+      icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore.png",
       icon_size = 64,
       subgroup = "raw-resource",
       order = "z[tin-ore]",
@@ -632,7 +604,7 @@ if not data.raw.item["silicon-ore"] then
     {
       type = "item",
       name = "silicon-ore",
-      icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore-square.png",
+      icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore.png",
       icon_size = 64,
       subgroup = "raw-resource",
       order = "z[silicon-ore]",
@@ -655,10 +627,11 @@ local function override_ore_item_icon(name, icon_file, icon_size)
   item.icon_mipmaps = nil
 end
 
-override_ore_item_icon("titanium-ore", "fw-bz-titanium-ore-square.png", 64)
-override_ore_item_icon("tin-ore", "fw-bz-tin-ore-square.png", 64)
-override_ore_item_icon("silicon-ore", "fw-bz-silicon-ore-square.png", 64)
+override_ore_item_icon("titanium-ore", "fw-bz-titanium-ore.png", 64)
+override_ore_item_icon("tin-ore", "fw-bz-tin-ore.png", 64)
+override_ore_item_icon("silicon-ore", "fw-bz-silicon-ore.png", 64)
 override_ore_item_icon("carbon-ore", "fw-bz-carbon-ore.png", 128)
+override_ore_item_icon("bauxite-ore", "fw-bauxite-ore.png", 64)
 
 -- Disable legacy standalone ore worldgen so Nauvis stays focused on mixed deposits.
 for _, legacy_resource in pairs({ "fw-lead-ore", "fw-bauxite-ore", "fw-titanium-ore" }) do

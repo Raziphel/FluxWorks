@@ -54,6 +54,42 @@ local function assert_true(condition, message)
   end
 end
 
+local function assert_recipe_category(recipe_name, expected_category, reason)
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if not recipe then
+    error("Missing recipe for progression validation: " .. recipe_name)
+  end
+
+  local actual_category = recipe.category or "crafting"
+  if actual_category ~= expected_category then
+    error(("Progression ladder failure: %s uses %s instead of %s (%s)"):format(
+      recipe_name,
+      actual_category,
+      expected_category,
+      reason
+    ))
+  end
+end
+
+local function assert_tech_has_prerequisite(tech_name, required_prerequisite, reason)
+  local tech = data.raw.technology and data.raw.technology[tech_name]
+  if not tech then
+    error("Missing technology for progression validation: " .. tech_name)
+  end
+
+  for _, prerequisite in ipairs(tech.prerequisites or {}) do
+    if prerequisite == required_prerequisite then
+      return
+    end
+  end
+
+  error(("Progression ladder failure: %s is missing prerequisite %s (%s)"):format(
+    tech_name,
+    required_prerequisite,
+    reason
+  ))
+end
+
 local function assert_recipe_lacks_ingredients(recipe_name, forbidden_ingredients, reason)
   for _, forbidden_ingredient in ipairs(forbidden_ingredients) do
     if recipe_has_ingredient(recipe_name, forbidden_ingredient) then
@@ -148,6 +184,28 @@ assert_recipe_unlocks("fw-actinide-recovery", {
 assert_recipe_unlocks("fw-reactor-instrumentation", {
   "fw-nuclear-fuel-overdrive",
 })
+assert_recipe_unlocks("fw-aquilo-cryochemistry", {
+  "fw-electrolyte-conditioning",
+  "fw-lithium-adsorption",
+  "fw-fluoroketone-synthesis",
+  "fw-aquilo-cryogel",
+})
+assert_recipe_unlocks("fw-gleba-biochemistry", {
+  "fw-gleba-spore-resin",
+})
+assert_recipe_unlocks("fw-fulgora-electrochemistry", {
+  "fw-fulgora-static-mesh",
+})
+assert_recipe_unlocks("fw-vulcanus-pyrochemistry", {
+  "fw-vulcanus-slag-cermet",
+})
+assert_recipe_unlocks("fw-superconductive-systems", {
+  "fw-superconductor-bath",
+  "fw-supercapacitor-conditioning",
+})
+assert_recipe_unlocks("fw-fusion-lattices", {
+  "fw-fusion-power-cell-conditioning",
+})
 
 assert_recipe_lacks_ingredients(
   "fw-atomic-enricher",
@@ -171,6 +229,56 @@ assert_recipe_lacks_ingredients(
   "the first upgraded fuel-cell recipe must come online before the deeper reactor-doping layer"
 )
 
+assert_recipe_category(
+  "fw-aquilo-cryogel",
+  "cryogenics",
+  "Aquilo capstones should land on the cryogenic machine lane"
+)
+assert_recipe_category(
+  "fw-gleba-spore-resin",
+  "organic",
+  "Gleba capstones should land on the biochamber lane"
+)
+assert_recipe_category(
+  "fw-fulgora-static-mesh",
+  "electromagnetics",
+  "Fulgora capstones should land on the electromagnetic plant lane"
+)
+assert_recipe_category(
+  "fw-vulcanus-slag-cermet",
+  "metallurgy",
+  "Vulcanus capstones should land on the foundry lane"
+)
+assert_recipe_category(
+  "fw-superconductor-bath",
+  "cryogenics",
+  "late cold-field convergence should stay on the cryogenic lane"
+)
+assert_recipe_category(
+  "fw-supercapacitor-conditioning",
+  "electromagnetics",
+  "late charged-field convergence should stay on the electromagnetic lane"
+)
+
+for _, prerequisite in ipairs({
+  "fw-aquilo-cryochemistry",
+  "fw-gleba-biochemistry",
+  "fw-fulgora-electrochemistry",
+  "fw-vulcanus-pyrochemistry",
+}) do
+  assert_tech_has_prerequisite(
+    "fw-flux-convergence",
+    prerequisite,
+    "the convergence tech should visibly sit on all four planet reward branches"
+  )
+end
+
+assert_tech_has_prerequisite(
+  "fw-rift-logistics",
+  "fw-fulgora-electrochemistry",
+  "late rift logistics should explicitly inherit the Fulgora field-control branch"
+)
+
 if Startup.enabled("fw-enable-recipe-integration", true)
   and Startup.enabled("fw-enable-orbital-and-planetary-integration", true) then
   assert_recipe_has_ingredient(
@@ -192,6 +300,16 @@ if Startup.enabled("fw-enable-recipe-integration", true)
     "superconductor",
     "fw-polymer-binder",
     "late electrical materials should consume the petrochemical branch after the integration sweep"
+  )
+  assert_recipe_has_ingredient(
+    "superconductor",
+    "fw-aquilo-cryogel",
+    "late superconductors should visibly consume the Aquilo branch after the integration sweep"
+  )
+  assert_recipe_has_ingredient(
+    "supercapacitor",
+    "fw-fulgora-static-mesh",
+    "late capacitors should visibly consume the Fulgora branch after the integration sweep"
   )
   assert_recipe_has_ingredient(
     "quantum-processor",

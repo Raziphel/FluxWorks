@@ -26,7 +26,7 @@ data:extend({
     type = "recipe",
     name = "fw-silica-beneficiation",
     icons = {
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png", icon_size = 64 },
+      { icon = "__Krastorio2Assets__/icons/items/silicon.png", icon_size = 64 },
       { icon = "__FluxWorksAssets__/graphics/icons/items/flux-2.png", icon_size = 64, scale = 0.45, shift = { 8, -8 } },
     },
     category = "fw-flux-harvesting",
@@ -54,7 +54,7 @@ data:extend({
     name = "fw-carbonic-washing",
     icons = {
       { icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png", icon_size = 128, scale = 0.5 },
-      { icon = "__FluxWorksAssets__/graphics/icons/items/flux-3-light.png", icon_size = 64, scale = 0.45, shift = { 8, -8 } },
+      { icon = "__Krastorio2Assets__/icons/items/imersite-3-light.png", icon_size = 64, scale = 0.45, shift = { 8, -8 } },
     },
     category = "fw-flux-harvesting",
     subgroup = "fw-chemistry-materials",
@@ -78,7 +78,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-bauxite-slurry-clarification",
-    icon = "__FluxWorksAssets__/graphics/resources/ores/bauxite-ore.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bauxite-ore.png",
     icon_size = 64,
     category = "fw-flux-harvesting",
     subgroup = "fw-chemistry-materials",
@@ -102,7 +102,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-tin-ore-beneficiation",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore-square.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore.png",
     icon_size = 64,
     category = "fw-flux-harvesting",
     subgroup = "fw-chemistry-materials",

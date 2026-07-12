@@ -32,12 +32,12 @@ local function collect_effects(builder, values)
   return effects
 end
 
-local function process_tech(name, icon, prerequisites, ingredients, count, recipes, order)
+local function process_tech(name, icon, icon_size, prerequisites, ingredients, count, recipes, order)
   return {
     type = "technology",
     name = name,
     icon = icon,
-    icon_size = 1024,
+    icon_size = icon_size,
     prerequisites = prerequisites,
     unit = {
       count = count,
@@ -54,7 +54,8 @@ end
 data:extend({
   process_tech(
     "fw-reactive-chemistry-productivity",
-    "__FluxWorksAssets__/graphics/technology/fw-reactive-chemistry-productivity.png",
+    "__Krastorio2Assets__/technologies/advanced-chemistry.png",
+    256,
     { "fw-flux-reactive-slurries", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -73,7 +74,8 @@ data:extend({
   ),
   process_tech(
     "fw-green-reclamation-productivity",
-    "__FluxWorksAssets__/graphics/technology/fw-green-cycle-productivity.png",
+    "__Age-of-Production-Graphics__/graphics/icons/nutrients-from-biomass.png",
+    64,
     { "fw-flux-green-cultivation", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -90,7 +92,8 @@ data:extend({
   ),
   process_tech(
     "fw-green-cultivation-productivity",
-    "__FluxWorksAssets__/graphics/technology/fw-polymer-reclamation-productivity.png",
+    "__Age-of-Production-Graphics__/graphics/icons/biomass-from-wood.png",
+    64,
     { "fw-flux-green-cultivation", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -110,7 +113,8 @@ data:extend({
   ),
   process_tech(
     "fw-green-propagation-productivity",
-    "__FluxWorksAssets__/graphics/technology/fw-harvester-reprocessing-productivity.png",
+    "__Krastorio2Assets__/icons/items/biomass-3.png",
+    64,
     { "fw-flux-green-propagation", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -131,7 +135,8 @@ data:extend({
   ),
   process_tech(
     "fw-cryogenic-loop-productivity",
-    "__FluxWorksAssets__/graphics/technology/fw-cryogenic-loop-productivity.png",
+    "__Krastorio2Assets__/technologies/matter-water.png",
+    256,
     { "fw-aquilo-cryochemistry", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -151,7 +156,8 @@ data:extend({
   ),
   process_tech(
     "fw-phase-assembly-productivity",
-    "__FluxWorksAssets__/graphics/technology/fw-resonance-assembly-productivity.png",
+    "__Krastorio2Assets__/icons/entities/quantum-computer.png",
+    64,
     { "fw-flux-phase-engineering", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -172,7 +178,8 @@ data:extend({
   ),
   process_tech(
     "fw-asteroid-refinement-productivity",
-    "__FluxWorksAssets__/graphics/technology/fw-asteroid-refinement-productivity.png",
+    "__Krastorio2Assets__/technologies/crusher.png",
+    256,
     { "fw-flux-asteroid-harvesting", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",

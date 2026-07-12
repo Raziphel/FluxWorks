@@ -4,7 +4,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-extraction",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-quarry.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/core-miner.png",
     icon_size = 64,
     prerequisites = { "fw-liquid-mining", "fw-material-refinement", "fw-sealed-systems" },
     unit = {

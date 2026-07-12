@@ -16,8 +16,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-comminution",
-    icon = "__FluxWorksAssets__/graphics/technology/comminution.png",
-    icon_size = 968,
+    icon = "__Age-of-Production-Graphics__/graphics/icons/mineral-slurry-processing.png",
+    icon_size = 64,
     prerequisites = { "automation", "steel-processing" },
     unit = tech_unit(16, {
       { "automation-science-pack", 1 },

@@ -3,7 +3,7 @@ data:extend({
   {
     type = "item",
     name = "fw-atomic-enricher",
-    icon = icon_path .. "fw-atomic-enricher.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/atomic-enricher.png",
     icon_size = 64,
     subgroup = "fw-fabrication-machines",
     order = "d[fw-atomic-enricher]",

@@ -74,7 +74,7 @@ data:extend({
   {
     type = "recipe",
     name = "silicon",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png",
+    icon = "__Krastorio2Assets__/icons/items/silicon.png",
     icon_size = 64,
     category = "smelting",
     enabled = false,

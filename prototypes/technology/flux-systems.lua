@@ -66,7 +66,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-harvester-systems",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-harvester.png",
+    icon = "__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_icon.png",
     icon_size = 64,
     prerequisites = { "fw-flux-stabilization", "fw-power-regulation", "fw-liquid-mining" },
     unit = {
@@ -115,8 +115,16 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-red-energetics",
-    icon = "__base__/graphics/icons/rocket-fuel.png",
-    icon_size = 64,
+    icons = {
+      { icon = "__base__/graphics/icons/heat-boiler.png", icon_size = 64 },
+      {
+        icon = "__FluxWorksAssets__/graphics/icons/items/flux-1-light.png",
+        icon_size = 64,
+        scale = 0.38,
+        shift = { 9, 9 },
+        tint = { r = 1.0, g = 0.38, b = 0.22, a = 0.95 },
+      },
+    },
     prerequisites = { "fw-flux-stabilization", "fw-power-regulation" },
     unit = {
       count = 320,
@@ -153,7 +161,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-metallurgy",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-arc-foundry.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/arc-furnace.png",
     icon_size = 64,
     prerequisites = { "fw-flux-red-energetics", "fw-metallurgic-assemblies", "fw-ceramic-engineering" },
     unit = {
@@ -178,8 +186,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-resonance",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-flux-resonance.png",
-    icon_size = 1024,
+    icon = "__Age-of-Production-Graphics__/graphics/technology/quantum-machinery.png",
+    icon_size = 64,
     prerequisites = { "fw-flux-structuring", "fw-flux-red-energetics", "fw-flux-green-reclamation", "fw-harvester-systems" },
     unit = {
       count = 520,
@@ -195,14 +203,15 @@ data:extend({
     effects = {
       { type = "unlock-recipe", recipe = "fw-condensed-flux-matrix" },
       { type = "unlock-recipe", recipe = "fw-resonance-substrate" },
+      { type = "unlock-recipe", recipe = "fw-quantum-spindle" },
     },
     order = "d-i[fw-flux-resonance]",
   },
   {
     type = "technology",
     name = "fw-resonance-assemblies",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-resonance-assemblies.png",
-    icon_size = 1024,
+    icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-assembler.png",
+    icon_size = 64,
     prerequisites = { "fw-flux-resonance", "fw-electromagnetic-architecture" },
     unit = {
       count = 720,
@@ -247,8 +256,15 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-field-theory",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-flux-field-theory.png",
-    icon_size = 1024,
+    icons = {
+      { icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-exchange-gate.png", icon_size = 64 },
+      {
+        icon = "__248k-Redux-graphics__/ressources/gravitation/gr_black_hole/gr_black_hole_item.png",
+        icon_size = 64,
+        scale = 0.38,
+        shift = { 16, 16 },
+      },
+    },
     prerequisites = { "fw-flux-resonance", "fw-resonance-assemblies", "fw-flux-asteroid-harvesting" },
     unit = {
       count = 700,
@@ -323,8 +339,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-chemical-synthesis",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-flux-chemical-synthesis.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/technologies/fuel-refinery.png",
+    icon_size = 256,
     prerequisites = { "fw-flux-field-theory", "fw-flux-yellow-catalysis", "fw-polymer-chemistry", "fw-industrial-expansion" },
     unit = {
       count = 820,
@@ -413,8 +429,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-green-cultivation",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-flux-green-cultivation.png",
-    icon_size = 1024,
+    icon = "__Age-of-Production-Graphics__/graphics/icons/biomass-reactor.png",
+    icon_size = 64,
     prerequisites = { "fw-flux-field-theory", "fw-flux-green-reclamation", "fw-biosystems-engineering" },
     unit = {
       count = 860,
@@ -434,7 +450,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-green-propagation",
-    icon = "__base__/graphics/icons/wood.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/biomass-from-seeds.png",
     icon_size = 64,
     prerequisites = { "fw-flux-green-cultivation", "fw-flux-chemical-synthesis" },
     unit = {
@@ -455,8 +471,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-thermal-networks",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-flux-thermal-networks.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/technologies/energy-storage.png",
+    icon_size = 256,
     prerequisites = { "fw-flux-field-theory", "fw-flux-metallurgy", "fw-cryogenic-control" },
     unit = {
       count = 860,
@@ -502,8 +518,15 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-phase-engineering",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-flux-phase-engineering.png",
-    icon_size = 1024,
+    icons = {
+      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-quantum-computer.png", icon_size = 64 },
+      {
+        icon = "__248k-Redux-graphics__/ressources/gravitation/gr_black_hole/gr_black_hole_item.png",
+        icon_size = 64,
+        scale = 0.34,
+        shift = { 8, 8 },
+      },
+    },
     prerequisites = { "fw-flux-field-theory", "fw-resonance-assemblies", "fw-superconductive-systems" },
     unit = {
       count = 980,
@@ -521,15 +544,16 @@ data:extend({
     },
     effects = {
       { type = "unlock-recipe", recipe = "fw-flux-phase-manifold" },
+      { type = "unlock-recipe", recipe = "fw-rift-seed-crystallization" },
     },
     order = "d-t[fw-flux-phase-engineering]",
   },
   {
     type = "technology",
     name = "fw-deep-phase-storage",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-deep-phase-storage.png",
-    icon_size = 1024,
-    prerequisites = { "fw-flux-synthesis", "fw-superconductive-systems", "fw-flux-convergence" },
+    icon = "__Krastorio2Assets__/icons/entities/huge-storage-tank.png",
+    icon_size = 64,
+    prerequisites = { "fw-flux-phase-engineering", "fw-flux-convergence" },
     unit = {
       count = 3200,
       ingredients = {
@@ -557,9 +581,9 @@ data:extend({
   {
     type = "technology",
     name = "fw-spectral-fluid-retention",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-spectral-fluid-retention.png",
-    icon_size = 1024,
-    prerequisites = { "fw-deep-phase-storage", "fw-aquilo-cryochemistry", "fw-flux-thermal-networks", "fw-flux-convergence" },
+    icon = "__Krastorio2Assets__/technologies/fluids-chemistry.png",
+    icon_size = 256,
+    prerequisites = { "fw-deep-phase-storage", "fw-aquilo-cryochemistry", "fw-flux-thermal-networks" },
     unit = {
       count = 4200,
       ingredients = {
@@ -586,9 +610,15 @@ data:extend({
   {
     type = "technology",
     name = "fw-rift-logistics",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-rift-logistics.png",
-    icon_size = 1024,
-    prerequisites = { "fw-flux-convergence", "fw-fusion-lattices", "fw-rift-harmonics", "fw-deep-phase-storage", "fw-spectral-fluid-retention", "fw-flux-overdrive" },
+    icon = "__Krastorio2Assets__/technologies/planetary-teleporter.png",
+    icon_size = 256,
+    prerequisites = {
+      "fw-rift-harmonics",
+      "fw-deep-phase-storage",
+      "fw-spectral-fluid-retention",
+      "fw-flux-overdrive",
+      "fw-fulgora-electrochemistry",
+    },
     unit = {
       count = 6000,
       ingredients = {
@@ -608,6 +638,7 @@ data:extend({
     effects = {
       { type = "unlock-recipe", recipe = "fw-rift-coupler" },
       { type = "unlock-recipe", recipe = "fw-rift-exchange-gate" },
+      { type = "unlock-recipe", recipe = "fw-rift-exchange-fluid-gate" },
     },
     order = "d-tc[fw-rift-logistics]",
   },
@@ -664,7 +695,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-synthesis",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png",
     icon_size = 1024,
     prerequisites = { "fw-flux-phase-engineering", "fw-flux-chemical-synthesis", "fw-resonance-assemblies" },
     unit = {
@@ -689,7 +720,16 @@ data:extend({
     name = "fw-flux-convergence",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-rift-stabilizer.png",
     icon_size = 1024,
-    prerequisites = { "fw-flux-synthesis", "fw-flux-overdrive", "fw-flux-green-propagation", "fw-promethium-stabilization" },
+    prerequisites = {
+      "fw-flux-synthesis",
+      "fw-flux-overdrive",
+      "fw-flux-green-propagation",
+      "fw-aquilo-cryochemistry",
+      "fw-gleba-biochemistry",
+      "fw-fulgora-electrochemistry",
+      "fw-vulcanus-pyrochemistry",
+      "fw-promethium-stabilization",
+    },
     unit = {
       count = 1620,
       ingredients = {
@@ -709,6 +749,7 @@ data:extend({
     effects = {
       { type = "unlock-recipe", recipe = "fw-rift-stabilizer" },
       { type = "unlock-recipe", recipe = "fw-flux-metallic-synthesis" },
+      { type = "unlock-recipe", recipe = "fw-reservoir-lining" },
     },
     order = "d-x[fw-flux-convergence]",
   },
@@ -717,7 +758,7 @@ data:extend({
     name = "fw-rift-harmonics",
     icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-entanglement-core.png",
     icon_size = 1024,
-    prerequisites = { "fw-flux-convergence", "fw-fusion-lattices", "fw-deep-phase-storage", "fw-spectral-fluid-retention" },
+    prerequisites = { "fw-flux-convergence", "fw-fusion-lattices", "fw-spectral-fluid-retention" },
     unit = {
       count = 1750,
       ingredients = {
@@ -735,7 +776,7 @@ data:extend({
       time = 70,
     },
     effects = {
-      { type = "unlock-recipe", recipe = "fw-rift-seed-crystallization" },
+      { type = "unlock-recipe", recipe = "fw-thermal-phase-gasket" },
     },
     order = "d-y[fw-rift-harmonics]",
   },
@@ -743,11 +784,11 @@ data:extend({
     type = "technology",
     name = "fw-origin-infrastructure",
     icons = {
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png", icon_size = 64 },
+      { icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png", icon_size = 64 },
       { icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-coupler.png", icon_size = 1024, scale = 0.3, shift = { 10, -10 } },
       { icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-matrix.png", icon_size = 1024, scale = 0.22, shift = { -10, 10 } },
     },
-    prerequisites = { "fw-rift-harmonics", "fw-rift-logistics", "fw-superconductive-systems" },
+    prerequisites = { "fw-rift-harmonics", "fw-rift-logistics" },
     unit = {
       count = 2200,
       ingredients = {
@@ -778,10 +819,10 @@ data:extend({
     name = "fw-storm-megastructures",
     icons = {
       { icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-matrix.png", icon_size = 1024 },
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-harvester.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
+      { icon = "__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_icon.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
       { icon = "__FluxWorksAssets__/graphics/icons/items/flux-1-light.png", icon_size = 64, scale = 0.38, shift = { 10, -10 }, tint = { r = 1.0, g = 0.42, b = 0.25, a = 0.95 } },
     },
-    prerequisites = { "fw-origin-infrastructure", "fw-fusion-lattices", "fw-flux-convergence" },
+    prerequisites = { "fw-origin-infrastructure", "fw-flux-convergence" },
     unit = {
       count = 2800,
       ingredients = {
@@ -810,7 +851,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-origin-transcendence",
-    icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-origin-singularity.png",
+    icon = "__248k-Redux-graphics__/ressources/gravitation/gr_black_hole/gr_black_hole_item.png",
     icon_size = 64,
     prerequisites = { "fw-storm-megastructures" },
     unit = {
@@ -999,19 +1040,25 @@ Tech:get("fw-deep-phase-storage")
   :setCost(1280)
   :setColors("RGBPYWEC")
   :setTime(60)
-  :setPrerequisites({ "fw-flux-synthesis", "fw-superconductive-systems", "fw-flux-convergence" })
+  :setPrerequisites({ "fw-flux-phase-engineering", "fw-flux-convergence" })
 
 Tech:get("fw-spectral-fluid-retention")
   :setCost(1420)
   :setColors("RGBPYWEC")
   :setTime(65)
-  :setPrerequisites({ "fw-deep-phase-storage", "fw-aquilo-cryochemistry", "fw-flux-thermal-networks", "fw-flux-convergence" })
+  :setPrerequisites({ "fw-deep-phase-storage", "fw-aquilo-cryochemistry", "fw-flux-thermal-networks" })
 
 Tech:get("fw-rift-logistics")
   :setCost(1760)
   :setColors("RGBPYWVEACP")
   :setTime(70)
-  :setPrerequisites({ "fw-flux-convergence", "fw-fusion-lattices", "fw-rift-harmonics", "fw-deep-phase-storage", "fw-spectral-fluid-retention", "fw-flux-overdrive" })
+  :setPrerequisites({
+    "fw-rift-harmonics",
+    "fw-deep-phase-storage",
+    "fw-spectral-fluid-retention",
+    "fw-flux-overdrive",
+    "fw-fulgora-electrochemistry"
+  })
 
 Tech:get("fw-flux-overdrive")
   :setCost(1320)
@@ -1041,4 +1088,4 @@ Tech:get("fw-rift-harmonics")
   :setCost(1880)
   :setColors("RGBPYWVFCAP")
   :setTime(75)
-  :setPrerequisites({ "fw-flux-convergence", "fw-fusion-lattices", "fw-deep-phase-storage", "fw-spectral-fluid-retention" })
+  :setPrerequisites({ "fw-flux-convergence", "fw-fusion-lattices", "fw-spectral-fluid-retention" })

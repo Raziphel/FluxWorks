@@ -88,6 +88,13 @@ local function weaker_confidence(a, b)
   return b
 end
 
+local function stronger_confidence(a, b)
+  if confidence_rank(a) >= confidence_rank(b) then
+    return a
+  end
+  return b
+end
+
 local function clone_signature(signature)
   local copy = make_signature()
   if not signature then
@@ -698,6 +705,13 @@ local function default_item_breakdown(item, known_values)
   return round_breakdown_to_total(breakdown, math.max(1, math.floor(total + 0.5)))
 end
 
+function M.simple_item_breakdown(item, known_values)
+  if not item then
+    return make_breakdown()
+  end
+  return default_item_breakdown(item, known_values or {})
+end
+
 local function fluid_color_signature(fluid_name)
   local override = M.FLUID_COLOR_OVERRIDES[fluid_name]
   if override then
@@ -883,6 +897,7 @@ function M.is_confident_value(metadata)
   return confidence == M.VALUE_CONFIDENCE.locked
     or confidence == M.VALUE_CONFIDENCE.anchored
     or confidence == M.VALUE_CONFIDENCE.derived
+    or confidence == M.VALUE_CONFIDENCE.inferred
 end
 
 function M.resolve_item_values(candidate_items)
@@ -991,6 +1006,12 @@ function M.resolve_item_values(candidate_items)
       confidence = explicit_confidence or M.VALUE_CONFIDENCE.unknown,
       source = explicit_confidence and "manual-anchor" or "heuristic-fallback",
     }
+    if explicit_confidence then
+      metadata[item_name].confidence = stronger_confidence(metadata[item_name].confidence, explicit_confidence)
+      if metadata[item_name].source ~= "manual-lock" then
+        metadata[item_name].source = "manual-anchor+" .. tostring(metadata[item_name].source)
+      end
+    end
     return values[item_name]
   end
 

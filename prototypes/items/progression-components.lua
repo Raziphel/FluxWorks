@@ -1,5 +1,9 @@
 local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
 local resource_icon_path = "__FluxWorksAssets__/graphics/icons/resources/"
+local k2_ai_core = "__Krastorio2Assets__/icons/items/ai-core.png"
+local k2_matter_cube = "__Krastorio2Assets__/icons/items/matter-cube.png"
+local k2_matter_stabilizer = "__Krastorio2Assets__/icons/items/matter-stabilizer.png"
+local k2_imersite_crystal = "__Krastorio2Assets__/icons/items/imersite-crystal-4.png"
 
 data:extend({
   {
@@ -77,8 +81,8 @@ data:extend({
   {
     type = "item",
     name = "fw-power-regulator",
-    icon = icon_path .. "fw-power-regulator.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/energy-control-unit.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-electrical",
     order = "i[fw-power-regulator]",
     stack_size = 100,
@@ -168,7 +172,7 @@ data:extend({
     type = "item",
     name = "fw-promethium-shard",
     icons = {
-      { icon = icon_path .. "crystallized-flux.png", icon_size = 64, tint = { r = 0.96, g = 0.76, b = 1.00, a = 1 } },
+      { icon = k2_imersite_crystal, icon_size = 64, tint = { r = 1.00, g = 0.74, b = 0.98, a = 1 } },
       { icon = resource_icon_path .. "fw-mineral-deposit.png", icon_size = 64, scale = 0.30, shift = { -7, 7 }, tint = { r = 0.72, g = 0.50, b = 0.82, a = 1 } },
     },
     subgroup = "fw-flux-resources",
@@ -179,8 +183,8 @@ data:extend({
     type = "item",
     name = "fw-promethium-primer",
     icons = {
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-logic-matrix.png", icon_size = 1024, tint = { r = 0.94, g = 0.82, b = 1.00, a = 1 } },
-      { icon = icon_path .. "fw-promethium-matrix.png", icon_size = 1024, scale = 0.55, shift = { 120, -120 }, tint = { r = 1.00, g = 0.86, b = 1.00, a = 0.95 } },
+      { icon = k2_ai_core, icon_size = 64, tint = { r = 1.00, g = 0.84, b = 1.00, a = 1 } },
+      { icon = icon_path .. "fw-promethium-matrix.png", icon_size = 1024, scale = 0.38, shift = { 9, -9 }, tint = { r = 1.00, g = 0.86, b = 1.00, a = 0.95 } },
     },
     subgroup = "fw-flux-systems",
     order = "g[fw-promethium-primer]",
@@ -189,8 +193,10 @@ data:extend({
   {
     type = "item",
     name = "fw-promethium-matrix",
-    icon = icon_path .. "fw-promethium-matrix.png",
-    icon_size = 1024,
+    icons = {
+      { icon = k2_matter_cube, icon_size = 64, tint = { r = 1.00, g = 0.88, b = 1.00, a = 1 } },
+      { icon = icon_path .. "fw-promethium-matrix.png", icon_size = 1024, scale = 0.34, shift = { 8, -8 }, tint = { r = 1.00, g = 0.84, b = 1.00, a = 0.95 } },
+    },
     subgroup = "fw-flux-systems",
     order = "h[fw-promethium-matrix]",
     stack_size = 50,
@@ -198,8 +204,10 @@ data:extend({
   {
     type = "item",
     name = "fw-rift-stabilizer",
-    icon = icon_path .. "fw-rift-stabilizer.png",
-    icon_size = 1024,
+    icons = {
+      { icon = k2_matter_stabilizer, icon_size = 64 },
+      { icon = icon_path .. "flux-1-light.png", icon_size = 64, scale = 0.44, shift = { 9, -9 }, tint = { r = 0.76, g = 0.42, b = 1.00, a = 0.95 } },
+    },
     subgroup = "fw-flux-systems",
     order = "i[fw-rift-stabilizer]",
     stack_size = 50,

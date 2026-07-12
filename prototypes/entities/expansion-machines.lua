@@ -5,7 +5,7 @@ local assembler3_pipe_pictures = assembler3pipepictures()
 
 local petro = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"])
 petro.name = "fw-petrochemical-facility"
-petro.icon = "__FluxWorksAssets__/graphics/icons/items/fw-petrochemical-facility.png"
+petro.icon = "__Age-of-Production-Graphics__/graphics/icons/petrochemical-facility.png"
 petro.icon_size = 64
 petro.minable = { mining_time = 0.5, result = "fw-petrochemical-facility" }
 petro.max_health = 650
@@ -57,7 +57,7 @@ petro.graphics_set = {
   animation = {
     layers = {
       {
-        filename = "__FluxWorksAssets__/graphics/entity/petrochemical-facility/petrochemical-facility-hr-shadow.png",
+        filename = "__Age-of-Production-Graphics__/graphics/entity/petrochemical-facility/petrochemical-facility-hr-shadow.png",
         priority = "high",
         width = 800,
         height = 600,
@@ -79,7 +79,7 @@ petro.graphics_set = {
         scale = 0.45,
         shift = util.by_pixel(0, -10),
         stripes = {
-          { filename = "__FluxWorksAssets__/graphics/entity/petrochemical-facility/petrochemical-facility-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
+          { filename = "__Age-of-Production-Graphics__/graphics/entity/petrochemical-facility/petrochemical-facility-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
         },
       },
     },
@@ -99,7 +99,7 @@ petro.graphics_set = {
             scale = 0.45,
             shift = util.by_pixel(0, -10),
             stripes = {
-              { filename = "__FluxWorksAssets__/graphics/entity/petrochemical-facility/petrochemical-facility-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
+              { filename = "__Age-of-Production-Graphics__/graphics/entity/petrochemical-facility/petrochemical-facility-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
             },
           },
           {
@@ -114,7 +114,7 @@ petro.graphics_set = {
             scale = 0.45,
             shift = util.by_pixel(0, -10),
             stripes = {
-              { filename = "__FluxWorksAssets__/graphics/entity/petrochemical-facility/petrochemical-facility-hr-emission-1.png", width_in_frames = 8, height_in_frames = 8 },
+              { filename = "__Age-of-Production-Graphics__/graphics/entity/petrochemical-facility/petrochemical-facility-hr-emission-1.png", width_in_frames = 8, height_in_frames = 8 },
             },
           },
         },
@@ -123,7 +123,7 @@ petro.graphics_set = {
   },
 }
 petro.working_sound = {
-  sound = { filename = "__FluxWorksAssets__/sounds/petrochemical-facility.ogg", volume = 0.9 },
+  sound = { filename = "__Age-of-Production-Graphics__/sounds/petrochemical-facility.ogg", volume = 0.9 },
   apparent_volume = 0.5,
 }
 petro.open_sound = { filename = "__base__/sound/open-close/fluid-open.ogg", volume = 0.55 }
@@ -131,7 +131,7 @@ petro.close_sound = { filename = "__base__/sound/open-close/fluid-close.ogg", vo
 
 local hydraulic = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"])
 hydraulic.name = "fw-hydraulic-plant"
-hydraulic.icon = "__FluxWorksAssets__/graphics/icons/items/fw-hydraulic-plant.png"
+hydraulic.icon = "__Age-of-Production-Graphics__/graphics/icons/hydraulic-plant.png"
 hydraulic.icon_size = 64
 hydraulic.minable = { mining_time = 0.5, result = "fw-hydraulic-plant" }
 hydraulic.max_health = 550
@@ -171,7 +171,7 @@ hydraulic.graphics_set = {
   animation = {
     layers = {
       {
-        filename = "__FluxWorksAssets__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-shadow.png",
+        filename = "__Age-of-Production-Graphics__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-shadow.png",
         priority = "high",
         width = 1200,
         height = 800,
@@ -193,7 +193,7 @@ hydraulic.graphics_set = {
         scale = 0.5,
         shift = util.by_pixel(0, -14),
         stripes = {
-          { filename = "__FluxWorksAssets__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
+          { filename = "__Age-of-Production-Graphics__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
         },
       },
     },
@@ -214,7 +214,7 @@ hydraulic.graphics_set = {
             scale = 0.5,
             shift = util.by_pixel(0, -14),
             stripes = {
-              { filename = "__FluxWorksAssets__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
+              { filename = "__Age-of-Production-Graphics__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
             },
           },
           {
@@ -229,7 +229,7 @@ hydraulic.graphics_set = {
             scale = 0.5,
             shift = util.by_pixel(0, -14),
             stripes = {
-              { filename = "__FluxWorksAssets__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-emission-1.png", width_in_frames = 8, height_in_frames = 8 },
+              { filename = "__Age-of-Production-Graphics__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-emission-1.png", width_in_frames = 8, height_in_frames = 8 },
             },
           },
           {
@@ -245,7 +245,7 @@ hydraulic.graphics_set = {
             scale = 0.5,
             shift = util.by_pixel(0, -14),
             stripes = {
-              { filename = "__FluxWorksAssets__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-color.png", width_in_frames = 8, height_in_frames = 8 },
+              { filename = "__Age-of-Production-Graphics__/graphics/entity/hydraulic-plant/hydraulic-plant-hr-color.png", width_in_frames = 8, height_in_frames = 8 },
             },
           },
         },
@@ -254,7 +254,7 @@ hydraulic.graphics_set = {
   },
 }
 hydraulic.working_sound = {
-  sound = { filename = "__FluxWorksAssets__/sounds/hydraulic-plant.ogg", volume = 0.9 },
+  sound = { filename = "__Age-of-Production-Graphics__/sounds/hydraulic-plant.ogg", volume = 0.9 },
   apparent_volume = 0.3,
 }
 hydraulic.open_sound = { filename = "__base__/sound/open-close/fluid-open.ogg", volume = 0.55 }

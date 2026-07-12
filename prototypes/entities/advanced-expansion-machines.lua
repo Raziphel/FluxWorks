@@ -58,7 +58,7 @@ end
 
 local atomic_enricher = table.deepcopy(data.raw["assembling-machine"]["centrifuge"])
 atomic_enricher.name = "fw-atomic-enricher"
-atomic_enricher.icon = "__FluxWorksAssets__/graphics/icons/items/fw-atomic-enricher.png"
+atomic_enricher.icon = "__Age-of-Production-Graphics__/graphics/icons/atomic-enricher.png"
 atomic_enricher.icon_size = 64
 atomic_enricher.minable = { mining_time = 0.8, result = "fw-atomic-enricher" }
 atomic_enricher.max_health = 600
@@ -77,7 +77,7 @@ atomic_enricher.module_slots = 6
 atomic_enricher.allowed_effects = { "consumption", "speed", "productivity", "pollution", "quality" }
 
 do
-  local prefix = "__FluxWorksAssets__/graphics/entity/atomic-enricher/"
+  local prefix = "__Age-of-Production-Graphics__/graphics/entity/atomic-enricher/"
   local shift = util.by_pixel(0, -16)
   local base = make_striped_layer(prefix, {
     { name = "atomic-enricher-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },

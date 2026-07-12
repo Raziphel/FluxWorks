@@ -25,8 +25,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-chlorine-pressurization",
-    icon = "__FluxWorksAssets__/graphics/resources/fluids/chlorine.png",
-    icon_size = 128,
+    icon = "__Krastorio2Assets__/icons/fluids/chlorine.png",
+    icon_size = 64,
     category = "chemistry",
     subgroup = "fw-chemistry-processes",
     order = "e[base-chemistry]-a[chlorine-pressurization]",

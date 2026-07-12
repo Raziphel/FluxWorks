@@ -60,8 +60,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-sand",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-sand.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/sand-2.png",
+    icon_size = 64,
     category = "basic-crushing",
     enabled = false,
     energy_required = 0.6,
@@ -73,10 +73,10 @@ data:extend({
     type = "recipe",
     name = "fw-silicon-beneficiation",
     icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore-square.png",
+      "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore.png",
       64,
-      "__FluxWorksAssets__/graphics/icons/items/fw-sand.png",
-      1024,
+      "__Krastorio2Assets__/icons/items/sand-2.png",
+      64,
       0.22,
       { 8, 8 }
     ),
@@ -129,8 +129,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-iron-beam",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-iron-beam.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/iron-beam.png",
+    icon_size = 64,
     category = "crafting",
     enabled = false,
     energy_required = 1.0,
@@ -144,8 +144,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-steel-beam",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-steel-beam.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/steel-beam.png",
+    icon_size = 64,
     category = "crafting",
     enabled = false,
     energy_required = 1.6,
@@ -174,7 +174,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-cable-harness",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-cable-harness.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-signal-conduit.png",
     icon_size = 1024,
     category = "crafting",
     enabled = false,
@@ -304,8 +304,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-ribbon-cable",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-ribbon-cable.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/electronic-components-4.png",
+    icon_size = 64,
     category = "crafting",
     enabled = false,
     energy_required = 1.2,
@@ -519,8 +519,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-solder-wire",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-solder-wire.png",
-    icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-solder-alloy.png",
+    icon_size = 128,
     category = "crafting",
     enabled = false,
     energy_required = 0.8,
@@ -534,8 +534,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-tinned-cable",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-cable-harness.png",
-    icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-coil-block.png",
+    icon_size = 128,
     category = "crafting",
     enabled = false,
     energy_required = 1.0,
@@ -550,10 +550,10 @@ data:extend({
     type = "recipe",
     name = "fw-conductor-bundle",
     icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-conductor-bundle.png",
-      1024,
-      "__FluxWorksAssets__/graphics/icons/items/fw-ribbon-cable.png",
-      1024,
+      "__Krastorio2Assets__/icons/items/electronic-components-3.png",
+      64,
+      "__Krastorio2Assets__/icons/items/electronic-components-4.png",
+      64,
       0.22,
       { 120, -120 }
     ),
@@ -571,14 +571,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-chip-carrier",
-    icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-chip-carrier.png",
-      1024,
-      "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-wafer.png",
-      1024,
-      0.22,
-      { 120, -120 }
-    ),
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-substrate.png",
+    icon_size = 1024,
     category = "crafting",
     enabled = false,
     energy_required = 1.2,
@@ -642,8 +636,8 @@ data:extend({
     type = "recipe",
     name = "fw-ceramic-wafer",
     icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-wafer.png",
-      1024,
+      "__Krastorio2Assets__/icons/items/quartz-3.png",
+      64,
       "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-insulator.png",
       128,
       1.8,
@@ -664,14 +658,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-silicon-wafer",
-    icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-wafer.png",
-      1024,
-      "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png",
-      64,
-      5.5,
-      { 120, -120 }
-    ),
+    icon = "__Krastorio2Assets__/icons/items/quartz-3.png",
+    icon_size = 64,
     category = "crafting",
     enabled = false,
     energy_required = 1.2,
@@ -685,14 +673,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-circuit-contact",
-    icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
-      1024,
-      "__base__/graphics/icons/copper-cable.png",
-      64,
-      0.45,
-      { 8, 8 }
-    ),
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-capacitor.png",
+    icon_size = 128,
     category = "crafting",
     enabled = false,
     energy_required = 0.5,
@@ -708,8 +690,8 @@ data:extend({
     type = "recipe",
     name = "fw-circuit-contact-leaded",
     icons = recipe_overlay_icons(
-      "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
-      1024,
+      "__Krastorio2Assets__/icons/items/electronic-components.png",
+      64,
       "__FluxWorksAssets__/graphics/icons/items/metal-plate-lead.png",
       1024,
       0.22,

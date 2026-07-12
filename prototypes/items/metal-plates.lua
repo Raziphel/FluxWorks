@@ -52,7 +52,7 @@ data:extend({
   {
     type = "item",
     name = "silicon",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon.png",
+    icon = "__Krastorio2Assets__/icons/items/silicon.png",
     icon_size = 64,
     inventory_move_sound = item_sounds.resource_inventory_move,
     pick_sound = item_sounds.resource_inventory_pickup,

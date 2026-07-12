@@ -25,24 +25,40 @@ return function(shared)
     { "radar", "fw-sensor-diode", 1 },
     { "beacon", "fw-field-winding", 1 },
     { "lightning-collector", "fw-power-regulator", 1 },
+    { "lightning-collector", "fw-fulgora-static-mesh", 1 },
+    { "heating-tower", "fw-vulcanus-slag-cermet", 1 },
     { "electromagnetic-science-pack", "fw-power-regulator", 1 },
   })
 
   -- Final high-tier cleanup.
   -- Orbital, sensing, thermal, and field hardware should feel like actual families, not lonely patch notes.
   if enable_orbital_and_planetary_integration then
-    -- The dedicated branch machines need a few high-value jobs of their own.
-    -- Otherwise they read like side content while the generic chemical plant still does all the glamorous work.
+    -- Keep the prep chemistry flexible, but let the capstones live on the proper planet machine lanes.
     for _, recipe_name in ipairs({
       "fw-electrolyte-conditioning",
       "fw-lithium-adsorption",
+    }) do
+      set_recipe_category(recipe_name, "chemistry-or-cryogenics")
+    end
+
+    for _, recipe_name in ipairs({
       "fw-fluoroketone-synthesis",
       "fw-aquilo-cryogel",
-      "fw-gleba-spore-resin",
-      "fw-fulgora-static-mesh",
+      "fw-superconductor-bath",
     }) do
-      set_recipe_category(recipe_name, "fw-petrochemistry")
+      set_recipe_category(recipe_name, "cryogenics")
     end
+
+    set_recipe_category("fw-gleba-spore-resin", "organic")
+
+    for _, recipe_name in ipairs({
+      "fw-fulgora-static-mesh",
+      "fw-supercapacitor-conditioning",
+    }) do
+      set_recipe_category(recipe_name, "electromagnetics")
+    end
+
+    set_recipe_category("fw-vulcanus-slag-cermet", "metallurgy")
 
     patch_many_recipes({
       "rocket-silo",
@@ -135,6 +151,19 @@ return function(shared)
       { "quantum-processor", "fw-chlorinated-binder-stock", 1 },
       { "fusion-power-cell", "fw-reactor-dopant", 1 },
       { "fusion-power-cell", "fw-reactor-coolant-cartridge", 1 },
+    })
+
+    -- Steel pipe should be the pressure-rated utility lane, not a cosmetic duplicate of the renamed lead pipe.
+    patch_recipe_set({
+      { "heat-exchanger", "fw-kr-steel-pipe", 4 },
+      { "steam-turbine", "fw-kr-steel-pipe", 6 },
+      { "fluid-wagon", "fw-kr-steel-pipe", 4 },
+      { "nuclear-reactor", "fw-kr-steel-pipe", 8 },
+      { "fission-reactor", "fw-kr-steel-pipe", 8 },
+      { "fusion-reactor", "fw-kr-steel-pipe", 10 },
+      { "fusion-generator", "fw-kr-steel-pipe", 8 },
+      { "cryogenic-plant", "fw-kr-steel-pipe", 4 },
+      { "thruster", "fw-kr-steel-pipe", 6 },
     })
   end
 end

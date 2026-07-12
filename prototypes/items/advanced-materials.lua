@@ -1,11 +1,5 @@
 local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
 
-local function layered_item_icons(base_icon, base_size, overlay_icon, overlay_size, overlay_scale, overlay_shift)
-  return {
-    { icon = base_icon, icon_size = base_size },
-  }
-end
-
 data:extend({
   { type = "item-subgroup", name = "fw-intermediate-structural", group = "intermediate-products", order = "fa" },
   { type = "item-subgroup", name = "fw-intermediate-electrical", group = "intermediate-products", order = "fb" },
@@ -54,8 +48,8 @@ data:extend({
   {
     type = "item",
     name = "fw-sand",
-    icon = icon_path .. "fw-sand.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/sand-2.png",
+    icon_size = 64,
     subgroup = "raw-material",
     order = "f[fw-sand]",
     stack_size = 200,
@@ -84,8 +78,8 @@ data:extend({
   {
     type = "item",
     name = "fw-iron-beam",
-    icon = icon_path .. "fw-iron-beam.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/iron-beam.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-structural",
     order = "c[fw-iron-beam]",
     stack_size = 100,
@@ -93,8 +87,8 @@ data:extend({
   {
     type = "item",
     name = "fw-steel-beam",
-    icon = icon_path .. "fw-steel-beam.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/steel-beam.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-structural",
     order = "d[fw-steel-beam]",
     stack_size = 100,
@@ -111,7 +105,7 @@ data:extend({
   {
     type = "item",
     name = "fw-cable-harness",
-    icon = icon_path .. "fw-cable-harness.png",
+    icon = icon_path .. "fw-signal-conduit.png",
     icon_size = 1024,
     subgroup = "fw-intermediate-electrical",
     order = "a[fw-cable-harness]",
@@ -183,8 +177,8 @@ data:extend({
   {
     type = "item",
     name = "fw-ribbon-cable",
-    icon = icon_path .. "fw-ribbon-cable.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/electronic-components-4.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-electrical",
     order = "b[fw-ribbon-cable]",
     stack_size = 200,
@@ -282,8 +276,8 @@ data:extend({
   {
     type = "item",
     name = "fw-solder-wire",
-    icon = icon_path .. "fw-solder-wire.png",
-    icon_size = 1024,
+    icon = icon_path .. "fw-solder-alloy.png",
+    icon_size = 128,
     subgroup = "fw-intermediate-electrical",
     order = "e[fw-solder-wire]",
     stack_size = 200,
@@ -291,8 +285,8 @@ data:extend({
   {
     type = "item",
     name = "fw-tinned-cable",
-    icon = icon_path .. "fw-cable-harness.png",
-    icon_size = 1024,
+    icon = icon_path .. "fw-coil-block.png",
+    icon_size = 128,
     subgroup = "fw-intermediate-electrical",
     order = "ea[fw-tinned-cable]",
     stack_size = 200,
@@ -300,8 +294,8 @@ data:extend({
   {
     type = "item",
     name = "fw-conductor-bundle",
-    icon = icon_path .. "fw-conductor-bundle.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/electronic-components-3.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-electrical",
     order = "f[fw-conductor-bundle]",
     stack_size = 200,
@@ -309,7 +303,7 @@ data:extend({
   {
     type = "item",
     name = "fw-chip-carrier",
-    icon = icon_path .. "fw-chip-carrier.png",
+    icon = icon_path .. "fw-circuit-substrate.png",
     icon_size = 1024,
     subgroup = "fw-intermediate-precision",
     order = "b[fw-chip-carrier]",
@@ -336,8 +330,8 @@ data:extend({
   {
     type = "item",
     name = "fw-ceramic-wafer",
-    icon = icon_path .. "fw-ceramic-wafer.png",
-    icon_size = 1024,
+    icon = "__Krastorio2Assets__/icons/items/quartz-3.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-precision",
     order = "e[fw-ceramic-wafer]",
     stack_size = 200,
@@ -345,14 +339,8 @@ data:extend({
   {
     type = "item",
     name = "fw-silicon-wafer",
-    icons = layered_item_icons(
-      icon_path .. "fw-ceramic-wafer.png",
-      1024,
-      icon_path .. "fw-bz-silicon.png",
-      64,
-      5.5,
-      { 120, -120 }
-    ),
+    icon = "__Krastorio2Assets__/icons/items/quartz-3.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-precision",
     order = "ea[fw-silicon-wafer]",
     stack_size = 200,
@@ -360,8 +348,8 @@ data:extend({
   {
     type = "item",
     name = "fw-circuit-contact",
-    icon = icon_path .. "fw-circuit-contact.png",
-    icon_size = 1024,
+    icon = icon_path .. "fw-capacitor.png",
+    icon_size = 128,
     subgroup = "fw-intermediate-precision",
     order = "f[fw-circuit-contact]",
     stack_size = 200,

@@ -7,7 +7,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-petrochemical-facility",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-petrochemical-facility.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/petrochemical-facility.png",
     icon_size = 64,
     enabled = false,
     energy_required = 10,
@@ -15,6 +15,7 @@ data:extend({
       { type = "item", name = "fw-pressure-housing", amount = 6 },
       { type = "item", name = "fw-steel-beam", amount = 8 },
       { type = "item", name = "fw-flow-regulator", amount = 4 },
+      { type = "item", name = "fw-reactive-column", amount = 1 },
       { type = "item", name = "fw-resin", amount = 6 },
       { type = "item", name = "pipe", amount = 8 },
       { type = "item", name = "engine-unit", amount = 4 },
@@ -25,7 +26,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-hydraulic-plant",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-hydraulic-plant.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/hydraulic-plant.png",
     icon_size = 64,
     enabled = false,
     energy_required = 10,
@@ -33,6 +34,7 @@ data:extend({
       { type = "item", name = "fw-pressure-housing", amount = 4 },
       { type = "item", name = "fw-copper-tube", amount = 8 },
       { type = "item", name = "fw-flow-regulator", amount = 4 },
+      { type = "item", name = "fw-hydraulic-core", amount = 1 },
       { type = "item", name = "fw-reinforced-seal", amount = 4 },
       { type = "item", name = "fw-steel-beam", amount = 6 },
       { type = "item", name = "electric-engine-unit", amount = 3 },
@@ -53,6 +55,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-resin", amount = 2 },
+      { type = "item", name = "fw-reactive-column", amount = 1 },
       { type = "fluid", name = "fw-latex", amount = 20 },
       { type = "fluid", name = "sulfuric-acid", amount = 20 },
       { type = "fluid", name = "fw-chlorine", amount = 10 },
@@ -73,6 +76,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-resin", amount = 2 },
+      { type = "item", name = "fw-reactive-column", amount = 1 },
       { type = "item", name = "fw-inline-filter", amount = 1 },
       { type = "fluid", name = "fw-chlorine", amount = 25 },
       { type = "fluid", name = "water", amount = 20 },
@@ -97,6 +101,7 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-polymer-binder", amount = 1 },
       { type = "item", name = "fw-chlorinated-binder-stock", amount = 1 },
+      { type = "item", name = "fw-reactive-column", amount = 1 },
       { type = "item", name = "fw-rubber-sheet", amount = 2 },
       { type = "fluid", name = "fw-latex", amount = 20 },
     },
@@ -137,6 +142,7 @@ data:extend({
       { type = "item", name = "fw-pressure-housing", amount = 1 },
       { type = "item", name = "fw-copper-tube", amount = 2 },
       { type = "item", name = "fw-reinforced-seal", amount = 1 },
+      { type = "item", name = "fw-hydraulic-core", amount = 1 },
       { type = "item", name = "electric-engine-unit", amount = 1 },
     },
     results = { { type = "item", name = "fw-hydraulic-actuator", amount = 3 } },
@@ -176,6 +182,7 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-servo-valve", amount = 1 },
       { type = "item", name = "fw-hydraulic-actuator", amount = 1 },
+      { type = "item", name = "fw-hydraulic-core", amount = 1 },
       { type = "item", name = "fw-copper-tube", amount = 2 },
       { type = "item", name = "fw-reinforced-seal", amount = 1 },
       { type = "item", name = "fw-capacitor", amount = 1 },

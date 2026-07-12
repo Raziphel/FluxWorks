@@ -113,8 +113,17 @@ local function condenser_flux_amounts(value, breakdown)
   return round_breakdown_to_total(scaled, required_flux)
 end
 
-local function add_flux_value_to_item_tooltip(item, value, breakdown)
-  local line = { "", "\n[color=210,210,210]" }
+local function add_flux_value_to_item_tooltip(item, value, breakdown, confidence)
+  local prefix
+  if confidence == FluxValuation.VALUE_CONFIDENCE.unknown then
+    prefix = "\n[color=220,200,180]Estimated clone flux: [/color][color=210,210,210]"
+  elseif confidence == FluxValuation.VALUE_CONFIDENCE.inferred then
+    prefix = "\n[color=235,215,170]Estimated clone flux: [/color][color=210,210,210]"
+  else
+    prefix = "\n[color=180,220,255]Clone flux: [/color][color=210,210,210]"
+  end
+
+  local line = { "", prefix }
   local required_amounts = condenser_flux_amounts(value, breakdown)
 
   for _, color in ipairs(FluxValuation.COLOR_ORDER) do
@@ -170,15 +179,13 @@ end
 
 local valued_items = FluxValuation.collect_valued_items()
 local resolved_values = FluxValuation.resolve_item_values(valued_items)
-local resolved_breakdowns = FluxValuation.resolve_item_color_amounts(valued_items, resolved_values)
 local resolved_metadata = FluxValuation._last_resolution_metadata or {}
+local resolved_breakdowns = FluxValuation.resolve_item_color_amounts(valued_items, resolved_values)
 
 for item_name, item in pairs(valued_items) do
   local value = resolved_values[item_name] or FluxValuation.estimate_flux_value(item)
-  local breakdown = resolved_breakdowns[item_name]
+  local breakdown = resolved_breakdowns[item_name] or FluxValuation.simple_item_breakdown(item, resolved_values)
   local metadata = resolved_metadata[item_name]
-  if metadata and metadata.confidence ~= FluxValuation.VALUE_CONFIDENCE.unknown then
-    add_flux_value_to_item_tooltip(item, value, breakdown)
-  end
+  add_flux_value_to_item_tooltip(item, value, breakdown, metadata and metadata.confidence)
   add_flux_status_to_item_tooltip(item, metadata)
 end

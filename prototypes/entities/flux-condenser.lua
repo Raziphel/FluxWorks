@@ -3,7 +3,7 @@ local util = require("util")
 
 local condenser = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-3"])
 condenser.name = "fw-flux-condenser"
-condenser.icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png"
+condenser.icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png"
 condenser.icon_size = 64
 condenser.minable = { mining_time = 0.8, result = "fw-flux-condenser" }
 condenser.max_health = 1500
@@ -49,7 +49,7 @@ condenser.graphics_set = {
   animation = {
     layers = {
       {
-        filename = "__FluxWorksAssets__/graphics/entity/quantum-computer/quantum-computer-hr-animation-1.png",
+        filename = "__Age-of-Production-Graphics__/graphics/entity/quantum-computer/quantum-computer-hr-animation-1.png",
         width = 400,
         height = 400,
         frame_count = 1,
@@ -58,7 +58,7 @@ condenser.graphics_set = {
         scale = 0.5,
       },
       {
-        filename = "__FluxWorksAssets__/graphics/entity/quantum-computer/quantum-computer-hr-emission-1.png",
+        filename = "__Age-of-Production-Graphics__/graphics/entity/quantum-computer/quantum-computer-hr-emission-1.png",
         width = 400,
         height = 400,
         frame_count = 1,
@@ -69,7 +69,7 @@ condenser.graphics_set = {
         blend_mode = "additive",
       },
       {
-        filename = "__FluxWorksAssets__/graphics/entity/flux-condenser/quantum-computer-hr-shadow.png",
+        filename = "__Age-of-Production-Graphics__/graphics/entity/quantum-computer/quantum-computer-hr-shadow.png",
         width = 700,
         height = 600,
         frame_count = 1,
@@ -84,7 +84,7 @@ condenser.graphics_set = {
     {
       fadeout = true,
       animation = {
-        filename = "__FluxWorksAssets__/graphics/entity/quantum-computer/quantum-computer-hr-emission-1.png",
+        filename = "__Age-of-Production-Graphics__/graphics/entity/quantum-computer/quantum-computer-hr-emission-1.png",
         width = 400,
         height = 400,
         frame_count = 1,
@@ -145,11 +145,11 @@ origin_forge.ingredient_count = 48
 origin_forge.max_item_product_count = 48
 origin_forge.module_slots = 4
 origin_forge.allowed_effects = { "consumption", "speed", "productivity", "pollution", "quality" }
-origin_forge.icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png"
+origin_forge.icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png"
 origin_forge.icons = {
-  { icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png", icon_size = 64 },
+  { icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png", icon_size = 64 },
   { icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-matrix.png", icon_size = 1024, scale = 0.28, shift = { 10, -10 } },
-  { icon = "__FluxWorksAssets__/graphics/icons/items/flux-3.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
+  { icon = "__Krastorio2Assets__/icons/items/imersite-3.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
 }
 origin_forge.graphics_set.working_visualisations[#origin_forge.graphics_set.working_visualisations + 1] = {
   light = {
@@ -187,7 +187,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-condenser",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png",
     icon_size = 64,
     subgroup = "production-machine",
     order = "f[fw-flux-condenser]",
@@ -201,9 +201,9 @@ data:extend({
     type = "item",
     name = "fw-origin-forge",
     icons = {
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png", icon_size = 64 },
+      { icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png", icon_size = 64 },
       { icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-matrix.png", icon_size = 1024, scale = 0.28, shift = { 10, -10 } },
-      { icon = "__FluxWorksAssets__/graphics/icons/items/flux-3.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
+      { icon = "__Krastorio2Assets__/icons/items/imersite-3.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
     },
     subgroup = "production-machine",
     order = "g[fw-origin-forge]",
@@ -216,7 +216,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-flux-condenser",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png",
     icon_size = 64,
     enabled = false,
     energy_required = 12,
@@ -238,9 +238,9 @@ data:extend({
     type = "recipe",
     name = "fw-origin-forge",
     icons = {
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png", icon_size = 64 },
+      { icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png", icon_size = 64 },
       { icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-matrix.png", icon_size = 1024, scale = 0.28, shift = { 10, -10 } },
-      { icon = "__FluxWorksAssets__/graphics/icons/items/flux-3.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
+      { icon = "__Krastorio2Assets__/icons/items/imersite-3.png", icon_size = 64, scale = 0.42, shift = { -10, 10 } },
     },
     enabled = false,
     energy_required = 24,

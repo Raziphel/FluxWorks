@@ -4,7 +4,7 @@ local util = require("util")
 
 local flux_quarry = table.deepcopy(data.raw["mining-drill"]["electric-mining-drill"])
 flux_quarry.name = "fw-flux-quarry"
-flux_quarry.icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-quarry.png"
+flux_quarry.icon = "__Age-of-Production-Graphics__/graphics/icons/core-miner.png"
 flux_quarry.icon_size = 64
 flux_quarry.minable = { mining_time = 1, result = "fw-flux-quarry" }
 flux_quarry.max_health = 1500
@@ -20,7 +20,7 @@ flux_quarry.graphics_set = {
   animation = {
     layers = {
       {
-        filename = "__FluxWorksAssets__/graphics/entity/flux-quarry/core-miner-hr-shadow.png",
+        filename = "__Age-of-Production-Graphics__/graphics/entity/core-miner/core-miner-hr-shadow.png",
         priority = "high",
         width = 1400,
         height = 1400,
@@ -43,12 +43,12 @@ flux_quarry.graphics_set = {
         scale = 0.5,
         stripes = {
           {
-            filename = "__FluxWorksAssets__/graphics/entity/flux-quarry/core-miner-hr-animation-1.png",
+            filename = "__Age-of-Production-Graphics__/graphics/entity/core-miner/core-miner-hr-animation-1.png",
             width_in_frames = 8,
             height_in_frames = 8
           },
           {
-            filename = "__FluxWorksAssets__/graphics/entity/flux-quarry/core-miner-hr-animation-2.png",
+            filename = "__Age-of-Production-Graphics__/graphics/entity/core-miner/core-miner-hr-animation-2.png",
             width_in_frames = 8,
             height_in_frames = 7
           }
@@ -72,7 +72,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-quarry",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-quarry.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/core-miner.png",
     icon_size = 64,
     subgroup = "extraction-machine",
     order = "c[miner]-f[fw-flux-quarry]",
@@ -85,7 +85,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-flux-quarry",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-quarry.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/core-miner.png",
     icon_size = 64,
     enabled = false,
     energy_required = 20,

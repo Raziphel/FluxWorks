@@ -18,8 +18,10 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
     - `FluxWorksAssets/graphics/resources/fluids/chlorine.png`
     - `FluxWorksAssets/graphics/icons/items/fw-bz-*`
     - `FluxWorksAssets/graphics/icons/items/*plate*.png`
+  - Runtime note:
+    - FluxWorks now points directly at `Krastorio2Assets` for the live silicon icon path, chlorine fluid icon surfaces, greenhouse/quantum-computer technology art, and fuel-refinery-style chemistry tech art instead of shipping more local lookalikes.
 
-- Rocket Reusability by `Lylac`:
+- Rocket Reusability by `Lylac`: (MIT)
   - Source:
     - https://mods.factorio.com/mod/rocket-reusability
   - Used for adapted rocket-reuse concepts and asset families, especially:
@@ -27,6 +29,8 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
     - `FluxWorksAssets/graphics/icons/items/fw-rocket-*.png`
     - `FluxWorksAssets/graphics/resources/asteroids/fw-used-rocket*.png`
     - `FluxWorksAssets/graphics/resources/asteroids/fw-rocket-chunk*.png`
+  - Runtime note:
+    - This is the one source family intentionally kept local in `FluxWorksAssets` rather than added as a hard dependency.
 
 - Memory Storage / deep-storage-unit by `notnotmelon` (MIT):
   - Sources:
@@ -74,11 +78,11 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
     - `FluxWorksAssets/graphics/icons/items/part-*.png`
     - `FluxWorksAssets/graphics/icons/items/unused-assets/*`
 
-- 248k mod graphics:
+- 248k mod graphics: (GNU GPLv3)
   - Source:
-    - `/mnt/omega/Coding/Assets/248k-Redux-graphics`
+    - https://mods.factorio.com/mod/248k-Redux-graphics
   - Used for adapted gravitation-endgame iconography in:
-    - `FluxWorksAssets/graphics/icons/items/late-utility/fw-origin-singularity.png`
+    - runtime references to `__248k-Redux-graphics__/ressources/gravitation/gr_black_hole/gr_black_hole_item.png`
 
 - Krastorio 2 assets:
   - Sources:
@@ -86,6 +90,14 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
     - `/mnt/omega/Coding/Assets/Krastorio2Assets_2.0.4`
   - Used for adapted singularity-megastructure building art in:
     - `FluxWorksAssets/graphics/late-utility/origin-singularity/*`
+  - Runtime note:
+    - FluxWorks now points directly at `Krastorio2Assets` for the imersite-rift resource art, imersite-style flux crystal icons, the singularity-lab sprite used by late utility structures, and energy-control-unit technology art where the shipped files were exact copies.
+
+- Age of Production Graphics:
+  - Source:
+    - `/mnt/omega/Coding/Assets/Age-of-Production-Graphics`
+  - Runtime note:
+    - FluxWorks now points directly at `Age-of-Production-Graphics` for the copied core-miner, arc-furnace, petrochemical-facility, hydraulic-plant, synthesizer, atomic-enricher, quantum-computer, and related sound/icon families, including the live `fw-liquid-mining`, `fw-petrochemical-engineering`, `fw-hydraulic-systems`, and `fw-metallurgic-assemblies` technology art.
 
 ## Notes
 

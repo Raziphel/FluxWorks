@@ -4,8 +4,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-liquid-mining",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-liquid-mining.png",
-    icon_size = 256,
+    icon = "__Age-of-Production-Graphics__/graphics/technology/core-mining.png",
+    icon_size = 64,
     prerequisites = { "fw-sealed-components", "fluid-handling", "sulfur-processing" },
     unit = {
       count = 70,

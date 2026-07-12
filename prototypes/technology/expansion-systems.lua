@@ -14,8 +14,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-petrochemical-engineering",
-    icon = "__base__/graphics/technology/oil-processing.png",
-    icon_size = 256,
+    icon = "__Age-of-Production-Graphics__/graphics/icons/petrochemical-facility.png",
+    icon_size = 64,
     prerequisites = { "fw-power-regulation", "fw-polymer-chemistry", "oil-processing" },
     unit = tech_unit(240, {
       { "automation-science-pack", 1 },
@@ -27,6 +27,7 @@ data:extend({
       unlock("fw-petrochemical-facility"),
       unlock("fw-polymer-binder"),
       unlock("fw-chlorinated-binder-stock"),
+      unlock("fw-reactive-column"),
     },
     order = "d-kb[fw-petrochemical-engineering]",
   },
@@ -51,7 +52,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-hydraulic-systems",
-    icon = "__base__/graphics/icons/electric-engine-unit.png",
+    icon = "__Age-of-Production-Graphics__/graphics/icons/hydraulic-plant.png",
     icon_size = 64,
     prerequisites = { "fw-sealed-systems", "fw-polymer-stabilization" },
     unit = tech_unit(280, {
@@ -64,6 +65,7 @@ data:extend({
       unlock("fw-hydraulic-plant"),
       unlock("fw-hydraulic-actuator"),
       unlock("fw-servo-valve"),
+      unlock("fw-hydraulic-core"),
     },
     order = "d-kd[fw-hydraulic-systems]",
   },

@@ -31,6 +31,7 @@ data:extend({
       unlock("fw-fuel-pellet-bundle"),
       unlock("fw-moderator-lattice"),
       unlock("fw-isotope-matrix"),
+      unlock("fw-reactor-instrument-cluster"),
       unlock("fw-reactor-grade-fuel-cell"),
     },
     order = "d-hc[fw-isotope-conditioning]",
