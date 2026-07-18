@@ -1,5 +1,21 @@
 local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
 
+local function crushed_ore_icons(source_icon, source_icon_size, tint)
+  return {
+    {
+      icon = icon_path .. "fw-crushed-lead-ore.png",
+      icon_size = 128,
+      tint = tint,
+    },
+    {
+      icon = source_icon,
+      icon_size = source_icon_size,
+      scale = 0.28,
+      shift = { 8, 8 },
+    },
+  }
+end
+
 data:extend({
   { type = "item-subgroup", name = "fw-intermediate-structural", group = "intermediate-products", order = "fa" },
   { type = "item-subgroup", name = "fw-intermediate-electrical", group = "intermediate-products", order = "fb" },
@@ -9,6 +25,38 @@ data:extend({
 })
 
 data:extend({
+  {
+    type = "item",
+    name = "fw-crushed-iron-ore",
+    icons = crushed_ore_icons("__base__/graphics/icons/iron-ore.png", 64, { r = 0.78, g = 0.84, b = 0.88, a = 1 }),
+    subgroup = "raw-material",
+    order = "f-a[fw-crushed-iron-ore]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
+    name = "fw-crushed-copper-ore",
+    icons = crushed_ore_icons("__base__/graphics/icons/copper-ore.png", 64, { r = 1.00, g = 0.62, b = 0.36, a = 1 }),
+    subgroup = "raw-material",
+    order = "f-b[fw-crushed-copper-ore]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
+    name = "fw-crushed-tin-ore",
+    icons = crushed_ore_icons(icon_path .. "fw-bz-tin-ore.png", 128, { r = 0.74, g = 0.82, b = 0.88, a = 1 }),
+    subgroup = "raw-material",
+    order = "f-c[fw-crushed-tin-ore]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
+    name = "fw-crushed-bauxite-ore",
+    icons = crushed_ore_icons(icon_path .. "fw-bauxite-ore.png", 64, { r = 0.92, g = 0.54, b = 0.34, a = 1 }),
+    subgroup = "raw-material",
+    order = "f-d[fw-crushed-bauxite-ore]",
+    stack_size = 100,
+  },
   {
     type = "item",
     name = "fw-crushed-lead-ore",
@@ -25,24 +73,6 @@ data:extend({
     icon_size = 128,
     subgroup = "raw-material",
     order = "f[fw-crushed-titanium-ore]",
-    stack_size = 100,
-  },
-  {
-    type = "item",
-    name = "fw-crushed-iron-ore",
-    icon = icon_path .. "fw-crushed-iron-ore.png",
-    icon_size = 128,
-    subgroup = "raw-material",
-    order = "f[fw-crushed-iron-ore]",
-    stack_size = 100,
-  },
-  {
-    type = "item",
-    name = "fw-crushed-copper-ore",
-    icon = icon_path .. "fw-crushed-copper-ore.png",
-    icon_size = 128,
-    subgroup = "raw-material",
-    order = "f[fw-crushed-copper-ore]",
     stack_size = 100,
   },
   {
@@ -77,6 +107,15 @@ data:extend({
   },
   {
     type = "item",
+    name = "fw-alumina-refractory",
+    icon = icon_path .. "fw-bauxite-ore.png",
+    icon_size = 64,
+    subgroup = "fw-intermediate-structural",
+    order = "b[fw-alumina-refractory]",
+    stack_size = 200,
+  },
+  {
+    type = "item",
     name = "fw-iron-beam",
     icon = "__Krastorio2Assets__/icons/items/iron-beam.png",
     icon_size = 64,
@@ -101,15 +140,6 @@ data:extend({
     subgroup = "fw-intermediate-structural",
     order = "e[fw-aluminum-beam]",
     stack_size = 100,
-  },
-  {
-    type = "item",
-    name = "fw-cable-harness",
-    icon = icon_path .. "fw-signal-conduit.png",
-    icon_size = 1024,
-    subgroup = "fw-intermediate-electrical",
-    order = "a[fw-cable-harness]",
-    stack_size = 200,
   },
   {
     type = "item",
@@ -177,8 +207,8 @@ data:extend({
   {
     type = "item",
     name = "fw-ribbon-cable",
-    icon = "__Krastorio2Assets__/icons/items/electronic-components-4.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-ribbon-cable.png",
+    icon_size = 1024,
     subgroup = "fw-intermediate-electrical",
     order = "b[fw-ribbon-cable]",
     stack_size = 200,
@@ -223,7 +253,7 @@ data:extend({
     type = "item",
     name = "fw-solder-alloy",
     icon = icon_path .. "fw-solder-alloy.png",
-    icon_size = 128,
+    icon_size = 64,
     subgroup = "fw-intermediate-ballistic",
     order = "c[fw-solder-alloy]",
     stack_size = 100,
@@ -276,8 +306,8 @@ data:extend({
   {
     type = "item",
     name = "fw-solder-wire",
-    icon = icon_path .. "fw-solder-alloy.png",
-    icon_size = 128,
+    icon = icon_path .. "fw-solder-wire.png",
+    icon_size = 1024,
     subgroup = "fw-intermediate-electrical",
     order = "e[fw-solder-wire]",
     stack_size = 200,
@@ -285,7 +315,7 @@ data:extend({
   {
     type = "item",
     name = "fw-tinned-cable",
-    icon = icon_path .. "fw-coil-block.png",
+    icon = icon_path .. "fw-tinned-cable.png",
     icon_size = 128,
     subgroup = "fw-intermediate-electrical",
     order = "ea[fw-tinned-cable]",
@@ -293,18 +323,18 @@ data:extend({
   },
   {
     type = "item",
-    name = "fw-conductor-bundle",
-    icon = "__Krastorio2Assets__/icons/items/electronic-components-3.png",
-    icon_size = 64,
+    name = "fw-drive-module",
+    icon = icon_path .. "fw-drive-module.png",
+    icon_size = 128,
     subgroup = "fw-intermediate-electrical",
-    order = "f[fw-conductor-bundle]",
-    stack_size = 200,
+    order = "eb[fw-drive-module]",
+    stack_size = 100,
   },
   {
     type = "item",
     name = "fw-chip-carrier",
-    icon = icon_path .. "fw-circuit-substrate.png",
-    icon_size = 1024,
+    icon = icon_path .. "fw-chip-carrier.png",
+    icon_size = 128,
     subgroup = "fw-intermediate-precision",
     order = "b[fw-chip-carrier]",
     stack_size = 200,
@@ -330,8 +360,8 @@ data:extend({
   {
     type = "item",
     name = "fw-ceramic-wafer",
-    icon = "__Krastorio2Assets__/icons/items/quartz-3.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-ceramic-wafer.png",
+    icon_size = 256,
     subgroup = "fw-intermediate-precision",
     order = "e[fw-ceramic-wafer]",
     stack_size = 200,
@@ -339,8 +369,8 @@ data:extend({
   {
     type = "item",
     name = "fw-silicon-wafer",
-    icon = "__Krastorio2Assets__/icons/items/quartz-3.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-silicon-wafer.png",
+    icon_size = 128,
     subgroup = "fw-intermediate-precision",
     order = "ea[fw-silicon-wafer]",
     stack_size = 200,
@@ -348,11 +378,20 @@ data:extend({
   {
     type = "item",
     name = "fw-circuit-contact",
-    icon = icon_path .. "fw-capacitor.png",
-    icon_size = 128,
+    icon = icon_path .. "fw-circuit-contact.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-precision",
     order = "f[fw-circuit-contact]",
     stack_size = 200,
+  },
+  {
+    type = "item",
+    name = "fw-control-assembly",
+    icon = "__Krastorio2Assets__/icons/items/electronic-components-3.png",
+    icon_size = 64,
+    subgroup = "fw-intermediate-precision",
+    order = "fa[fw-control-assembly]",
+    stack_size = 100,
   },
   {
     type = "item",

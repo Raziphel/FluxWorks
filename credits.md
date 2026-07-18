@@ -15,7 +15,6 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
     - https://github.com/brevven/carbon
   - Used for adapted ore, plate, chemistry, and resource-art foundations across the FluxWorks asset pack, especially:
     - `FluxWorksAssets/graphics/resources/ores/*`
-    - `FluxWorksAssets/graphics/resources/fluids/chlorine.png`
     - `FluxWorksAssets/graphics/icons/items/fw-bz-*`
     - `FluxWorksAssets/graphics/icons/items/*plate*.png`
   - Runtime note:
@@ -25,7 +24,6 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
   - Source:
     - https://mods.factorio.com/mod/rocket-reusability
   - Used for adapted rocket-reuse concepts and asset families, especially:
-    - `FluxWorksAssets/graphics/icons/items/reusable-rocket-*.png`
     - `FluxWorksAssets/graphics/icons/items/fw-rocket-*.png`
     - `FluxWorksAssets/graphics/resources/asteroids/fw-used-rocket*.png`
     - `FluxWorksAssets/graphics/resources/asteroids/fw-rocket-chunk*.png`
@@ -70,19 +68,8 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
     - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-explosive.png`
     - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-fire.png`
     - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-poison.png`
-
-- `unused-renders` by `malcolmriley` (CC BY 4.0):
-  - Source:
-    - https://github.com/malcolmriley/unused-renders
-  - Used for adapted part and component renders, with some leftovers still parked as references under:
-    - `FluxWorksAssets/graphics/icons/items/part-*.png`
-    - `FluxWorksAssets/graphics/icons/items/unused-assets/*`
-
-- 248k mod graphics: (GNU GPLv3)
-  - Source:
-    - https://mods.factorio.com/mod/248k-Redux-graphics
-  - Used for adapted gravitation-endgame iconography in:
-    - runtime references to `__248k-Redux-graphics__/ressources/gravitation/gr_black_hole/gr_black_hole_item.png`
+  - The solder-alloy plate icon is adapted from the Artisanal Reskins entry in `factorio_free_graphics_for_modders`:
+    - `FluxWorksAssets/graphics/icons/items/fw-solder-alloy.png`
 
 - Krastorio 2 assets:
   - Sources:
@@ -91,17 +78,17 @@ FluxWorks ships a mix of original work and adapted third-party assets. This file
   - Used for adapted singularity-megastructure building art in:
     - `FluxWorksAssets/graphics/late-utility/origin-singularity/*`
   - Runtime note:
-    - FluxWorks now points directly at `Krastorio2Assets` for the imersite-rift resource art, imersite-style flux crystal icons, the singularity-lab sprite used by late utility structures, and energy-control-unit technology art where the shipped files were exact copies.
+    - FluxWorks now points directly at `Krastorio2Assets` for the imersite-rift resource art, imersite-style flux crystal icons, the singularity-lab sprite used by late utility structures, the Power Regulator item, and technology art for optical instrumentation, thermal control, phase engineering, and advanced chemistry.
 
-- Age of Production Graphics:
+- Finely Crafted Graphics:
   - Source:
-    - `/mnt/omega/Coding/Assets/Age-of-Production-Graphics`
+    - `/mnt/omega/Coding/Assets/finely-crafted-graphics`
+    - `https://mods.factorio.com/mod/finely-crafted-graphics`
   - Runtime note:
-    - FluxWorks now points directly at `Age-of-Production-Graphics` for the copied core-miner, arc-furnace, petrochemical-facility, hydraulic-plant, synthesizer, atomic-enricher, quantum-computer, and related sound/icon families, including the live `fw-liquid-mining`, `fw-petrochemical-engineering`, `fw-hydraulic-systems`, and `fw-metallurgic-assemblies` technology art.
+    - FluxWorks now requires `Finely Crafted Graphics` directly at runtime for the flux quarry, petrochemical facility, hydraulic plant, arc foundry, synthesis plant, atomic enricher, flux condenser, origin forge, origin singularity, and linked technology or recipe icons rather than re-shipping copied files inside `FluxWorksAssets`.
 
 ## Notes
 
-- `unused-renders` is CC BY 4.0 and requires attribution.
 - The `brevven` repositories listed above are MIT-licensed.
 - `deep-storage-unit` and `fluid-memory-storage` are MIT-licensed.
 - Telogistics is GPLv3; FluxWorks currently credits it as a gameplay/reference influence rather than shipping its source or art directly.

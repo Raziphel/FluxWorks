@@ -4,7 +4,7 @@ data:extend({
   {
     type = "item",
     name = "fw-petrochemical-facility",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/petrochemical-facility.png",
+    icon = "__finely-crafted-graphics__/graphics/thermal-plant/thermal-plant-icon.png",
     icon_size = 64,
     subgroup = "fw-chemistry-machines",
     order = "a[fw-petrochemical-facility]",
@@ -14,7 +14,7 @@ data:extend({
   {
     type = "item",
     name = "fw-hydraulic-plant",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/hydraulic-plant.png",
+    icon = "__finely-crafted-graphics__/graphics/oxidizer/oxidizer-icon.png",
     icon_size = 64,
     subgroup = "fw-fabrication-machines",
     order = "b[fw-hydraulic-plant]",
@@ -23,20 +23,11 @@ data:extend({
   },
   {
     type = "item",
-    name = "fw-polymer-binder",
-    icon = icon_path .. "fw-polymer-binder.png",
-    icon_size = 64,
-    subgroup = "fw-chemistry-materials",
-    order = "r[fw-polymer-binder]",
-    stack_size = 200,
-  },
-  {
-    type = "item",
     name = "fw-chlorinated-binder-stock",
     icon = icon_path .. "fw-chlorinated-binder-stock.png",
     icon_size = 64,
     subgroup = "fw-chemistry-materials",
-    order = "s[fw-chlorinated-binder-stock]",
+    order = "p[fw-chlorinated-binder-stock]",
     stack_size = 200,
   },
   {
@@ -45,7 +36,7 @@ data:extend({
     icon = icon_path .. "fw-elastomer-matrix.png",
     icon_size = 64,
     subgroup = "fw-chemistry-materials",
-    order = "t[fw-elastomer-matrix]",
+    order = "q[fw-elastomer-matrix]",
     stack_size = 200,
   },
   {
@@ -55,24 +46,6 @@ data:extend({
     icon_size = 64,
     subgroup = "fw-intermediate-structural",
     order = "r[fw-reinforced-seal]",
-    stack_size = 100,
-  },
-  {
-    type = "item",
-    name = "fw-hydraulic-actuator",
-    icon = icon_path .. "fw-hydraulic-actuator.png",
-    icon_size = 64,
-    subgroup = "fw-intermediate-structural",
-    order = "s[fw-hydraulic-actuator]",
-    stack_size = 100,
-  },
-  {
-    type = "item",
-    name = "fw-servo-valve",
-    icon = icon_path .. "fw-servo-valve.png",
-    icon_size = 64,
-    subgroup = "fw-intermediate-precision",
-    order = "o[fw-servo-valve]",
     stack_size = 100,
   },
   {

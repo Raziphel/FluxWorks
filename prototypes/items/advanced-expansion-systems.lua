@@ -3,7 +3,7 @@ data:extend({
   {
     type = "item",
     name = "fw-atomic-enricher",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/atomic-enricher.png",
+    icon = "__finely-crafted-graphics__/graphics/atom-forge/atom-forge-icon.png",
     icon_size = 64,
     subgroup = "fw-fabrication-machines",
     order = "d[fw-atomic-enricher]",
@@ -76,10 +76,8 @@ data:extend({
   {
     type = "item",
     name = "fw-radioactive-scrap",
-    icons = {
-      { icon = "__base__/graphics/icons/depleted-uranium-fuel-cell.png", icon_size = 64 },
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png", icon_size = 128, scale = 0.24, shift = { 10, 10 } },
-    },
+    icon = icon_path .. "fw-radioactive-scrap.png",
+    icon_size = 64,
     subgroup = "fw-intermediate-structural",
     order = "y[fw-radioactive-scrap]",
     stack_size = 100,

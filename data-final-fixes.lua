@@ -1,23 +1,35 @@
-require("prototypes.updates.resource-placement")
-require("prototypes.updates.rocket-reusability-final-fixes")
-require("prototypes.updates.factoriopedia")
-require("prototypes.recipes.flux-condensing")
-require("prototypes.recipes.red-flux-fuels")
-require("prototypes.recipes.purple-flux-materials")
-require("prototypes.recipes.yellow-flux-mechanics")
-require("prototypes.recipes.red-flux-sources")
-require("prototypes.recipes.red-flux-mechanics")
-require("prototypes.recipes.green-flux-mechanics")
-require("prototypes.updates.chemistry-integration")
-require("prototypes.updates.recipe-tweaks")
-require("prototypes.updates.difficulty-overrides")
-require("prototypes.updates.crafting-tabs")
-require("prototypes.updates.flux-tooltips")
-require("prototypes.updates.recipe-icons")
-require("prototypes.updates.ore-icon-final-fixes")
-require("prototypes.updates.validate-progression-ladders")
-require("prototypes.updates.validate-technology-icons")
-require("prototypes.updates.validate-crafting-tabs")
+local function require_many(modules)
+  for _, module_name in ipairs(modules) do
+    require(module_name)
+  end
+end
+
+require_many({
+  "prototypes.updates.resource-placement",
+  "prototypes.updates.rocket-reusability-final-fixes",
+  "prototypes.updates.factoriopedia",
+  "prototypes.recipes.flux-condensing",
+  "prototypes.recipes.red-flux-fuels",
+  "prototypes.recipes.purple-flux-materials",
+  "prototypes.recipes.yellow-flux-mechanics",
+  "prototypes.recipes.red-flux-sources",
+  "prototypes.recipes.red-flux-mechanics",
+  "prototypes.recipes.green-flux-mechanics",
+  "prototypes.updates.chemistry-integration",
+  "prototypes.updates.recipe-tweaks",
+  "prototypes.updates.difficulty-overrides",
+  "prototypes.updates.crafting-tabs",
+  "prototypes.updates.flux-tooltips",
+  "prototypes.updates.recipe-icons",
+  "prototypes.updates.ore-icon-final-fixes",
+  "prototypes.updates.aai-industry",
+  "prototypes.updates.validate-aai-industry",
+  "prototypes.updates.validate-item-uses",
+  "prototypes.updates.validate-progression-graph",
+  "prototypes.updates.validate-progression-ladders",
+  "prototypes.updates.validate-technology-icons",
+  "prototypes.updates.validate-crafting-tabs",
+})
 
 local foundation_item = data.raw.item and data.raw.item["foundation"]
 local foundation_place_as_tile = foundation_item and foundation_item.place_as_tile

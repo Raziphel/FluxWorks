@@ -140,6 +140,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-resin", amount = 1 },
+      { type = "item", name = "fw-salt", amount = 1 },
       { type = "item", name = "sulfur", amount = 1 },
       { type = "fluid", name = "fw-latex", amount = 20 },
     },
@@ -163,6 +164,7 @@ data:extend({
     ingredients = {
       { type = "item", name = "explosives", amount = 1 },
       { type = "item", name = "fw-resin", amount = 1 },
+      { type = "fluid", name = "fw-chlorine", amount = 10 },
       { type = "fluid", name = "water", amount = 20 },
     },
     results = {
@@ -183,7 +185,9 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "explosives", amount = 1 },
+      { type = "item", name = "fw-salt", amount = 1 },
       { type = "fluid", name = "fw-blasting-gel", amount = 30 },
+      { type = "fluid", name = "fw-chlorine", amount = 10 },
     },
     results = {
       { type = "item", name = "cliff-explosives", amount = 1 },
@@ -204,6 +208,7 @@ data:extend({
     ingredients = {
       { type = "item", name = "lead-plate", amount = 1 },
       { type = "item", name = "tin-plate", amount = 1 },
+      { type = "item", name = "fw-salt", amount = 1 },
       { type = "item", name = "fw-resin", amount = 1 },
       { type = "fluid", name = "sulfuric-acid", amount = 20 },
     },
@@ -282,7 +287,7 @@ data:extend({
     ingredients = {
       { type = "item", name = "holmium-plate", amount = 1 },
       { type = "item", name = "fw-inline-filter", amount = 1 },
-      { type = "item", name = "fw-sensor-diode", amount = 1 },
+      { type = "item", name = "fw-lens-array", amount = 1 },
       { type = "fluid", name = "lithium-brine", amount = 50 },
       { type = "fluid", name = "ammonia", amount = 40 },
     },
@@ -340,6 +345,29 @@ data:extend({
   },
   {
     type = "recipe",
+    name = "fw-nutrient-bed",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-nutrient-bed.png",
+    icon_size = 1024,
+    category = "organic",
+    subgroup = "fw-chemistry-processes",
+    order = "f[late-chemistry]-d[nutrient-bed]",
+    enabled = false,
+    energy_required = 8.0,
+    allow_productivity = true,
+    ingredients = {
+      { type = "item", name = "fw-inline-filter", amount = 1 },
+      { type = "item", name = "fw-resin", amount = 2 },
+      { type = "item", name = "bioflux", amount = 1 },
+      { type = "item", name = "nutrients", amount = 10 },
+      { type = "item", name = "spoilage", amount = 6 },
+      { type = "fluid", name = "fw-green-flux", amount = 18 },
+    },
+    results = {
+      { type = "item", name = "fw-nutrient-bed", amount = 2 },
+    },
+  },
+  {
+    type = "recipe",
     name = "fw-gleba-spore-resin",
     icons = data.raw.item["fw-gleba-spore-resin"].icons,
     category = "chemistry",
@@ -350,6 +378,9 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-resin", amount = 1 },
+      { type = "item", name = "fw-nutrient-bed", amount = 1 },
+      { type = "item", name = "fw-inline-filter", amount = 1 },
+      { type = "item", name = "fw-salt", amount = 1 },
       { type = "item", name = "bioflux", amount = 2 },
       { type = "item", name = "nutrients", amount = 8 },
       { type = "item", name = "spoilage", amount = 4 },
@@ -523,6 +554,7 @@ add_unlock("fw-aquilo-cryochemistry", "fw-electrolyte-conditioning")
 add_unlock("fw-aquilo-cryochemistry", "fw-lithium-adsorption")
 add_unlock("fw-aquilo-cryochemistry", "fw-fluoroketone-synthesis")
 add_unlock("fw-aquilo-cryochemistry", "fw-aquilo-cryogel")
+add_unlock("fw-gleba-biochemistry", "fw-nutrient-bed")
 add_unlock("fw-gleba-biochemistry", "fw-gleba-spore-resin")
 add_unlock("fw-fulgora-electrochemistry", "fw-fulgora-static-mesh")
 add_unlock("fw-vulcanus-pyrochemistry", "fw-vulcanus-slag-cermet")

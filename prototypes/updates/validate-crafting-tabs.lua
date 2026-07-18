@@ -1,4 +1,5 @@
 local Startup = require("prototypes.lib.startup-settings")
+local Layout = require("prototypes.lib.crafting-tab-layout")
 
 if not Startup.enabled("fw-enable-crafting-tab-reorganization", true) then
   return
@@ -42,68 +43,48 @@ local function assert_subgroup_group(name, expected_group)
   end
 end
 
-for _, entry in pairs({
-  { "fw-logistics-transport", "logistics" },
-  { "fw-logistics-inserters", "logistics" },
-  { "fw-logistics-fluid-handling", "logistics" },
-  { "fw-logistics-rail", "logistics" },
-  { "fw-logistics-storage", "logistics" },
-  { "fw-logistics-power", "logistics" },
-  { "fw-logistics-circuitry", "logistics" },
-  { "fw-logistics-robotics", "logistics" },
-  { "fw-logistics-network", "logistics" },
-  { "fw-production-extraction", "production" },
-  { "fw-production-smelting", "production" },
-  { "fw-production-assembly", "production" },
-  { "fw-production-chemistry", "production" },
-  { "fw-production-specialized", "production" },
-  { "fw-production-processing", "production" },
-  { "fw-science-packs", "fw-science" },
-  { "fw-science-labs", "fw-science" },
-  { "fw-science-facilities", "fw-science" },
-  { "fw-bioprocessing-machines", "fw-bioprocessing" },
-  { "fw-bioprocessing-products", "fw-bioprocessing" },
-  { "fw-bioprocessing-processes", "fw-bioprocessing" },
-  { "fw-energy-generation", "fw-energy" },
-  { "fw-energy-storage", "fw-energy" },
-  { "fw-energy-reactors", "fw-energy" },
-  { "fw-energy-fuels", "fw-energy" },
-  { "fw-chemistry-machines", "fw-chemistry" },
-  { "fw-chemistry-feedstocks", "fw-chemistry" },
-  { "fw-chemistry-polymers", "fw-chemistry" },
-  { "fw-chemistry-reactives", "fw-chemistry" },
-  { "fw-chemistry-fluids", "fw-chemistry" },
-  { "fw-chemistry-petrochem", "fw-chemistry" },
-  { "fw-chemistry-advanced", "fw-chemistry" },
-  { "fw-chemistry-barrels", "fw-chemistry" },
-  { "fw-chemistry-materials", "fw-chemistry" },
-  { "fw-chemistry-processes", "fw-chemistry" },
-  { "fw-systems-machines", "fw-systems" },
-  { "fw-systems-control", "fw-systems" },
-  { "fw-systems-instrumentation", "fw-systems" },
-  { "fw-systems-infrastructure", "fw-systems" },
-  { "fw-fabrication-machines", "fw-fabrication" },
-  { "fw-intermediate-structural", "fw-fabrication" },
-  { "fw-intermediate-electrical", "fw-fabrication" },
-  { "fw-intermediate-precision", "fw-fabrication" },
-  { "fw-intermediate-ballistic", "fw-fabrication" },
-  { "fw-intermediate-aerospace", "fw-fabrication" },
-  { "fw-fabrication-components", "fw-fabrication" },
-  { "fw-flux-machines", "fw-flux" },
-  { "fw-flux-resources", "fw-flux" },
-  { "fw-flux-systems", "fw-flux" },
-  { "fw-flux-purple", "fw-flux" },
-  { "fw-flux-yellow", "fw-flux" },
-  { "fw-flux-red", "fw-flux" },
-  { "fw-flux-green", "fw-flux" },
-  { "fw-transmutation-upcycle", "fw-flux" },
-  { "fw-transmutation-downcycle", "fw-flux" },
-  { "fw-flux-condensing-core", "fw-flux" },
-  { "fw-flux-condensing-promethium", "fw-flux" },
-  { "fw-flux-exchange", "fw-flux" },
-  { "fw-flux-origin-projects", "fw-flux" },
+local function assert_absent(prototype_type, name)
+  local prototypes = data.raw[prototype_type]
+  if prototypes and prototypes[name] then
+    error("FluxWorks obsolete " .. prototype_type .. " still present: " .. name)
+  end
+end
+
+for _, subgroup in ipairs(Layout.subgroups) do
+  assert_subgroup_group(subgroup.name, subgroup.group)
+end
+
+for _, name in ipairs({
+  "fw-science-facilities",
 }) do
-  assert_subgroup_group(entry[1], entry[2])
+  assert_absent("item-subgroup", name)
+end
+
+for _, name in ipairs({
+  "fw-sensor-diode",
+  "fw-smelter-array",
+  "fw-spore-filter",
+  "fw-promethium-primer",
+}) do
+  assert_absent("item", name)
+  assert_absent("recipe", name)
+end
+
+assert_absent("recipe", "fw-promethium-sensor-diode-doping")
+assert_absent("technology", "fw-sensor-focusing")
+assert_absent("technology", "fw-smelter-architectures")
+assert_absent("technology", "fw-biosystems-engineering")
+
+for _, name in ipairs({
+  "fw-fabrication-science-pack",
+  "fw-transport-science-pack",
+  "fw-combustion-science-pack",
+  "fw-solution-science-pack",
+  "fw-instrumentation-science-pack",
+}) do
+  assert_absent("item", name)
+  assert_absent("tool", name)
+  assert_absent("recipe", name)
 end
 
 assert_many({ "item", "recipe" }, {
@@ -191,17 +172,11 @@ assert_many({ "item", "recipe" }, {
   "pumpjack",
   "fw-flux-quarry",
   "fw-flux-harvester",
-}, "fw-production-extraction")
-
-assert_many({ "item", "recipe" }, {
   "stone-furnace",
   "steel-furnace",
   "electric-furnace",
   "foundry",
   "fw-arc-foundry",
-}, "fw-production-smelting")
-
-assert_many({ "item", "recipe" }, {
   "assembling-machine-1",
   "assembling-machine-2",
   "assembling-machine-3",
@@ -217,12 +192,17 @@ assert_many({ "item", "recipe" }, {
   "oil-refinery",
   "fw-petrochemical-facility",
   "fw-hydraulic-plant",
-}, "fw-production-chemistry")
-
-assert_many({ "item", "recipe" }, {
   "crusher",
   "recycler",
-}, "fw-production-specialized")
+}, "fw-production-assembly")
+
+assert_many({ "item", "recipe" }, {
+  "fw-resin",
+  "fw-chlorinated-binder-stock",
+  "fw-elastomer-matrix",
+  "fw-rubber-sheet",
+  "plastic-bar",
+}, "fw-chemistry-polymers")
 
 assert_many({ "item", "recipe" }, {
   "fw-rift-exchange-gate",
@@ -236,13 +216,21 @@ assert_many({ "item", "recipe" }, {
 assert_many({ "recipe" }, {
   "casting-pipe",
   "casting-pipe-to-ground",
-}, "fw-production-smelting")
+}, "fw-production-assembly")
 
 assert_many({ "item", "tool", "recipe" }, {
   "automation-science-pack",
   "logistic-science-pack",
+  "military-science-pack",
   "chemical-science-pack",
   "production-science-pack",
+  "utility-science-pack",
+  "space-science-pack",
+  "metallurgic-science-pack",
+  "electromagnetic-science-pack",
+  "agricultural-science-pack",
+  "cryogenic-science-pack",
+  "promethium-science-pack",
 }, "fw-science-packs")
 
 assert_many({ "item", "recipe" }, {
@@ -257,11 +245,11 @@ assert_many({ "item", "recipe" }, {
 
 assert_many({ "item" }, {
   "fw-nutrient-bed",
-  "fw-spore-filter",
   "fw-gleba-spore-resin",
 }, "fw-bioprocessing-products")
 
 assert_many({ "recipe" }, {
+  "fw-nutrient-bed",
   "fw-gleba-spore-resin",
   "fw-green-flux-bioflux-cultivation",
   "fw-green-flux-biolubricant-bloom",
@@ -290,7 +278,6 @@ assert_many({ "item", "recipe" }, {
   "fw-control-rod-assembly",
   "fw-reactor-coolant-cartridge",
   "fw-reactor-dopant",
-  "fw-reactor-instrument-cluster",
   "fw-recovered-actinides",
 }, "fw-energy-reactors")
 
@@ -306,10 +293,19 @@ assert_many({ "item", "recipe" }, {
 assert_many({ "recipe" }, {
   "fw-reactor-grade-fuel-cell",
   "fw-spent-fuel-reconditioning",
+  "fw-pellet-bundle-reprocessing",
   "fw-nuclear-fuel-overdrive",
   "fw-supercapacitor-conditioning",
   "fw-fusion-power-cell-conditioning",
 }, "fw-energy-fuels")
+
+assert_many({ "recipe" }, {
+  "fw-radioactive-scrap-sorting",
+  "fw-isotope-recovery",
+  "fw-actinide-matrix-seeding",
+  "fw-scrap-lattice-recasting",
+  "fw-actinide-dopant-refining",
+}, "fw-fabrication-components")
 
 assert_many({ "item", "recipe" }, {
   "fw-signal-conduit",
@@ -317,15 +313,11 @@ assert_many({ "item", "recipe" }, {
   "fw-field-winding",
   "fw-flow-regulator",
   "fw-logic-matrix",
-  "fw-servo-valve",
   "fw-hydraulic-manifold",
-  "fw-hydraulic-core",
-  "fw-quantum-spindle",
 }, "fw-systems-control")
 
 assert_many({ "item", "recipe" }, {
   "fw-lens-array",
-  "fw-sensor-diode",
   "fw-sensor-package",
   "fw-memory-die",
   "fw-transformer-core",
@@ -361,6 +353,17 @@ assert_many({ "fluid" }, { "fw-red-flux" }, "fw-flux-red")
 assert_many({ "fluid" }, { "fw-green-flux" }, "fw-flux-green")
 
 assert_many({ "item", "recipe" }, {
+  "fw-flux-catalyst",
+  "fw-stabilized-flux-crystal",
+  "fw-flux-lattice",
+  "fw-harvester-head",
+  "fw-annealed-cermet",
+  "fw-resonance-substrate",
+  "fw-quantum-computer",
+}, "fw-flux-systems")
+
+assert_many({ "item", "recipe" }, {
+  "fw-model-lattice",
   "fw-phase-anchor",
   "fw-entanglement-core",
   "fw-reservoir-lining",
@@ -375,7 +378,6 @@ assert_many({ "item", "recipe" }, {
 }, "fw-flux-condensing-core")
 
 assert_many({ "item", "recipe" }, {
-  "fw-promethium-primer",
   "fw-promethium-matrix",
   "fw-rift-stabilizer",
 }, "fw-flux-condensing-promethium")
@@ -393,19 +395,11 @@ assert_many({ "item", "recipe" }, {
 }, "fw-flux-origin-projects")
 
 assert_many({ "item", "recipe" }, {
-  "fw-polymer-binder",
-  "fw-chlorinated-binder-stock",
-  "fw-elastomer-matrix",
-}, "fw-chemistry-polymers")
-
-assert_many({ "item", "recipe" }, {
   "fw-fired-ceramic",
   "fw-ceramic-casing",
   "fw-pressure-housing",
   "fw-foundry-lining",
-  "fw-smelter-array",
   "fw-reinforced-seal",
-  "fw-hydraulic-actuator",
   "fw-radioactive-scrap",
 }, "fw-intermediate-structural")
 

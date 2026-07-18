@@ -14,7 +14,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-petrochemical-engineering",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/petrochemical-facility.png",
+    icon = "__finely-crafted-graphics__/graphics/thermal-plant/thermal-plant-icon.png",
     icon_size = 64,
     prerequisites = { "fw-power-regulation", "fw-polymer-chemistry", "oil-processing" },
     unit = tech_unit(240, {
@@ -25,18 +25,32 @@ data:extend({
     }, 28),
     effects = {
       unlock("fw-petrochemical-facility"),
-      unlock("fw-polymer-binder"),
-      unlock("fw-chlorinated-binder-stock"),
-      unlock("fw-reactive-column"),
     },
     order = "d-kb[fw-petrochemical-engineering]",
   },
   {
     type = "technology",
-    name = "fw-polymer-stabilization",
-    icon = "__base__/graphics/icons/plastic-bar.png",
-    icon_size = 64,
-    prerequisites = { "fw-petrochemical-engineering", "fw-material-refinement" },
+    name = "fw-reactive-binders",
+    icon = "__base__/graphics/technology/advanced-oil-processing.png",
+    icon_size = 256,
+    prerequisites = { "fw-petrochemical-engineering", "fw-polymer-chemistry" },
+    unit = tech_unit(270, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+      { "production-science-pack", 1 },
+    }, 30),
+    effects = {
+      unlock("fw-chlorinated-binder-stock"),
+    },
+    order = "d-kc[fw-reactive-binders]",
+  },
+  {
+    type = "technology",
+    name = "fw-elastomer-engineering",
+    icon = "__space-age__/graphics/technology/bioflux-processing.png",
+    icon_size = 256,
+    prerequisites = { "fw-reactive-binders", "fw-fluid-regulation" },
     unit = tech_unit(300, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -45,14 +59,30 @@ data:extend({
     }, 32),
     effects = {
       unlock("fw-elastomer-matrix"),
+    },
+    order = "d-kd[fw-elastomer-engineering]",
+  },
+  {
+    type = "technology",
+    name = "fw-polymer-stabilization",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-reinforced-seal.png",
+    icon_size = 64,
+    prerequisites = { "fw-elastomer-engineering", "fw-material-refinement" },
+    unit = tech_unit(300, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+      { "production-science-pack", 1 },
+    }, 32),
+    effects = {
       unlock("fw-reinforced-seal"),
     },
-    order = "d-kc[fw-polymer-stabilization]",
+    order = "d-ke[fw-polymer-stabilization]",
   },
   {
     type = "technology",
     name = "fw-hydraulic-systems",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/hydraulic-plant.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-hydraulic-manifold.png",
     icon_size = 64,
     prerequisites = { "fw-sealed-systems", "fw-polymer-stabilization" },
     unit = tech_unit(280, {
@@ -63,17 +93,14 @@ data:extend({
     }, 32),
     effects = {
       unlock("fw-hydraulic-plant"),
-      unlock("fw-hydraulic-actuator"),
-      unlock("fw-servo-valve"),
-      unlock("fw-hydraulic-core"),
     },
-    order = "d-kd[fw-hydraulic-systems]",
+    order = "d-kf[fw-hydraulic-systems]",
   },
   {
     type = "technology",
     name = "fw-fluid-control-architecture",
-    icon = "__base__/graphics/icons/pump.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-fluid-control-architecture.png",
+    icon_size = 256,
     prerequisites = { "fw-hydraulic-systems", "fw-systems-integration" },
     unit = tech_unit(360, {
       { "automation-science-pack", 1 },
@@ -85,6 +112,6 @@ data:extend({
     effects = {
       unlock("fw-hydraulic-manifold"),
     },
-    order = "d-ke[fw-fluid-control-architecture]",
+    order = "d-kg[fw-fluid-control-architecture]",
   },
 })

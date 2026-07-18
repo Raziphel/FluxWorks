@@ -2,7 +2,7 @@
 -- If this gets rebalanced later, I only want to do it one time and let the rest follow along.
 
 local TRANSMUTATION_BALANCE = {
-  default_unlock_technology = "fw-harvester-systems",
+  default_unlock_technology = "fw-flux-purple-transmutation",
 
   -- Safe defaults for any step that does not get fancy.
   defaults = {

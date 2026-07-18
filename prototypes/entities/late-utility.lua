@@ -1,5 +1,4 @@
 local util = require("util")
-
 local styles = data.raw["gui-style"].default
 
 styles.fw_memory_entity_preview = {
@@ -201,32 +200,34 @@ local rift_exchange_fluid_gate = {
 local origin_singularity = {
   type = "container",
   name = "fw-origin-singularity",
-  icon = "__248k-Redux-graphics__/ressources/gravitation/gr_black_hole/gr_black_hole_item.png",
+  icon = "__FluxWorksAssets__/graphics/icons/items/origin-projects/fw-origin-singularity.png",
   icon_size = 64,
   inventory_size = 1,
   picture = {
     layers = {
       {
-        filename = "__Age-of-Production-Graphics__/graphics/entity/quantum-computer/quantum-computer-hr-shadow.png",
+        filename = "__finely-crafted-graphics__/graphics/fusion-reactor/fusion-reactor-hr-shadow.png",
         width = 700,
         height = 600,
-        shift = util.by_pixel(14, 34),
-        scale = 1.18,
+        shift = util.by_pixel(20, 42),
+        scale = 1.28,
         draw_as_shadow = true,
       },
       {
-        filename = "__Age-of-Production-Graphics__/graphics/entity/quantum-computer/quantum-computer-hr-animation-1.png",
-        width = 320,
-        height = 320,
-        shift = util.by_pixel(0, -14),
-        scale = 1.82,
+        filename = "__finely-crafted-graphics__/graphics/fusion-reactor/fusion-reactor-hr-animation.png",
+        width = 400,
+        height = 400,
+        frame_count = 1,
+        line_length = 1,
+        shift = util.by_pixel(0, -8),
+        scale = 1.58,
       },
       {
-        filename = "__Age-of-Production-Graphics__/graphics/entity/quantum-computer/quantum-computer-hr-emission-1.png",
-        width = 320,
-        height = 320,
-        shift = util.by_pixel(0, -14),
-        scale = 1.82,
+        filename = "__FluxWorksAssets__/graphics/late-utility/origin-singularity/origin-singularity-fluid.png",
+        width = 1024,
+        height = 1024,
+        shift = util.by_pixel(0, -4),
+        scale = 0.62,
         draw_as_glow = true,
       },
     },
@@ -436,7 +437,7 @@ data:extend({
     collision_mask = { layers = {} },
     selectable_in_game = false,
     remove_decoratives = "false",
-    icon = "__248k-Redux-graphics__/ressources/gravitation/gr_black_hole/gr_black_hole_item.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/origin-projects/fw-origin-singularity.png",
     icon_size = 64,
     quality_indicator_scale = 0,
     hidden = true,

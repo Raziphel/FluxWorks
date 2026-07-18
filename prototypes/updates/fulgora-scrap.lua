@@ -4,6 +4,10 @@ if not Startup.enabled("fw-enable-recipe-integration", true) then
   return
 end
 
+if not Startup.enabled("fw-enable-fulgora-scrap-integration", true) then
+  return
+end
+
 local scrap_recycling = data.raw.recipe and data.raw.recipe["scrap-recycling"]
 if not scrap_recycling then
   return
@@ -35,7 +39,6 @@ local fluxworks_scrap_results = {
   { type = "item", name = "fw-bearing", amount = 1, probability = 0.02, show_details_in_recipe_tooltip = false },
   { type = "item", name = "fw-ceramic-insulator", amount = 1, probability = 0.025, show_details_in_recipe_tooltip = false },
   { type = "item", name = "fw-light-frame", amount = 1, probability = 0.012, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-sensor-diode", amount = 1, probability = 0.012, show_details_in_recipe_tooltip = false },
   { type = "item", name = "fw-signal-conduit", amount = 1, probability = 0.01, show_details_in_recipe_tooltip = false },
   { type = "item", name = "fw-sensor-package", amount = 1, probability = 0.008, show_details_in_recipe_tooltip = false },
   { type = "item", name = "fw-power-regulator", amount = 1, probability = 0.007, show_details_in_recipe_tooltip = false },

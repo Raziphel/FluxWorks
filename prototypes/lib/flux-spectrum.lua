@@ -27,6 +27,9 @@ function M.category_exists(name)
 end
 
 function M.bio_category()
+  if M.category_exists("organic") then
+    return "organic"
+  end
   return M.category_exists("biochamber") and "biochamber" or "chemistry"
 end
 

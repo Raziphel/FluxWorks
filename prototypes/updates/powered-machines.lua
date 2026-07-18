@@ -15,6 +15,10 @@ local function patch_gun_turret_power()
 end
 
 local function patch_offshore_pump_power()
+  if mods["aai-industry"] then
+    return
+  end
+
   local offshore_pump = data.raw["offshore-pump"] and data.raw["offshore-pump"]["offshore-pump"]
   if not offshore_pump then
     return

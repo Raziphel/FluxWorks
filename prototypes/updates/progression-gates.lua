@@ -74,13 +74,13 @@ gate_recipe_to_tech("fw-circuit-contact", "electronics")
 -- that only exist inside those same lanes.
 assert_recipe_lacks_ingredient(
   "fw-petrochemical-facility",
-  "fw-polymer-binder",
-  "the branch-defining petrochemical machine must not require petrochemical output to exist first"
+  "fw-hydraulic-manifold",
+  "the branch-defining petrochemical machine must not require deeper branch output to exist first"
 )
 assert_recipe_lacks_ingredient(
   "fw-hydraulic-plant",
-  "fw-hydraulic-actuator",
-  "the first hydraulic machine must not require a hydraulic-only component from its own category"
+  "fw-hydraulic-manifold",
+  "the first hydraulic machine must not require a deeper hydraulic manifold from its own category"
 )
 assert_recipe_lacks_ingredient(
   "fw-flow-regulator",
@@ -89,6 +89,8 @@ assert_recipe_lacks_ingredient(
 )
 
 assert_recipe_unlock("fw-petrochemical-facility", "fw-petrochemical-engineering")
+assert_recipe_unlock("fw-chlorinated-binder-stock", "fw-reactive-binders")
+assert_recipe_unlock("fw-elastomer-matrix", "fw-elastomer-engineering")
 assert_recipe_unlock("fw-hydraulic-plant", "fw-hydraulic-systems")
-assert_recipe_unlock("fw-flow-regulator", "fw-sealed-systems")
-assert_recipe_unlock("fw-smelter-array", "fw-metallurgic-assemblies")
+assert_recipe_unlock("fw-flow-regulator", "fw-fluid-regulation")
+assert_recipe_unlock("fw-foundry-lining", "fw-metallurgic-assemblies")

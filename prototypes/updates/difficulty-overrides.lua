@@ -1,43 +1,77 @@
 local Startup = require("prototypes.lib.startup-settings")
 
-local difficulty = Startup.difficulty_mode()
-if difficulty == "normal" then
+local DIFFICULTY_SETTINGS = {
+  "fw-balance-flux-core-difficulty",
+  "fw-balance-harvesting-difficulty",
+  "fw-balance-synthesis-difficulty",
+  "fw-balance-condensing-difficulty",
+  "fw-balance-petrochemistry-difficulty",
+  "fw-balance-hydraulics-difficulty",
+  "fw-balance-atomic-enrichment-difficulty",
+  "fw-balance-integrated-recipes-difficulty",
+  "fw-balance-science-recipes-difficulty",
+  "fw-balance-fluid-systems-difficulty",
+  "fw-balance-control-systems-difficulty",
+  "fw-balance-late-machines-difficulty",
+  "fw-balance-orbital-recipes-difficulty",
+  "fw-balance-crafting-time-difficulty",
+}
+
+local function tier(name)
+  return Startup.difficulty_tier(name, "normal")
+end
+
+local function has_any_overrides()
+  for _, name in ipairs(DIFFICULTY_SETTINGS) do
+    if tier(name) ~= "normal" then
+      return true
+    end
+  end
+  return false
+end
+
+if not has_any_overrides() then
   return
 end
 
-local affect_fluid_systems = Startup.enabled("fw-difficulty-affects-fluid-systems", true)
-local affect_control_systems = Startup.enabled("fw-difficulty-affects-control-systems", true)
-local affect_late_machines = Startup.enabled("fw-difficulty-affects-late-machines", true)
-local affect_orbital_recipes = Startup.enabled("fw-difficulty-affects-orbital-recipes", true)
-local affect_science_recipes = Startup.enabled("fw-difficulty-affects-science-recipes", true)
-local affect_flux_core_recipes = Startup.enabled("fw-difficulty-affects-flux-core-recipes", true)
-local affect_crafting_time = Startup.enabled("fw-difficulty-affects-crafting-time", true)
+local function tier_multiplier(name, easy_value, hard_value)
+  local value = tier(name)
+  if value == "easy" then
+    return easy_value
+  end
+  if value == "hard" then
+    return hard_value
+  end
+  return 1
+end
 
-local PROFILE = difficulty == "hard" and {
-  fw_core = 1.28,
-  harvesting = 1.38,
-  synthesis = 1.52,
-  condensing = 1.72,
-  integrated = 1.24,
-  science = 1.2,
-  fluid = 1.24,
-  control = 1.3,
-  late = 1.4,
-  orbital = 1.52,
-  time = 1.16,
-} or {
-  fw_core = 0.84,
-  harvesting = 0.8,
-  synthesis = 0.76,
-  condensing = 0.72,
-  integrated = 0.86,
-  science = 0.84,
-  fluid = 0.88,
-  control = 0.86,
-  late = 0.82,
-  orbital = 0.8,
-  time = 0.88,
+local PROFILE = {
+  fw_core = tier_multiplier("fw-balance-flux-core-difficulty", 0.72, 1.45),
+  harvesting = tier_multiplier("fw-balance-harvesting-difficulty", 0.68, 1.62),
+  synthesis = tier_multiplier("fw-balance-synthesis-difficulty", 0.62, 1.82),
+  condensing = tier_multiplier("fw-balance-condensing-difficulty", 0.58, 2.05),
+  petrochem = tier_multiplier("fw-balance-petrochemistry-difficulty", 0.70, 1.55),
+  hydraulics = tier_multiplier("fw-balance-hydraulics-difficulty", 0.68, 1.62),
+  atomic = tier_multiplier("fw-balance-atomic-enrichment-difficulty", 0.64, 1.78),
+  integrated = tier_multiplier("fw-balance-integrated-recipes-difficulty", 0.78, 1.36),
+  science = tier_multiplier("fw-balance-science-recipes-difficulty", 0.76, 1.34),
+  fluid = tier_multiplier("fw-balance-fluid-systems-difficulty", 0.80, 1.36),
+  control = tier_multiplier("fw-balance-control-systems-difficulty", 0.78, 1.42),
+  late = tier_multiplier("fw-balance-late-machines-difficulty", 0.70, 1.62),
+  orbital = tier_multiplier("fw-balance-orbital-recipes-difficulty", 0.68, 1.82),
+  time = tier_multiplier("fw-balance-crafting-time-difficulty", 0.82, 1.24),
 }
+
+local function tier_time_adjust(name, easy_delta, hard_delta)
+  local value = tier(name)
+  if value == "easy" then
+    return PROFILE.time + easy_delta
+  end
+  if value == "hard" then
+    return PROFILE.time + hard_delta
+  end
+  return 1
+end
 
 local SCIENCE_RECIPES = {
   ["automation-science-pack"] = true,
@@ -157,7 +191,6 @@ local CONTROL_INGREDIENTS = {
   ["fw-signal-conduit"] = true,
   ["fw-circuit-contact"] = true,
   ["fw-circuit-substrate"] = true,
-  ["fw-sensor-diode"] = true,
   ["fw-sensor-package"] = true,
   ["fw-transformer-core"] = true,
   ["fw-memory-die"] = true,
@@ -246,7 +279,7 @@ end
 local function is_difficulty_scalable(recipe_name, entry)
   local name = entry_name(entry)
   local kind = entry_type(entry)
-  if affect_science_recipes and SCIENCE_RECIPES[recipe_name] and (kind == "item" or kind == "fluid") then
+  if SCIENCE_RECIPES[recipe_name] and (kind == "item" or kind == "fluid") then
     return true
   end
   if kind == "fluid" then
@@ -259,12 +292,13 @@ local function combine_multiplier(current, candidate)
   if candidate == nil or candidate == 1 then
     return current
   end
-
-  if difficulty == "hard" then
-    return math.max(current, candidate)
+  if current == 1 then
+    return candidate
   end
-
-  return math.min(current, candidate)
+  if math.abs(candidate - 1) > math.abs(current - 1) then
+    return candidate
+  end
+  return current
 end
 
 local function scaled_amount(amount, multiplier)
@@ -280,35 +314,32 @@ local function scaled_amount(amount, multiplier)
 end
 
 local function recipe_time_multiplier(recipe_name, category)
-  if not affect_crafting_time then
-    return 1
-  end
-
   local multiplier = 1
-  if affect_flux_core_recipes and is_fw_name(recipe_name) then
+
+  if is_fw_name(recipe_name) then
     multiplier = combine_multiplier(multiplier, PROFILE.time)
     if category == "fw-flux-condensing" then
-      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.25 or -0.12))
+      multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.18, 0.38))
     elseif category == "fw-flux-synthesis" then
-      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.15 or -0.08))
+      multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.12, 0.22))
     elseif category == "fw-flux-harvesting" then
-      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.1 or -0.06))
+      multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.10, 0.16))
     elseif category == "fw-petrochemistry" then
-      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.06 or -0.03))
+      multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.06, 0.10))
     elseif category == "fw-hydraulics" then
-      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.08 or -0.04))
+      multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.08, 0.12))
     elseif category == "fw-atomic-enrichment" then
-      multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.12 or -0.05))
+      multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.10, 0.18))
     end
   end
-  if affect_science_recipes and SCIENCE_RECIPES[recipe_name] then
-    multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.18 or -0.14))
+  if SCIENCE_RECIPES[recipe_name] then
+    multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.18, 0.26))
   end
-  if affect_orbital_recipes and ORBITAL_RECIPES[recipe_name] then
-    multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.22 or -0.1))
+  if ORBITAL_RECIPES[recipe_name] then
+    multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.14, 0.30))
   end
-  if affect_late_machines and LATE_RECIPES[recipe_name] then
-    multiplier = combine_multiplier(multiplier, PROFILE.time + (difficulty == "hard" and 0.14 or -0.06))
+  if LATE_RECIPES[recipe_name] then
+    multiplier = combine_multiplier(multiplier, tier_time_adjust("fw-balance-crafting-time-difficulty", -0.10, 0.20))
   end
   return multiplier
 end
@@ -317,7 +348,7 @@ local function ingredient_multiplier(recipe_name, category, ingredient)
   local name = entry_name(ingredient)
   local multiplier = 1
 
-  if affect_flux_core_recipes and is_fw_name(recipe_name) then
+  if is_fw_name(recipe_name) then
     multiplier = combine_multiplier(multiplier, PROFILE.fw_core)
     if category == "fw-flux-harvesting" then
       multiplier = combine_multiplier(multiplier, PROFILE.harvesting)
@@ -326,15 +357,15 @@ local function ingredient_multiplier(recipe_name, category, ingredient)
     elseif category == "fw-flux-condensing" then
       multiplier = combine_multiplier(multiplier, PROFILE.condensing)
     elseif category == "fw-petrochemistry" then
-      multiplier = combine_multiplier(multiplier, difficulty == "hard" and 1.34 or 0.82)
+      multiplier = combine_multiplier(multiplier, PROFILE.petrochem)
     elseif category == "fw-hydraulics" then
-      multiplier = combine_multiplier(multiplier, difficulty == "hard" and 1.4 or 0.8)
+      multiplier = combine_multiplier(multiplier, PROFILE.hydraulics)
     elseif category == "fw-atomic-enrichment" then
-      multiplier = combine_multiplier(multiplier, difficulty == "hard" and 1.5 or 0.78)
+      multiplier = combine_multiplier(multiplier, PROFILE.atomic)
     end
   end
 
-  if affect_science_recipes and SCIENCE_RECIPES[recipe_name] then
+  if SCIENCE_RECIPES[recipe_name] then
     multiplier = combine_multiplier(multiplier, PROFILE.science)
   end
 
@@ -342,19 +373,19 @@ local function ingredient_multiplier(recipe_name, category, ingredient)
     multiplier = combine_multiplier(multiplier, PROFILE.integrated)
   end
 
-  if affect_fluid_systems and (FLUID_RECIPES[recipe_name] or FLUID_INGREDIENTS[name]) then
+  if FLUID_RECIPES[recipe_name] or FLUID_INGREDIENTS[name] then
     multiplier = combine_multiplier(multiplier, PROFILE.fluid)
   end
 
-  if affect_control_systems and (CONTROL_RECIPES[recipe_name] or CONTROL_INGREDIENTS[name]) then
+  if CONTROL_RECIPES[recipe_name] or CONTROL_INGREDIENTS[name] then
     multiplier = combine_multiplier(multiplier, PROFILE.control)
   end
 
-  if affect_late_machines and (LATE_RECIPES[recipe_name] or LATE_INGREDIENTS[name]) then
+  if LATE_RECIPES[recipe_name] or LATE_INGREDIENTS[name] then
     multiplier = combine_multiplier(multiplier, PROFILE.late)
   end
 
-  if affect_orbital_recipes and (ORBITAL_RECIPES[recipe_name] or ORBITAL_INGREDIENTS[name]) then
+  if ORBITAL_RECIPES[recipe_name] or ORBITAL_INGREDIENTS[name] then
     multiplier = combine_multiplier(multiplier, PROFILE.orbital)
   end
 

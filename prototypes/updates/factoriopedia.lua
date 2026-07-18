@@ -1,6 +1,7 @@
 local content = require("prototypes.updates.factoriopedia-content")
 
 local covered_descriptions = {}
+local covered_simulations = {}
 
 local function set_factoriopedia_description(prototype_type, prototype_name, locale_key)
   if not (data.raw[prototype_type] and data.raw[prototype_type][prototype_name]) then
@@ -21,7 +22,58 @@ local function set_factoriopedia_simulation(prototype_type, prototype_name, simu
     return
   end
 
+  covered_simulations[prototype_type] = covered_simulations[prototype_type] or {}
+  covered_simulations[prototype_type][prototype_name] = simulation_key
   data.raw[prototype_type][prototype_name].factoriopedia_simulation = simulation
+end
+
+local function assert_autoplace_control_label(control_name)
+  local control = data.raw["autoplace-control"] and data.raw["autoplace-control"][control_name]
+  if not control then
+    error("Missing FluxWorks autoplace control for worldgen validation: " .. control_name)
+  end
+
+  local localised_name = control.localised_name
+  if type(localised_name) ~= "table" then
+    error("FluxWorks autoplace control is missing structured localised_name: " .. control_name)
+  end
+
+  local function contains_locale_key(value, expected_locale)
+    if value == expected_locale then
+      return true
+    end
+
+    if type(value) ~= "table" then
+      return false
+    end
+
+    for _, part in ipairs(value) do
+      if contains_locale_key(part, expected_locale) then
+        return true
+      end
+    end
+
+    return false
+  end
+
+  local expected_locale = "autoplace-control-names." .. control_name
+  if contains_locale_key(localised_name, expected_locale) then
+    return
+  end
+
+  error("FluxWorks autoplace control label drifted from its locale key: " .. control_name)
+end
+
+local function assert_resource_worldgen_entry(resource_name, control_name)
+  if not (covered_descriptions.resource and covered_descriptions.resource[resource_name]) then
+    error("Missing FluxWorks Factoriopedia resource description: " .. resource_name)
+  end
+
+  if not (covered_simulations.resource and covered_simulations.resource[resource_name]) then
+    error("Missing FluxWorks Factoriopedia resource simulation: " .. resource_name)
+  end
+
+  assert_autoplace_control_label(control_name)
 end
 
 -- Rocket reusability entries
@@ -78,7 +130,6 @@ set_factoriopedia_description("item", "fw-synthesis-plant", "fw-synthesis-plant-
 set_factoriopedia_description("item", "fw-flux-condenser", "fw-flux-condenser-item")
 set_factoriopedia_description("item", "fw-shattered-convergence-array", "fw-shattered-convergence-array-item")
 set_factoriopedia_description("item", "fw-promethium-shard", "fw-promethium-shard-item")
-set_factoriopedia_description("item", "fw-promethium-primer", "fw-promethium-primer-item")
 set_factoriopedia_description("item", "fw-stabilized-flux-crystal", "fw-stabilized-flux-crystal-item")
 set_factoriopedia_description("item", "fw-flux-lattice", "fw-flux-lattice-item")
 set_factoriopedia_description("item", "fw-condensed-flux-matrix", "fw-condensed-flux-matrix-item")
@@ -101,7 +152,6 @@ set_factoriopedia_description("recipe", "fw-arc-foundry", "fw-arc-foundry-recipe
 set_factoriopedia_description("recipe", "fw-synthesis-plant", "fw-synthesis-plant-recipe")
 set_factoriopedia_description("recipe", "fw-flux-condenser", "fw-flux-condenser-recipe")
 set_factoriopedia_description("recipe", "fw-shattered-convergence-array", "fw-shattered-convergence-array-recipe")
-set_factoriopedia_description("recipe", "fw-promethium-primer", "fw-promethium-primer-recipe")
 set_factoriopedia_description("recipe", "fw-stabilized-flux-crystal", "fw-stabilized-flux-crystal-recipe")
 set_factoriopedia_description("recipe", "fw-flux-lattice", "fw-flux-lattice-recipe")
 set_factoriopedia_description("recipe", "fw-condensed-flux-matrix", "fw-condensed-flux-matrix-recipe")
@@ -153,59 +203,88 @@ set_factoriopedia_description("fluid", "fw-yellow-flux", "fw-yellow-flux-fluid")
 set_factoriopedia_description("fluid", "fw-red-flux", "fw-red-flux-fluid")
 set_factoriopedia_description("fluid", "fw-green-flux", "fw-green-flux-fluid")
 set_factoriopedia_description("technology", "fw-ceramic-engineering", "fw-ceramic-engineering-technology")
+set_factoriopedia_description("technology", "fw-machine-casings", "fw-machine-casings-technology")
 set_factoriopedia_description("technology", "fw-conductive-networks", "fw-conductive-networks-technology")
+set_factoriopedia_description("technology", "fw-signal-routing", "fw-signal-routing-technology")
 set_factoriopedia_description("technology", "fw-optical-instrumentation", "fw-optical-instrumentation-technology")
 set_factoriopedia_description("technology", "fw-sealed-systems", "fw-sealed-systems-technology")
+set_factoriopedia_description("technology", "fw-fluid-regulation", "fw-fluid-regulation-technology")
 set_factoriopedia_description("technology", "fw-polymer-chemistry", "fw-polymer-chemistry-technology")
 set_factoriopedia_description("technology", "fw-power-regulation", "fw-power-regulation-technology")
+set_factoriopedia_description("technology", "fw-field-balancing", "fw-field-balancing-technology")
 set_factoriopedia_description("technology", "fw-energetic-compounds", "fw-energetic-compounds-technology")
 set_factoriopedia_description("technology", "fw-metallurgic-assemblies", "fw-metallurgic-assemblies-technology")
-set_factoriopedia_description("technology", "fw-biosystems-engineering", "fw-biosystems-engineering-technology")
 set_factoriopedia_description("technology", "fw-cryogenic-control", "fw-cryogenic-control-technology")
+set_factoriopedia_description("technology", "fw-thermal-retention", "fw-thermal-retention-technology")
 set_factoriopedia_description("technology", "fw-electromagnetic-architecture", "fw-electromagnetic-architecture-technology")
+set_factoriopedia_description("technology", "fw-logic-weaving", "fw-logic-weaving-technology")
 set_factoriopedia_description("technology", "fw-orbital-hardening", "fw-orbital-hardening-technology")
 set_factoriopedia_description("technology", "fw-promethium-stabilization", "fw-promethium-stabilization-technology")
 set_factoriopedia_description("technology", "fw-industrial-expansion", "fw-industrial-expansion-technology")
+set_factoriopedia_description("technology", "fw-arc-recasting", "fw-arc-recasting-technology")
+set_factoriopedia_description("technology", "fw-reactive-powders", "fw-reactive-powders-technology")
+set_factoriopedia_description("technology", "fw-slurry-beneficiation", "fw-slurry-beneficiation-technology")
 set_factoriopedia_description("technology", "fw-pressure-containment", "fw-pressure-containment-technology")
 set_factoriopedia_description("technology", "fw-bulk-logistics", "fw-bulk-logistics-technology")
 set_factoriopedia_description("technology", "fw-network-logistics", "fw-network-logistics-technology")
 set_factoriopedia_description("technology", "fw-logistics-orchestration", "fw-logistics-orchestration-technology")
 set_factoriopedia_description("technology", "fw-petrochemical-engineering", "fw-petrochemical-engineering-technology")
+set_factoriopedia_description("technology", "fw-reactive-binders", "fw-reactive-binders-technology")
+set_factoriopedia_description("technology", "fw-elastomer-engineering", "fw-elastomer-engineering-technology")
 set_factoriopedia_description("technology", "fw-polymer-stabilization", "fw-polymer-stabilization-technology")
 set_factoriopedia_description("technology", "fw-hydraulic-systems", "fw-hydraulic-systems-technology")
 set_factoriopedia_description("technology", "fw-fluid-control-architecture", "fw-fluid-control-architecture-technology")
 set_factoriopedia_description("technology", "fw-isotope-conditioning", "fw-isotope-conditioning-technology")
+set_factoriopedia_description("technology", "fw-fuel-fabrication", "fw-fuel-fabrication-technology")
+set_factoriopedia_description("technology", "fw-lattice-moderation", "fw-lattice-moderation-technology")
 set_factoriopedia_description("technology", "fw-reactor-doping", "fw-reactor-doping-technology")
+set_factoriopedia_description("technology", "fw-reactor-safeguards", "fw-reactor-safeguards-technology")
 set_factoriopedia_description("technology", "fw-actinide-recovery", "fw-actinide-recovery-technology")
+set_factoriopedia_description("technology", "fw-actinide-sorting", "fw-actinide-sorting-technology")
+set_factoriopedia_description("technology", "fw-actinide-reforging", "fw-actinide-reforging-technology")
 set_factoriopedia_description("technology", "fw-reactor-instrumentation", "fw-reactor-instrumentation-technology")
 set_factoriopedia_description("technology", "fw-comminution", "fw-comminution-technology")
+set_factoriopedia_description("technology", "fw-aggregate-recovery", "fw-aggregate-recovery-technology")
 set_factoriopedia_description("technology", "fw-basic-separation", "fw-basic-separation-technology")
+set_factoriopedia_description("technology", "fw-brine-processing", "fw-brine-processing-technology")
 set_factoriopedia_description("technology", "fw-ore-crushing", "fw-ore-crushing-technology")
+set_factoriopedia_description("technology", "fw-dense-ore-smelting", "fw-dense-ore-smelting-technology")
 set_factoriopedia_description("technology", "fw-mineral-beneficiation", "fw-mineral-beneficiation-technology")
 set_factoriopedia_description("technology", "fw-flux-extraction", "fw-flux-extraction-technology")
 set_factoriopedia_description("technology", "fw-flux-mining-productivity", "fw-flux-mining-productivity-technology")
 set_factoriopedia_description("technology", "fw-glassworking", "fw-glassworking-technology")
+set_factoriopedia_description("technology", "fw-elastomer-processing", "fw-elastomer-processing-technology")
 set_factoriopedia_description("technology", "fw-material-foundations", "fw-material-foundations-technology")
 set_factoriopedia_description("technology", "fw-structural-fabrication", "fw-structural-fabrication-technology")
-set_factoriopedia_description("technology", "fw-sealed-components", "fw-sealed-components-technology")
 set_factoriopedia_description("technology", "fw-contact-casting", "fw-contact-casting-technology")
+set_factoriopedia_description("technology", "fw-tube-forming", "fw-tube-forming-technology")
 set_factoriopedia_description("technology", "fw-metals-fabrication", "fw-metals-fabrication-technology")
+set_factoriopedia_description("technology", "fw-precision-alloys", "fw-precision-alloys-technology")
 set_factoriopedia_description("technology", "fw-circuit-foundry", "fw-circuit-foundry-technology")
 set_factoriopedia_description("technology", "fw-beam-engineering", "fw-beam-engineering-technology")
 set_factoriopedia_description("technology", "fw-conductive-assembly", "fw-conductive-assembly-technology")
+set_factoriopedia_description("technology", "fw-cable-looming", "fw-cable-looming-technology")
 set_factoriopedia_description("technology", "fw-wafer-etching", "fw-wafer-etching-technology")
+set_factoriopedia_description("technology", "fw-chip-packaging", "fw-chip-packaging-technology")
 set_factoriopedia_description("technology", "fw-electromechanical-systems", "fw-electromechanical-systems-technology")
+set_factoriopedia_description("technology", "fw-capacitive-systems", "fw-capacitive-systems-technology")
 set_factoriopedia_description("technology", "fw-signal-architecture", "fw-signal-architecture-technology")
+set_factoriopedia_description("technology", "fw-microelectronics", "fw-microelectronics-technology")
 set_factoriopedia_description("technology", "fw-computational-arrays", "fw-computational-arrays-technology")
 set_factoriopedia_description("technology", "fw-material-refinement", "fw-material-refinement-technology")
 set_factoriopedia_description("technology", "fw-instrumentation", "fw-instrumentation-technology")
+set_factoriopedia_description("technology", "fw-ribbon-conductors", "fw-ribbon-conductors-technology")
 set_factoriopedia_description("technology", "fw-systems-integration", "fw-systems-integration-technology")
+set_factoriopedia_description("technology", "fw-sensor-integration", "fw-sensor-integration-technology")
 set_factoriopedia_description("technology", "fw-advanced-fabrication", "fw-advanced-fabrication-technology")
+set_factoriopedia_description("technology", "fw-lightweight-framing", "fw-lightweight-framing-technology")
+set_factoriopedia_description("technology", "fw-propellant-synthesis", "fw-propellant-synthesis-technology")
 set_factoriopedia_description("technology", "fw-liquid-mining", "fw-liquid-mining-technology")
 set_factoriopedia_description("technology", "fw-flux-catalysis", "fw-flux-catalysis-technology")
 set_factoriopedia_description("technology", "fw-flux-yellow-catalysis", "fw-flux-yellow-catalysis-technology")
 set_factoriopedia_description("technology", "fw-flux-stabilization", "fw-flux-stabilization-technology")
 set_factoriopedia_description("technology", "fw-harvester-systems", "fw-harvester-systems-technology")
+set_factoriopedia_description("technology", "fw-flux-purple-transmutation", "fw-flux-purple-transmutation-technology")
 set_factoriopedia_description("technology", "fw-flux-structuring", "fw-flux-structuring-technology")
 set_factoriopedia_description("technology", "fw-flux-red-energetics", "fw-flux-red-energetics-technology")
 set_factoriopedia_description("technology", "fw-flux-green-reclamation", "fw-flux-green-reclamation-technology")
@@ -232,10 +311,28 @@ set_factoriopedia_description("technology", "fw-rift-logistics", "fw-rift-logist
 set_factoriopedia_description("technology", "fw-flux-overdrive", "fw-flux-overdrive-technology")
 set_factoriopedia_description("technology", "fw-fusion-lattices", "fw-fusion-lattices-technology")
 set_factoriopedia_description("technology", "fw-flux-convergence", "fw-flux-convergence-technology")
+set_factoriopedia_description("technology", "fw-orbital-flux-industrialization", "fw-orbital-flux-industrialization-technology")
+set_factoriopedia_description("technology", "fw-vulcanus-industrial-symbiosis", "fw-vulcanus-industrial-symbiosis-technology")
+set_factoriopedia_description("technology", "fw-gleba-regenerative-symbiosis", "fw-gleba-regenerative-symbiosis-technology")
+set_factoriopedia_description("technology", "fw-fulgora-electromagnetic-symbiosis", "fw-fulgora-electromagnetic-symbiosis-technology")
+set_factoriopedia_description("technology", "fw-aquilo-thermal-symbiosis", "fw-aquilo-thermal-symbiosis-technology")
+set_factoriopedia_description("technology", "fw-cross-planetary-industrial-convergence", "fw-cross-planetary-industrial-convergence-technology")
 set_factoriopedia_description("technology", "fw-rift-harmonics", "fw-rift-harmonics-technology")
 set_factoriopedia_description("technology", "fw-origin-infrastructure", "fw-origin-infrastructure-technology")
 set_factoriopedia_description("technology", "fw-storm-megastructures", "fw-storm-megastructures-technology")
 set_factoriopedia_description("technology", "fw-origin-transcendence", "fw-origin-transcendence-technology")
+set_factoriopedia_description("technology", "fw-shattered-expedition-planning", "fw-shattered-expedition-planning-technology")
+set_factoriopedia_description("technology", "fw-shattered-platform-hardening", "fw-shattered-platform-hardening-technology")
+set_factoriopedia_description("technology", "fw-shattered-landing-protocols", "fw-shattered-landing-protocols-technology")
+set_factoriopedia_description("technology", "fw-shattered-vulcanus-bridgehead", "fw-shattered-vulcanus-bridgehead-technology")
+set_factoriopedia_description("technology", "fw-shattered-gleba-bridgehead", "fw-shattered-gleba-bridgehead-technology")
+set_factoriopedia_description("technology", "fw-shattered-fulgora-bridgehead", "fw-shattered-fulgora-bridgehead-technology")
+set_factoriopedia_description("technology", "fw-shattered-aquilo-bridgehead", "fw-shattered-aquilo-bridgehead-technology")
+set_factoriopedia_description("technology", "fw-shattered-vent-harmonics", "fw-shattered-vent-harmonics-technology")
+set_factoriopedia_description("technology", "fw-ion-storm-survival", "fw-ion-storm-survival-technology")
+set_factoriopedia_description("technology", "fw-shattered-network-logistics", "fw-shattered-network-logistics-technology")
+set_factoriopedia_description("technology", "fw-shattered-origin-survey", "fw-shattered-origin-survey-technology")
+set_factoriopedia_description("technology", "fw-ion-storm-capture", "fw-ion-storm-capture-technology")
 set_factoriopedia_description("technology", "fw-reactive-chemistry-productivity", "fw-reactive-chemistry-productivity-technology")
 set_factoriopedia_description("technology", "fw-green-reclamation-productivity", "fw-green-reclamation-productivity-technology")
 set_factoriopedia_description("technology", "fw-green-cultivation-productivity", "fw-green-cultivation-productivity-technology")
@@ -266,6 +363,14 @@ set_factoriopedia_simulation("item", "fw-hydraulic-plant", "fw_hydraulic_plant")
 set_factoriopedia_simulation("assembling-machine", "fw-hydraulic-plant", "fw_hydraulic_plant")
 set_factoriopedia_simulation("item", "fw-atomic-enricher", "fw_atomic_enricher")
 set_factoriopedia_simulation("assembling-machine", "fw-atomic-enricher", "fw_atomic_enricher")
+set_factoriopedia_simulation("item", "fw-phase-vault", "fw_phase_vault")
+set_factoriopedia_simulation("container", "fw-phase-vault", "fw_phase_vault")
+set_factoriopedia_simulation("item", "fw-spectral-reservoir", "fw_spectral_reservoir")
+set_factoriopedia_simulation("storage-tank", "fw-spectral-reservoir", "fw_spectral_reservoir")
+set_factoriopedia_simulation("item", "fw-rift-exchange-gate", "fw_rift_exchange_gate")
+set_factoriopedia_simulation("container", "fw-rift-exchange-gate", "fw_rift_exchange_gate")
+set_factoriopedia_simulation("item", "fw-rift-exchange-fluid-gate", "fw_rift_exchange_fluid_gate")
+set_factoriopedia_simulation("storage-tank", "fw-rift-exchange-fluid-gate", "fw_rift_exchange_fluid_gate")
 set_factoriopedia_simulation("item", "remnant-beacon", "fw_orbital_salvage")
 set_factoriopedia_simulation("radar", "remnant-beacon", "fw_orbital_salvage")
 set_factoriopedia_simulation("technology", "rocket-chunk-processing", "fw_orbital_salvage")
@@ -274,4 +379,18 @@ for name, technology in pairs(data.raw.technology or {}) do
   if string.sub(name, 1, 3) == "fw-" and not (covered_descriptions.technology and covered_descriptions.technology[name]) then
     error("Missing FluxWorks Factoriopedia technology description: " .. name)
   end
+end
+
+for _, entry in ipairs({
+  { resource = "fw-crystalised-flux", control = "fw-crystalised-flux" },
+  { resource = "fw-silica-vein", control = "fw-silica-vein" },
+  { resource = "fw-metallic-deposit", control = "fw-metallic-deposit" },
+  { resource = "fw-mineral-deposit", control = "fw-mineral-deposit" },
+  { resource = "fw-carbonic-deposit", control = "fw-carbonic-deposit" },
+}) do
+  assert_resource_worldgen_entry(entry.resource, entry.control)
+end
+
+if data.raw.resource and data.raw.resource["fw-promethium-impact"] then
+  assert_resource_worldgen_entry("fw-promethium-impact", "fw-promethium-impact")
 end

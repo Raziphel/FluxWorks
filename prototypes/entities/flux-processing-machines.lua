@@ -1,6 +1,9 @@
 local item_sounds = require("__base__.prototypes.item_sounds")
 local sounds = require("__base__.prototypes.entity.sounds")
 local util = require("util")
+local advanced_foundry_path = "__finely-crafted-graphics__/graphics/advanced-foundry/"
+local conduit_path = "__finely-crafted-graphics__/graphics/conduit/"
+local gravity_assembler_path = "__finely-crafted-graphics__/graphics/gravity-assembler/"
 
 local electromagnetic_pipe_pictures = require("__space-age__.prototypes.entity.electromagnetic-plant-pictures").pipe_pictures
 
@@ -11,6 +14,124 @@ local function working_light(intensity, size, shift, color)
       size = size,
       shift = shift,
       color = color,
+    },
+  }
+end
+
+local function scale_sprite(sprite, factor)
+  if type(sprite) ~= "table" then
+    return
+  end
+
+  if sprite.scale then
+    sprite.scale = sprite.scale * factor
+  end
+
+  if sprite.shift and sprite.shift[1] and sprite.shift[2] then
+    sprite.shift = { sprite.shift[1] * factor, sprite.shift[2] * factor }
+  end
+
+  if sprite.hr_version then
+    scale_sprite(sprite.hr_version, factor)
+  end
+end
+
+local function scale_animation(animation, factor)
+  if type(animation) ~= "table" then
+    return
+  end
+
+  if animation.layers then
+    for _, layer in ipairs(animation.layers) do
+      scale_sprite(layer, factor)
+    end
+    return
+  end
+
+  scale_sprite(animation, factor)
+end
+
+local function tint_glow(animation, tint)
+  if type(animation) ~= "table" then
+    return
+  end
+
+  if animation.layers then
+    for _, layer in ipairs(animation.layers) do
+      if layer.draw_as_glow then
+        layer.tint = tint
+      end
+    end
+    return
+  end
+
+  if animation.draw_as_glow then
+    animation.tint = tint
+  end
+end
+
+local function make_flux_harvester_graphics()
+  return {
+    animation = {
+      layers = {
+        {
+          filename = conduit_path .. "conduit-hr-shadow.png",
+          priority = "high",
+          width = 600,
+          height = 400,
+          frame_count = 1,
+          line_length = 1,
+          repeat_count = 64,
+          animation_speed = 0.4,
+          draw_as_shadow = true,
+          scale = 0.56,
+          shift = util.by_pixel(8, 6),
+        },
+        {
+          filename = conduit_path .. "conduit-hr-animation.png",
+          priority = "high",
+        width = 200,
+        height = 290,
+        frame_count = 64,
+        line_length = 8,
+        animation_speed = 0.4,
+          scale = 0.56,
+          shift = util.by_pixel(0, -8),
+        },
+      },
+    },
+    working_visualisations = {
+      {
+        fadeout = true,
+        animation = {
+          filename = conduit_path .. "conduit-hr-emission.png",
+          priority = "high",
+          width = 200,
+          height = 290,
+          frame_count = 64,
+          line_length = 8,
+          animation_speed = 0.4,
+          scale = 0.56,
+          shift = util.by_pixel(0, -8),
+          draw_as_glow = true,
+          blend_mode = "additive",
+          tint = { r = 0.72, g = 0.38, b = 1.0, a = 0.92 },
+        },
+      },
+      working_light(0.9, 9, { 0.0, -0.1 }, { r = 0.62, g = 0.34, b = 1.0 }),
+      working_light(0.5, 6, { 0.55, 0.2 }, { r = 0.28, g = 0.82, b = 1.0 }),
+    },
+  }
+end
+
+local function flux_harvester_icons()
+  return {
+    { icon = "__space-age__/graphics/icons/crusher.png", icon_size = 64 },
+    {
+      icon = "__FluxWorksAssets__/graphics/icons/items/fw-harvester-head.png",
+      icon_size = 64,
+      scale = 0.52,
+      shift = { 9, 9 },
     },
   }
 end
@@ -128,8 +249,7 @@ end
 
 local harvester = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"])
 harvester.name = "fw-flux-harvester"
-harvester.icon = "__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_icon.png"
-harvester.icon_size = 64
+harvester.icons = flux_harvester_icons()
 harvester.minable = { mining_time = 0.8, result = "fw-flux-harvester" }
 harvester.max_health = 700
 harvester.collision_box = { { -1.7, -1.7 }, { 1.7, 1.7 } }
@@ -143,55 +263,7 @@ harvester.module_slots = 4
 harvester.allowed_effects = { "consumption", "speed", "productivity", "pollution" }
 harvester.fluid_boxes = make_medium_fluid_boxes()
 harvester.fluid_boxes_off_when_no_fluid_recipe = true
-harvester.graphics_set = {
-  animation = {
-    layers = {
-      {
-        filename = "__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_animation.png",
-        width = 480,
-        height = 448,
-        frame_count = 9,
-        line_length = 3,
-        animation_speed = 0.5,
-        shift = util.by_pixel(0, 0),
-        scale = 0.5,
-      },
-      {
-        filename = "__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_animation.png",
-        width = 480,
-        height = 448,
-        frame_count = 9,
-        line_length = 3,
-        animation_speed = 0.5,
-        shift = util.by_pixel(0, 0),
-        scale = 0.5,
-        draw_as_glow = true,
-        blend_mode = "additive-soft",
-        tint = { r = 0.42, g = 0.84, b = 1.00, a = 0.55 },
-      },
-    },
-  },
-  working_visualisations = {
-    {
-      fadeout = true,
-      animation = {
-        filename = "__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_animation.png",
-        width = 480,
-        height = 448,
-        frame_count = 9,
-        line_length = 3,
-        animation_speed = 0.5,
-        shift = util.by_pixel(0, 0),
-        scale = 0.5,
-        draw_as_glow = true,
-        blend_mode = "additive",
-        tint = { r = 1.00, g = 0.32, b = 0.18, a = 0.45 },
-      },
-    },
-    working_light(0.75, 7, { 0.0, -0.1 }, { r = 0.35, g = 0.75, b = 1.0 }),
-    working_light(0.45, 5, { -0.55, 0.35 }, { r = 1.0, g = 0.32, b = 0.18 }),
-  },
-}
+harvester.graphics_set = make_flux_harvester_graphics()
 harvester.working_sound = {
   sound = {
     filename = "__space-age__/sound/entity/crusher/crusher-loop.ogg",
@@ -207,7 +279,7 @@ harvester.close_sound = sounds.mech_small_close
 
 local arc_foundry = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"])
 arc_foundry.name = "fw-arc-foundry"
-arc_foundry.icon = "__Age-of-Production-Graphics__/graphics/icons/arc-furnace.png"
+arc_foundry.icon = advanced_foundry_path .. "advanced-foundry-icon.png"
 arc_foundry.icon_size = 64
 arc_foundry.minable = { mining_time = 1, result = "fw-arc-foundry" }
 arc_foundry.max_health = 950
@@ -227,8 +299,8 @@ arc_foundry.graphics_set = {
   idle_animation = {
     layers = {
       {
-        filename = "__Age-of-Production-Graphics__/graphics/entity/arc-furnace/arc-furnace-hr-shadow.png",
-        size = { 600, 400 },
+        filename = advanced_foundry_path .. "advanced-foundry-hr-shadow.png",
+        size = { 900, 800 },
         shift = { 0, 0 },
         scale = 0.5,
         line_length = 1,
@@ -238,8 +310,8 @@ arc_foundry.graphics_set = {
         animation_speed = 0.25,
       },
       {
-        filename = "__Age-of-Production-Graphics__/graphics/entity/arc-furnace/arc-furnace-hr-animation-1.png",
-        size = { 320, 320 },
+        filename = advanced_foundry_path .. "advanced-foundry-hr-animation-1.png",
+        size = { 530, 530 },
         shift = { 0, 0 },
         scale = 0.5,
         line_length = 8,
@@ -256,8 +328,8 @@ arc_foundry.graphics_set = {
       animation = {
         layers = {
           {
-            filename = "__Age-of-Production-Graphics__/graphics/entity/arc-furnace/arc-furnace-hr-animation-emission-1.png",
-            size = { 320, 320 },
+            filename = advanced_foundry_path .. "advanced-foundry-hr-emission-1.png",
+            size = { 530, 530 },
             shift = { 0, 0 },
             scale = 0.5,
             line_length = 8,
@@ -276,7 +348,7 @@ arc_foundry.graphics_set = {
 }
 arc_foundry.working_sound = {
   sound = {
-    filename = "__Age-of-Production-Graphics__/sounds/arc-furnace.ogg",
+    filename = "__space-age__/sound/entity/foundry/foundry.ogg",
     volume = 0.5,
     audible_distance_modifier = 0.6,
   },
@@ -297,7 +369,7 @@ arc_foundry.close_sound = sounds.steam_close
 
 local synthesis_plant = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"])
 synthesis_plant.name = "fw-synthesis-plant"
-synthesis_plant.icon = "__Age-of-Production-Graphics__/graphics/icons/synthesizer.png"
+synthesis_plant.icon = gravity_assembler_path .. "gravity-assembler-icon.png"
 synthesis_plant.icon_size = 64
 synthesis_plant.minable = { mining_time = 1, result = "fw-synthesis-plant" }
 synthesis_plant.max_health = 900
@@ -316,10 +388,10 @@ synthesis_plant.graphics_set = {
   animation = {
     layers = {
       {
-        filename = "__Age-of-Production-Graphics__/graphics/entity/synthesizer/synthesizer-hr-shadow.png",
+        filename = gravity_assembler_path .. "gravity-assembler-hr-shadow.png",
         priority = "high",
-        width = 500,
-        height = 350,
+        width = 520,
+        height = 500,
         frame_count = 1,
         line_length = 1,
         repeat_count = 80,
@@ -329,8 +401,8 @@ synthesis_plant.graphics_set = {
       },
       {
         priority = "high",
-        width = 270,
-        height = 310,
+        width = 320,
+        height = 320,
         frame_count = 80,
         lines_per_file = 8,
         animation_speed = 0.5,
@@ -338,14 +410,14 @@ synthesis_plant.graphics_set = {
         scale = 0.5,
         stripes = {
           {
-            filename = "__Age-of-Production-Graphics__/graphics/entity/synthesizer/synthesizer-hr-animation-1.png",
+            filename = gravity_assembler_path .. "gravity-assembler-hr-animation-1.png",
             width_in_frames = 8,
             height_in_frames = 8,
           },
           {
-            filename = "__Age-of-Production-Graphics__/graphics/entity/synthesizer/synthesizer-hr-animation-2.png",
+            filename = gravity_assembler_path .. "gravity-assembler-hr-animation-2.png",
             width_in_frames = 8,
-            height_in_frames = 8,
+            height_in_frames = 5,
           },
         },
       },
@@ -358,8 +430,8 @@ synthesis_plant.graphics_set = {
         layers = {
           {
             priority = "high",
-            width = 270,
-            height = 310,
+            width = 320,
+            height = 320,
             frame_count = 80,
             lines_per_file = 8,
             animation_speed = 0.5,
@@ -369,14 +441,14 @@ synthesis_plant.graphics_set = {
             blend_mode = "additive",
             stripes = {
               {
-                filename = "__Age-of-Production-Graphics__/graphics/entity/synthesizer/synthesizer-hr-emission-1.png",
+                filename = gravity_assembler_path .. "gravity-assembler-hr-animation-emission-1.png",
                 width_in_frames = 8,
                 height_in_frames = 8,
               },
               {
-                filename = "__Age-of-Production-Graphics__/graphics/entity/synthesizer/synthesizer-hr-emission-2.png",
+                filename = gravity_assembler_path .. "gravity-assembler-hr-animation-emission-2.png",
                 width_in_frames = 8,
-                height_in_frames = 8,
+                height_in_frames = 5,
               },
             },
           },
@@ -389,7 +461,7 @@ synthesis_plant.graphics_set = {
 }
 synthesis_plant.working_sound = {
   sound = {
-    filename = "__Age-of-Production-Graphics__/sounds/advanced-assembling-machine.ogg",
+    filename = "__space-age__/sound/entity/electromagnetic-plant/electromagnetic-plant-loop.ogg",
     volume = 0.45,
     audible_distance_modifier = 0.55,
   },
@@ -413,8 +485,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-harvester",
-    icon = "__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_icon.png",
-    icon_size = 64,
+    icons = flux_harvester_icons(),
     subgroup = "production-machine",
     order = "f[fw-flux-harvester]",
     inventory_move_sound = item_sounds.metal_large_inventory_move,
@@ -426,7 +497,7 @@ data:extend({
   {
     type = "item",
     name = "fw-arc-foundry",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/arc-furnace.png",
+    icon = advanced_foundry_path .. "advanced-foundry-icon.png",
     icon_size = 64,
     subgroup = "production-machine",
     order = "g[fw-arc-foundry]",
@@ -439,7 +510,7 @@ data:extend({
   {
     type = "item",
     name = "fw-synthesis-plant",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/synthesizer.png",
+    icon = gravity_assembler_path .. "gravity-assembler-icon.png",
     icon_size = 64,
     subgroup = "production-machine",
     order = "h[fw-synthesis-plant]",
@@ -452,8 +523,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-flux-harvester",
-    icon = "__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_icon.png",
-    icon_size = 64,
+    icons = flux_harvester_icons(),
     enabled = false,
     energy_required = 10,
     ingredients = {
@@ -471,7 +541,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-arc-foundry",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/arc-furnace.png",
+    icon = advanced_foundry_path .. "advanced-foundry-icon.png",
     icon_size = 64,
     enabled = false,
     energy_required = 14,
@@ -488,7 +558,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-synthesis-plant",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/synthesizer.png",
+    icon = gravity_assembler_path .. "gravity-assembler-icon.png",
     icon_size = 64,
     enabled = false,
     energy_required = 12,

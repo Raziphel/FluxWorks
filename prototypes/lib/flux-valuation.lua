@@ -228,6 +228,20 @@ local function has_any_color(signature)
   return false
 end
 
+local function signature_color_count(signature)
+  local count = 0
+  for _, color in ipairs(M.COLOR_ORDER) do
+    if signature and signature[color] then
+      count = count + 1
+    end
+  end
+  return count
+end
+
+local function signature_is_only_color(signature, target_color)
+  return signature_color_count(signature) == 1 and signature and signature[target_color] == true
+end
+
 local function find_item_prototype(item_name)
   for _, item_type in ipairs(M.ITEM_TYPES) do
     local item = data.raw[item_type] and data.raw[item_type][item_name]
@@ -679,7 +693,16 @@ local function default_item_color_signature(item)
   if override then
     return normalize_signature(override)
   end
-  return normalize_signature({ "purple" })
+
+  if not item then
+    return make_signature()
+  end
+
+  if item.subgroup == "raw-resource" then
+    return make_signature()
+  end
+
+  return make_signature()
 end
 
 local function default_item_breakdown(item, known_values)
@@ -1130,10 +1153,11 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
 
     local process_budget = (cost * process_share) / out_amount
     local process_weights = recipe_category_color_weights(recipe)
+    local inherited_is_generic_purple = signature_is_only_color(inherited_signature, "purple")
     local constrained_weights = filter_weights_to_signature(process_weights, inherited_signature)
-    if constrained_weights then
+    if constrained_weights and not inherited_is_generic_purple then
       process_weights = constrained_weights
-    elseif has_any_color(inherited_signature) then
+    elseif has_any_color(inherited_signature) and not inherited_is_generic_purple then
       process_budget = 0
     end
     for _, color in ipairs(M.COLOR_ORDER) do

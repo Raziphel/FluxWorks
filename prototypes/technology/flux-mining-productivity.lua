@@ -1,9 +1,10 @@
+local util = require("util")
+
 data:extend({
   {
     type = "technology",
     name = "fw-flux-mining-productivity",
-    icon = "__Age-of-Production-Graphics__/graphics/technology/core-mining-productivity.png",
-    icon_size = 256,
+    icons = util.technology_icon_constant_productivity("__base__/graphics/technology/mining-productivity.png"),
     effects = {
       {
         type = "mining-drill-productivity-bonus",

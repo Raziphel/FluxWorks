@@ -2,8 +2,6 @@ local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
 local late_utility_icon_path = "__FluxWorksAssets__/graphics/icons/items/late-utility/"
 local flux_3_icon = "__Krastorio2Assets__/icons/items/imersite-3.png"
 local flux_3_light_icon = "__Krastorio2Assets__/icons/items/imersite-3-light.png"
-local aop_biocircuit = "__Age-of-Production-Graphics__/graphics/icons/biocircuit.png"
-local aop_quantum_computer = "__Age-of-Production-Graphics__/graphics/icons/quantum-computer.png"
 local k2_ai_core = "__Krastorio2Assets__/icons/items/ai-core.png"
 local k2_big_storage_tank = "__Krastorio2Assets__/icons/entities/big-storage-tank.png"
 local k2_energy_control_unit = "__Krastorio2Assets__/icons/items/energy-control-unit.png"
@@ -13,13 +11,6 @@ local k2_matter_cube = "__Krastorio2Assets__/icons/items/matter-cube.png"
 local k2_matter_stabilizer = "__Krastorio2Assets__/icons/items/matter-stabilizer.png"
 local k2_quantum_computer = "__Krastorio2Assets__/icons/entities/quantum-computer.png"
 local k2_spaceship_research_computer = "__Krastorio2Assets__/icons/entities/spaceship-research-computer.png"
-local k248_energy_crystal = "__248k-Redux-graphics__/ressources/electronic/el_energy_crystal/el_energy_crystal_charged_item.png"
-local k248_fi_ki_circuit = "__248k-Redux-graphics__/ressources/electronic/el_ki/fi_ki_circuit/fi_ki_circuit_item.png"
-local k248_ki_core = "__248k-Redux-graphics__/ressources/electronic/el_ki/el_ki_core/el_ki_core_item.png"
-local k248_pressurizer = "__248k-Redux-graphics__/ressources/electronic/el_pressurizer/el_pressurizer_item.png"
-local k248_tank = "__248k-Redux-graphics__/ressources/electronic/el_tank/el_tank_item.png"
-local k248_ceramic = "__248k-Redux-graphics__/ressources/electronic/el_materials/el_materials_ceramic.png"
-local k248_black_hole = "__248k-Redux-graphics__/ressources/gravitation/gr_black_hole/gr_black_hole_item.png"
 local origin_icon_path = icon_path .. "origin-projects/"
 
 local function single_icon(icon, icon_size)
@@ -75,7 +66,7 @@ data:extend({
   {
     type = "item",
     name = "fw-harvester-head",
-    icons = single_icon("__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_icon.png", 64),
+    icons = single_icon(icon_path .. "fw-harvester-head.png", 64),
     subgroup = "fw-flux-systems",
     order = "c1[fw-harvester-head]",
     stack_size = 50,
@@ -83,7 +74,7 @@ data:extend({
   {
     type = "item",
     name = "fw-annealed-cermet",
-    icons = single_icon(icon_path .. "fw-cermet.png", 1024),
+    icons = single_icon(icon_path .. "fw-annealed-cermet.png", 256),
     subgroup = "fw-flux-systems",
     order = "c2[fw-annealed-cermet]",
     stack_size = 100,
@@ -91,7 +82,7 @@ data:extend({
   {
     type = "item",
     name = "fw-resonance-substrate",
-    icons = single_icon(icon_path .. "fw-resonance-substrate.png", 1024),
+    icons = single_icon(icon_path .. "fw-resonance-substrate.png", 64),
     subgroup = "fw-flux-systems",
     order = "c3[fw-resonance-substrate]",
     stack_size = 100,
@@ -99,7 +90,7 @@ data:extend({
   {
     type = "item",
     name = "fw-condensed-flux-matrix",
-    icons = single_icon(icon_path .. "fw-condensed-flux-matrix.png", 1024),
+    icons = single_icon(icon_path .. "fw-condensed-flux-matrix.png", 64),
     subgroup = "fw-flux-systems",
     order = "d[fw-condensed-flux-matrix]",
     stack_size = 100,
@@ -115,9 +106,17 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-phase-manifold",
-    icons = single_icon(icon_path .. "fw-flux-phase-manifold.png", 1024),
+    icons = single_icon(icon_path .. "fw-flux-phase-manifold.png", 64),
     subgroup = "fw-flux-systems",
     order = "f[fw-flux-phase-manifold]",
+    stack_size = 50,
+  },
+  {
+    type = "item",
+    name = "fw-quantum-computer",
+    icons = single_icon(icon_path .. "fw-quantum-computer.png", 64),
+    subgroup = "fw-flux-systems",
+    order = "f1[fw-quantum-computer]",
     stack_size = 50,
   },
   {
@@ -131,7 +130,7 @@ data:extend({
   {
     type = "item",
     name = "fw-entanglement-core",
-    icons = single_icon(k2_ai_core, 64),
+    icons = single_icon(late_utility_icon_path .. "fw-entanglement-core.png", 1024),
     subgroup = "fw-flux-systems",
     order = "h[fw-entanglement-core]",
     stack_size = 50,
@@ -147,7 +146,7 @@ data:extend({
   {
     type = "item",
     name = "fw-compression-baffle",
-    icons = single_icon(icon_path .. "fw-hydraulic-manifold.png", 64),
+    icons = single_icon(late_utility_icon_path .. "fw-compression-baffle.png", 1024),
     subgroup = "fw-flux-systems",
     order = "j[fw-compression-baffle]",
     stack_size = 50,
@@ -163,9 +162,17 @@ data:extend({
   {
     type = "item",
     name = "fw-rift-coupler",
-    icons = single_icon(aop_quantum_computer, 64),
+    icons = single_icon(late_utility_icon_path .. "fw-rift-coupler.png", 1024),
     subgroup = "fw-flux-exchange",
     order = "a[fw-rift-coupler]",
+    stack_size = 20,
+  },
+  {
+    type = "item",
+    name = "fw-model-lattice",
+    icons = single_icon(icon_path .. "fw-model-lattice.png", 64),
+    subgroup = "fw-flux-exchange",
+    order = "a1[fw-model-lattice]",
     stack_size = 20,
   },
   {
@@ -211,7 +218,7 @@ data:extend({
   {
     type = "item",
     name = "fw-storm-spine-segment",
-    icons = single_icon("__248k-Redux-graphics__/ressources/fission/fi_crusher/fi_crusher_entity_icon.png", 64),
+    icons = single_icon(icon_path .. "origin-projects/fw-storm-spine.png", 64),
     subgroup = "fw-flux-origin-projects",
     order = "a[storm-spine-segment]",
     stack_size = 20,

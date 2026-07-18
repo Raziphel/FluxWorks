@@ -166,8 +166,8 @@ return function(shared)
       { "decider-combinator", "fw-circuit-substrate", 1 },
       { "constant-combinator", "fw-circuit-substrate", 1 },
       { "selector-combinator", "fw-circuit-substrate", 1 },
-      { "rail-signal", "fw-sensor-diode", 1 },
-      { "rail-chain-signal", "fw-sensor-diode", 1 },
+      { "rail-signal", "fw-lens-array", 1 },
+      { "rail-chain-signal", "fw-lens-array", 1 },
       { "train-stop", "fw-sensor-package", 1 },
     })
 
@@ -240,9 +240,6 @@ return function(shared)
     })
 
     patch_recipe_set({
-      { "storage-tank", "fw-flow-regulator", 1 },
-      { "pump", "fw-flow-regulator", 1 },
-      { "offshore-pump", "fw-flow-regulator", 1 },
       { "fluid-wagon", "fw-flow-regulator", 1 },
       { "steam-turbine", "fw-thermal-buffer", 1 },
       { "heat-exchanger", "fw-thermal-buffer", 1 },

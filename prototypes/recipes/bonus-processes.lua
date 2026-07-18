@@ -121,6 +121,7 @@ add_recipe_if_valid(recipes, {
   localised_name = { "", { "recipe-name.fw-green-flux-bioflux-cultivation" }, " Compost Bloom" },
   localised_description = { "", "A spoilage-heavy recovery loop that climbs back to bioflux instead of stopping at basic nutrients." },
   ingredients = {
+    { type = "item", name = "fw-nutrient-bed", amount = 1 },
     { type = "item", name = "spoilage", amount = 12 },
     { type = "item", name = "nutrients", amount = 12 },
     { type = "fluid", name = "fw-green-flux", amount = 24 },
@@ -151,6 +152,7 @@ add_recipe_if_valid(recipes, {
   localised_name = { "", { "recipe-name.fw-green-flux-biolubricant-culture" }, " Bloom" },
   localised_description = { "", "Pushes the Green Flux line toward bulk lubricant output instead of another invisible research multiplier." },
   ingredients = {
+    { type = "item", name = "fw-nutrient-bed", amount = 1 },
     { type = "item", name = "bioflux", amount = 2 },
     { type = "item", name = "nutrients", amount = 12 },
     { type = "fluid", name = "fw-green-flux", amount = 18 },
@@ -402,8 +404,7 @@ add_recipe_if_valid(recipes, {
 add_recipe_if_valid(recipes, {
   type = "recipe",
   name = "fw-flux-asteroid-core-sorting",
-  icon = "__FluxWorksAssets__/graphics/icons/items/flux-3.png",
-  icon_size = 64,
+  icons = data.raw.item["fw-condensed-flux-matrix"].icons,
   category = "fw-flux-synthesis",
   subgroup = "fw-flux-systems",
   order = "c[refinement]-a2[asteroid-core-sorting]",

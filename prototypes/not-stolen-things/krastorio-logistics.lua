@@ -334,7 +334,6 @@ if data.raw.recipe["pipe-to-ground"] then
   data.raw.recipe["pipe-to-ground"].ingredients = {
     { type = "item", name = "pipe", amount = 10 },
     { type = "item", name = "lead-plate", amount = 4 },
-    { type = "item", name = "fw-flow-regulator", amount = 1 },
   }
 end
 
@@ -726,7 +725,9 @@ data:extend(make_loader(
   { 249, 207, 70 },
   {
     { type = "item", name = "transport-belt", amount = 1 },
-    { type = "item", name = "fw-loader-frame", amount = 1 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+    { type = "item", name = "fw-steel-beam", amount = 1 },
+    { type = "item", name = "fw-tinned-cable", amount = 1 },
     { type = "item", name = "electronic-circuit", amount = 2 },
   },
   "d[loader]-a1[fw-kr-loader]",
@@ -742,9 +743,10 @@ data:extend(make_loader(
   {
     { type = "item", name = "fast-transport-belt", amount = 1 },
     { type = "item", name = "fw-kr-loader", amount = 1 },
-    { type = "item", name = "fw-loader-frame", amount = 1 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+    { type = "item", name = "fw-steel-beam", amount = 1 },
     { type = "item", name = "electronic-circuit", amount = 4 },
-    { type = "item", name = "fw-cable-harness", amount = 1 },
+    { type = "item", name = "fw-tinned-cable", amount = 1 },
   },
   "d[loader]-a2[fw-kr-fast-loader]",
   "fw-kr-express-loader",
@@ -759,10 +761,15 @@ data:extend(make_loader(
   {
     { type = "item", name = "express-transport-belt", amount = 1 },
     { type = "item", name = "fw-kr-fast-loader", amount = 1 },
-    { type = "item", name = "fw-loader-frame", amount = 2 },
+    { type = "item", name = "transport-belt", amount = 2 },
+    { type = "item", name = "fw-bearing", amount = 4 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
     { type = "item", name = "advanced-circuit", amount = 4 },
-    { type = "item", name = "fw-logistic-relay", amount = 1 },
-    { type = "item", name = "fw-cable-harness", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+    { type = "item", name = "fw-circuit-substrate", amount = 1 },
+    { type = "item", name = "aluminum-plate", amount = 1 },
+    { type = "item", name = "tin-plate", amount = 1 },
+    { type = "item", name = "fw-tinned-cable", amount = 2 },
   },
   "d[loader]-a3[fw-kr-express-loader]",
   nil,
@@ -777,10 +784,20 @@ data:extend(make_loader(
   {
     { type = "item", name = "turbo-transport-belt", amount = 1 },
     { type = "item", name = "fw-kr-express-loader", amount = 1 },
-    { type = "item", name = "fw-loader-frame", amount = 2 },
+    { type = "item", name = "transport-belt", amount = 2 },
+    { type = "item", name = "fw-bearing", amount = 4 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
+    { type = "item", name = "fw-tinned-cable", amount = 2 },
     { type = "item", name = "tungsten-plate", amount = 8 },
     { type = "item", name = "processing-unit", amount = 4 },
-    { type = "item", name = "fw-bulk-router", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+    { type = "item", name = "fw-circuit-substrate", amount = 1 },
+    { type = "item", name = "aluminum-plate", amount = 1 },
+    { type = "item", name = "tin-plate", amount = 1 },
+    { type = "item", name = "bronze-plate", amount = 1 },
+    { type = "item", name = "titanium-plate", amount = 1 },
+    { type = "item", name = "fw-power-regulator", amount = 1 },
     { type = "item", name = "fw-sensor-package", amount = 1 },
   },
   "d[loader]-a4[fw-kr-advanced-loader]",
@@ -819,7 +836,10 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-kr-steel-pipe", amount = 10 },
       { type = "item", name = "fw-steel-beam", amount = 2 },
-      { type = "item", name = "fw-flow-regulator", amount = 1 },
+      { type = "item", name = "fw-copper-tube", amount = 2 },
+      { type = "item", name = "fw-inline-filter", amount = 1 },
+      { type = "item", name = "lead-plate", amount = 1 },
+      { type = "item", name = "steel-plate", amount = 2 },
     },
     results = { { type = "item", name = "fw-kr-steel-pipe-to-ground", amount = 2 } },
   },
@@ -841,11 +861,14 @@ data:extend({
     energy_required = 2,
     enabled = false,
     ingredients = {
-      { type = "item", name = "fw-bearing", amount = 2 },
       { type = "item", name = "engine-unit", amount = 1 },
-      { type = "item", name = "fw-pressure-vessel", amount = 1 },
+      { type = "item", name = "fw-inline-filter", amount = 1 },
       { type = "item", name = "fw-kr-steel-pipe", amount = 2 },
-      { type = "item", name = "fw-flow-regulator", amount = 1 },
+      { type = "item", name = "fw-copper-tube", amount = 2 },
+      { type = "item", name = "lead-plate", amount = 1 },
+      { type = "item", name = "steel-plate", amount = 2 },
+      { type = "item", name = "fw-steel-beam", amount = 1 },
+      { type = "item", name = "bronze-plate", amount = 1 },
     },
     results = { { type = "item", name = "fw-kr-steel-pump", amount = 1 } },
   },
@@ -868,10 +891,11 @@ data:extend({
     enabled = false,
     ingredients = {
       { type = "item", name = "fw-steel-beam", amount = 8 },
-      { type = "item", name = "steel-plate", amount = 16 },
-      { type = "item", name = "fw-pressure-vessel", amount = 2 },
+      { type = "item", name = "steel-plate", amount = 22 },
+      { type = "item", name = "fw-copper-tube", amount = 6 },
+      { type = "item", name = "fw-inline-filter", amount = 3 },
+      { type = "item", name = "lead-plate", amount = 3 },
       { type = "item", name = "fw-kr-steel-pipe", amount = 4 },
-      { type = "item", name = "fw-flow-regulator", amount = 2 },
     },
     results = { { type = "item", name = "fw-kr-big-storage-tank", amount = 1 } },
   },
@@ -994,8 +1018,10 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-kr-big-storage-tank", amount = 2 },
       { type = "item", name = "fw-steel-beam", amount = 12 },
-      { type = "item", name = "steel-plate", amount = 30 },
-      { type = "item", name = "fw-pressure-vessel", amount = 4 },
+      { type = "item", name = "steel-plate", amount = 38 },
+      { type = "item", name = "fw-copper-tube", amount = 8 },
+      { type = "item", name = "fw-inline-filter", amount = 4 },
+      { type = "item", name = "lead-plate", amount = 4 },
       { type = "item", name = "fw-kr-steel-pipe", amount = 8 },
       { type = "item", name = "concrete", amount = 20 },
       { type = "item", name = "fw-hydraulic-manifold", amount = 2 },
@@ -1134,7 +1160,8 @@ data:extend(make_strongbox(
     { type = "item", name = "steel-chest", amount = 2 },
     { type = "item", name = "fw-steel-beam", amount = 2 },
     { type = "item", name = "fw-metal-mesh", amount = 2 },
-    { type = "item", name = "fw-loader-frame", amount = 1 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+    { type = "item", name = "fw-tinned-cable", amount = 1 },
   }
 ))
 
@@ -1149,7 +1176,14 @@ data:extend(make_strongbox(
   {
     { type = "item", name = "fw-kr-strongbox", amount = 1 },
     { type = "item", name = "advanced-circuit", amount = 5 },
-    { type = "item", name = "fw-logistic-relay", amount = 1 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+    { type = "item", name = "fw-circuit-substrate", amount = 1 },
+    { type = "item", name = "aluminum-plate", amount = 1 },
+    { type = "item", name = "tin-plate", amount = 1 },
+    { type = "item", name = "transport-belt", amount = 1 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+    { type = "item", name = "fw-steel-beam", amount = 1 },
+    { type = "item", name = "fw-tinned-cable", amount = 1 },
   }
 ))
 
@@ -1164,7 +1198,18 @@ data:extend(make_strongbox(
   {
     { type = "item", name = "fw-kr-strongbox", amount = 1 },
     { type = "item", name = "processing-unit", amount = 2 },
-    { type = "item", name = "fw-bulk-router", amount = 1 },
+    { type = "item", name = "fw-power-regulator", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+    { type = "item", name = "fw-circuit-substrate", amount = 1 },
+    { type = "item", name = "aluminum-plate", amount = 1 },
+    { type = "item", name = "tin-plate", amount = 1 },
+    { type = "item", name = "bronze-plate", amount = 1 },
+    { type = "item", name = "titanium-plate", amount = 1 },
+    { type = "item", name = "transport-belt", amount = 2 },
+    { type = "item", name = "fw-bearing", amount = 4 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
+    { type = "item", name = "fw-tinned-cable", amount = 2 },
   }
 ))
 
@@ -1179,7 +1224,18 @@ data:extend(make_strongbox(
   {
     { type = "item", name = "fw-kr-strongbox", amount = 1 },
     { type = "item", name = "processing-unit", amount = 2 },
-    { type = "item", name = "fw-bulk-router", amount = 1 },
+    { type = "item", name = "fw-power-regulator", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+    { type = "item", name = "fw-circuit-substrate", amount = 1 },
+    { type = "item", name = "aluminum-plate", amount = 1 },
+    { type = "item", name = "tin-plate", amount = 1 },
+    { type = "item", name = "bronze-plate", amount = 1 },
+    { type = "item", name = "titanium-plate", amount = 1 },
+    { type = "item", name = "transport-belt", amount = 2 },
+    { type = "item", name = "fw-bearing", amount = 4 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
+    { type = "item", name = "fw-tinned-cable", amount = 2 },
   }
 ))
 
@@ -1194,7 +1250,14 @@ data:extend(make_strongbox(
   {
     { type = "item", name = "fw-kr-strongbox", amount = 1 },
     { type = "item", name = "advanced-circuit", amount = 4 },
-    { type = "item", name = "fw-logistic-relay", amount = 1 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+    { type = "item", name = "fw-circuit-substrate", amount = 1 },
+    { type = "item", name = "aluminum-plate", amount = 1 },
+    { type = "item", name = "tin-plate", amount = 1 },
+    { type = "item", name = "transport-belt", amount = 1 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+    { type = "item", name = "fw-steel-beam", amount = 1 },
+    { type = "item", name = "fw-tinned-cable", amount = 1 },
   }
 ))
 
@@ -1208,8 +1271,18 @@ data:extend(make_strongbox(
   20,
   {
     { type = "item", name = "fw-kr-strongbox", amount = 1 },
-    { type = "item", name = "advanced-circuit", amount = 4 },
-    { type = "item", name = "fw-bulk-router", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 6 },
+    { type = "item", name = "fw-power-regulator", amount = 1 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+    { type = "item", name = "fw-circuit-substrate", amount = 1 },
+    { type = "item", name = "aluminum-plate", amount = 1 },
+    { type = "item", name = "tin-plate", amount = 1 },
+    { type = "item", name = "bronze-plate", amount = 1 },
+    { type = "item", name = "titanium-plate", amount = 1 },
+    { type = "item", name = "transport-belt", amount = 2 },
+    { type = "item", name = "fw-bearing", amount = 4 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
+    { type = "item", name = "fw-tinned-cable", amount = 2 },
   }
 ))
 
@@ -1227,7 +1300,8 @@ data:extend(make_warehouse(
     { type = "item", name = "steel-plate", amount = 12 },
     { type = "item", name = "fw-composite-panel", amount = 4 },
     { type = "item", name = "fw-metal-mesh", amount = 6 },
-    { type = "item", name = "fw-loader-frame", amount = 4 },
+    { type = "item", name = "fw-bearing", amount = 8 },
+    { type = "item", name = "fw-tinned-cable", amount = 4 },
   }
 ))
 
@@ -1242,7 +1316,14 @@ data:extend(make_warehouse(
   {
     { type = "item", name = "fw-kr-warehouse", amount = 1 },
     { type = "item", name = "advanced-circuit", amount = 20 },
-    { type = "item", name = "fw-logistic-relay", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 2 },
+    { type = "item", name = "fw-circuit-substrate", amount = 2 },
+    { type = "item", name = "aluminum-plate", amount = 2 },
+    { type = "item", name = "tin-plate", amount = 2 },
+    { type = "item", name = "transport-belt", amount = 2 },
+    { type = "item", name = "fw-bearing", amount = 4 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
+    { type = "item", name = "fw-tinned-cable", amount = 2 },
   }
 ))
 
@@ -1257,7 +1338,18 @@ data:extend(make_warehouse(
   {
     { type = "item", name = "fw-kr-warehouse", amount = 1 },
     { type = "item", name = "processing-unit", amount = 8 },
-    { type = "item", name = "fw-bulk-router", amount = 2 },
+    { type = "item", name = "fw-power-regulator", amount = 2 },
+    { type = "item", name = "advanced-circuit", amount = 4 },
+    { type = "item", name = "fw-signal-conduit", amount = 2 },
+    { type = "item", name = "fw-circuit-substrate", amount = 2 },
+    { type = "item", name = "aluminum-plate", amount = 2 },
+    { type = "item", name = "tin-plate", amount = 2 },
+    { type = "item", name = "bronze-plate", amount = 2 },
+    { type = "item", name = "titanium-plate", amount = 2 },
+    { type = "item", name = "transport-belt", amount = 4 },
+    { type = "item", name = "fw-bearing", amount = 8 },
+    { type = "item", name = "fw-steel-beam", amount = 4 },
+    { type = "item", name = "fw-tinned-cable", amount = 4 },
   }
 ))
 
@@ -1272,7 +1364,18 @@ data:extend(make_warehouse(
   {
     { type = "item", name = "fw-kr-warehouse", amount = 1 },
     { type = "item", name = "processing-unit", amount = 8 },
-    { type = "item", name = "fw-bulk-router", amount = 2 },
+    { type = "item", name = "fw-power-regulator", amount = 2 },
+    { type = "item", name = "advanced-circuit", amount = 4 },
+    { type = "item", name = "fw-signal-conduit", amount = 2 },
+    { type = "item", name = "fw-circuit-substrate", amount = 2 },
+    { type = "item", name = "aluminum-plate", amount = 2 },
+    { type = "item", name = "tin-plate", amount = 2 },
+    { type = "item", name = "bronze-plate", amount = 2 },
+    { type = "item", name = "titanium-plate", amount = 2 },
+    { type = "item", name = "transport-belt", amount = 4 },
+    { type = "item", name = "fw-bearing", amount = 8 },
+    { type = "item", name = "fw-steel-beam", amount = 4 },
+    { type = "item", name = "fw-tinned-cable", amount = 4 },
   }
 ))
 
@@ -1287,7 +1390,14 @@ data:extend(make_warehouse(
   {
     { type = "item", name = "fw-kr-warehouse", amount = 1 },
     { type = "item", name = "advanced-circuit", amount = 16 },
-    { type = "item", name = "fw-logistic-relay", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 2 },
+    { type = "item", name = "fw-circuit-substrate", amount = 2 },
+    { type = "item", name = "aluminum-plate", amount = 2 },
+    { type = "item", name = "tin-plate", amount = 2 },
+    { type = "item", name = "transport-belt", amount = 2 },
+    { type = "item", name = "fw-bearing", amount = 4 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
+    { type = "item", name = "fw-tinned-cable", amount = 2 },
   }
 ))
 
@@ -1301,7 +1411,17 @@ data:extend(make_warehouse(
   20,
   {
     { type = "item", name = "fw-kr-warehouse", amount = 1 },
-    { type = "item", name = "advanced-circuit", amount = 16 },
-    { type = "item", name = "fw-bulk-router", amount = 2 },
+    { type = "item", name = "advanced-circuit", amount = 20 },
+    { type = "item", name = "fw-power-regulator", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 2 },
+    { type = "item", name = "fw-circuit-substrate", amount = 2 },
+    { type = "item", name = "aluminum-plate", amount = 2 },
+    { type = "item", name = "tin-plate", amount = 2 },
+    { type = "item", name = "bronze-plate", amount = 2 },
+    { type = "item", name = "titanium-plate", amount = 2 },
+    { type = "item", name = "transport-belt", amount = 4 },
+    { type = "item", name = "fw-bearing", amount = 8 },
+    { type = "item", name = "fw-steel-beam", amount = 4 },
+    { type = "item", name = "fw-tinned-cable", amount = 4 },
   }
 ))

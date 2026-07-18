@@ -27,7 +27,11 @@ function M.enabled(name, fallback)
 end
 
 function M.difficulty_mode()
-  local value = M.value("fw-difficulty-mode", "normal")
+  return M.difficulty_tier("fw-balance-flux-core-difficulty", "normal")
+end
+
+function M.difficulty_tier(name, fallback)
+  local value = M.value(name, fallback or "normal")
   if value == "easy" or value == "hard" then
     return value
   end

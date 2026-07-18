@@ -51,6 +51,18 @@ data:extend({
   },
   {
     type = "item",
+    name = "bronze-plate",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bronze-plate.png",
+    icon_size = 128,
+    inventory_move_sound = item_sounds.metal_small_inventory_move,
+    pick_sound = item_sounds.metal_small_inventory_pickup,
+    drop_sound = item_sounds.metal_small_inventory_move,
+    subgroup = "raw-material",
+    order = "d[bronze-plate]",
+    stack_size = 100,
+  },
+  {
+    type = "item",
     name = "silicon",
     icon = "__Krastorio2Assets__/icons/items/silicon.png",
     icon_size = 64,

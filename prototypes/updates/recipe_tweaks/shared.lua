@@ -3,7 +3,6 @@ local Startup = require("prototypes.lib.startup-settings")
 
 local shared = {
   enabled = Startup.enabled("fw-enable-recipe-integration", true),
-  enable_science_pack_overhaul = Startup.enabled("fw-enable-science-pack-overhaul", true),
   enable_core_material_replacements = Startup.enabled("fw-enable-core-material-replacements", true),
   enable_combat_recipe_integration = Startup.enabled("fw-enable-combat-recipe-integration", true),
   enable_orbital_and_planetary_integration = Startup.enabled("fw-enable-orbital-and-planetary-integration", true),

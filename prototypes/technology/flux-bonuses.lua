@@ -74,8 +74,8 @@ data:extend({
   ),
   process_tech(
     "fw-green-reclamation-productivity",
-    "__Age-of-Production-Graphics__/graphics/icons/nutrients-from-biomass.png",
-    64,
+    "__FluxWorksAssets__/graphics/icons/items/fw-nutrient-bed.png",
+    1024,
     { "fw-flux-green-cultivation", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -92,8 +92,8 @@ data:extend({
   ),
   process_tech(
     "fw-green-cultivation-productivity",
-    "__Age-of-Production-Graphics__/graphics/icons/biomass-from-wood.png",
-    64,
+    "__FluxWorksAssets__/graphics/technology/fw-biosystems-engineering.png",
+    256,
     { "fw-flux-green-cultivation", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -135,8 +135,8 @@ data:extend({
   ),
   process_tech(
     "fw-cryogenic-loop-productivity",
-    "__Krastorio2Assets__/technologies/matter-water.png",
-    256,
+    "__space-age__/graphics/icons/ice.png",
+    64,
     { "fw-aquilo-cryochemistry", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -156,7 +156,7 @@ data:extend({
   ),
   process_tech(
     "fw-phase-assembly-productivity",
-    "__Krastorio2Assets__/icons/entities/quantum-computer.png",
+    "__FluxWorksAssets__/graphics/icons/items/fw-model-lattice.png",
     64,
     { "fw-flux-phase-engineering", "production-science-pack" },
     science_ingredients(
@@ -178,8 +178,8 @@ data:extend({
   ),
   process_tech(
     "fw-asteroid-refinement-productivity",
-    "__Krastorio2Assets__/technologies/crusher.png",
-    256,
+    "__FluxWorksAssets__/graphics/icons/items/fw-rocket-chunk-crushing.png",
+    64,
     { "fw-flux-asteroid-harvesting", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",

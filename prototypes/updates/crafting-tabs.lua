@@ -1,4 +1,5 @@
 local Startup = require("prototypes.lib.startup-settings")
+local Layout = require("prototypes.lib.crafting-tab-layout")
 
 if not Startup.enabled("fw-enable-crafting-tab-reorganization", true) then
   return
@@ -11,12 +12,16 @@ local organize_chemistry = Startup.enabled("fw-tab-chemistry-organization", true
 local organize_systems = Startup.enabled("fw-tab-systems-organization", true)
 local organize_flux = Startup.enabled("fw-tab-flux-organization", true)
 local organize_fabrication = Startup.enabled("fw-tab-fabrication-organization", true)
+local organize_logistics = Startup.enabled("fw-tab-logistics-organization", true)
+local organize_production = Startup.enabled("fw-tab-production-organization", true)
 
-local function ensure_item_group(name, icon, icon_size, order)
+local function ensure_item_group(name, icon_data, order)
   local group = data.raw["item-group"] and data.raw["item-group"][name]
   if group then
-    group.icon = icon or group.icon
-    group.icon_size = icon_size or group.icon_size
+    group.icon = icon_data.icon or group.icon
+    group.icon_size = icon_data.icon_size or group.icon_size
+    group.icon_mipmaps = icon_data.icon_mipmaps or group.icon_mipmaps
+    group.icons = icon_data.icons or group.icons
     group.order = order or group.order
     return
   end
@@ -25,8 +30,10 @@ local function ensure_item_group(name, icon, icon_size, order)
     {
       type = "item-group",
       name = name,
-      icon = icon,
-      icon_size = icon_size,
+      icon = icon_data.icon,
+      icon_size = icon_data.icon_size,
+      icon_mipmaps = icon_data.icon_mipmaps,
+      icons = icon_data.icons,
       order = order,
     },
   })
@@ -78,12 +85,31 @@ local function set_orders(prototype_types, entries)
   end
 end
 
+local function purge_prototype(prototype_type, name)
+  local prototypes = data.raw[prototype_type]
+  if prototypes then
+    prototypes[name] = nil
+  end
+end
+
+local function purge_many(prototype_types, names)
+  for _, name in pairs(names) do
+    for _, prototype_type in pairs(prototype_types) do
+      purge_prototype(prototype_type, name)
+    end
+  end
+end
+
 local function move_science_pack(name)
   set_many_subgroups({ "tool", "item", "recipe" }, name, "fw-science-packs")
 end
 
 local function move_item_and_recipe(name, subgroup)
   set_many_subgroups({ "item", "tool", "capsule", "module", "ammo", "recipe" }, name, subgroup)
+end
+
+local function move_item(name, subgroup)
+  set_many_subgroups({ "item", "tool", "capsule", "module", "ammo" }, name, subgroup)
 end
 
 local function move_recipe(name, subgroup)
@@ -138,74 +164,25 @@ local function item_subgroup(name)
   return nil
 end
 
-ensure_item_group("fw-science", "__base__/graphics/icons/lab.png", 64, "z[fluxworks]-a[science]")
-ensure_item_group("fw-bioprocessing", "__space-age__/graphics/icons/biochamber.png", 64, "z[fluxworks]-b[bioprocessing]")
-ensure_item_group("fw-energy", "__space-age__/graphics/icons/fusion-power-cell.png", 64, "z[fluxworks]-c[energy]")
-ensure_item_group("fw-chemistry", "__Krastorio2Assets__/icons/fluids/chlorine.png", 64, "z[fluxworks]-d[chemistry]")
-ensure_item_group("fw-systems", "__FluxWorksAssets__/graphics/icons/items/fw-logic-matrix.png", 64, "z[fluxworks]-e[systems]")
-ensure_item_group("fw-fabrication", "__FluxWorksAssets__/graphics/icons/items/fw-foundry-lining.png", 1024, "z[fluxworks]-f[fabrication]")
-ensure_item_group("fw-flux", "__FluxWorksAssets__/graphics/icons/items/flux.png", 64, "z[fluxworks]-g[flux]")
+for _, item_group in ipairs(Layout.item_groups) do
+  ensure_item_group(item_group.name, item_group, item_group.order)
+end
 
-ensure_item_subgroup("fw-logistics-transport", "logistics", "a[fluxworks]-a[transport]")
-ensure_item_subgroup("fw-logistics-inserters", "logistics", "a[fluxworks]-b[inserters]")
-ensure_item_subgroup("fw-logistics-storage", "logistics", "a[fluxworks]-c[storage]")
-ensure_item_subgroup("fw-logistics-fluid-handling", "logistics", "a[fluxworks]-d[fluid-handling]")
-ensure_item_subgroup("fw-logistics-rail", "logistics", "a[fluxworks]-e[rail]")
-ensure_item_subgroup("fw-logistics-power", "logistics", "a[fluxworks]-f[power]")
-ensure_item_subgroup("fw-logistics-circuitry", "logistics", "a[fluxworks]-g[circuitry]")
-ensure_item_subgroup("fw-logistics-robotics", "logistics", "a[fluxworks]-h[robotics]")
-ensure_item_subgroup("fw-logistics-network", "logistics", "a[fluxworks]-i[network]")
-ensure_item_subgroup("fw-production-extraction", "production", "z[fluxworks]-9[extraction]")
-ensure_item_subgroup("fw-production-smelting", "production", "z[fluxworks]-a[smelting]")
-ensure_item_subgroup("fw-production-assembly", "production", "z[fluxworks]-b[assembly]")
-ensure_item_subgroup("fw-production-chemistry", "production", "z[fluxworks]-c[chemistry]")
-ensure_item_subgroup("fw-production-specialized", "production", "z[fluxworks]-d[specialized]")
-ensure_item_subgroup("fw-production-processing", "production", "z[fluxworks]-e[processing]")
+for _, subgroup in ipairs(Layout.subgroups) do
+  ensure_item_subgroup(subgroup.name, subgroup.group, subgroup.order)
+end
 
-ensure_item_subgroup("fw-science-packs", "fw-science", "z[fluxworks]-f[science]-a[packs]")
-ensure_item_subgroup("fw-science-labs", "fw-science", "z[fluxworks]-f[science]-b[labs]")
-ensure_item_subgroup("fw-science-facilities", "fw-science", "z[fluxworks]-f[science]-c[facilities]")
-ensure_item_subgroup("fw-bioprocessing-machines", "fw-bioprocessing", "z[fluxworks]-g[bioprocessing]-a[machines]")
-ensure_item_subgroup("fw-bioprocessing-products", "fw-bioprocessing", "z[fluxworks]-g[bioprocessing]-b[products]")
-ensure_item_subgroup("fw-bioprocessing-processes", "fw-bioprocessing", "z[fluxworks]-g[bioprocessing]-c[processes]")
-ensure_item_subgroup("fw-energy-generation", "fw-energy", "z[fluxworks]-h[energy]-a[generation]")
-ensure_item_subgroup("fw-energy-storage", "fw-energy", "z[fluxworks]-h[energy]-b[storage]")
-ensure_item_subgroup("fw-energy-reactors", "fw-energy", "z[fluxworks]-h[energy]-c[reactors]")
-ensure_item_subgroup("fw-energy-fuels", "fw-energy", "z[fluxworks]-h[energy]-d[fuels]")
-ensure_item_subgroup("fw-chemistry-machines", "fw-chemistry", "z[fluxworks]-i[chemistry]-a[machines]")
-ensure_item_subgroup("fw-chemistry-feedstocks", "fw-chemistry", "z[fluxworks]-i[chemistry]-b[feedstocks]")
-ensure_item_subgroup("fw-chemistry-polymers", "fw-chemistry", "z[fluxworks]-i[chemistry]-c[polymers]")
-ensure_item_subgroup("fw-chemistry-reactives", "fw-chemistry", "z[fluxworks]-i[chemistry]-d[reactives]")
-ensure_item_subgroup("fw-chemistry-fluids", "fw-chemistry", "z[fluxworks]-i[chemistry]-e[fluids]")
-ensure_item_subgroup("fw-chemistry-petrochem", "fw-chemistry", "z[fluxworks]-i[chemistry]-f[petrochem]")
-ensure_item_subgroup("fw-chemistry-advanced", "fw-chemistry", "z[fluxworks]-i[chemistry]-g[advanced]")
-ensure_item_subgroup("fw-chemistry-barrels", "fw-chemistry", "z[fluxworks]-i[chemistry]-h[barrels]")
-ensure_item_subgroup("fw-chemistry-materials", "fw-chemistry", "z[fluxworks]-i[chemistry]-i[materials]")
-ensure_item_subgroup("fw-chemistry-processes", "fw-chemistry", "z[fluxworks]-i[chemistry]-j[processes]")
-ensure_item_subgroup("fw-systems-machines", "fw-systems", "z[fluxworks]-j[systems]-a[machines]")
-ensure_item_subgroup("fw-systems-control", "fw-systems", "z[fluxworks]-j[systems]-b[control]")
-ensure_item_subgroup("fw-systems-instrumentation", "fw-systems", "z[fluxworks]-j[systems]-c[instrumentation]")
-ensure_item_subgroup("fw-systems-infrastructure", "fw-systems", "z[fluxworks]-j[systems]-d[infrastructure]")
-ensure_item_subgroup("fw-fabrication-machines", "fw-fabrication", "z[fluxworks]-k[fabrication]-a[machines]")
-ensure_item_subgroup("fw-intermediate-structural", "fw-fabrication", "z[fluxworks]-k[fabrication]-b[structural]")
-ensure_item_subgroup("fw-intermediate-electrical", "fw-fabrication", "z[fluxworks]-k[fabrication]-c[electrical]")
-ensure_item_subgroup("fw-intermediate-precision", "fw-fabrication", "z[fluxworks]-k[fabrication]-d[precision]")
-ensure_item_subgroup("fw-intermediate-ballistic", "fw-fabrication", "z[fluxworks]-k[fabrication]-e[ballistic]")
-ensure_item_subgroup("fw-intermediate-aerospace", "fw-fabrication", "z[fluxworks]-k[fabrication]-f[aerospace]")
-ensure_item_subgroup("fw-fabrication-components", "fw-fabrication", "z[fluxworks]-k[fabrication]-g[general]")
-ensure_item_subgroup("fw-flux-machines", "fw-flux", "z[fluxworks]-l[flux]-a[machines]")
-ensure_item_subgroup("fw-flux-resources", "fw-flux", "z[fluxworks]-l[flux]-b[resources]")
-ensure_item_subgroup("fw-flux-systems", "fw-flux", "z[fluxworks]-l[flux]-c[systems]")
-ensure_item_subgroup("fw-flux-purple", "fw-flux", "z[fluxworks]-l[flux]-d[purple]")
-ensure_item_subgroup("fw-flux-yellow", "fw-flux", "z[fluxworks]-l[flux]-e[yellow]")
-ensure_item_subgroup("fw-flux-red", "fw-flux", "z[fluxworks]-l[flux]-f[red]")
-ensure_item_subgroup("fw-flux-green", "fw-flux", "z[fluxworks]-l[flux]-g[green]")
-ensure_item_subgroup("fw-transmutation-upcycle", "fw-flux", "z[fluxworks]-l[flux]-h[transmutation]-a[upcycle]")
-ensure_item_subgroup("fw-transmutation-downcycle", "fw-flux", "z[fluxworks]-l[flux]-i[transmutation]-b[downcycle]")
-ensure_item_subgroup("fw-flux-condensing-core", "fw-flux", "z[fluxworks]-l[flux]-j[condensing]-a[core]")
-ensure_item_subgroup("fw-flux-condensing-promethium", "fw-flux", "z[fluxworks]-l[flux]-k[condensing]-b[promethium]")
-ensure_item_subgroup("fw-flux-exchange", "fw-flux", "z[fluxworks]-l[flux]-l[exchange]")
-ensure_item_subgroup("fw-flux-origin-projects", "fw-flux", "z[fluxworks]-l[flux]-m[origin-projects]")
+purge_many({ "tool", "item", "recipe" }, {
+  "fw-fabrication-science-pack",
+  "fw-transport-science-pack",
+  "fw-combustion-science-pack",
+  "fw-solution-science-pack",
+  "fw-instrumentation-science-pack",
+})
+
+purge_many({ "item-subgroup" }, {
+  "fw-science-facilities",
+})
 
 if organize_science then
   for _, name in pairs({
@@ -250,6 +227,7 @@ if organize_science then
   })
 end
 
+if organize_logistics then
 for _, name in pairs({
   "transport-belt",
   "fast-transport-belt",
@@ -480,6 +458,7 @@ for _, entry in pairs({
   set_order("item", entry[1], entry[2])
   set_order("recipe", entry[1], entry[2])
 end
+end
 
 for _, name in pairs({
   "fw-rift-exchange-gate",
@@ -500,6 +479,7 @@ move_item_and_recipe("fw-origin-singularity", "fw-flux-origin-projects")
 set_order("item", "fw-origin-singularity", "z[origin]-z[origin-singularity]")
 set_order("recipe", "fw-origin-singularity", "z[origin]-z[origin-singularity]")
 
+if organize_production then
 for _, name in pairs({
   "burner-mining-drill",
   "electric-mining-drill",
@@ -509,7 +489,7 @@ for _, name in pairs({
   "fw-flux-quarry",
   "fw-flux-harvester",
 }) do
-  move_item_and_recipe(name, "fw-production-extraction")
+  move_item_and_recipe(name, "fw-production-assembly")
 end
 
 for _, entry in pairs({
@@ -532,7 +512,7 @@ for _, name in pairs({
   "foundry",
   "fw-arc-foundry",
 }) do
-  move_item_and_recipe(name, "fw-production-smelting")
+  move_item_and_recipe(name, "fw-production-assembly")
 end
 
 for _, entry in pairs({
@@ -579,7 +559,7 @@ for _, name in pairs({
   "fw-petrochemical-facility",
   "fw-hydraulic-plant",
 }) do
-  move_item_and_recipe(name, "fw-production-chemistry")
+  move_item_and_recipe(name, "fw-production-assembly")
 end
 
 for _, entry in pairs({
@@ -598,7 +578,7 @@ for _, name in pairs({
   "centrifuge",
   "recycler",
 }) do
-  move_item_and_recipe(name, "fw-production-specialized")
+  move_item_and_recipe(name, "fw-production-assembly")
 end
 
 for _, entry in pairs({
@@ -609,6 +589,7 @@ for _, entry in pairs({
 }) do
   set_order("item", entry[1], entry[2])
   set_order("recipe", entry[1], entry[2])
+end
 end
 
 if organize_bioprocessing then
@@ -636,7 +617,6 @@ if organize_bioprocessing then
   "pentapod-egg",
   "raw-fish",
   "fw-nutrient-bed",
-  "fw-spore-filter",
   "fw-gleba-spore-resin",
   "artificial-yumako-soil",
   "overgrowth-yumako-soil",
@@ -700,8 +680,7 @@ if organize_bioprocessing then
     { "spoilage", "e[biomass]-c[spoilage]" },
     { "raw-fish", "e[biomass]-d[raw-fish]" },
     { "fw-nutrient-bed", "f[substrates]-a[nutrient-bed]" },
-    { "fw-spore-filter", "f[substrates]-b[spore-filter]" },
-    { "fw-gleba-spore-resin", "f[substrates]-c[gleba-spore-resin]" },
+    { "fw-gleba-spore-resin", "f[substrates]-b[gleba-spore-resin]" },
     { "copper-bacteria", "g[cultures]-a[copper-bacteria]" },
     { "iron-bacteria", "g[cultures]-b[iron-bacteria]" },
     { "biter-egg", "g[cultures]-c[biter-egg]" },
@@ -737,6 +716,16 @@ if organize_bioprocessing then
     { "fw-green-flux-bioflux-cultivation", "i[flux-culture]-a[bioflux-cultivation]" },
     { "fw-green-flux-biolubricant-bloom", "i[flux-culture]-b[biolubricant-bloom]" },
   })
+
+  move_item("fw-nutrient-bed", "fw-bioprocessing-products")
+  move_item("fw-gleba-spore-resin", "fw-bioprocessing-products")
+  move_recipe("fw-nutrient-bed", "fw-bioprocessing-processes")
+  move_recipe("fw-gleba-spore-resin", "fw-bioprocessing-processes")
+
+  set_order("item", "fw-nutrient-bed", "g[materials]-d[nutrient-bed]")
+  set_order("item", "fw-gleba-spore-resin", "g[materials]-e[gleba-spore-resin]")
+  set_order("recipe", "fw-nutrient-bed", "g[materials]-d[nutrient-bed]")
+  set_order("recipe", "fw-gleba-spore-resin", "g[materials]-e[gleba-spore-resin]")
 end
 
 if organize_energy then
@@ -767,7 +756,6 @@ if organize_energy then
     "fw-control-rod-assembly",
     "fw-reactor-coolant-cartridge",
     "fw-reactor-dopant",
-    "fw-reactor-instrument-cluster",
     "fw-recovered-actinides",
   }) do
     move_item_and_recipe(name, "fw-energy-reactors")
@@ -817,7 +805,6 @@ if organize_energy then
     { "fw-control-rod-assembly", "b[core-parts]-c[control-rod-assembly]" },
     { "fw-reactor-coolant-cartridge", "c[control]-a[reactor-coolant-cartridge]" },
     { "fw-reactor-dopant", "c[control]-b[reactor-dopant]" },
-    { "fw-reactor-instrument-cluster", "c[control]-c[reactor-instrument-cluster]" },
     { "fw-recovered-actinides", "d[recovery]-a[recovered-actinides]" },
   })
 
@@ -850,11 +837,10 @@ if organize_chemistry then
 
   for _, name in pairs({
     "fw-resin",
-    "fw-rubber-sheet",
-    "plastic-bar",
-    "fw-polymer-binder",
     "fw-chlorinated-binder-stock",
     "fw-elastomer-matrix",
+    "fw-rubber-sheet",
+    "plastic-bar",
   }) do
     set_subgroup("item", name, "fw-chemistry-polymers")
   end
@@ -862,7 +848,6 @@ if organize_chemistry then
   for _, name in pairs({
     "explosives",
     "battery",
-    "fw-reactive-column",
   }) do
     set_subgroup("item", name, "fw-chemistry-reactives")
   end
@@ -895,6 +880,8 @@ if organize_chemistry then
   for _, name in pairs({
     "fw-latex-polymerization",
     "fw-resin-polymerization",
+    "fw-chlorinated-binder-stock",
+    "fw-elastomer-matrix",
     "fw-sulfur-bonding",
     "fw-rubber-vulcanization",
     "fw-rubber-sheet",
@@ -989,14 +976,12 @@ if organize_chemistry then
     { "sulfur", "a[feedstocks]-e[sulfur]" },
     { "lithium", "a[feedstocks]-f[lithium]" },
     { "fw-resin", "b[polymers]-a[resin]" },
-    { "plastic-bar", "b[polymers]-b[plastic]" },
-    { "fw-rubber-sheet", "b[polymers]-c[rubber-sheet]" },
-    { "fw-polymer-binder", "b[polymers]-d[polymer-binder]" },
-    { "fw-chlorinated-binder-stock", "b[polymers]-e[chlorinated-binder-stock]" },
-    { "fw-elastomer-matrix", "b[polymers]-f[elastomer-matrix]" },
+    { "fw-chlorinated-binder-stock", "b[polymers]-b[chlorinated-binder-stock]" },
+    { "fw-elastomer-matrix", "b[polymers]-c[elastomer-matrix]" },
+    { "plastic-bar", "b[polymers]-d[plastic]" },
+    { "fw-rubber-sheet", "b[polymers]-e[rubber-sheet]" },
     { "explosives", "c[energetics]-a[explosives]" },
     { "battery", "c[energetics]-b[battery]" },
-    { "fw-reactive-column", "c[energetics]-c[reactive-column]" },
   })
 
   set_orders({ "fluid" }, {
@@ -1037,10 +1022,12 @@ if organize_chemistry then
     { "coal-synthesis", "a[feedstocks]-g[coal-synthesis]" },
     { "fw-latex-polymerization", "b[polymers]-a[latex-polymerization]" },
     { "fw-resin-polymerization", "b[polymers]-b[resin-polymerization]" },
-    { "fw-sulfur-bonding", "b[polymers]-c[sulfur-bonding]" },
-    { "fw-rubber-vulcanization", "b[polymers]-d[rubber-vulcanization]" },
-    { "fw-rubber-sheet", "b[polymers]-e[rubber-sheet]" },
-    { "plastic-bar", "b[polymers]-f[plastic-bar]" },
+    { "fw-chlorinated-binder-stock", "b[polymers]-c[chlorinated-binder-stock]" },
+    { "fw-elastomer-matrix", "b[polymers]-d[elastomer-matrix]" },
+    { "fw-sulfur-bonding", "b[polymers]-e[sulfur-bonding]" },
+    { "fw-rubber-vulcanization", "b[polymers]-f[rubber-vulcanization]" },
+    { "fw-rubber-sheet", "b[polymers]-g[rubber-sheet]" },
+    { "plastic-bar", "b[polymers]-h[plastic-bar]" },
     { "fw-gunpowder-early", "c[reactives]-a[gunpowder-early]" },
     { "fw-gunpowder", "c[reactives]-b[gunpowder]" },
     { "explosives", "c[reactives]-c[explosives]" },
@@ -1089,17 +1076,13 @@ if organize_systems then
     "fw-field-winding",
     "fw-flow-regulator",
     "fw-logic-matrix",
-    "fw-servo-valve",
     "fw-hydraulic-manifold",
-    "fw-hydraulic-core",
-    "fw-quantum-spindle",
   }) do
     move_item_and_recipe(name, "fw-systems-control")
   end
 
   for _, name in pairs({
     "fw-lens-array",
-    "fw-sensor-diode",
     "fw-sensor-package",
     "fw-memory-die",
     "fw-transformer-core",
@@ -1138,17 +1121,13 @@ if organize_systems then
     { "fw-power-regulator", "a[control]-b[power-regulator]" },
     { "fw-field-winding", "a[control]-c[field-winding]" },
     { "fw-flow-regulator", "b[fluid-control]-a[flow-regulator]" },
-    { "fw-servo-valve", "b[fluid-control]-b[servo-valve]" },
-    { "fw-hydraulic-manifold", "b[fluid-control]-c[hydraulic-manifold]" },
-    { "fw-hydraulic-core", "b[fluid-control]-d[hydraulic-core]" },
+    { "fw-hydraulic-manifold", "b[fluid-control]-b[hydraulic-manifold]" },
     { "fw-logic-matrix", "c[logic]-a[logic-matrix]" },
-    { "fw-quantum-spindle", "c[logic]-b[quantum-spindle]" },
   })
 
   set_orders({ "item", "recipe" }, {
     { "fw-lens-array", "a[sensors]-a[lens-array]" },
-    { "fw-sensor-diode", "a[sensors]-b[sensor-diode]" },
-    { "fw-sensor-package", "a[sensors]-c[sensor-package]" },
+    { "fw-sensor-package", "a[sensors]-b[sensor-package]" },
     { "fw-transformer-core", "b[field-hardware]-a[transformer-core]" },
     { "fw-em-core", "b[field-hardware]-b[em-core]" },
     { "fw-memory-die", "c[logic-media]-a[memory-die]" },
@@ -1224,9 +1203,7 @@ if organize_fabrication then
     "fw-ceramic-casing",
     "fw-pressure-housing",
     "fw-foundry-lining",
-    "fw-smelter-array",
     "fw-reinforced-seal",
-    "fw-hydraulic-actuator",
     "fw-radioactive-scrap",
   }) do
     move_item_and_recipe(name, "fw-intermediate-structural")
@@ -1237,9 +1214,7 @@ if organize_fabrication then
     { "fw-ceramic-casing", "a[ceramics]-b[ceramic-casing]" },
     { "fw-pressure-housing", "b[housings]-a[pressure-housing]" },
     { "fw-foundry-lining", "b[housings]-b[foundry-lining]" },
-    { "fw-smelter-array", "b[housings]-c[smelter-array]" },
     { "fw-reinforced-seal", "c[hydraulics]-a[reinforced-seal]" },
-    { "fw-hydraulic-actuator", "c[hydraulics]-b[hydraulic-actuator]" },
     { "fw-radioactive-scrap", "d[recovery]-a[radioactive-scrap]" },
   }) do
     set_order("item", entry[1], entry[2])
@@ -1277,10 +1252,16 @@ if organize_fabrication then
   for _, entry in pairs({
     { "fw-radioactive-scrap-sorting", "a[recovery]-a[radioactive-scrap-sorting]" },
     { "fw-isotope-recovery", "a[recovery]-b[isotope-recovery]" },
+    { "fw-actinide-matrix-seeding", "a[recovery]-c[actinide-matrix-seeding]" },
+    { "fw-scrap-lattice-recasting", "a[recovery]-d[scrap-lattice-recasting]" },
+    { "fw-actinide-dopant-refining", "a[recovery]-e[actinide-dopant-refining]" },
   }) do
     move_recipe(entry[1], "fw-fabrication-components")
     set_order("recipe", entry[1], entry[2])
   end
+
+  move_recipe("fw-pellet-bundle-reprocessing", "fw-energy-fuels")
+  set_order("recipe", "fw-pellet-bundle-reprocessing", "d[reactor-fuels]-d[pellet-bundle-reprocessing]")
 end
 
 -- Orbital salvage parts read better beside the Space Age platform chain
@@ -1295,41 +1276,16 @@ for _, entry in pairs({
   { "casting-pipe", "c[foundry-casting]-a[casting-pipe]" },
   { "casting-pipe-to-ground", "c[foundry-casting]-b[casting-pipe-to-ground]" },
 }) do
-  move_recipe(entry[1], "fw-production-smelting")
+  move_recipe(entry[1], "fw-production-assembly")
   set_order("recipe", entry[1], entry[2])
 end
 
 for _, name in pairs({
-  "fw-loader-frame",
-  "fw-pressure-vessel",
-  "fw-logistic-relay",
-  "fw-bulk-router",
-}) do
-  move_item_and_recipe(name, "fw-fabrication-components")
-end
-
-for _, entry in pairs({
-  { "fw-loader-frame", "e[branch]-a[loader-frame]" },
-  { "fw-pressure-vessel", "e[branch]-b[pressure-vessel]" },
-  { "fw-logistic-relay", "e[branch]-c[logistic-relay]" },
-  { "fw-bulk-router", "e[branch]-d[bulk-router]" },
-}) do
-  set_order("item", entry[1], entry[2])
-  set_order("recipe", entry[1], entry[2])
-end
-
-for _, name in pairs({
-  "fw-polymer-binder",
-  "fw-chlorinated-binder-stock",
-  "fw-elastomer-matrix",
 }) do
   move_item_and_recipe(name, "fw-chemistry-polymers")
 end
 
 for _, entry in pairs({
-  { "fw-polymer-binder", "d[synthetics]-a[polymer-binder]" },
-  { "fw-chlorinated-binder-stock", "d[synthetics]-b[chlorinated-binder-stock]" },
-  { "fw-elastomer-matrix", "d[synthetics]-c[elastomer-matrix]" },
 }) do
   set_order("item", entry[1], entry[2])
   set_order("recipe", entry[1], entry[2])
@@ -1343,9 +1299,10 @@ if organize_flux then
   end
 
   for _, name in pairs({
-    "fw-phase-anchor",
-    "fw-entanglement-core",
-    "fw-reservoir-lining",
+  "fw-model-lattice",
+  "fw-phase-anchor",
+  "fw-entanglement-core",
+  "fw-reservoir-lining",
   "fw-compression-baffle",
   "fw-thermal-phase-gasket",
   }) do
@@ -1373,6 +1330,7 @@ if organize_flux then
   "fw-harvester-head",
   "fw-annealed-cermet",
   "fw-resonance-substrate",
+  "fw-quantum-computer",
   "fw-condensed-flux-matrix",
   "fw-flux-resonance-cell",
   "fw-flux-phase-manifold",
@@ -1387,7 +1345,6 @@ if organize_flux then
     move_item_and_recipe(name, "fw-flux-condensing-core")
   end
   for _, name in pairs({
-  "fw-promethium-primer",
   "fw-promethium-matrix",
   "fw-rift-stabilizer",
   }) do
@@ -1398,7 +1355,6 @@ if organize_flux then
   move_recipe("fw-rift-seed-crystallization", "fw-flux-systems")
   move_recipe("fw-condensed-flux-matrix", "fw-flux-condensing-core")
   move_recipe("fw-flux-phase-manifold", "fw-flux-condensing-core")
-  move_recipe("fw-promethium-primer", "fw-flux-condensing-promethium")
   move_recipe("fw-promethium-matrix", "fw-flux-condensing-promethium")
   move_recipe("fw-rift-stabilizer", "fw-flux-condensing-promethium")
 
@@ -1412,6 +1368,7 @@ if organize_flux then
     { "fw-annealed-cermet", "c[infrastructure]-b[annealed-cermet]" },
     { "fw-condensed-flux-matrix", "d[condensing]-a[condensed-flux-matrix]" },
     { "fw-flux-phase-manifold", "d[condensing]-b[flux-phase-manifold]" },
+    { "fw-quantum-computer", "d[condensing]-c[quantum-computer]" },
     { "fw-arc-insulator-vitrification", "e[processing]-a[arc-insulator-vitrification]" },
     { "fw-flux-asteroid-refining", "e[processing]-b[flux-asteroid-refining]" },
     { "fw-flux-metallic-synthesis", "e[processing]-c[flux-metallic-synthesis]" },
@@ -1424,6 +1381,7 @@ if organize_flux then
     { "fw-reservoir-lining", "a[exchange-components]-c[reservoir-lining]" },
     { "fw-compression-baffle", "a[exchange-components]-d[compression-baffle]" },
     { "fw-thermal-phase-gasket", "a[exchange-components]-e[thermal-phase-gasket]" },
+    { "fw-model-lattice", "a[exchange-components]-f[model-lattice]" },
     { "fw-rift-coupler", "b[exchange-systems]-a[rift-coupler]" },
   })
 

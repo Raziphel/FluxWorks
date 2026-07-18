@@ -1,5 +1,6 @@
 local resource_autoplace = require("__core__.lualib.resource-autoplace")
 local item_sounds = require("__base__.prototypes.item_sounds")
+local Startup = require("prototypes.lib.startup-settings")
 
 local ORE_RARITY = {
   ["fw-lead-ore"] =     { base_density = 7.4, base_spots_per_km2 = 1.8,  starting = true,  regular_rq = 1.45, starting_rq = 1.95 },
@@ -22,6 +23,38 @@ local CARBONIC_DEPOSIT_TINT = { r = 0.18, g = 0.19, b = 0.22, a = 1 }
 local PROMETHIUM_IMPACT_TINT = { r = 0.86, g = 0.58, b = 1.00, a = 1 }
 local SILICA_VEIN_TINT = { r = 0.48, g = 0.78, b = 1.00, a = 1 }
 local NO_TINT = { r = 1, g = 1, b = 1, a = 1 }
+local WORLDGEN_PROFILES = {
+  sparse = { density = 0.72, spots = 0.78, richness = 0.86, additional = 0.82, rq = 0.94 },
+  standard = { density = 1.00, spots = 1.00, richness = 1.00, additional = 1.00, rq = 1.00 },
+  abundant = { density = 1.28, spots = 1.20, richness = 1.16, additional = 1.18, rq = 1.06 },
+}
+
+local function worldgen_profile(name)
+  local value = Startup.value(name, "standard")
+  if WORLDGEN_PROFILES[value] then
+    return value
+  end
+  return "standard"
+end
+
+local function scaled_autoplace(settings_name, params)
+  local profile = WORLDGEN_PROFILES[worldgen_profile(settings_name)] or WORLDGEN_PROFILES.standard
+  local scaled = table.deepcopy(params)
+  scaled.base_density = scaled.base_density * profile.density
+  scaled.base_spots_per_km2 = scaled.base_spots_per_km2 * profile.spots
+  if scaled.richness_multiplier then
+    scaled.richness_multiplier = scaled.richness_multiplier * profile.richness
+  end
+  if scaled.richness_post_multiplier then
+    scaled.richness_post_multiplier = scaled.richness_post_multiplier * profile.richness
+  end
+  if scaled.additional_richness then
+    scaled.additional_richness = math.max(1, math.floor((scaled.additional_richness * profile.additional) + 0.5))
+  end
+  scaled.regular_rq_factor_multiplier = scaled.regular_rq_factor_multiplier * profile.rq
+  scaled.starting_rq_factor_multiplier = scaled.starting_rq_factor_multiplier * profile.rq
+  return resource_autoplace.resource_autoplace_settings(scaled)
+end
 
 -- Reuse stone particles and tint them white so salt mining reads clearly.
 local salt_particle = table.deepcopy(data.raw["optimized-particle"]["stone-particle"])
@@ -61,7 +94,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
+    autoplace = scaled_autoplace("fw-worldgen-titanium-ore-profile", {
       name = "fw-titanium-ore",
       order = "a-t",
       base_density = ORE_RARITY["fw-titanium-ore"].base_density,
@@ -117,7 +150,7 @@ data:extend({
     minable = { mining_time = 1, result = "lead-ore" },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
+    autoplace = scaled_autoplace("fw-worldgen-lead-ore-profile", {
       name = "fw-lead-ore",
       order = "a-l",
       base_density = ORE_RARITY["fw-lead-ore"].base_density,
@@ -177,7 +210,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
+    autoplace = scaled_autoplace("fw-worldgen-bauxite-ore-profile", {
       name = "fw-bauxite-ore",
       order = "a-b",
       base_density = ORE_RARITY["fw-bauxite-ore"].base_density,
@@ -237,7 +270,7 @@ data:extend({
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
     autoplace = (function()
-      local autoplace = resource_autoplace.resource_autoplace_settings({
+      local autoplace = scaled_autoplace("fw-worldgen-salt-profile", {
         name = "fw-salt",
         order = "a-s",
         base_density = ORE_RARITY["fw-salt"].base_density,
@@ -340,7 +373,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
+    autoplace = scaled_autoplace("fw-worldgen-silica-vein-profile", {
       name = "fw-silica-vein",
       order = "a-v",
       base_density = 5.2,
@@ -392,7 +425,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
+    autoplace = scaled_autoplace("fw-worldgen-metallic-deposit-profile", {
       name = "fw-metallic-deposit",
       order = "a-m",
       base_density = 12.0,
@@ -407,13 +440,13 @@ data:extend({
     stage_counts = { 28000, 17000, 10000, 5600, 2500, 900, 280, 120 },
     stages = {
       sheet = {
-        filename = mixed_deposit_path .. "metallic-deposit-sheet.png",
+        filename = "__base__/graphics/entity/iron-ore/iron-ore.png",
         priority = "extra-high",
         size = 128,
         frame_count = 8,
         variation_count = 8,
         scale = 0.5,
-        tint = METALLIC_DEPOSIT_TINT,
+        tint = NO_TINT,
       },
     },
   },
@@ -435,7 +468,7 @@ data:extend({
     },
     flags = { "placeable-neutral" },
     order = "a-b-c",
-    map_color = { r = 0.86, g = 0.80, b = 0.72 },
+    map_color = { r = 0.66, g = 0.62, b = 0.58 },
     minable = {
       mining_time = 1.8,
       required_fluid = "water",
@@ -449,7 +482,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
+    autoplace = scaled_autoplace("fw-worldgen-mineral-deposit-profile", {
       name = "fw-mineral-deposit",
       order = "a-n",
       base_density = 6.6,
@@ -464,13 +497,13 @@ data:extend({
     stage_counts = { 26000, 15500, 9200, 5200, 2300, 820, 260, 110 },
     stages = {
       sheet = {
-        filename = mixed_deposit_path .. "mineral-deposit-sheet.png",
+        filename = "__base__/graphics/entity/stone/stone.png",
         priority = "extra-high",
         size = 128,
         frame_count = 8,
         variation_count = 8,
         scale = 0.5,
-        tint = MINERAL_DEPOSIT_TINT,
+        tint = { r = 0.74, g = 0.70, b = 0.64, a = 1 },
       },
     },
   },
@@ -503,7 +536,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = resource_autoplace.resource_autoplace_settings({
+    autoplace = scaled_autoplace("fw-worldgen-carbonic-deposit-profile", {
       name = "fw-carbonic-deposit",
       order = "a-o",
       base_density = 7.8,
@@ -530,7 +563,7 @@ data:extend({
   },
 })
 
-if data.raw.item["promethium-asteroid-chunk"] then
+if data.raw.item["promethium-asteroid-chunk"] and Startup.enabled("fw-worldgen-enable-promethium-impacts", true) then
   data:extend({
     {
       type = "autoplace-control",
@@ -559,7 +592,7 @@ if data.raw.item["promethium-asteroid-chunk"] then
       collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
       selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
       autoplace = (function()
-        return resource_autoplace.resource_autoplace_settings({
+        return scaled_autoplace("fw-worldgen-promethium-impact-profile", {
           name = "fw-promethium-impact",
           order = "a-p",
           base_density = 0.20,
@@ -634,8 +667,10 @@ override_ore_item_icon("carbon-ore", "fw-bz-carbon-ore.png", 128)
 override_ore_item_icon("bauxite-ore", "fw-bauxite-ore.png", 64)
 
 -- Disable legacy standalone ore worldgen so Nauvis stays focused on mixed deposits.
-for _, legacy_resource in pairs({ "fw-lead-ore", "fw-bauxite-ore", "fw-titanium-ore" }) do
-  if data.raw.resource[legacy_resource] then
-    data.raw.resource[legacy_resource].autoplace = nil
+if not Startup.enabled("fw-worldgen-enable-legacy-standalone-ores", false) then
+  for _, legacy_resource in pairs({ "fw-lead-ore", "fw-bauxite-ore", "fw-titanium-ore" }) do
+    if data.raw.resource[legacy_resource] then
+      data.raw.resource[legacy_resource].autoplace = nil
+    end
   end
 end

@@ -248,13 +248,15 @@ simulations.fw_synthesis_plant = make_recipe_machine_simulation({
 
 simulations.fw_flux_condenser = make_recipe_machine_simulation({
   machine_name = "fw-flux-condenser",
-  recipe_name = "fw-promethium-primer",
+  recipe_name = "fw-promethium-matrix",
   tile_name = "black-refined-concrete",
   zoom = 0.82,
   camera_y = 0.3,
   items = {
-    { name = "fw-promethium-shard", count = 18 },
+    { name = "fw-promethium-shard", count = 24 },
     { name = "fw-stabilized-flux-crystal", count = 4 },
+    { name = "fw-lens-array", count = 4 },
+    { name = "fw-signal-conduit", count = 4 },
     { name = "fw-flux-resonance-cell", count = 4 },
     { name = "fw-aquilo-cryogel", count = 4 },
     { name = "fw-gleba-spore-resin", count = 4 },
@@ -276,7 +278,7 @@ simulations.fw_flux_condenser = make_recipe_machine_simulation({
 
 simulations.fw_petrochemical_facility = make_recipe_machine_simulation({
   machine_name = "fw-petrochemical-facility",
-  recipe_name = "fw-polymer-binder",
+  recipe_name = "fw-reinforced-seal",
   tile_name = "refined-concrete",
   zoom = 0.78,
   camera_y = 0.2,
@@ -304,8 +306,8 @@ simulations.fw_hydraulic_plant = make_recipe_machine_simulation({
   zoom = 0.9,
   camera_y = 0.1,
   items = {
-    { name = "fw-servo-valve", count = 10 },
-    { name = "fw-hydraulic-actuator", count = 10 },
+    { name = "fw-flow-regulator", count = 10 },
+    { name = "fw-pressure-housing", count = 10 },
     { name = "fw-copper-tube", count = 20 },
     { name = "fw-reinforced-seal", count = 10 },
     { name = "fw-capacitor", count = 10 },
@@ -424,7 +426,6 @@ simulations.fw_flux_convergence = make_recipe_machine_simulation({
   items = {
     { name = "fw-flux-phase-manifold", count = 4 },
     { name = "fw-promethium-matrix", count = 4 },
-    { name = "fw-promethium-primer", count = 4 },
     { name = "fw-resonance-substrate", count = 4 },
     { name = "fw-logic-matrix", count = 4 },
     { name = "fw-signal-conduit", count = 8 },
@@ -536,9 +537,9 @@ simulations.fw_tip_synthesis_cloning = make_story_focus_simulation({
     'local synth = game.surfaces[1].create_entity{name = "fw-synthesis-plant", position = {-4, 0}, force = "player"}',
     'local condenser = game.surfaces[1].create_entity{name = "fw-flux-condenser", position = {4, 0}, force = "player"}',
     'game.forces.player.recipes["fw-condensed-flux-matrix"].enabled = true',
-    'game.forces.player.recipes["fw-promethium-primer"].enabled = true',
+    'game.forces.player.recipes["fw-promethium-matrix"].enabled = true',
     'synth.set_recipe("fw-condensed-flux-matrix")',
-    'condenser.set_recipe("fw-promethium-primer")',
+    'condenser.set_recipe("fw-promethium-matrix")',
     'synth.insert{name = "fw-stabilized-flux-crystal", count = 20}',
     'synth.insert{name = "fw-flux-lattice", count = 6}',
     'synth.insert{name = "fw-flux-catalyst", count = 4}',
@@ -561,6 +562,102 @@ simulations.fw_tip_synthesis_cloning = make_story_focus_simulation({
     { x = -4, y = 0, hold = 1.75 },
     { x = 4, y = 0, hold = 1.75 },
     { x = 0, y = 0, hold = 1.0 },
+  },
+})
+
+simulations.fw_phase_vault = make_story_focus_simulation({
+  zoom = 0.82,
+  camera_y = 0.3,
+  player_y = 5.5,
+  setup_lines = {
+    "for x = -8, 8 do",
+    "  for y = -8, 8 do",
+    '    game.surfaces[1].set_tiles{{position = {x, y}, name = "refined-concrete"}}',
+    "  end",
+    "end",
+    'game.surfaces[1].create_entity{name = "substation", position = {4, -3}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "stack-inserter", position = {-2, 0}, direction = defines.direction.east, force = "player"}',
+    'game.surfaces[1].create_entity{name = "stack-inserter", position = {2, 0}, direction = defines.direction.west, force = "player"}',
+    'game.surfaces[1].create_entity{name = "steel-chest", position = {-3, 0}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "steel-chest", position = {3, 0}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "fw-phase-vault", position = {0, 0}, force = "player"}',
+  },
+  focuses = {
+    { x = 0, y = 0, hold = 1.9 },
+    { x = -3, y = 0, hold = 1.2 },
+    { x = 3, y = 0, hold = 1.2 },
+  },
+})
+
+simulations.fw_spectral_reservoir = make_story_focus_simulation({
+  zoom = 0.9,
+  camera_y = 0.2,
+  player_y = 5,
+  setup_lines = {
+    "for x = -8, 8 do",
+    "  for y = -8, 8 do",
+    '    game.surfaces[1].set_tiles{{position = {x, y}, name = "blue-refined-concrete"}}',
+    "  end",
+    "end",
+    'game.surfaces[1].create_entity{name = "substation", position = {4, -3}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "pipe", position = {0, -2}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "pipe", position = {0, 2}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "pipe", position = {-2, 0}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "pipe", position = {2, 0}, force = "player"}',
+    'local reservoir = game.surfaces[1].create_entity{name = "fw-spectral-reservoir", position = {0, 0}, force = "player"}',
+    'reservoir.insert_fluid{name = "fw-green-flux", amount = 90000}',
+  },
+  focuses = {
+    { x = 0, y = 0, hold = 1.9 },
+    { x = 0, y = -2, hold = 1.1 },
+    { x = 2, y = 0, hold = 1.1 },
+  },
+})
+
+simulations.fw_rift_exchange_gate = make_story_focus_simulation({
+  zoom = 0.48,
+  camera_y = -0.1,
+  player_y = 7.5,
+  setup_lines = {
+    "for x = -14, 14 do",
+    "  for y = -14, 14 do",
+    '    game.surfaces[1].set_tiles{{position = {x, y}, name = "black-refined-concrete"}}',
+    "  end",
+    "end",
+    'game.surfaces[1].create_entity{name = "substation", position = {6, -5}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "stack-inserter", position = {-5.5, 0}, direction = defines.direction.east, force = "player"}',
+    'game.surfaces[1].create_entity{name = "stack-inserter", position = {5.5, 0}, direction = defines.direction.west, force = "player"}',
+    'game.surfaces[1].create_entity{name = "steel-chest", position = {-7, 0}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "steel-chest", position = {7, 0}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "fw-rift-exchange-gate", position = {0, 0}, force = "player"}',
+  },
+  focuses = {
+    { x = 0, y = 0, hold = 2.1 },
+    { x = -7, y = 0, hold = 1.2 },
+    { x = 7, y = 0, hold = 1.2 },
+  },
+})
+
+simulations.fw_rift_exchange_fluid_gate = make_story_focus_simulation({
+  zoom = 0.46,
+  camera_y = -0.1,
+  player_y = 7.5,
+  setup_lines = {
+    "for x = -14, 14 do",
+    "  for y = -14, 14 do",
+    '    game.surfaces[1].set_tiles{{position = {x, y}, name = "blue-refined-concrete"}}',
+    "  end",
+    "end",
+    'game.surfaces[1].create_entity{name = "substation", position = {6, -5}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "pipe", position = {-0.5, -6}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "pipe", position = {0.5, 6}, force = "player"}',
+    'local gate = game.surfaces[1].create_entity{name = "fw-rift-exchange-fluid-gate", position = {0, 0}, force = "player"}',
+    'gate.insert_fluid{name = "fw-purple-flux", amount = 160000}',
+  },
+  focuses = {
+    { x = 0, y = 0, hold = 2.1 },
+    { x = -0.5, y = -6, hold = 1.15 },
+    { x = 0.5, y = 6, hold = 1.15 },
   },
 })
 
@@ -664,6 +761,23 @@ if mods["space-age"] then
     },
     {
       type = "tips-and-tricks-item",
+      name = "flux-lore-and-spectra",
+      tag = "[fluid=fw-purple-flux]",
+      category = "fluxworks",
+      order = "c1",
+      indent = 1,
+      trigger = {
+        type = "research",
+        technology = "fw-flux-extraction",
+      },
+      skip_trigger = {
+        type = "research",
+        technology = "fw-harvester-systems",
+      },
+      simulation = simulations.fw_tip_flux_rift_extraction,
+    },
+    {
+      type = "tips-and-tricks-item",
       name = "mixed-deposit-planning",
       tag = "[entity=fw-mineral-deposit]",
       category = "fluxworks",
@@ -694,7 +808,7 @@ if mods["space-age"] then
       },
       skip_trigger = {
         type = "research",
-        technology = "fw-sealed-components",
+        technology = "fw-tube-forming",
       },
       simulation = simulations.fw_tip_processing_ladder,
     },
@@ -739,7 +853,7 @@ if mods["space-age"] then
     {
       type = "tips-and-tricks-item",
       name = "promethium-ramp",
-      tag = "[item=fw-promethium-primer]",
+      tag = "[item=fw-promethium-matrix]",
       category = "fluxworks",
       order = "i",
       indent = 1,

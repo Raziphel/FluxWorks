@@ -14,8 +14,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-ceramic-engineering",
-    icon = "__Krastorio2Assets__/technologies/advanced-furnace.png",
-    icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-fired-ceramic.png",
+    icon_size = 1024,
     prerequisites = { "fw-structural-fabrication", "stone-wall" },
     unit = tech_unit(95, {
       { "automation-science-pack", 1 },
@@ -23,15 +23,30 @@ data:extend({
     }, 25),
     effects = {
       unlock("fw-fired-ceramic"),
-      unlock("fw-ceramic-casing"),
     },
     order = "c-g[fw-ceramic-engineering]",
   },
   {
     type = "technology",
+    name = "fw-machine-casings",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-ceramic-casing.png",
+    icon_size = 64,
+    prerequisites = { "fw-ceramic-engineering", "fw-material-refinement" },
+    unit = tech_unit(105, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+    }, 26),
+    effects = {
+      unlock("fw-ceramic-casing"),
+    },
+    order = "c-ga[fw-machine-casings]",
+  },
+  {
+    type = "technology",
     name = "fw-conductive-networks",
-    icon = "__Krastorio2Assets__/technologies/electric-energy-distribution.png",
-    icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-coil-block.png",
+    icon_size = 1024,
     prerequisites = { "fw-conductive-assembly", "fw-electromechanical-systems" },
     unit = tech_unit(85, {
       { "automation-science-pack", 1 },
@@ -39,14 +54,29 @@ data:extend({
     }, 25),
     effects = {
       unlock("fw-coil-block"),
-      unlock("fw-signal-conduit"),
     },
     order = "c-h[fw-conductive-networks]",
   },
   {
     type = "technology",
+    name = "fw-signal-routing",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-signal-conduit.png",
+    icon_size = 1024,
+    prerequisites = { "fw-conductive-networks", "fw-cable-looming" },
+    unit = tech_unit(92, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+    }, 25),
+    effects = {
+      unlock("fw-signal-conduit"),
+    },
+    order = "c-ha[fw-signal-routing]",
+  },
+  {
+    type = "technology",
     name = "fw-optical-instrumentation",
-    icon = "__Krastorio2Assets__/technologies/research-server.png",
+    icon = "__Krastorio2Assets__/technologies/advanced-radar.png",
     icon_size = 256,
     prerequisites = { "fw-instrumentation", "fw-wafer-etching" },
     unit = tech_unit(120, {
@@ -56,16 +86,14 @@ data:extend({
     }, 30),
     effects = {
       unlock("fw-lens-array"),
-      unlock("fw-sensor-diode"),
-      unlock("fw-promethium-sensor-diode-doping"),
     },
     order = "c-i[fw-optical-instrumentation]",
   },
   {
     type = "technology",
     name = "fw-sealed-systems",
-    icon = "__Krastorio2Assets__/technologies/atmospheric-condenser.png",
-    icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-pressure-housing.png",
+    icon_size = 1024,
     prerequisites = { "fw-material-refinement", "fw-conductive-networks" },
     unit = tech_unit(140, {
       { "automation-science-pack", 1 },
@@ -74,15 +102,30 @@ data:extend({
     }, 30),
     effects = {
       unlock("fw-pressure-housing"),
-      unlock("fw-flow-regulator"),
     },
     order = "c-j[fw-sealed-systems]",
   },
   {
     type = "technology",
-    name = "fw-polymer-chemistry",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-rubber-sheet.png",
+    name = "fw-fluid-regulation",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-flow-regulator.png",
     icon_size = 1024,
+    prerequisites = { "fw-sealed-systems", "fw-signal-routing" },
+    unit = tech_unit(150, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+    }, 30),
+    effects = {
+      unlock("fw-flow-regulator"),
+    },
+    order = "c-ja[fw-fluid-regulation]",
+  },
+  {
+    type = "technology",
+    name = "fw-polymer-chemistry",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-chlorinated-binder-stock.png",
+    icon_size = 64,
     prerequisites = { "fw-liquid-mining", "fw-material-foundations", "sulfur-processing" },
     unit = tech_unit(130, {
       { "automation-science-pack", 1 },
@@ -111,15 +154,41 @@ data:extend({
     }, 35),
     effects = {
       unlock("fw-power-regulator"),
-      unlock("fw-field-winding"),
     },
     order = "c-k[fw-power-regulation]",
   },
   {
     type = "technology",
+    name = "fw-field-balancing",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-field-winding.png",
+    icon_size = 1024,
+    prerequisites = { "fw-power-regulation", "fw-conductive-networks" },
+    unit = tech_unit(195, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+      { "production-science-pack", 1 },
+    }, 35),
+    effects = {
+      unlock("fw-field-winding"),
+    },
+    order = "c-ka[fw-field-balancing]",
+  },
+  {
+    type = "technology",
     name = "fw-energetic-compounds",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
-    icon_size = 128,
+    icons = {
+      {
+        icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-blasting-gel.png",
+        icon_size = 64,
+      },
+      {
+        icon = "__base__/graphics/icons/sulfur.png",
+        icon_size = 64,
+        scale = 0.45,
+        shift = { 9, 9 },
+      },
+    },
     prerequisites = { "fw-polymer-chemistry", "fw-advanced-fabrication", "military-3", "production-science-pack" },
     unit = tech_unit(220, {
       { "automation-science-pack", 1 },
@@ -138,8 +207,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-metallurgic-assemblies",
-    icon = "__Age-of-Production-Graphics__/graphics/technology/arc-furnace.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-foundry-lining.png",
+    icon_size = 1024,
     prerequisites = { "fw-industrial-expansion", "fw-ceramic-engineering", "foundry", "metallurgic-science-pack" },
     unit = tech_unit(390, {
       { "automation-science-pack", 1 },
@@ -151,35 +220,14 @@ data:extend({
     }, 40),
     effects = {
       unlock("fw-foundry-lining"),
-      unlock("fw-smelter-array"),
     },
     order = "d-f[fw-metallurgic-assemblies]",
   },
   {
     type = "technology",
-    name = "fw-biosystems-engineering",
-    icon = "__Krastorio2Assets__/technologies/greenhouse.png",
-    icon_size = 256,
-    prerequisites = { "fw-industrial-expansion", "fw-optical-instrumentation", "biochamber", "agricultural-science-pack" },
-    unit = tech_unit(390, {
-      { "automation-science-pack", 1 },
-      { "logistic-science-pack", 1 },
-      { "chemical-science-pack", 1 },
-      { "production-science-pack", 1 },
-      { "utility-science-pack", 1 },
-      { "space-science-pack", 1 },
-    }, 40),
-    effects = {
-      unlock("fw-nutrient-bed"),
-      unlock("fw-spore-filter"),
-    },
-    order = "d-g[fw-biosystems-engineering]",
-  },
-  {
-    type = "technology",
     name = "fw-cryogenic-control",
-    icon = "__Krastorio2Assets__/icons/entities/atmospheric-condenser.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-cryo-coil.png",
+    icon_size = 1024,
     prerequisites = { "fw-flux-catalysis", "fw-power-regulation", "cryogenic-plant", "cryogenic-science-pack" },
     unit = tech_unit(520, {
       { "automation-science-pack", 1 },
@@ -191,14 +239,32 @@ data:extend({
     }, 45),
     effects = {
       unlock("fw-cryo-coil"),
-      unlock("fw-thermal-buffer"),
     },
     order = "d-h[fw-cryogenic-control]",
   },
   {
     type = "technology",
+    name = "fw-thermal-retention",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-thermal-buffer.png",
+    icon_size = 1024,
+    prerequisites = { "fw-cryogenic-control", "fw-advanced-fabrication" },
+    unit = tech_unit(560, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+      { "production-science-pack", 1 },
+      { "utility-science-pack", 1 },
+      { "space-science-pack", 1 },
+    }, 45),
+    effects = {
+      unlock("fw-thermal-buffer"),
+    },
+    order = "d-ha[fw-thermal-retention]",
+  },
+  {
+    type = "technology",
     name = "fw-electromagnetic-architecture",
-    icon = "__Krastorio2Assets__/technologies/quantum-computer.png",
+    icon = "__space-age__/graphics/technology/quantum-processor.png",
     icon_size = 256,
     prerequisites = { "fw-flux-resonance", "fw-computational-arrays", "electromagnetic-plant", "electromagnetic-science-pack" },
     unit = tech_unit(560, {
@@ -211,14 +277,32 @@ data:extend({
     }, 45),
     effects = {
       unlock("fw-em-core"),
-      unlock("fw-logic-matrix"),
     },
     order = "d-i[fw-electromagnetic-architecture]",
   },
   {
     type = "technology",
+    name = "fw-logic-weaving",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-logic-matrix.png",
+    icon_size = 128,
+    prerequisites = { "fw-electromagnetic-architecture", "fw-computational-arrays" },
+    unit = tech_unit(620, {
+      { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
+      { "chemical-science-pack", 1 },
+      { "production-science-pack", 1 },
+      { "utility-science-pack", 1 },
+      { "space-science-pack", 1 },
+    }, 48),
+    effects = {
+      unlock("fw-logic-matrix"),
+    },
+    order = "d-ia[fw-logic-weaving]",
+  },
+  {
+    type = "technology",
     name = "fw-orbital-hardening",
-    icon = "__Krastorio2Assets__/icons/entities/spaceship-research-computer.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-rocket-avionics.png",
     icon_size = 64,
     prerequisites = { "fw-computational-arrays", "fw-advanced-fabrication", "utility-science-pack", "space-science-pack" },
     unit = tech_unit(500, {
@@ -238,8 +322,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-promethium-stabilization",
-    icon = "__Age-of-Production-Graphics__/graphics/icons/quantum-stabilizer.png",
-    icon_size = 64,
+    icon = "__space-age__/graphics/technology/promethium-science-pack.png",
+    icon_size = 256,
     prerequisites = {
       "fw-flux-field-theory",
       "fw-aquilo-cryochemistry",
@@ -262,7 +346,7 @@ data:extend({
       { "cryogenic-science-pack", 1 },
     }, 60),
     effects = {
-      unlock("fw-promethium-primer"),
+      unlock("fw-promethium-matrix"),
     },
     order = "d-j[fw-promethium-stabilization]",
   },

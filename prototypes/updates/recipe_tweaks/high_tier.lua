@@ -160,17 +160,15 @@ return function(shared)
     patch_recipe_set({
       { "engine-unit", "fw-pressure-housing", 1 },
       { "electric-engine-unit", "fw-flow-regulator", 1 },
-      { "pump", "fw-flow-regulator", 1 },
-      { "offshore-pump", "fw-flow-regulator", 1 },
-      { "pumpjack", "fw-flow-regulator", 1 },
-      { "chemical-plant", "fw-pressure-housing", 1 },
-      { "oil-refinery", "fw-pressure-housing", 2 },
       { "centrifuge", "fw-pressure-housing", 1 },
       { "electrolyser", "fw-pressure-housing", 1 },
       { "recycler", "fw-pressure-housing", 1 },
       { "big-mining-drill", "fw-pressure-housing", 2 },
       { "big-mining-drill", "fw-flow-regulator", 1 },
       { "foundry", "fw-power-regulator", 1 },
+      { "foundry", "fw-foundry-lining", 1 },
+      { "fw-arc-foundry", "fw-foundry-lining", 2 },
+      { "electric-furnace", "fw-foundry-lining", 1 },
       { "biochamber", "fw-flow-regulator", 1 },
       { "biochamber", "fw-gleba-spore-resin", 1 },
       { "cryogenic-plant", "fw-power-regulator", 1 },
@@ -191,8 +189,8 @@ return function(shared)
       { "asteroid-collector", "fw-annealed-cermet", 1 },
       { "rocket-silo", "fw-power-regulator", 2 },
       { "rocket-silo", "fw-logic-matrix", 1 },
-      { "satellite", "fw-sensor-diode", 2 },
-      { "satellite", "fw-lens-array", 1 },
+      { "satellite", "fw-lens-array", 2 },
+      { "satellite", "fw-sensor-package", 1 },
       { "fusion-generator", "fw-rift-stabilizer", 1 },
       { "fusion-reactor", "fw-rift-stabilizer", 1 },
       { "fusion-reactor-equipment", "fw-rift-stabilizer", 1 },
@@ -303,9 +301,6 @@ return function(shared)
   }, "fw-bearing", 1)
 
   patch_many_recipes({
-    "pump",
-    "pumpjack",
-    "offshore-pump",
     "fluid-wagon",
     "locomotive",
     "car",
@@ -320,7 +315,7 @@ return function(shared)
     "railgun-turret",
     "artillery-turret",
     "spidertron",
-  }, "fw-sensor-diode", 1)
+  }, "fw-lens-array", 1)
 
   patch_many_recipes({
     "satellite",

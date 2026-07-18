@@ -1,5 +1,4 @@
 return function(shared)
-  local enable_science_pack_overhaul = shared.enable_science_pack_overhaul
   local enable_machine_part_rehoming = shared.enable_machine_part_rehoming
   local patch_recipe_ingredient_spec = shared.patch_recipe_ingredient_spec
   local patch_recipe_set = shared.patch_recipe_set
@@ -11,134 +10,123 @@ return function(shared)
 
   -- Science was getting a little "throw every shiny part in the blender."
   -- This pulls it back into more deliberate lanes.
-  if enable_science_pack_overhaul then
-    local all_science_packs = {
-      "automation-science-pack",
-      "logistic-science-pack",
-      "military-science-pack",
-      "chemical-science-pack",
-      "production-science-pack",
-      "utility-science-pack",
-      "space-science-pack",
-      "metallurgic-science-pack",
-      "electromagnetic-science-pack",
-      "agricultural-science-pack",
-      "cryogenic-science-pack",
-      "promethium-science-pack",
-    }
+  local all_science_packs = {
+    "automation-science-pack",
+    "logistic-science-pack",
+    "military-science-pack",
+    "chemical-science-pack",
+    "production-science-pack",
+    "utility-science-pack",
+    "space-science-pack",
+    "metallurgic-science-pack",
+    "electromagnetic-science-pack",
+    "agricultural-science-pack",
+    "cryogenic-science-pack",
+    "promethium-science-pack",
+  }
 
-    local late_space_science_packs = {
-      "metallurgic-science-pack",
-      "electromagnetic-science-pack",
-      "agricultural-science-pack",
-      "cryogenic-science-pack",
-      "promethium-science-pack",
-    }
+  local late_space_science_packs = {
+    "metallurgic-science-pack",
+    "electromagnetic-science-pack",
+    "agricultural-science-pack",
+    "cryogenic-science-pack",
+    "promethium-science-pack",
+  }
 
-    for _, recipe_name in ipairs(all_science_packs) do
-      remove_recipe_ingredient(recipe_name, "fw-glass-lens")
-    end
-
-    for _, recipe_name in ipairs(late_space_science_packs) do
-      remove_recipe_ingredient(recipe_name, "fw-capacitor")
-    end
-
-    remove_recipe_ingredient("automation-science-pack", "copper-plate")
-    remove_recipe_ingredient("automation-science-pack", "lead-plate")
-    remove_recipe_ingredient("logistic-science-pack", "lead-plate")
-    remove_recipe_ingredient("military-science-pack", "fw-gunpowder")
-    remove_recipe_ingredient("chemical-science-pack", "fw-bearing")
-    remove_recipe_ingredient("chemical-science-pack", "fw-solder-wire")
-    remove_recipe_ingredient("production-science-pack", "fw-cermet")
-    remove_recipe_ingredient("production-science-pack", "fw-coil-block")
-    remove_recipe_ingredient("production-science-pack", "fw-pressure-housing")
-    remove_recipe_ingredient("utility-science-pack", "fw-sensor-package")
-    remove_recipe_ingredient("utility-science-pack", "fw-memory-die")
-    remove_recipe_ingredient("utility-science-pack", "fw-capacitor")
-    remove_recipe_ingredient("utility-science-pack", "fw-power-regulator")
-    remove_recipe_ingredient("space-science-pack", "fw-light-frame")
-    remove_recipe_ingredient("space-science-pack", "fw-transformer-core")
-    remove_recipe_ingredient("space-science-pack", "fw-logic-matrix")
-    remove_recipe_ingredient("metallurgic-science-pack", "fw-cermet")
-    remove_recipe_ingredient("metallurgic-science-pack", "fw-smelter-array")
-    remove_recipe_ingredient("metallurgic-science-pack", "fw-annealed-cermet")
-    remove_recipe_ingredient("metallurgic-science-pack", "fw-vulcanus-slag-cermet")
-    remove_recipe_ingredient("metallurgic-science-pack", "fw-pressure-housing")
-    remove_recipe_ingredient("metallurgic-science-pack", "fw-steel-beam")
-    remove_recipe_ingredient("electromagnetic-science-pack", "fw-sensor-package")
-    remove_recipe_ingredient("electromagnetic-science-pack", "fw-em-core")
-    remove_recipe_ingredient("electromagnetic-science-pack", "fw-fulgora-static-mesh")
-    remove_recipe_ingredient("electromagnetic-science-pack", "fw-coil-block")
-    remove_recipe_ingredient("electromagnetic-science-pack", "fw-signal-conduit")
-    remove_recipe_ingredient("electromagnetic-science-pack", "fw-transformer-core")
-    remove_recipe_ingredient("agricultural-science-pack", "fw-inline-filter")
-    remove_recipe_ingredient("agricultural-science-pack", "fw-spore-filter")
-    remove_recipe_ingredient("agricultural-science-pack", "fw-nutrient-bed")
-    remove_recipe_ingredient("agricultural-science-pack", "fw-gleba-spore-resin")
-    remove_recipe_ingredient("cryogenic-science-pack", "fw-glass-lens")
-    remove_recipe_ingredient("cryogenic-science-pack", "fw-thermal-buffer")
-    remove_recipe_ingredient("cryogenic-science-pack", "fw-cryo-coil")
-    remove_recipe_ingredient("cryogenic-science-pack", "fw-aquilo-cryogel")
-    remove_recipe_ingredient("cryogenic-science-pack", "fw-power-regulator")
-    remove_recipe_ingredient("cryogenic-science-pack", "fw-flow-regulator")
-    remove_recipe_ingredient("promethium-science-pack", "fw-transformer-core")
-    remove_recipe_ingredient("promethium-science-pack", "promethium-asteroid-chunk")
-    remove_recipe_ingredient("promethium-science-pack", "fw-promethium-primer")
-    remove_recipe_ingredient("promethium-science-pack", "fw-promethium-matrix")
-    remove_recipe_ingredient("promethium-science-pack", "fw-rift-stabilizer")
-    remove_recipe_ingredient("promethium-science-pack", "fw-logic-matrix")
-    remove_recipe_ingredient("promethium-science-pack", "fw-aquilo-cryogel")
-    remove_recipe_ingredient("promethium-science-pack", "fw-gleba-spore-resin")
-    remove_recipe_ingredient("promethium-science-pack", "fw-fulgora-static-mesh")
-    remove_recipe_ingredient("promethium-science-pack", "fw-vulcanus-slag-cermet")
-    remove_recipe_ingredient("promethium-science-pack", "fw-flux-resonance-cell")
-    remove_recipe_ingredient("promethium-science-pack", "fw-flux-phase-manifold")
-
-    replace_recipe_ingredient("automation-science-pack", "copper-plate", { type = "item", name = "tin-plate", amount = 1 })
-    replace_recipe_ingredient("military-science-pack", "stone-wall", { type = "item", name = "stone-wall", amount = 1 })
-    replace_recipe_ingredient("space-science-pack", "carbon", { type = "item", name = "fw-carbon", amount = 1 })
-    replace_recipe_ingredient("promethium-science-pack", "quantum-processor", { type = "item", name = "fw-logic-matrix", amount = 1 })
-
-    patch_recipe_set({
-      { "logistic-science-pack", "lead-plate", 1 },
-      { "military-science-pack", "fw-gunpowder", 1 },
-      { "chemical-science-pack", "fw-bearing", 1 },
-      { "chemical-science-pack", "fw-solder-wire", 2 },
-      { "production-science-pack", "fw-cermet", 1 },
-      { "production-science-pack", "fw-pressure-housing", 1 },
-      { "utility-science-pack", "fw-sensor-package", 1 },
-      { "utility-science-pack", "fw-power-regulator", 1 },
-      { "space-science-pack", "fw-light-frame", 1 },
-      { "space-science-pack", "fw-transformer-core", 1 },
-      { "metallurgic-science-pack", "fw-cermet", 1 },
-      { "metallurgic-science-pack", "fw-steel-beam", 1 },
-      { "electromagnetic-science-pack", "fw-sensor-diode", 1 },
-      { "electromagnetic-science-pack", "fw-signal-conduit", 1 },
-      { "electromagnetic-science-pack", "fw-transformer-core", 1 },
-      { "agricultural-science-pack", "fw-inline-filter", 1 },
-      { "agricultural-science-pack", "fw-resin", 1 },
-      { "cryogenic-science-pack", "fw-flow-regulator", 1 },
-      { "cryogenic-science-pack", "fw-power-regulator", 1 },
-      { "promethium-science-pack", "promethium-asteroid-chunk", 4 },
-      { "promethium-science-pack", "fw-promethium-primer", 1 },
-      { "promethium-science-pack", "fw-logic-matrix", 1 },
-      { "promethium-science-pack", "fw-aquilo-cryogel", 1 },
-      { "promethium-science-pack", "fw-gleba-spore-resin", 1 },
-      { "promethium-science-pack", "fw-fulgora-static-mesh", 1 },
-      { "promethium-science-pack", "fw-vulcanus-slag-cermet", 1 },
-    })
+  for _, recipe_name in ipairs(all_science_packs) do
+    remove_recipe_ingredient(recipe_name, "fw-glass-lens")
   end
+
+  for _, recipe_name in ipairs(late_space_science_packs) do
+    remove_recipe_ingredient(recipe_name, "fw-capacitor")
+  end
+
+  remove_recipe_ingredient("automation-science-pack", "copper-plate")
+  remove_recipe_ingredient("automation-science-pack", "lead-plate")
+  remove_recipe_ingredient("logistic-science-pack", "lead-plate")
+  remove_recipe_ingredient("military-science-pack", "fw-gunpowder")
+  remove_recipe_ingredient("chemical-science-pack", "fw-bearing")
+  remove_recipe_ingredient("chemical-science-pack", "fw-solder-wire")
+  remove_recipe_ingredient("production-science-pack", "fw-cermet")
+  remove_recipe_ingredient("production-science-pack", "fw-coil-block")
+  remove_recipe_ingredient("production-science-pack", "fw-pressure-housing")
+  remove_recipe_ingredient("utility-science-pack", "fw-sensor-package")
+  remove_recipe_ingredient("utility-science-pack", "fw-memory-die")
+  remove_recipe_ingredient("utility-science-pack", "fw-capacitor")
+  remove_recipe_ingredient("utility-science-pack", "fw-power-regulator")
+  remove_recipe_ingredient("space-science-pack", "fw-light-frame")
+  remove_recipe_ingredient("space-science-pack", "fw-transformer-core")
+  remove_recipe_ingredient("space-science-pack", "fw-logic-matrix")
+  remove_recipe_ingredient("metallurgic-science-pack", "fw-cermet")
+  remove_recipe_ingredient("metallurgic-science-pack", "fw-annealed-cermet")
+  remove_recipe_ingredient("metallurgic-science-pack", "fw-vulcanus-slag-cermet")
+  remove_recipe_ingredient("metallurgic-science-pack", "fw-pressure-housing")
+  remove_recipe_ingredient("metallurgic-science-pack", "fw-steel-beam")
+  remove_recipe_ingredient("electromagnetic-science-pack", "fw-sensor-package")
+  remove_recipe_ingredient("electromagnetic-science-pack", "fw-em-core")
+  remove_recipe_ingredient("electromagnetic-science-pack", "fw-fulgora-static-mesh")
+  remove_recipe_ingredient("electromagnetic-science-pack", "fw-coil-block")
+  remove_recipe_ingredient("electromagnetic-science-pack", "fw-signal-conduit")
+  remove_recipe_ingredient("electromagnetic-science-pack", "fw-transformer-core")
+  remove_recipe_ingredient("agricultural-science-pack", "fw-inline-filter")
+  remove_recipe_ingredient("agricultural-science-pack", "fw-gleba-spore-resin")
+  remove_recipe_ingredient("cryogenic-science-pack", "fw-glass-lens")
+  remove_recipe_ingredient("cryogenic-science-pack", "fw-thermal-buffer")
+  remove_recipe_ingredient("cryogenic-science-pack", "fw-cryo-coil")
+  remove_recipe_ingredient("cryogenic-science-pack", "fw-aquilo-cryogel")
+  remove_recipe_ingredient("cryogenic-science-pack", "fw-power-regulator")
+  remove_recipe_ingredient("cryogenic-science-pack", "fw-flow-regulator")
+  remove_recipe_ingredient("promethium-science-pack", "fw-transformer-core")
+  remove_recipe_ingredient("promethium-science-pack", "promethium-asteroid-chunk")
+  remove_recipe_ingredient("promethium-science-pack", "fw-promethium-matrix")
+  remove_recipe_ingredient("promethium-science-pack", "fw-rift-stabilizer")
+  remove_recipe_ingredient("promethium-science-pack", "fw-logic-matrix")
+  remove_recipe_ingredient("promethium-science-pack", "fw-aquilo-cryogel")
+  remove_recipe_ingredient("promethium-science-pack", "fw-gleba-spore-resin")
+  remove_recipe_ingredient("promethium-science-pack", "fw-fulgora-static-mesh")
+  remove_recipe_ingredient("promethium-science-pack", "fw-vulcanus-slag-cermet")
+  remove_recipe_ingredient("promethium-science-pack", "fw-flux-resonance-cell")
+  remove_recipe_ingredient("promethium-science-pack", "fw-flux-phase-manifold")
+
+  replace_recipe_ingredient("automation-science-pack", "copper-plate", { type = "item", name = "tin-plate", amount = 1 })
+  replace_recipe_ingredient("military-science-pack", "stone-wall", { type = "item", name = "stone-wall", amount = 1 })
+  replace_recipe_ingredient("space-science-pack", "carbon", { type = "item", name = "fw-carbon", amount = 1 })
+  replace_recipe_ingredient("promethium-science-pack", "quantum-processor", { type = "item", name = "fw-logic-matrix", amount = 1 })
+
+  patch_recipe_set({
+    { "logistic-science-pack", "lead-plate", 1 },
+    { "military-science-pack", "fw-gunpowder", 1 },
+    { "chemical-science-pack", "fw-bearing", 1 },
+    { "chemical-science-pack", "fw-solder-wire", 2 },
+    { "production-science-pack", "fw-cermet", 1 },
+    { "production-science-pack", "fw-pressure-housing", 1 },
+    { "utility-science-pack", "fw-sensor-package", 1 },
+    { "utility-science-pack", "fw-power-regulator", 1 },
+    { "space-science-pack", "fw-light-frame", 1 },
+    { "space-science-pack", "fw-transformer-core", 1 },
+    { "metallurgic-science-pack", "fw-cermet", 1 },
+    { "metallurgic-science-pack", "fw-steel-beam", 1 },
+    { "electromagnetic-science-pack", "fw-lens-array", 1 },
+    { "electromagnetic-science-pack", "fw-signal-conduit", 1 },
+    { "electromagnetic-science-pack", "fw-transformer-core", 1 },
+    { "agricultural-science-pack", "fw-inline-filter", 1 },
+    { "agricultural-science-pack", "fw-resin", 1 },
+    { "cryogenic-science-pack", "fw-flow-regulator", 1 },
+    { "cryogenic-science-pack", "fw-power-regulator", 1 },
+    { "promethium-science-pack", "promethium-asteroid-chunk", 4 },
+    { "promethium-science-pack", "fw-promethium-matrix", 1 },
+    { "promethium-science-pack", "fw-logic-matrix", 1 },
+    { "promethium-science-pack", "fw-aquilo-cryogel", 1 },
+    { "promethium-science-pack", "fw-gleba-spore-resin", 1 },
+    { "promethium-science-pack", "fw-fulgora-static-mesh", 1 },
+    { "promethium-science-pack", "fw-vulcanus-slag-cermet", 1 },
+  })
 
   -- Complexity relief pass.
   -- Keep the later FluxWorks identity, but stop taxing the most common early and midgame crafts.
   remove_recipe_ingredient("electronic-circuit", "fw-circuit-contact")
   remove_many_recipe_ingredients({ "engine-unit", "electric-engine-unit" }, "fw-bearing")
   remove_recipe_ingredient("battery", "fw-ceramic-insulator")
-  remove_many_recipe_ingredients({
-    "firearm-magazine",
-    "piercing-rounds-magazine",
-    "uranium-rounds-magazine",
-  }, "fw-gunpowder")
   remove_many_recipe_ingredients({
     "fast-inserter",
     "filter-inserter",
@@ -193,14 +181,14 @@ return function(shared)
   -- Sneak the staged parts into machines where they actually make sense.
   patch_recipe_set({
     { "lab", "fw-lens-array", 1 },
-    { "radar", "fw-sensor-diode", 1 },
+    { "radar", "fw-lens-array", 1 },
     { "big-mining-drill", "fw-harvester-head", 2 },
     { "asteroid-collector", "fw-harvester-head", 1 },
     { "substation", "fw-power-regulator", 1 },
     { "electric-furnace", "fw-annealed-cermet", 1 },
     { "foundry", "fw-foundry-lining", 1 },
     { "foundry", "fw-annealed-cermet", 1 },
-    { "biochamber", "fw-nutrient-bed", 1 },
+    { "biochamber", "fw-inline-filter", 1 },
     { "cryogenic-plant", "fw-cryo-coil", 1 },
     { "electromagnetic-plant", "fw-em-core", 1 },
     { "fw-flux-condenser", "fw-power-regulator", 2 },
@@ -215,7 +203,6 @@ return function(shared)
   if enable_machine_part_rehoming then
     for _, recipe_name in ipairs({
       "fw-field-winding",
-      "fw-spore-filter",
       "fw-cryo-coil",
       "fw-thermal-buffer",
       "fw-em-core",
@@ -228,12 +215,11 @@ return function(shared)
     patch_recipe_set({
       { "fw-field-winding", "fw-power-regulator", 1 },
       { "fw-field-winding", "fw-signal-conduit", 1 },
-      { "fw-spore-filter", "fw-sensor-diode", 1 },
       { "fw-cryo-coil", "fw-power-regulator", 1 },
       { "fw-thermal-buffer", "fw-pressure-housing", 1 },
       { "fw-em-core", "fw-resonance-substrate", 1 },
       { "fw-logic-matrix", "fw-resonance-substrate", 1 },
-      { "fw-logic-matrix", "fw-sensor-diode", 1 },
+      { "fw-logic-matrix", "fw-sensor-package", 1 },
       { "fw-rift-stabilizer", "fw-power-regulator", 1 },
       { "fw-harvester-head", "fw-coil-block", 1 },
       { "fw-harvester-head", "fw-signal-conduit", 1 },
@@ -241,8 +227,8 @@ return function(shared)
       { "fw-condensed-flux-matrix", "fw-coil-block", 1 },
       { "fw-flux-phase-manifold", "fw-field-winding", 1 },
       { "fw-flux-phase-manifold", "fw-logic-matrix", 1 },
-      { "fw-promethium-primer", "fw-lens-array", 1 },
-      { "fw-promethium-primer", "fw-signal-conduit", 1 },
+      { "fw-promethium-matrix", "fw-lens-array", 1 },
+      { "fw-promethium-matrix", "fw-signal-conduit", 1 },
       { "fw-promethium-matrix", "fw-logic-matrix", 1 },
     })
 
@@ -255,7 +241,6 @@ return function(shared)
     end
 
     for _, recipe_name in ipairs({
-      "fw-promethium-primer",
       "fw-promethium-matrix",
       "fw-rift-stabilizer",
     }) do
@@ -272,10 +257,6 @@ return function(shared)
       { "fw-flux-phase-manifold", "fw-yellow-flux", 80 },
       { "fw-flux-phase-manifold", "fw-red-flux", 160 },
       { "fw-flux-phase-manifold", "fw-green-flux", 32 },
-      { "fw-promethium-primer", "fw-purple-flux", 24 },
-      { "fw-promethium-primer", "fw-yellow-flux", 18 },
-      { "fw-promethium-primer", "fw-red-flux", 36 },
-      { "fw-promethium-primer", "fw-green-flux", 12 },
       { "fw-promethium-matrix", "fw-purple-flux", 48 },
       { "fw-promethium-matrix", "fw-yellow-flux", 40 },
       { "fw-promethium-matrix", "fw-red-flux", 60 },

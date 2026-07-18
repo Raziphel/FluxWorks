@@ -4,9 +4,9 @@ data:extend({
   {
     type = "technology",
     name = "fw-liquid-mining",
-    icon = "__Age-of-Production-Graphics__/graphics/technology/core-mining.png",
+    icon = "__base__/graphics/icons/pumpjack.png",
     icon_size = 64,
-    prerequisites = { "fw-sealed-components", "fluid-handling", "sulfur-processing" },
+    prerequisites = { "fw-tube-forming", "fluid-handling", "sulfur-processing" },
     unit = {
       count = 70,
       ingredients = {
@@ -28,4 +28,4 @@ Tech:get("fw-liquid-mining")
   :setCost(70)
   :setColors("RG")
   :setTime(24)
-  :setPrerequisites({ "fw-sealed-components", "fluid-handling", "sulfur-processing" })
+  :setPrerequisites({ "fw-tube-forming", "fluid-handling", "sulfur-processing" })

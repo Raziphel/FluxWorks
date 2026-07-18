@@ -179,6 +179,7 @@ return function(shared)
     { "personal-roboport-equipment", "aluminum-plate", 4 },
     { "exoskeleton-equipment", "aluminum-plate", 8 },
     { "battery", "lead-plate", 1 },
+    { "accumulator", "lead-plate", 1 },
     { "explosives", "fw-salt", 1 },
     { "grenade", "tin-plate", 1 },
     { "cluster-grenade", "tin-plate", 2 },
@@ -189,11 +190,21 @@ return function(shared)
     { "uranium-rounds-magazine", "tin-plate", 1 },
     { "engine-unit", "lead-plate", 1 },
     { "electric-engine-unit", "lead-plate", 1 },
+    { "steam-engine", "bronze-plate", 1 },
+    { "steam-turbine", "bronze-plate", 2 },
+    { "rail", "bronze-plate", 1 },
+    { "car", "bronze-plate", 2 },
+    { "locomotive", "bronze-plate", 4 },
+    { "cargo-wagon", "bronze-plate", 3 },
+    { "fluid-wagon", "bronze-plate", 3 },
+    { "tank", "bronze-plate", 6 },
     { "pumpjack", "lead-plate", 2 },
     { "offshore-pump", "lead-plate", 2 },
     { "pump", "electronic-circuit", 1 },
     { "offshore-pump", "electronic-circuit", 2 },
     { "laser-turret", "silicon", 2 },
+    { "radar", "aluminum-plate", 2 },
+    { "modular-armor", "aluminum-plate", 6 },
     { "flamethrower-turret", "lead-plate", 6 },
     { "artillery-turret", "titanium-plate", 12 },
     { "personal-roboport-mk2-equipment", "titanium-plate", 8 },
@@ -225,7 +236,7 @@ return function(shared)
     { "electrolyte", "fw-resin", 1 },
     { "electrolyte", "fw-inline-filter", 1 },
     { "lithium", "fw-inline-filter", 1 },
-    { "lithium", "fw-sensor-diode", 1 },
+    { "lithium", "fw-lens-array", 1 },
     { "fluoroketone", "fw-thermal-buffer", 1 },
     { "fluoroketone", "fw-flow-regulator", 1 },
     { "fluoroketone-cooling", "fw-cryo-coil", 1 },
@@ -243,7 +254,7 @@ return function(shared)
 
   if enable_combat_recipe_integration then
     patch_recipe_set({
-      { "poison-capsule", "fw-spore-filter", 1 },
+      { "poison-capsule", "fw-inline-filter", 1 },
       { "slowdown-capsule", "fw-resin", 1 },
     })
   end

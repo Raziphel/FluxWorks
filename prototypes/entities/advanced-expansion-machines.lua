@@ -1,4 +1,5 @@
 local util = require("util")
+local atom_forge_path = "__finely-crafted-graphics__/graphics/atom-forge/"
 
 local function make_shadow_layer(path, width, height, repeat_count, animation_speed, shift, scale)
   return {
@@ -58,7 +59,7 @@ end
 
 local atomic_enricher = table.deepcopy(data.raw["assembling-machine"]["centrifuge"])
 atomic_enricher.name = "fw-atomic-enricher"
-atomic_enricher.icon = "__Age-of-Production-Graphics__/graphics/icons/atomic-enricher.png"
+atomic_enricher.icon = atom_forge_path .. "atom-forge-icon.png"
 atomic_enricher.icon_size = 64
 atomic_enricher.minable = { mining_time = 0.8, result = "fw-atomic-enricher" }
 atomic_enricher.max_health = 600
@@ -77,11 +78,11 @@ atomic_enricher.module_slots = 6
 atomic_enricher.allowed_effects = { "consumption", "speed", "productivity", "pollution", "quality" }
 
 do
-  local prefix = "__Age-of-Production-Graphics__/graphics/entity/atomic-enricher/"
+  local prefix = atom_forge_path
   local shift = util.by_pixel(0, -16)
   local base = make_striped_layer(prefix, {
-    { name = "atomic-enricher-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
-    { name = "atomic-enricher-hr-animation-2.png", width_in_frames = 8, height_in_frames = 2 },
+    { name = "atom-forge-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
+    { name = "atom-forge-hr-animation-2.png", width_in_frames = 8, height_in_frames = 2 },
   }, {
     width = 400,
     height = 480,
@@ -92,14 +93,14 @@ do
     scale = 0.5,
   })
   local glow = make_glow_layer(base, prefix, {
-    { name = "atomic-enricher-hr-emission-1.png", width_in_frames = 8, height_in_frames = 8 },
-    { name = "atomic-enricher-hr-emission-2.png", width_in_frames = 8, height_in_frames = 2 },
+    { name = "atom-forge-hr-emission-1.png", width_in_frames = 8, height_in_frames = 8 },
+    { name = "atom-forge-hr-emission-2.png", width_in_frames = 8, height_in_frames = 2 },
   })
 
   atomic_enricher.graphics_set = {
     animation = {
       layers = {
-        make_shadow_layer(prefix .. "atomic-enricher-hr-shadow.png", 900, 500, 80, 0.15, shift, 0.5),
+        make_shadow_layer(prefix .. "atom-forge-hr-shadow.png", 900, 500, 80, 0.15, shift, 0.5),
         base,
       },
     },

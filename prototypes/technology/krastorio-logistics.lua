@@ -18,13 +18,12 @@ data:extend({
     name = "fw-pressure-containment",
     icon = "__Krastorio2Assets__/icons/entities/steel-pipe.png",
     icon_size = 64,
-    prerequisites = { "fw-sealed-components", "fw-beam-engineering", "fluid-handling" },
+    prerequisites = { "fw-tube-forming", "fw-beam-engineering", "fluid-handling" },
     unit = tech_unit(85, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 24),
     effects = {
-      unlock("fw-pressure-vessel"),
       unlock("fw-kr-steel-pipe"),
       unlock("fw-kr-steel-pipe-to-ground"),
       unlock("fw-kr-steel-pump"),
@@ -43,7 +42,6 @@ data:extend({
       { "logistic-science-pack", 1 },
     }, 24),
     effects = {
-      unlock("fw-loader-frame"),
       unlock("fw-kr-loader"),
       unlock("fw-kr-fast-loader"),
       unlock("fw-kr-strongbox"),
@@ -63,7 +61,6 @@ data:extend({
       { "chemical-science-pack", 1 },
     }, 30),
     effects = {
-      unlock("fw-logistic-relay"),
       unlock("fw-kr-express-loader"),
       unlock("fw-kr-passive-provider-strongbox"),
       unlock("fw-kr-storage-strongbox"),
@@ -85,7 +82,6 @@ data:extend({
       { "production-science-pack", 1 },
     }, 35),
     effects = {
-      unlock("fw-bulk-router"),
       unlock("fw-kr-advanced-loader"),
       unlock("fw-kr-active-provider-strongbox"),
       unlock("fw-kr-buffer-strongbox"),
@@ -103,7 +99,7 @@ Tech:get("fw-pressure-containment")
   :setCost(85)
   :setColors("RG")
   :setTime(24)
-  :setPrerequisites({ "fw-sealed-components", "fw-beam-engineering", "fluid-handling" })
+  :setPrerequisites({ "fw-tube-forming", "fw-beam-engineering", "fluid-handling" })
 
 Tech:get("fw-bulk-logistics")
   :setCost(95)
