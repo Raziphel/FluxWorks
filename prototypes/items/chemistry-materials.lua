@@ -11,7 +11,7 @@ data:extend({
   {
     type = "item",
     name = "fw-aquilo-cryogel",
-    icon = "__space-age__/graphics/icons/ice.png",
+    icon = "__Krastorio2Assets__/icons/items/lithium-1.png",
     icon_size = 64,
     subgroup = "fw-chemistry-materials",
     order = "n[fw-aquilo-cryogel]",
@@ -20,7 +20,7 @@ data:extend({
   {
     type = "item",
     name = "fw-gleba-spore-resin",
-    icon = "__space-age__/graphics/icons/bioflux.png",
+    icon = "__Krastorio2Assets__/icons/items/biomass-2.png",
     icon_size = 64,
     subgroup = "fw-chemistry-materials",
     order = "o[fw-gleba-spore-resin]",
@@ -38,7 +38,7 @@ data:extend({
   {
     type = "item",
     name = "fw-fulgora-static-mesh",
-    icon = "__space-age__/graphics/icons/supercapacitor.png",
+    icon = "__Krastorio2Assets__/icons/items/electronic-components-4.png",
     icon_size = 64,
     subgroup = "fw-chemistry-materials",
     order = "p[fw-fulgora-static-mesh]",

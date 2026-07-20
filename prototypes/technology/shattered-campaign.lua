@@ -1,26 +1,5 @@
-local function item_prototype(name)
-  for _, prototype_type in ipairs({ "item", "tool", "ammo", "capsule", "module", "armor" }) do
-    if data.raw[prototype_type] and data.raw[prototype_type][name] then
-      return data.raw[prototype_type][name]
-    end
-  end
-end
-
-local function icons(item_name)
-  local item = assert(item_prototype(item_name), "Missing Shattered campaign icon item: " .. item_name)
-  local overlay
-  if item.icons and item.icons[1] then
-    overlay = table.deepcopy(item.icons[1])
-  else
-    overlay = { icon = item.icon, icon_size = item.icon_size or 64 }
-  end
-  overlay.icon_size = overlay.icon_size or item.icon_size or 64
-  overlay.scale = (overlay.scale or (64 / overlay.icon_size)) * 0.48
-  overlay.shift = { 12, 12 }
-  return {
-    { icon = "__space-age__/graphics/icons/shattered-planet.png", icon_size = 64 },
-    overlay,
-  }
+local function asset_icon(filename)
+  return "__FluxWorksAssets__/graphics/technology/" .. filename
 end
 
 local all_sciences = {
@@ -40,6 +19,10 @@ local function unlock(recipe)
   return { type = "unlock-recipe", recipe = recipe }
 end
 
+local function productivity(recipe, change)
+  return { type = "change-recipe-productivity", recipe = recipe, change = change }
+end
+
 -- Promethium science opens the route to the edge, not the planet itself. FluxWorks owns the
 -- actual expedition gate so every planetary discipline and the mature rift branch matter.
 local promethium_technology = data.raw.technology and data.raw.technology["promethium-science-pack"]
@@ -56,7 +39,7 @@ end
 data:extend({
   {
     type = "technology", name = "fw-shattered-expedition-planning",
-    icons = icons("fw-rift-stabilizer"),
+    icon = "__space-age__/graphics/icons/shattered-planet.png", icon_size = 64,
     prerequisites = {
       "promethium-science-pack", "fw-cross-planetary-industrial-convergence",
       "fw-rift-harmonics", "fw-fusion-lattices",
@@ -64,94 +47,120 @@ data:extend({
     unit = unit(2400, 75),
     effects = {
       { type = "unlock-space-location", space_location = "shattered-planet" },
-      unlock("fw-shattered-expedition-supplies"),
+      productivity("space-platform-foundation", 0.10),
     },
     order = "f-a[shattered-expedition]",
   },
   {
     type = "technology", name = "fw-shattered-platform-hardening",
-    icons = icons("fw-annealed-cermet"),
+    icon = asset_icon("fw-industrial-expansion.png"), icon_size = 256,
     prerequisites = { "fw-shattered-expedition-planning", "advanced-asteroid-processing" },
-    unit = unit(2700, 80), effects = { unlock("fw-shattered-platform-armoring") },
+    unit = unit(2700, 80), effects = {
+      productivity("space-platform-foundation", 0.15),
+    },
     order = "f-b[shattered-platform]",
   },
   {
     type = "technology", name = "fw-shattered-landing-protocols",
-    icons = icons("foundation"),
+    icon = asset_icon("fw-ceramic-engineering.png"), icon_size = 1254,
     prerequisites = { "fw-shattered-platform-hardening", "fw-rift-logistics" },
-    unit = unit(3000, 85), effects = { unlock("fw-shattered-landing-foundation") },
+    unit = unit(3000, 85), effects = {
+      productivity("foundation", 0.20),
+    },
     order = "f-c[shattered-landing]",
   },
   {
     type = "technology", name = "fw-shattered-vulcanus-bridgehead",
-    icons = icons("fw-vulcanus-slag-cermet"),
+    icon = asset_icon("fw-hydraulic-systems.png"), icon_size = 256,
     prerequisites = { "fw-shattered-landing-protocols", "fw-vulcanus-industrial-symbiosis" },
-    unit = unit(3200, 90), effects = { unlock("fw-shattered-red-bridgehead-forging") },
+    unit = unit(3200, 90), effects = {
+      unlock("fw-shattered-red-bridgehead-forging"),
+      productivity("fw-vulcanus-slag-cermet", 0.20),
+    },
     order = "f-d-a[shattered-vulcanus]",
   },
   {
     type = "technology", name = "fw-shattered-gleba-bridgehead",
-    icons = icons("fw-gleba-spore-resin"),
+    icon = asset_icon("fw-polymer-stabilization.png"), icon_size = 256,
     prerequisites = { "fw-shattered-landing-protocols", "fw-gleba-regenerative-symbiosis" },
-    unit = unit(3200, 90), effects = { unlock("fw-shattered-green-bridgehead-cultivation") },
+    unit = unit(3200, 90), effects = {
+      unlock("fw-shattered-green-bridgehead-cultivation"),
+      productivity("fw-gleba-spore-resin", 0.20),
+    },
     order = "f-d-b[shattered-gleba]",
   },
   {
     type = "technology", name = "fw-shattered-fulgora-bridgehead",
-    icons = icons("fw-fulgora-static-mesh"),
+    icon = asset_icon("fw-reactor-instrumentation.png"), icon_size = 256,
     prerequisites = { "fw-shattered-landing-protocols", "fw-fulgora-electromagnetic-symbiosis" },
-    unit = unit(3200, 90), effects = { unlock("fw-shattered-yellow-bridgehead-reclamation") },
+    unit = unit(3200, 90), effects = {
+      unlock("fw-shattered-yellow-bridgehead-reclamation"),
+      productivity("fw-fulgora-static-mesh", 0.20),
+    },
     order = "f-d-c[shattered-fulgora]",
   },
   {
     type = "technology", name = "fw-shattered-aquilo-bridgehead",
-    icons = icons("fw-aquilo-cryogel"),
+    icon = asset_icon("fw-sealed-systems.png"), icon_size = 1024,
     prerequisites = { "fw-shattered-landing-protocols", "fw-aquilo-thermal-symbiosis" },
-    unit = unit(3200, 90), effects = { unlock("fw-shattered-purple-bridgehead-annealing") },
+    unit = unit(3200, 90), effects = {
+      unlock("fw-shattered-purple-bridgehead-annealing"),
+      productivity("fw-aquilo-cryogel", 0.20),
+    },
     order = "f-d-d[shattered-aquilo]",
   },
   {
     type = "technology", name = "fw-shattered-vent-harmonics",
-    icons = icons("fw-condensed-flux-matrix"),
+    icon = asset_icon("fw-spectral-fluid-retention.png"), icon_size = 1024,
     prerequisites = {
       "fw-shattered-vulcanus-bridgehead", "fw-shattered-gleba-bridgehead",
       "fw-shattered-fulgora-bridgehead", "fw-shattered-aquilo-bridgehead",
     },
-    unit = unit(3800, 95), effects = { unlock("fw-shattered-vent-spectrum-condensation") },
+    unit = unit(3800, 95), effects = {
+      unlock("fw-shattered-vent-spectrum-condensation"),
+      productivity("fw-condensed-flux-matrix", 0.20),
+    },
     order = "f-e[shattered-vents]",
   },
   {
     type = "technology", name = "fw-ion-storm-survival",
-    icons = icons("fw-thermal-buffer"),
+    icon = asset_icon("fw-reactor-doping.png"), icon_size = 256,
     prerequisites = { "fw-shattered-vent-harmonics", "fw-superconductive-systems" },
-    unit = unit(4200, 100), effects = { unlock("fw-ion-storm-shielded-foundation") },
+    unit = unit(4200, 100), effects = {
+      productivity("foundation", 0.30),
+    },
     order = "f-f[ion-storm-survival]",
   },
   {
     type = "technology", name = "fw-shattered-network-logistics",
-    icons = icons("fw-rift-coupler"),
+    icon = asset_icon("fw-rift-logistics.png"), icon_size = 1254,
     prerequisites = { "fw-ion-storm-survival", "fw-rift-logistics" },
     unit = unit(4600, 105), effects = {
       unlock("fw-model-lattice"),
       unlock("fw-shattered-rift-coupler-array"),
+      productivity("fw-rift-coupler", 0.25),
     },
     order = "f-g[shattered-logistics]",
   },
   {
     type = "technology", name = "fw-shattered-origin-survey",
-    icons = icons("fw-model-lattice"),
+    icon = asset_icon("fw-isotope-conditioning.png"), icon_size = 256,
     prerequisites = { "fw-shattered-network-logistics", "fw-shattered-vent-harmonics" },
     unit = unit(5200, 110), effects = {
       unlock("fw-harmonic-lattice-core"),
       unlock("fw-shattered-origin-survey-lattice"),
+      productivity("fw-model-lattice", 0.25),
     },
     order = "f-h[origin-survey]",
   },
   {
     type = "technology", name = "fw-ion-storm-capture",
-    icons = icons("fw-origin-forge"),
+    icon = asset_icon("fw-resonance-assemblies.png"), icon_size = 1254,
     prerequisites = { "fw-shattered-origin-survey", "fw-origin-infrastructure" },
-    unit = unit(6200, 120), effects = { unlock("fw-ion-storm-harmonic-core") },
+    unit = unit(6200, 120), effects = {
+      unlock("fw-ion-storm-harmonic-core"),
+      productivity("fw-harmonic-lattice-core", 0.25),
+    },
     order = "f-i[ion-storm-capture]",
   },
 })

@@ -1,17 +1,11 @@
 local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
 
-local function crushed_ore_icons(source_icon, source_icon_size, tint)
+local function crushed_ore_icon(tint)
   return {
     {
       icon = icon_path .. "fw-crushed-lead-ore.png",
       icon_size = 128,
       tint = tint,
-    },
-    {
-      icon = source_icon,
-      icon_size = source_icon_size,
-      scale = 0.28,
-      shift = { 8, 8 },
     },
   }
 end
@@ -28,7 +22,8 @@ data:extend({
   {
     type = "item",
     name = "fw-crushed-iron-ore",
-    icons = crushed_ore_icons("__base__/graphics/icons/iron-ore.png", 64, { r = 0.78, g = 0.84, b = 0.88, a = 1 }),
+    icon = "__Krastorio2Assets__/icons/items/enriched-iron-1.png",
+    icon_size = 64,
     subgroup = "raw-material",
     order = "f-a[fw-crushed-iron-ore]",
     stack_size = 100,
@@ -36,7 +31,8 @@ data:extend({
   {
     type = "item",
     name = "fw-crushed-copper-ore",
-    icons = crushed_ore_icons("__base__/graphics/icons/copper-ore.png", 64, { r = 1.00, g = 0.62, b = 0.36, a = 1 }),
+    icon = "__Krastorio2Assets__/icons/items/enriched-copper-1.png",
+    icon_size = 64,
     subgroup = "raw-material",
     order = "f-b[fw-crushed-copper-ore]",
     stack_size = 100,
@@ -44,7 +40,7 @@ data:extend({
   {
     type = "item",
     name = "fw-crushed-tin-ore",
-    icons = crushed_ore_icons(icon_path .. "fw-bz-tin-ore.png", 128, { r = 0.74, g = 0.82, b = 0.88, a = 1 }),
+    icons = crushed_ore_icon({ r = 0.74, g = 0.82, b = 0.88, a = 1 }),
     subgroup = "raw-material",
     order = "f-c[fw-crushed-tin-ore]",
     stack_size = 100,
@@ -52,7 +48,7 @@ data:extend({
   {
     type = "item",
     name = "fw-crushed-bauxite-ore",
-    icons = crushed_ore_icons(icon_path .. "fw-bauxite-ore.png", 64, { r = 0.92, g = 0.54, b = 0.34, a = 1 }),
+    icons = crushed_ore_icon({ r = 0.92, g = 0.54, b = 0.34, a = 1 }),
     subgroup = "raw-material",
     order = "f-d[fw-crushed-bauxite-ore]",
     stack_size = 100,
@@ -108,8 +104,8 @@ data:extend({
   {
     type = "item",
     name = "fw-alumina-refractory",
-    icon = icon_path .. "fw-bauxite-ore.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-alumina-refractory.png",
+    icon_size = 1024,
     subgroup = "fw-intermediate-structural",
     order = "b[fw-alumina-refractory]",
     stack_size = 200,

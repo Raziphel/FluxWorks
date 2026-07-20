@@ -21,9 +21,23 @@ local function icon_key(technology)
 end
 
 local seen = {}
+local forbidden_icon_prefixes = {
+  "__base__/",
+  "__space-age__/",
+  "__quality__/",
+  "__elevated-rails__/",
+}
 
 for name, technology in pairs(data.raw.technology or {}) do
   if string.sub(name, 1, 3) == "fw-" then
+    local layers = technology.icons or (technology.icon and { { icon = technology.icon } }) or {}
+    for _, layer in ipairs(layers) do
+      for _, prefix in ipairs(forbidden_icon_prefixes) do
+        if string.sub(layer.icon or "", 1, #prefix) == prefix then
+          error("FluxWorks technology borrows expansion artwork: " .. name .. " -> " .. layer.icon)
+        end
+      end
+    end
     local key = icon_key(technology)
     if key then
       local previous = seen[key]

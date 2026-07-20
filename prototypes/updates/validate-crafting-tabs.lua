@@ -43,10 +43,34 @@ local function assert_subgroup_group(name, expected_group)
   end
 end
 
+local function assert_order(prototype_type, name, expected_order)
+  local prototype = data.raw[prototype_type] and data.raw[prototype_type][name]
+  if prototype and prototype.order ~= expected_order then
+    error(
+      "FluxWorks crafting order mismatch for "
+        .. prototype_type
+        .. " "
+        .. name
+        .. ": expected "
+        .. expected_order
+        .. ", got "
+        .. tostring(prototype.order)
+    )
+  end
+end
+
 local function assert_absent(prototype_type, name)
   local prototypes = data.raw[prototype_type]
   if prototypes and prototypes[name] then
     error("FluxWorks obsolete " .. prototype_type .. " still present: " .. name)
+  end
+end
+
+local flux_group = data.raw["item-group"] and data.raw["item-group"]["fw-flux"]
+if flux_group then
+  local expected_icon = "__FluxWorksAssets__/graphics/icons/items/flux.png"
+  if flux_group.icon ~= expected_icon or flux_group.icon_size ~= 64 then
+    error("FluxWorks Flux crafting tab must use the actual Flux icon")
   end
 end
 
@@ -56,9 +80,15 @@ end
 
 for _, name in ipairs({
   "fw-science-facilities",
+  "fw-systems-machines",
+  "fw-systems-control",
+  "fw-systems-instrumentation",
+  "fw-systems-infrastructure",
 }) do
   assert_absent("item-subgroup", name)
 end
+
+assert_absent("item-group", "fw-systems")
 
 for _, name in ipairs({
   "fw-sensor-diode",
@@ -172,11 +202,20 @@ assert_many({ "item", "recipe" }, {
   "pumpjack",
   "fw-flux-quarry",
   "fw-flux-harvester",
+  "area-mining-drill",
+}, "extraction-machine")
+
+assert_many({ "item", "recipe" }, {
   "stone-furnace",
   "steel-furnace",
   "electric-furnace",
   "foundry",
   "fw-arc-foundry",
+  "industrial-furnace",
+}, "smelting-machine")
+
+assert_many({ "item", "recipe" }, {
+  "burner-assembling-machine",
   "assembling-machine-1",
   "assembling-machine-2",
   "assembling-machine-3",
@@ -185,16 +224,17 @@ assert_many({ "item", "recipe" }, {
   "fw-synthesis-plant",
   "fw-flux-condenser",
   "fw-origin-forge",
-}, "fw-production-assembly")
-
-assert_many({ "item", "recipe" }, {
   "chemical-plant",
   "oil-refinery",
   "fw-petrochemical-facility",
   "fw-hydraulic-plant",
   "crusher",
   "recycler",
-}, "fw-production-assembly")
+  "fuel-processor",
+}, "production-machine")
+
+assert_many({ "item", "recipe" }, { "burner-lab" }, "fw-science-labs")
+assert_many({ "item", "recipe" }, { "captive-biter-spawner" }, "fw-bioprocessing-machines")
 
 assert_many({ "item", "recipe" }, {
   "fw-resin",
@@ -231,7 +271,41 @@ assert_many({ "item", "tool", "recipe" }, {
   "agricultural-science-pack",
   "cryogenic-science-pack",
   "promethium-science-pack",
+  "fw-industrial-methods-science-pack",
+  "fw-systems-analysis-science-pack",
+  "fw-flux-theory-science-pack",
+  "fw-planetary-convergence-science-pack",
 }, "fw-science-packs")
+
+for _, entry in ipairs({
+  { "automation-science-pack", "a[progression]-01[automation]" },
+  { "logistic-science-pack", "a[progression]-02[logistic]" },
+  { "fw-industrial-methods-science-pack", "a[progression]-03[industrial-methods]" },
+  { "military-science-pack", "a[progression]-04[military]" },
+  { "chemical-science-pack", "a[progression]-05[chemical]" },
+  { "production-science-pack", "a[progression]-06[production]" },
+  { "fw-systems-analysis-science-pack", "a[progression]-07[systems-analysis]" },
+  { "utility-science-pack", "a[progression]-08[utility]" },
+  { "space-science-pack", "a[progression]-09[space]" },
+  { "fw-flux-theory-science-pack", "a[progression]-10[flux-theory]" },
+  { "metallurgic-science-pack", "b[planetary]-01[metallurgic]" },
+  { "electromagnetic-science-pack", "b[planetary]-02[electromagnetic]" },
+  { "agricultural-science-pack", "b[planetary]-03[agricultural]" },
+  { "cryogenic-science-pack", "b[planetary]-04[cryogenic]" },
+  { "promethium-science-pack", "b[planetary]-05[promethium]" },
+  { "fw-planetary-convergence-science-pack", "b[planetary]-06[convergence]" },
+}) do
+  for _, prototype_type in ipairs({ "tool", "item", "recipe" }) do
+    assert_order(prototype_type, entry[1], entry[2])
+  end
+end
+
+assert_many({ "item", "recipe" }, {
+  "fw-industrial-district-charter",
+  "fw-autonomous-network-charter",
+  "fw-spectrum-control-charter",
+  "fw-convergence-directive",
+}, "fw-progression-projects")
 
 assert_many({ "item", "recipe" }, {
   "lab",
@@ -256,8 +330,10 @@ assert_many({ "recipe" }, {
 }, "fw-bioprocessing-processes")
 
 assert_many({ "item", "recipe" }, {
+  "burner-turbine",
   "boiler",
   "steam-engine",
+  "heating-tower",
   "solar-panel",
   "lightning-rod",
   "lightning-collector",
@@ -271,6 +347,12 @@ assert_many({ "item", "recipe" }, {
 }, "fw-energy-storage")
 
 assert_many({ "item", "recipe" }, {
+  "nuclear-reactor",
+  "heat-pipe",
+  "heat-exchanger",
+  "steam-turbine",
+  "fusion-reactor",
+  "fusion-generator",
   "centrifuge",
   "fw-atomic-enricher",
   "fw-isotope-matrix",
@@ -308,27 +390,6 @@ assert_many({ "recipe" }, {
 }, "fw-fabrication-components")
 
 assert_many({ "item", "recipe" }, {
-  "fw-signal-conduit",
-  "fw-power-regulator",
-  "fw-field-winding",
-  "fw-flow-regulator",
-  "fw-logic-matrix",
-  "fw-hydraulic-manifold",
-}, "fw-systems-control")
-
-assert_many({ "item", "recipe" }, {
-  "fw-lens-array",
-  "fw-sensor-package",
-  "fw-memory-die",
-  "fw-transformer-core",
-  "fw-em-core",
-}, "fw-systems-instrumentation")
-
-assert_many({ "item", "recipe" }, {
-  "small-electric-pole",
-  "medium-electric-pole",
-  "big-electric-pole",
-  "substation",
   "small-lamp",
   "red-wire",
   "green-wire",
@@ -339,13 +400,51 @@ assert_many({ "item", "recipe" }, {
   "power-switch",
   "programmable-speaker",
   "display-panel",
+}, "fw-logistics-circuitry")
+
+assert_many({ "item", "recipe" }, {
+  "fw-signal-conduit",
+  "fw-power-regulator",
+  "fw-field-winding",
+  "fw-transformer-core",
+  "fw-em-core",
+}, "fw-intermediate-electrical")
+
+assert_many({ "item", "recipe" }, {
+  "fw-logic-matrix",
+  "fw-lens-array",
+  "fw-sensor-package",
+  "fw-memory-die",
+  "fw-flow-regulator",
+  "fw-hydraulic-manifold",
+}, "fw-intermediate-precision")
+
+assert_many({ "item", "recipe" }, {
   "construction-robot",
   "logistic-robot",
   "roboport",
+}, "fw-logistics-robotics")
+
+-- Logistics is for usable infrastructure. FluxWorks-owned crafting stock must
+-- remain in Fabrication, Chemistry, Science, or Flux instead of being mixed
+-- into the rows of belts, pipes, power poles, and network entities.
+for item_name, item in pairs(data.raw.item or {}) do
+  local subgroup = item.subgroup and data.raw["item-subgroup"] and data.raw["item-subgroup"][item.subgroup]
+  if string.sub(item_name, 1, 3) == "fw-"
+    and subgroup
+    and subgroup.group == "logistics"
+    and not item.place_result
+    and not item.place_as_tile
+  then
+    error("FluxWorks intermediate routed into Logistics: " .. item_name .. " in " .. item.subgroup)
+  end
+end
+
+assert_many({ "item", "recipe" }, {
   "radar",
   "beacon",
   "remnant-beacon",
-}, "fw-systems-infrastructure")
+}, "fw-logistics-network")
 
 assert_many({ "fluid" }, { "fw-purple-flux" }, "fw-flux-purple")
 assert_many({ "fluid" }, { "fw-yellow-flux" }, "fw-flux-yellow")
@@ -415,4 +514,25 @@ assert_many({ "item", "recipe" }, {
 assert_many({ "recipe" }, {
   "fw-radioactive-scrap-sorting",
   "fw-isotope-recovery",
+  "fw-flux-fired-ceramic-annealing",
+  "fw-arc-glass-recast",
+  "fw-arc-insulator-vitrification",
+  "fw-flux-cermet-tempering",
+  "fw-arc-cermet-densification",
+  "fw-vulcanus-slag-cermet",
 }, "fw-fabrication-components")
+
+for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+  local recycled_name = string.match(recipe_name, "^(.*)%-recycling$")
+  local recycled_item = recycled_name and data.raw.item and data.raw.item[recycled_name]
+  if recycled_item and recipe.subgroup ~= recycled_item.subgroup then
+    error(
+      "FluxWorks recycling tab routing mismatch for "
+        .. recipe_name
+        .. ": expected "
+        .. tostring(recycled_item.subgroup)
+        .. ", got "
+        .. tostring(recipe.subgroup)
+    )
+  end
+end

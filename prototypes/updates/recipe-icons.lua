@@ -1,9 +1,5 @@
 local recipe_icons = require("prototypes.lib.flux-recipe-icons")
 
-local BOTTOM_LEFT = { -9, 8 }
-local TOP_RIGHT = { 9, -9 }
-local BOTTOM_RIGHT = { 9, 8 }
-
 local function set_recipe_icon(recipe_name, icon_data)
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if not (recipe and icon_data) then
@@ -16,64 +12,36 @@ local function set_recipe_icon(recipe_name, icon_data)
   recipe.icons = icon_data.icons or { icon_data }
 end
 
-local function smelting_icon(result_item, source_item)
-  return recipe_icons.product_item_icons(result_item, {
-    recipe_icons.item_overlay(source_item, 0.42, BOTTOM_LEFT),
-    recipe_icons.item_overlay("stone-furnace", 0.34, BOTTOM_RIGHT),
-  })
+local function smelting_icon(result_item)
+  return recipe_icons.product_item_icons(result_item)
 end
 
-local function crusher_icon(result_item, source_item)
-  return recipe_icons.product_item_icons(result_item, {
-    recipe_icons.item_overlay(source_item, 0.42, BOTTOM_LEFT),
-    recipe_icons.item_overlay("crusher", 0.34, BOTTOM_RIGHT),
-  })
+local function crusher_icon(result_item)
+  return recipe_icons.product_item_icons(result_item)
 end
 
-local function chemistry_item_icon(result_item, source_item, fluid_name)
-  return recipe_icons.product_item_icons(result_item, {
-    recipe_icons.item_overlay(source_item, 0.42, BOTTOM_LEFT),
-    recipe_icons.fluid_overlay(fluid_name, 0.40, TOP_RIGHT),
-  })
+local function chemistry_item_icon(result_item)
+  return recipe_icons.product_item_icons(result_item)
 end
 
-local function chemistry_fluid_icon(result_fluid, source_item, fluid_name)
-  return recipe_icons.product_fluid_icons(result_fluid, {
-    recipe_icons.item_overlay(source_item, 0.42, BOTTOM_LEFT),
-    recipe_icons.fluid_overlay(fluid_name, 0.40, TOP_RIGHT),
-  })
+local function chemistry_fluid_icon(result_fluid)
+  return recipe_icons.product_fluid_icons(result_fluid)
 end
 
-local function harvester_icon(result_item, source_item, flux_name)
-  return recipe_icons.product_item_icons(result_item, {
-    recipe_icons.item_overlay(source_item, 0.42, BOTTOM_LEFT),
-    recipe_icons.fluid_overlay(flux_name or "fw-purple-flux", 0.40, TOP_RIGHT),
-    recipe_icons.item_overlay("fw-flux-harvester", 0.30, BOTTOM_RIGHT),
-  }, 0.90)
+local function harvester_icon(result_item)
+  return recipe_icons.product_item_icons(result_item)
 end
 
-local function harvester_fluid_icon(result_fluid, source_item, flux_name)
-  return recipe_icons.product_fluid_icons(result_fluid, {
-    recipe_icons.item_overlay(source_item, 0.42, BOTTOM_LEFT),
-    recipe_icons.fluid_overlay(flux_name or "fw-purple-flux", 0.40, TOP_RIGHT),
-    recipe_icons.item_overlay("fw-flux-harvester", 0.30, BOTTOM_RIGHT),
-  }, 0.90)
+local function harvester_fluid_icon(result_fluid)
+  return recipe_icons.product_fluid_icons(result_fluid)
 end
 
-local function synthesis_icon(result_item, source_item, flux_name)
-  return recipe_icons.product_item_icons(result_item, {
-    recipe_icons.item_overlay(source_item, 0.42, BOTTOM_LEFT),
-    recipe_icons.fluid_overlay(flux_name or "fw-purple-flux", 0.40, TOP_RIGHT),
-    recipe_icons.item_overlay("fw-synthesis-plant", 0.30, BOTTOM_RIGHT),
-  }, 0.90)
+local function synthesis_icon(result_item)
+  return recipe_icons.product_item_icons(result_item)
 end
 
-local function foundry_icon(result_item, source_item, flux_name)
-  return recipe_icons.product_item_icons(result_item, {
-    recipe_icons.item_overlay(source_item, 0.42, BOTTOM_LEFT),
-    recipe_icons.fluid_overlay(flux_name or "fw-red-flux", 0.40, TOP_RIGHT),
-    recipe_icons.item_overlay("fw-arc-foundry", 0.30, BOTTOM_RIGHT),
-  }, 0.90)
+local function foundry_icon(result_item)
+  return recipe_icons.product_item_icons(result_item)
 end
 
 set_recipe_icon("lead-plate", smelting_icon("lead-plate", "lead-ore"))

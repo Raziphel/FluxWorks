@@ -93,7 +93,7 @@ data:extend({
   process_tech(
     "fw-green-cultivation-productivity",
     "__FluxWorksAssets__/graphics/technology/fw-biosystems-engineering.png",
-    256,
+    1024,
     { "fw-flux-green-cultivation", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",

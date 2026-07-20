@@ -48,3 +48,11 @@ require("prototypes.updates.shattered-planet")
 require("prototypes.updates.resource-placement")
 require("prototypes.updates.rocket-reusability")
 require("prototypes.updates.flux-asteroids")
+
+-- FluxWorks fluids use dedicated pipe/tank logistics and should not generate
+-- vanilla barrel items whose graphics would become part of our visual identity.
+for name, fluid in pairs(data.raw.fluid or {}) do
+  if string.sub(name, 1, 3) == "fw-" then
+    fluid.auto_barrel = false
+  end
+end

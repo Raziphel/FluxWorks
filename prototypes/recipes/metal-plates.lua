@@ -1,6 +1,18 @@
 data:extend({
   {
     type = "recipe",
+    name = "fw-coke",
+    icon = "__Krastorio2Assets__/icons/items/coke.png",
+    icon_size = 64,
+    category = "smelting",
+    enabled = false,
+    energy_required = 12,
+    allow_productivity = true,
+    ingredients = { { type = "item", name = "coal", amount = 6 } },
+    results = { { type = "item", name = "fw-coke", amount = 4 } },
+  },
+  {
+    type = "recipe",
     name = "iron-plate-from-crushed",
     category = "smelting",
     enabled = false,
@@ -155,4 +167,28 @@ data:extend({
     ingredients = { { type = "item", name = "coal", amount = 2 } },
     results = { { type = "item", name = "fw-carbon", amount = 1 } },
   },
+  {
+    type = "recipe",
+    name = "fw-coke-purification",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-carbon-ore.png",
+    icon_size = 128,
+    category = "smelting",
+    enabled = false,
+    energy_required = 4.8,
+    allow_productivity = true,
+    ingredients = { { type = "item", name = "fw-coke", amount = 2 } },
+    results = { { type = "item", name = "fw-carbon", amount = 3 } },
+  },
 })
+
+local steel_recipe = data.raw.recipe and data.raw.recipe["steel-plate"]
+if not steel_recipe then
+  error("FluxWorks coke metallurgy requires the base steel-plate recipe")
+end
+steel_recipe.energy_required = 12
+steel_recipe.ingredients = {
+  { type = "item", name = "iron-plate", amount = 8 },
+  { type = "item", name = "fw-coke", amount = 2 },
+}
+steel_recipe.results = { { type = "item", name = "steel-plate", amount = 4 } }
+steel_recipe.allow_productivity = true

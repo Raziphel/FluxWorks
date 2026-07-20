@@ -205,16 +205,43 @@ assert_recipe_unlocks("fw-polymer-stabilization", {
 })
 assert_recipe_unlocks("fw-hydraulic-systems", {
   "fw-hydraulic-plant",
+  "fw-hydraulic-tube-drawing",
+  "fw-hydraulic-filter-pressing",
+  "fw-hydraulic-housing-forming",
+  "fw-hydraulic-seal-compression",
 })
 assert_recipe_unlocks("fw-fluid-control-architecture", {
   "fw-hydraulic-manifold",
+  "fw-hydraulic-regulator-calibration",
 })
 assert_recipe_unlocks("fw-pressure-containment", {
   "fw-kr-steel-pipe",
   "fw-kr-steel-pipe-to-ground",
   "fw-kr-steel-pump",
+})
+assert_recipe_unlocks("fw-pressure-reservoirs", {
   "fw-kr-big-storage-tank",
 })
+assert_recipe_unlocks("fw-bulk-logistics", { "fw-kr-loader" })
+assert_recipe_unlocks("fw-fast-loader-handling", { "fw-kr-fast-loader" })
+assert_recipe_unlocks("fw-bulk-storage", { "fw-kr-strongbox", "fw-kr-warehouse" })
+assert_recipe_unlocks("fw-network-logistics", { "fw-kr-express-loader" })
+assert_recipe_unlocks("fw-network-storage", {
+  "fw-kr-passive-provider-strongbox",
+  "fw-kr-storage-strongbox",
+  "fw-kr-passive-provider-warehouse",
+  "fw-kr-storage-warehouse",
+})
+assert_recipe_unlocks("fw-logistics-orchestration", { "fw-kr-advanced-loader" })
+assert_recipe_unlocks("fw-controlled-storage", {
+  "fw-kr-active-provider-strongbox",
+  "fw-kr-buffer-strongbox",
+  "fw-kr-requester-strongbox",
+  "fw-kr-active-provider-warehouse",
+  "fw-kr-buffer-warehouse",
+  "fw-kr-requester-warehouse",
+})
+assert_recipe_unlocks("fw-high-capacity-fluid-storage", { "fw-kr-huge-storage-tank" })
 assert_recipe_unlocks("fw-material-foundations", {
   "fw-metal-mesh",
   "fw-alumina-refractory",
@@ -773,15 +800,11 @@ for _, prerequisite_name in ipairs({
 end
 
 local shattered_campaign_contracts = {
-  { technology = "fw-shattered-expedition-planning", recipe = "fw-shattered-expedition-supplies" },
-  { technology = "fw-shattered-platform-hardening", recipe = "fw-shattered-platform-armoring" },
-  { technology = "fw-shattered-landing-protocols", recipe = "fw-shattered-landing-foundation" },
   { technology = "fw-shattered-vulcanus-bridgehead", recipe = "fw-shattered-red-bridgehead-forging" },
   { technology = "fw-shattered-gleba-bridgehead", recipe = "fw-shattered-green-bridgehead-cultivation" },
   { technology = "fw-shattered-fulgora-bridgehead", recipe = "fw-shattered-yellow-bridgehead-reclamation" },
   { technology = "fw-shattered-aquilo-bridgehead", recipe = "fw-shattered-purple-bridgehead-annealing" },
   { technology = "fw-shattered-vent-harmonics", recipe = "fw-shattered-vent-spectrum-condensation" },
-  { technology = "fw-ion-storm-survival", recipe = "fw-ion-storm-shielded-foundation" },
   { technology = "fw-shattered-network-logistics", recipe = "fw-shattered-rift-coupler-array" },
   { technology = "fw-shattered-origin-survey", recipe = "fw-shattered-origin-survey-lattice" },
   { technology = "fw-ion-storm-capture", recipe = "fw-ion-storm-harmonic-core" },
@@ -789,9 +812,31 @@ local shattered_campaign_contracts = {
 
 for _, contract in ipairs(shattered_campaign_contracts) do
   assert_recipe_unlocks(contract.technology, { contract.recipe })
+  local recipe = assert(data.raw.recipe[contract.recipe], "missing Shattered campaign recipe: " .. contract.recipe)
+  local main_product = assert(recipe.main_product, "Shattered campaign recipe needs an explicit main product: " .. contract.recipe)
+  for _, ingredient in ipairs(recipe.ingredients or {}) do
+    assert(
+      ingredient.name ~= main_product,
+      "Shattered campaign recipes must manufacture from upstream stock, not consume their own product: " .. contract.recipe
+    )
+  end
 end
 assert_recipe_unlocks("fw-shattered-network-logistics", { "fw-model-lattice" })
 assert_recipe_unlocks("fw-shattered-origin-survey", { "fw-harmonic-lattice-core" })
+
+local foundation_recipes = {}
+for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+  for _, result in ipairs(recipe.results or {}) do
+    if (result.name or result[1]) == "foundation" then
+      foundation_recipes[#foundation_recipes + 1] = recipe_name
+      break
+    end
+  end
+end
+assert(
+  #foundation_recipes == 1 and foundation_recipes[1] == "foundation",
+  "Foundation must have one canonical manufacturing recipe; found: " .. table.concat(foundation_recipes, ", ")
+)
 
 for _, prerequisite_name in ipairs({
   "promethium-science-pack",

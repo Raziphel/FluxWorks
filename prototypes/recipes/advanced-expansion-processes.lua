@@ -164,8 +164,6 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-isotope-matrix", amount = 1 },
-      { type = "item", name = "fw-control-rod-assembly", amount = 1 },
-      { type = "item", name = "fw-reactor-coolant-cartridge", amount = 1 },
       { type = "item", name = "fw-logic-matrix", amount = 1 },
       { type = "item", name = "fw-shielded-fuel-casing", amount = 1 },
       { type = "item", name = "fw-transformer-core", amount = 1 },

@@ -9,7 +9,6 @@ local organize_science = Startup.enabled("fw-tab-science-organization", true)
 local organize_bioprocessing = Startup.enabled("fw-tab-bioprocessing-organization", true)
 local organize_energy = Startup.enabled("fw-tab-energy-organization", true)
 local organize_chemistry = Startup.enabled("fw-tab-chemistry-organization", true)
-local organize_systems = Startup.enabled("fw-tab-systems-organization", true)
 local organize_flux = Startup.enabled("fw-tab-flux-organization", true)
 local organize_fabrication = Startup.enabled("fw-tab-fabrication-organization", true)
 local organize_logistics = Startup.enabled("fw-tab-logistics-organization", true)
@@ -198,6 +197,10 @@ if organize_science then
     "agricultural-science-pack",
     "cryogenic-science-pack",
     "promethium-science-pack",
+    "fw-industrial-methods-science-pack",
+    "fw-systems-analysis-science-pack",
+    "fw-flux-theory-science-pack",
+    "fw-planetary-convergence-science-pack",
   }) do
     move_science_pack(name)
   end
@@ -210,18 +213,22 @@ if organize_science then
   end
 
   set_orders({ "tool", "item", "recipe" }, {
-    { "automation-science-pack", "a[packs]-a[automation]" },
-    { "logistic-science-pack", "a[packs]-b[logistic]" },
-    { "military-science-pack", "a[packs]-c[military]" },
-    { "chemical-science-pack", "a[packs]-d[chemical]" },
-    { "production-science-pack", "b[advanced]-a[production]" },
-    { "utility-science-pack", "b[advanced]-b[utility]" },
-    { "space-science-pack", "b[advanced]-c[space]" },
-    { "metallurgic-science-pack", "c[planetary]-a[metallurgic]" },
-    { "electromagnetic-science-pack", "c[planetary]-b[electromagnetic]" },
-    { "agricultural-science-pack", "c[planetary]-c[agricultural]" },
-    { "cryogenic-science-pack", "c[planetary]-d[cryogenic]" },
-    { "promethium-science-pack", "c[planetary]-e[promethium]" },
+    { "automation-science-pack", "a[progression]-01[automation]" },
+    { "logistic-science-pack", "a[progression]-02[logistic]" },
+    { "fw-industrial-methods-science-pack", "a[progression]-03[industrial-methods]" },
+    { "military-science-pack", "a[progression]-04[military]" },
+    { "chemical-science-pack", "a[progression]-05[chemical]" },
+    { "production-science-pack", "a[progression]-06[production]" },
+    { "fw-systems-analysis-science-pack", "a[progression]-07[systems-analysis]" },
+    { "utility-science-pack", "a[progression]-08[utility]" },
+    { "space-science-pack", "a[progression]-09[space]" },
+    { "fw-flux-theory-science-pack", "a[progression]-10[flux-theory]" },
+    { "metallurgic-science-pack", "b[planetary]-01[metallurgic]" },
+    { "electromagnetic-science-pack", "b[planetary]-02[electromagnetic]" },
+    { "agricultural-science-pack", "b[planetary]-03[agricultural]" },
+    { "cryogenic-science-pack", "b[planetary]-04[cryogenic]" },
+    { "promethium-science-pack", "b[planetary]-05[promethium]" },
+    { "fw-planetary-convergence-science-pack", "b[planetary]-06[convergence]" },
     { "lab", "d[labs]-a[lab]" },
     { "biolab", "d[labs]-b[biolab]" },
   })
@@ -489,7 +496,7 @@ for _, name in pairs({
   "fw-flux-quarry",
   "fw-flux-harvester",
 }) do
-  move_item_and_recipe(name, "fw-production-assembly")
+  move_item_and_recipe(name, "extraction-machine")
 end
 
 for _, entry in pairs({
@@ -512,7 +519,7 @@ for _, name in pairs({
   "foundry",
   "fw-arc-foundry",
 }) do
-  move_item_and_recipe(name, "fw-production-assembly")
+  move_item_and_recipe(name, "smelting-machine")
 end
 
 for _, entry in pairs({
@@ -527,6 +534,7 @@ for _, entry in pairs({
 end
 
 for _, name in pairs({
+  "burner-assembling-machine",
   "assembling-machine-1",
   "assembling-machine-2",
   "assembling-machine-3",
@@ -536,13 +544,14 @@ for _, name in pairs({
   "fw-flux-condenser",
   "fw-origin-forge",
 }) do
-  move_item_and_recipe(name, "fw-production-assembly")
+  move_item_and_recipe(name, "production-machine")
 end
 
 for _, entry in pairs({
-  { "assembling-machine-1", "a[assembly]-a[assembling-machine-1]" },
-  { "assembling-machine-2", "a[assembly]-b[assembling-machine-2]" },
-  { "assembling-machine-3", "a[assembly]-c[assembling-machine-3]" },
+  { "burner-assembling-machine", "a[assembly]-a[burner-assembling-machine]" },
+  { "assembling-machine-1", "a[assembly]-b[assembling-machine-1]" },
+  { "assembling-machine-2", "a[assembly]-c[assembling-machine-2]" },
+  { "assembling-machine-3", "a[assembly]-d[assembling-machine-3]" },
   { "electromagnetic-plant", "b[advanced-assembly]-a[electromagnetic-plant]" },
   { "cryogenic-plant", "b[advanced-assembly]-b[cryogenic-plant]" },
   { "fw-synthesis-plant", "b[advanced-assembly]-c[synthesis-plant]" },
@@ -559,7 +568,7 @@ for _, name in pairs({
   "fw-petrochemical-facility",
   "fw-hydraulic-plant",
 }) do
-  move_item_and_recipe(name, "fw-production-assembly")
+  move_item_and_recipe(name, "production-machine")
 end
 
 for _, entry in pairs({
@@ -578,7 +587,7 @@ for _, name in pairs({
   "centrifuge",
   "recycler",
 }) do
-  move_item_and_recipe(name, "fw-production-assembly")
+  move_item_and_recipe(name, "production-machine")
 end
 
 for _, entry in pairs({
@@ -590,6 +599,23 @@ for _, entry in pairs({
   set_order("item", entry[1], entry[2])
   set_order("recipe", entry[1], entry[2])
 end
+
+-- AAI/K2 machines otherwise retain late z-orders in the production group and
+-- form an orphaned block below modules. Keep them with their actual families.
+move_item_and_recipe("area-mining-drill", "extraction-machine")
+move_item_and_recipe("industrial-furnace", "smelting-machine")
+move_item_and_recipe("fuel-processor", "production-machine")
+move_item_and_recipe("burner-lab", "fw-science-labs")
+move_item_and_recipe("captive-biter-spawner", "fw-bioprocessing-machines")
+
+set_orders({ "item", "recipe" }, {
+  { "area-mining-drill", "a[mining]-c[area-mining-drill]" },
+  { "big-mining-drill", "a[mining]-d[big-mining-drill]" },
+  { "industrial-furnace", "a[furnaces]-d[industrial-furnace]" },
+  { "fuel-processor", "d[specialized]-a[fuel-processor]" },
+  { "burner-lab", "d[labs]-a[burner-lab]" },
+  { "captive-biter-spawner", "a[machines]-c[captive-biter-spawner]" },
+})
 end
 
 if organize_bioprocessing then
@@ -730,6 +756,24 @@ end
 
 if organize_energy then
   for _, name in pairs({
+    "burner-turbine",
+    "heating-tower",
+  }) do
+    move_item_and_recipe(name, "fw-energy-generation")
+  end
+
+  for _, name in pairs({
+    "nuclear-reactor",
+    "heat-pipe",
+    "heat-exchanger",
+    "steam-turbine",
+    "fusion-reactor",
+    "fusion-generator",
+  }) do
+    move_item_and_recipe(name, "fw-energy-reactors")
+  end
+
+  for _, name in pairs({
     "boiler",
     "steam-engine",
     "solar-panel",
@@ -783,8 +827,10 @@ if organize_energy then
   end
 
   set_orders({ "item", "recipe" }, {
-    { "boiler", "a[steam]-a[boiler]" },
-    { "steam-engine", "a[steam]-b[steam-engine]" },
+    { "burner-turbine", "a[steam]-a[burner-turbine]" },
+    { "boiler", "a[steam]-b[boiler]" },
+    { "steam-engine", "a[steam]-c[steam-engine]" },
+    { "heating-tower", "a[steam]-d[heating-tower]" },
     { "solar-panel", "b[renewable]-a[solar-panel]" },
     { "lightning-rod", "b[renewable]-b[lightning-rod]" },
     { "lightning-collector", "b[renewable]-c[lightning-collector]" },
@@ -798,8 +844,14 @@ if organize_energy then
   })
 
   set_orders({ "item", "recipe" }, {
-    { "centrifuge", "a[reactors]-a[centrifuge]" },
-    { "fw-atomic-enricher", "a[reactors]-b[atomic-enricher]" },
+    { "nuclear-reactor", "a[nuclear]-a[nuclear-reactor]" },
+    { "heat-pipe", "a[nuclear]-b[heat-pipe]" },
+    { "heat-exchanger", "a[nuclear]-c[heat-exchanger]" },
+    { "steam-turbine", "a[nuclear]-d[steam-turbine]" },
+    { "fusion-reactor", "b[fusion]-a[fusion-reactor]" },
+    { "fusion-generator", "b[fusion]-b[fusion-generator]" },
+    { "centrifuge", "c[reactor-support]-a[centrifuge]" },
+    { "fw-atomic-enricher", "c[reactor-support]-b[atomic-enricher]" },
     { "fw-isotope-matrix", "b[core-parts]-a[isotope-matrix]" },
     { "fw-moderator-lattice", "b[core-parts]-b[moderator-lattice]" },
     { "fw-control-rod-assembly", "b[core-parts]-c[control-rod-assembly]" },
@@ -828,6 +880,7 @@ if organize_chemistry then
     "coal",
     "carbon",
     "fw-carbon",
+    "fw-coke",
     "fw-salt",
     "sulfur",
     "lithium",
@@ -868,6 +921,8 @@ if organize_chemistry then
   for _, name in pairs({
     "fw-salt-from-water",
     "fw-carbon-refining",
+    "fw-coke",
+    "fw-coke-purification",
     "fw-carbon-washing",
     "fw-salt-brine-clarification",
     "fw-silica-beneficiation",
@@ -1015,6 +1070,8 @@ if organize_chemistry then
   set_orders({ "recipe" }, {
     { "fw-salt-from-water", "a[feedstocks]-a[salt-from-water]" },
     { "fw-carbon-refining", "a[feedstocks]-b[carbon-refining]" },
+    { "fw-coke", "a[feedstocks]-ba[coke-carbonization]" },
+    { "fw-coke-purification", "a[feedstocks]-bb[coke-purification]" },
     { "fw-carbon-washing", "a[feedstocks]-c[carbon-washing]" },
     { "fw-salt-brine-clarification", "a[feedstocks]-d[salt-brine-clarification]" },
     { "fw-silica-beneficiation", "a[feedstocks]-e[silica-beneficiation]" },
@@ -1069,33 +1126,8 @@ if organize_chemistry then
   })
 end
 
-if organize_systems then
+if organize_logistics then
   for _, name in pairs({
-    "fw-signal-conduit",
-    "fw-power-regulator",
-    "fw-field-winding",
-    "fw-flow-regulator",
-    "fw-logic-matrix",
-    "fw-hydraulic-manifold",
-  }) do
-    move_item_and_recipe(name, "fw-systems-control")
-  end
-
-  for _, name in pairs({
-    "fw-lens-array",
-    "fw-sensor-package",
-    "fw-memory-die",
-    "fw-transformer-core",
-    "fw-em-core",
-  }) do
-    move_item_and_recipe(name, "fw-systems-instrumentation")
-  end
-
-  for _, name in pairs({
-    "small-electric-pole",
-    "medium-electric-pole",
-    "big-electric-pole",
-    "substation",
     "small-lamp",
     "red-wire",
     "green-wire",
@@ -1106,38 +1138,11 @@ if organize_systems then
     "power-switch",
     "programmable-speaker",
     "display-panel",
-    "construction-robot",
-    "logistic-robot",
-    "roboport",
-    "radar",
-    "beacon",
-    "remnant-beacon",
   }) do
-    move_item_and_recipe(name, "fw-systems-infrastructure")
+    move_item_and_recipe(name, "fw-logistics-circuitry")
   end
 
   set_orders({ "item", "recipe" }, {
-    { "fw-signal-conduit", "a[control]-a[signal-conduit]" },
-    { "fw-power-regulator", "a[control]-b[power-regulator]" },
-    { "fw-field-winding", "a[control]-c[field-winding]" },
-    { "fw-flow-regulator", "b[fluid-control]-a[flow-regulator]" },
-    { "fw-hydraulic-manifold", "b[fluid-control]-b[hydraulic-manifold]" },
-    { "fw-logic-matrix", "c[logic]-a[logic-matrix]" },
-  })
-
-  set_orders({ "item", "recipe" }, {
-    { "fw-lens-array", "a[sensors]-a[lens-array]" },
-    { "fw-sensor-package", "a[sensors]-b[sensor-package]" },
-    { "fw-transformer-core", "b[field-hardware]-a[transformer-core]" },
-    { "fw-em-core", "b[field-hardware]-b[em-core]" },
-    { "fw-memory-die", "c[logic-media]-a[memory-die]" },
-  })
-
-  set_orders({ "item", "recipe" }, {
-    { "small-electric-pole", "a[power-grid]-a[small-electric-pole]" },
-    { "medium-electric-pole", "a[power-grid]-b[medium-electric-pole]" },
-    { "big-electric-pole", "a[power-grid]-c[big-electric-pole]" },
-    { "substation", "a[power-grid]-d[substation]" },
     { "small-lamp", "b[signals]-a[small-lamp]" },
     { "red-wire", "b[signals]-b[red-wire]" },
     { "green-wire", "b[signals]-c[green-wire]" },
@@ -1148,12 +1153,23 @@ if organize_systems then
     { "power-switch", "d[network]-a[power-switch]" },
     { "programmable-speaker", "d[network]-b[programmable-speaker]" },
     { "display-panel", "d[network]-c[display-panel]" },
-    { "construction-robot", "e[robotics]-a[construction-robot]" },
-    { "logistic-robot", "e[robotics]-b[logistic-robot]" },
-    { "roboport", "e[robotics]-c[roboport]" },
-    { "radar", "f[sensors]-a[radar]" },
-    { "beacon", "f[sensors]-b[beacon]" },
-    { "remnant-beacon", "f[sensors]-c[remnant-beacon]" },
+  })
+
+  for _, name in pairs({ "construction-robot", "logistic-robot", "roboport" }) do
+    move_item_and_recipe(name, "fw-logistics-robotics")
+  end
+
+  for _, name in pairs({ "radar", "beacon", "remnant-beacon" }) do
+    move_item_and_recipe(name, "fw-logistics-network")
+  end
+
+  set_orders({ "item", "recipe" }, {
+    { "construction-robot", "a[robots]-a[construction-robot]" },
+    { "logistic-robot", "a[robots]-b[logistic-robot]" },
+    { "roboport", "b[network]-a[roboport]" },
+    { "radar", "a[coverage]-a[radar]" },
+    { "beacon", "a[coverage]-b[beacon]" },
+    { "remnant-beacon", "a[coverage]-c[remnant-beacon]" },
   })
 end
 
@@ -1198,6 +1214,27 @@ if organize_flux then
 end
 
 if organize_fabrication then
+  for _, name in pairs({
+    "fw-signal-conduit",
+    "fw-power-regulator",
+    "fw-field-winding",
+    "fw-transformer-core",
+    "fw-em-core",
+  }) do
+    move_item_and_recipe(name, "fw-intermediate-electrical")
+  end
+
+  for _, name in pairs({
+    "fw-logic-matrix",
+    "fw-lens-array",
+    "fw-sensor-package",
+    "fw-memory-die",
+    "fw-flow-regulator",
+    "fw-hydraulic-manifold",
+  }) do
+    move_item_and_recipe(name, "fw-intermediate-precision")
+  end
+
   for _, name in pairs({
     "fw-fired-ceramic",
     "fw-ceramic-casing",
@@ -1260,6 +1297,21 @@ if organize_fabrication then
     set_order("recipe", entry[1], entry[2])
   end
 
+  -- These are material-production routes whose products already live in the
+  -- fabrication tab. Consuming Flux does not make the finished material a
+  -- Flux system, so keep the alternate recipes beside their primary recipes.
+  for _, entry in pairs({
+    { "fw-flux-fired-ceramic-annealing", "a[ceramics]-a2[flux-annealing]" },
+    { "fw-arc-glass-recast", "a[ceramics]-b[arc-glass-recast]" },
+    { "fw-arc-insulator-vitrification", "a[ceramics]-c[arc-insulator-vitrification]" },
+    { "fw-flux-cermet-tempering", "b[advanced-materials]-a[flux-cermet-tempering]" },
+    { "fw-arc-cermet-densification", "b[advanced-materials]-b[arc-cermet-densification]" },
+    { "fw-vulcanus-slag-cermet", "b[advanced-materials]-c[vulcanus-slag-cermet]" },
+  }) do
+    move_recipe(entry[1], "fw-fabrication-components")
+    set_order("recipe", entry[1], entry[2])
+  end
+
   move_recipe("fw-pellet-bundle-reprocessing", "fw-energy-fuels")
   set_order("recipe", "fw-pellet-bundle-reprocessing", "d[reactor-fuels]-d[pellet-bundle-reprocessing]")
 end
@@ -1270,7 +1322,7 @@ move_item_and_recipe("fw-rocket-avionics", "space-material")
 move_item_and_recipe("fw-rocket-heatshield", "space-material")
 move_item_and_recipe("fw-rocket-engine", "space-material")
 move_item_and_recipe("incomplete-rocket-part", "space-material")
-move_item_and_recipe("remnant-beacon", "fw-systems-infrastructure")
+move_item_and_recipe("remnant-beacon", "fw-logistics-network")
 
 for _, entry in pairs({
   { "casting-pipe", "c[foundry-casting]-a[casting-pipe]" },
@@ -1334,7 +1386,6 @@ if organize_flux then
   "fw-condensed-flux-matrix",
   "fw-flux-resonance-cell",
   "fw-flux-phase-manifold",
-  "fw-arc-insulator-vitrification",
   }) do
     move_item_and_recipe(name, "fw-flux-systems")
   end
@@ -1369,7 +1420,6 @@ if organize_flux then
     { "fw-condensed-flux-matrix", "d[condensing]-a[condensed-flux-matrix]" },
     { "fw-flux-phase-manifold", "d[condensing]-b[flux-phase-manifold]" },
     { "fw-quantum-computer", "d[condensing]-c[quantum-computer]" },
-    { "fw-arc-insulator-vitrification", "e[processing]-a[arc-insulator-vitrification]" },
     { "fw-flux-asteroid-refining", "e[processing]-b[flux-asteroid-refining]" },
     { "fw-flux-metallic-synthesis", "e[processing]-c[flux-metallic-synthesis]" },
     { "fw-rift-seed-crystallization", "e[processing]-d[rift-seed-crystallization]" },
@@ -1413,6 +1463,17 @@ if organize_flux then
     elseif string.sub(recipe_name, 1, 3) == "fw-" and string.find(recipe_name, "flux", 1, true) then
       recipe.subgroup = recipe.subgroup or "fw-flux-systems"
     end
+  end
+end
+
+-- Space Age creates recycling recipes after most item definitions have chosen
+-- their initial subgroup. Follow the final item routing so recycling entries do
+-- not linger in Flux merely because their product started there temporarily.
+for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+  local recycled_name = string.match(recipe_name, "^(.*)%-recycling$")
+  local recycled_subgroup = recycled_name and item_subgroup(recycled_name)
+  if recycled_subgroup then
+    recipe.subgroup = recycled_subgroup
   end
 end
 

@@ -2,8 +2,8 @@ local item_sounds = require("__base__.prototypes.item_sounds")
 local sounds = require("__base__.prototypes.entity.sounds")
 local util = require("util")
 local advanced_foundry_path = "__finely-crafted-graphics__/graphics/advanced-foundry/"
-local conduit_path = "__finely-crafted-graphics__/graphics/conduit/"
 local gravity_assembler_path = "__finely-crafted-graphics__/graphics/gravity-assembler/"
+local filtration_plant_path = "__Krastorio2Assets__/buildings/filtration-plant/"
 
 local electromagnetic_pipe_pictures = require("__space-age__.prototypes.entity.electromagnetic-plant-pictures").pipe_pictures
 
@@ -75,47 +75,64 @@ local function make_flux_harvester_graphics()
     animation = {
       layers = {
         {
-          filename = conduit_path .. "conduit-hr-shadow.png",
+          filename = filtration_plant_path .. "filtration-plant.png",
           priority = "high",
-          width = 600,
-          height = 400,
+          width = 460,
+          height = 520,
           frame_count = 1,
-          line_length = 1,
-          repeat_count = 64,
-          animation_speed = 0.4,
-          draw_as_shadow = true,
-          scale = 0.56,
-          shift = util.by_pixel(8, 6),
+          scale = 0.32,
+          shift = { 0, -0.12 },
         },
         {
-          filename = conduit_path .. "conduit-hr-animation.png",
+          filename = filtration_plant_path .. "filtration-plant-sh.png",
           priority = "high",
-        width = 200,
-        height = 290,
-        frame_count = 64,
-        line_length = 8,
-        animation_speed = 0.4,
-          scale = 0.56,
-          shift = util.by_pixel(0, -8),
+          width = 498,
+          height = 438,
+          frame_count = 1,
+          scale = 0.32,
+          shift = { 0.21, 0.20 },
+          draw_as_shadow = true,
         },
       },
     },
     working_visualisations = {
       {
-        fadeout = true,
         animation = {
-          filename = conduit_path .. "conduit-hr-emission.png",
+          filename = filtration_plant_path .. "filtration-plant-working.png",
           priority = "high",
-          width = 200,
-          height = 290,
-          frame_count = 64,
-          line_length = 8,
-          animation_speed = 0.4,
-          scale = 0.56,
-          shift = util.by_pixel(0, -8),
-          draw_as_glow = true,
-          blend_mode = "additive",
-          tint = { r = 0.72, g = 0.38, b = 1.0, a = 0.92 },
+          width = 340,
+          height = 370,
+          frame_count = 30,
+          line_length = 6,
+          animation_speed = 0.6,
+          scale = 0.32,
+          shift = { 0.19, -0.38 },
+        },
+      },
+      {
+        apply_recipe_tint = "primary",
+        animation = {
+          filename = filtration_plant_path .. "filtration-plant-dirty-mask.png",
+          width = 156,
+          height = 120,
+          frame_count = 30,
+          line_length = 6,
+          animation_speed = 0.6,
+          scale = 0.32,
+          shift = { 1.03, -0.65 },
+        },
+      },
+      {
+        apply_recipe_tint = "secondary",
+        animation = {
+          filename = filtration_plant_path .. "filtration-plant-clear-mask.png",
+          width = 156,
+          height = 120,
+          frame_count = 30,
+          line_length = 6,
+          animation_speed = 0.6,
+          scale = 0.32,
+          shift = { 1.03, 0.84 },
         },
       },
       working_light(0.9, 9, { 0.0, -0.1 }, { r = 0.62, g = 0.34, b = 1.0 }),
@@ -126,13 +143,7 @@ end
 
 local function flux_harvester_icons()
   return {
-    { icon = "__space-age__/graphics/icons/crusher.png", icon_size = 64 },
-    {
-      icon = "__FluxWorksAssets__/graphics/icons/items/fw-harvester-head.png",
-      icon_size = 64,
-      scale = 0.52,
-      shift = { 9, 9 },
-    },
+    { icon = "__Krastorio2Assets__/icons/entities/filtration-plant.png", icon_size = 64 },
   }
 end
 
@@ -266,8 +277,8 @@ harvester.fluid_boxes_off_when_no_fluid_recipe = true
 harvester.graphics_set = make_flux_harvester_graphics()
 harvester.working_sound = {
   sound = {
-    filename = "__space-age__/sound/entity/crusher/crusher-loop.ogg",
-    volume = 0.72,
+    filename = "__Krastorio2Assets__/sounds/buildings/filtration-plant.ogg",
+    volume = 0.55,
     audible_distance_modifier = 0.6,
   },
   fade_in_ticks = 4,

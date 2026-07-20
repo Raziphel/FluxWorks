@@ -409,7 +409,7 @@ data:extend({
     type = "technology",
     name = "fw-lightweight-framing",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-light-frame.png",
-    icon_size = 1024,
+    icon_size = 128,
     prerequisites = { "fw-advanced-fabrication", "fw-beam-engineering" },
     unit = tech_unit(205, {
       { "automation-science-pack", 1 },

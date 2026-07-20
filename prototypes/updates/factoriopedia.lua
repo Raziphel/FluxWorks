@@ -225,9 +225,15 @@ set_factoriopedia_description("technology", "fw-arc-recasting", "fw-arc-recastin
 set_factoriopedia_description("technology", "fw-reactive-powders", "fw-reactive-powders-technology")
 set_factoriopedia_description("technology", "fw-slurry-beneficiation", "fw-slurry-beneficiation-technology")
 set_factoriopedia_description("technology", "fw-pressure-containment", "fw-pressure-containment-technology")
+set_factoriopedia_description("technology", "fw-pressure-reservoirs", "fw-pressure-reservoirs-technology")
 set_factoriopedia_description("technology", "fw-bulk-logistics", "fw-bulk-logistics-technology")
+set_factoriopedia_description("technology", "fw-fast-loader-handling", "fw-fast-loader-handling-technology")
+set_factoriopedia_description("technology", "fw-bulk-storage", "fw-bulk-storage-technology")
 set_factoriopedia_description("technology", "fw-network-logistics", "fw-network-logistics-technology")
+set_factoriopedia_description("technology", "fw-network-storage", "fw-network-storage-technology")
 set_factoriopedia_description("technology", "fw-logistics-orchestration", "fw-logistics-orchestration-technology")
+set_factoriopedia_description("technology", "fw-controlled-storage", "fw-controlled-storage-technology")
+set_factoriopedia_description("technology", "fw-high-capacity-fluid-storage", "fw-high-capacity-fluid-storage-technology")
 set_factoriopedia_description("technology", "fw-petrochemical-engineering", "fw-petrochemical-engineering-technology")
 set_factoriopedia_description("technology", "fw-reactive-binders", "fw-reactive-binders-technology")
 set_factoriopedia_description("technology", "fw-elastomer-engineering", "fw-elastomer-engineering-technology")
@@ -340,6 +346,28 @@ set_factoriopedia_description("technology", "fw-green-propagation-productivity",
 set_factoriopedia_description("technology", "fw-cryogenic-loop-productivity", "fw-cryogenic-loop-productivity-technology")
 set_factoriopedia_description("technology", "fw-phase-assembly-productivity", "fw-phase-assembly-productivity-technology")
 set_factoriopedia_description("technology", "fw-asteroid-refinement-productivity", "fw-asteroid-refinement-productivity-technology")
+set_factoriopedia_description("technology", "fw-industrial-methods-science", "fw-industrial-methods-science-technology")
+set_factoriopedia_description("technology", "fw-systems-analysis-science", "fw-systems-analysis-science-technology")
+set_factoriopedia_description("technology", "fw-flux-theory-science", "fw-flux-theory-science-technology")
+set_factoriopedia_description("technology", "fw-planetary-convergence-science", "fw-planetary-convergence-science-technology")
+set_factoriopedia_description("technology", "fw-industrial-district-project", "fw-industrial-district-project-technology")
+set_factoriopedia_description("technology", "fw-autonomous-network-project", "fw-autonomous-network-project-technology")
+set_factoriopedia_description("technology", "fw-spectrum-control-project", "fw-spectrum-control-project-technology")
+set_factoriopedia_description("technology", "fw-convergence-directive-project", "fw-convergence-directive-project-technology")
+
+for _, stem in ipairs({
+  "fw-industrial-yield",
+  "fw-material-handling",
+  "fw-autonomous-logistics",
+  "fw-rail-network-control",
+  "fw-research-methodology",
+  "fw-flux-process-mastery",
+}) do
+  for tier = 1, 3 do
+    local name = stem .. "-" .. tier
+    set_factoriopedia_description("technology", name, name .. "-technology")
+  end
+end
 
 set_factoriopedia_simulation("resource", "fw-crystalised-flux", "fw_crystalised_flux")
 set_factoriopedia_simulation("resource", "fw-metallic-deposit", "fw_metallic_deposit")

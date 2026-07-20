@@ -5,7 +5,7 @@ data:extend({
     type = "technology",
     name = "fw-flux-catalysis",
     icon = "__FluxWorksAssets__/graphics/icons/items/flux-1-light.png",
-    icon_size = 1024,
+    icon_size = 64,
     prerequisites = { "fw-liquid-mining", "fw-material-refinement", "fw-flux-extraction" },
     unit = {
       count = 140,
@@ -27,7 +27,7 @@ data:extend({
     type = "technology",
     name = "fw-flux-yellow-catalysis",
     icon = "__FluxWorksAssets__/graphics/icons/items/flux-light.png",
-    icon_size = 1024,
+    icon_size = 64,
     prerequisites = { "fw-flux-catalysis", "fw-liquid-mining", "fw-sealed-systems" },
     unit = {
       count = 220,
@@ -221,7 +221,7 @@ data:extend({
     type = "technology",
     name = "fw-resonance-assemblies",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-resonance-cell.png",
-    icon_size = 1024,
+    icon_size = 1254,
     prerequisites = { "fw-flux-resonance", "fw-electromagnetic-architecture" },
     unit = {
       count = 720,
@@ -364,7 +364,7 @@ data:extend({
     type = "technology",
     name = "fw-vulcanus-pyrochemistry",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-vulcanus-slag-cermet.png",
-    icon_size = 1024,
+    icon_size = 128,
     prerequisites = { "fw-flux-metallurgy", "fw-flux-reactive-slurries", "metallurgic-science-pack" },
     unit = {
       count = 1080,
@@ -454,7 +454,7 @@ data:extend({
     type = "technology",
     name = "fw-flux-green-propagation",
     icon = "__FluxWorksAssets__/graphics/technology/fw-green-cycle-productivity.png",
-    icon_size = 256,
+    icon_size = 1024,
     prerequisites = { "fw-flux-green-cultivation", "fw-flux-chemical-synthesis" },
     unit = {
       count = 980,
@@ -496,7 +496,7 @@ data:extend({
     type = "technology",
     name = "fw-superconductive-systems",
     icon = "__FluxWorksAssets__/graphics/technology/fw-superconductive-productivity.png",
-    icon_size = 256,
+    icon_size = 1024,
     prerequisites = { "fw-aquilo-cryochemistry", "fw-fulgora-electrochemistry", "fw-flux-thermal-networks" },
     unit = {
       count = 1180,
@@ -840,7 +840,7 @@ data:extend({
     type = "technology",
     name = "fw-origin-transcendence",
     icon = "__FluxWorksAssets__/graphics/icons/items/origin-projects/fw-origin-singularity.png",
-    icon_size = 64,
+    icon_size = 256,
     prerequisites = { "fw-storm-megastructures" },
     unit = {
       count = 3600,

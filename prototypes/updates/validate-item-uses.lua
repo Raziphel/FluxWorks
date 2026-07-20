@@ -56,10 +56,17 @@ local function collect_technology_uses(item_name)
   local uses = {}
 
   for technology_name, technology in pairs(data.raw.technology or {}) do
+    local trigger = technology.research_trigger
+    if trigger and trigger.type == "craft-item" and trigger.item == item_name then
+      uses[#uses + 1] = technology_name
+    end
+
     local ingredients = technology.unit and technology.unit.ingredients or {}
     for _, ingredient in pairs(ingredients) do
       if is_item_ingredient(ingredient, item_name) then
-        uses[#uses + 1] = technology_name
+        if not (trigger and trigger.type == "craft-item" and trigger.item == item_name) then
+          uses[#uses + 1] = technology_name
+        end
         break
       end
     end

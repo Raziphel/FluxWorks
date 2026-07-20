@@ -727,7 +727,6 @@ data:extend(make_loader(
     { type = "item", name = "transport-belt", amount = 1 },
     { type = "item", name = "fw-bearing", amount = 2 },
     { type = "item", name = "fw-steel-beam", amount = 1 },
-    { type = "item", name = "fw-tinned-cable", amount = 1 },
     { type = "item", name = "electronic-circuit", amount = 2 },
   },
   "d[loader]-a1[fw-kr-loader]",
@@ -744,9 +743,7 @@ data:extend(make_loader(
     { type = "item", name = "fast-transport-belt", amount = 1 },
     { type = "item", name = "fw-kr-loader", amount = 1 },
     { type = "item", name = "fw-bearing", amount = 2 },
-    { type = "item", name = "fw-steel-beam", amount = 1 },
-    { type = "item", name = "electronic-circuit", amount = 4 },
-    { type = "item", name = "fw-tinned-cable", amount = 1 },
+    { type = "item", name = "electronic-circuit", amount = 2 },
   },
   "d[loader]-a2[fw-kr-fast-loader]",
   "fw-kr-express-loader",
@@ -761,18 +758,12 @@ data:extend(make_loader(
   {
     { type = "item", name = "express-transport-belt", amount = 1 },
     { type = "item", name = "fw-kr-fast-loader", amount = 1 },
-    { type = "item", name = "transport-belt", amount = 2 },
-    { type = "item", name = "fw-bearing", amount = 4 },
-    { type = "item", name = "fw-steel-beam", amount = 2 },
-    { type = "item", name = "advanced-circuit", amount = 4 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+    { type = "item", name = "advanced-circuit", amount = 2 },
     { type = "item", name = "fw-signal-conduit", amount = 1 },
-    { type = "item", name = "fw-circuit-substrate", amount = 1 },
-    { type = "item", name = "aluminum-plate", amount = 1 },
-    { type = "item", name = "tin-plate", amount = 1 },
-    { type = "item", name = "fw-tinned-cable", amount = 2 },
   },
   "d[loader]-a3[fw-kr-express-loader]",
-  nil,
+  "fw-kr-advanced-loader",
   "500W"
 ))
 
@@ -784,21 +775,9 @@ data:extend(make_loader(
   {
     { type = "item", name = "turbo-transport-belt", amount = 1 },
     { type = "item", name = "fw-kr-express-loader", amount = 1 },
-    { type = "item", name = "transport-belt", amount = 2 },
-    { type = "item", name = "fw-bearing", amount = 4 },
-    { type = "item", name = "fw-steel-beam", amount = 2 },
-    { type = "item", name = "fw-tinned-cable", amount = 2 },
-    { type = "item", name = "tungsten-plate", amount = 8 },
-    { type = "item", name = "processing-unit", amount = 4 },
-    { type = "item", name = "advanced-circuit", amount = 2 },
-    { type = "item", name = "fw-signal-conduit", amount = 1 },
-    { type = "item", name = "fw-circuit-substrate", amount = 1 },
-    { type = "item", name = "aluminum-plate", amount = 1 },
-    { type = "item", name = "tin-plate", amount = 1 },
-    { type = "item", name = "bronze-plate", amount = 1 },
-    { type = "item", name = "titanium-plate", amount = 1 },
+    { type = "item", name = "tungsten-plate", amount = 4 },
+    { type = "item", name = "processing-unit", amount = 2 },
     { type = "item", name = "fw-power-regulator", amount = 1 },
-    { type = "item", name = "fw-sensor-package", amount = 1 },
   },
   "d[loader]-a4[fw-kr-advanced-loader]",
   nil,
@@ -1305,6 +1284,102 @@ data:extend(make_warehouse(
   }
 ))
 
+-- Keep the logistics family upgrade-driven. These recipes should express the
+-- storage body plus the control hardware that changes its role, not repeat the
+-- entire upstream bill of materials at every tier.
+local concise_logistics_recipes = {
+  ["fw-kr-steel-pump"] = {
+    { type = "item", name = "engine-unit", amount = 1 },
+    { type = "item", name = "fw-kr-steel-pipe", amount = 2 },
+    { type = "item", name = "fw-inline-filter", amount = 1 },
+    { type = "item", name = "bronze-plate", amount = 2 },
+  },
+  ["fw-kr-big-storage-tank"] = {
+    { type = "item", name = "storage-tank", amount = 2 },
+    { type = "item", name = "fw-steel-beam", amount = 8 },
+    { type = "item", name = "fw-kr-steel-pipe", amount = 4 },
+    { type = "item", name = "fw-copper-tube", amount = 6 },
+    { type = "item", name = "lead-plate", amount = 3 },
+  },
+  ["fw-kr-huge-storage-tank"] = {
+    { type = "item", name = "fw-kr-big-storage-tank", amount = 2 },
+    { type = "item", name = "fw-steel-beam", amount = 12 },
+    { type = "item", name = "fw-kr-steel-pipe", amount = 8 },
+    { type = "item", name = "concrete", amount = 20 },
+    { type = "item", name = "fw-hydraulic-manifold", amount = 2 },
+  },
+  ["fw-kr-strongbox"] = {
+    { type = "item", name = "steel-chest", amount = 2 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
+    { type = "item", name = "fw-composite-panel", amount = 2 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+  },
+  ["fw-kr-passive-provider-strongbox"] = {
+    { type = "item", name = "fw-kr-strongbox", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 4 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+  },
+  ["fw-kr-storage-strongbox"] = {
+    { type = "item", name = "fw-kr-strongbox", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 4 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+    { type = "item", name = "fw-circuit-substrate", amount = 1 },
+  },
+  ["fw-kr-active-provider-strongbox"] = {
+    { type = "item", name = "fw-kr-strongbox", amount = 1 },
+    { type = "item", name = "processing-unit", amount = 2 },
+    { type = "item", name = "fw-power-regulator", amount = 1 },
+    { type = "item", name = "fw-signal-conduit", amount = 1 },
+  },
+  ["fw-kr-buffer-strongbox"] = {
+    { type = "item", name = "fw-kr-strongbox", amount = 1 },
+    { type = "item", name = "processing-unit", amount = 2 },
+    { type = "item", name = "fw-power-regulator", amount = 1 },
+    { type = "item", name = "fw-control-assembly", amount = 1 },
+  },
+  ["fw-kr-requester-strongbox"] = {
+    { type = "item", name = "fw-kr-strongbox", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 6 },
+    { type = "item", name = "fw-power-regulator", amount = 1 },
+    { type = "item", name = "fw-signal-conduit", amount = 2 },
+  },
+  ["fw-kr-warehouse"] = {
+    { type = "item", name = "fw-kr-strongbox", amount = 4 },
+    { type = "item", name = "fw-steel-beam", amount = 8 },
+    { type = "item", name = "fw-composite-panel", amount = 4 },
+    { type = "item", name = "fw-metal-mesh", amount = 6 },
+  },
+  ["fw-kr-passive-provider-warehouse"] = {
+    { type = "item", name = "fw-kr-warehouse", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 16 },
+    { type = "item", name = "fw-signal-conduit", amount = 4 },
+  },
+  ["fw-kr-storage-warehouse"] = {
+    { type = "item", name = "fw-kr-warehouse", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 16 },
+    { type = "item", name = "fw-signal-conduit", amount = 4 },
+    { type = "item", name = "fw-circuit-substrate", amount = 4 },
+  },
+  ["fw-kr-active-provider-warehouse"] = {
+    { type = "item", name = "fw-kr-warehouse", amount = 1 },
+    { type = "item", name = "processing-unit", amount = 8 },
+    { type = "item", name = "fw-power-regulator", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 4 },
+  },
+  ["fw-kr-buffer-warehouse"] = {
+    { type = "item", name = "fw-kr-warehouse", amount = 1 },
+    { type = "item", name = "processing-unit", amount = 8 },
+    { type = "item", name = "fw-power-regulator", amount = 2 },
+    { type = "item", name = "fw-control-assembly", amount = 4 },
+  },
+  ["fw-kr-requester-warehouse"] = {
+    { type = "item", name = "fw-kr-warehouse", amount = 1 },
+    { type = "item", name = "advanced-circuit", amount = 20 },
+    { type = "item", name = "fw-power-regulator", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 8 },
+  },
+}
+
 data:extend(make_warehouse(
   "fw-kr-passive-provider-warehouse",
   "__Krastorio2Assets__/icons/entities/passive-provider-warehouse.png",
@@ -1425,3 +1500,11 @@ data:extend(make_warehouse(
     { type = "item", name = "fw-tinned-cable", amount = 4 },
   }
 ))
+
+for recipe_name, ingredients in pairs(concise_logistics_recipes) do
+  local recipe = data.raw.recipe[recipe_name]
+  if not recipe then
+    error("FluxWorks concise logistics rewrite references missing recipe " .. recipe_name)
+  end
+  recipe.ingredients = ingredients
+end

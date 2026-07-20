@@ -129,7 +129,7 @@ data:extend({
   {
     type = "item",
     name = "fw-promethium-shard",
-    icon = "__space-age__/graphics/icons/promethium-asteroid-chunk.png",
+    icon = "__Krastorio2Assets__/icons/items/imersite-crystal-4.png",
     icon_size = 64,
     subgroup = "fw-flux-resources",
     order = "f[fw-promethium-shard]",

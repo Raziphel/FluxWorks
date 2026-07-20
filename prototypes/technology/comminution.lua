@@ -92,7 +92,7 @@ data:extend({
     type = "technology",
     name = "fw-dense-ore-smelting",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore.png",
-    icon_size = 128,
+    icon_size = 64,
     prerequisites = { "fw-ore-crushing", "steel-processing" },
     unit = tech_unit(32, {
       { "automation-science-pack", 1 },
@@ -123,6 +123,16 @@ data:extend({
     order = "a-b-i[fw-mineral-beneficiation]",
   },
 })
+
+local steel_processing = data.raw.technology and data.raw.technology["steel-processing"]
+if not steel_processing then
+  error("FluxWorks coke metallurgy requires steel-processing")
+end
+steel_processing.effects = steel_processing.effects or {}
+steel_processing.effects[#steel_processing.effects + 1] = unlock("fw-coke")
+
+local basic_separation = data.raw.technology["fw-basic-separation"]
+basic_separation.effects[#basic_separation.effects + 1] = unlock("fw-coke-purification")
 
 Tech:get("fw-comminution")
   :setCost(16)

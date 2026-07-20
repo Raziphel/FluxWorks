@@ -11,7 +11,7 @@ data:extend({
       },
       {
         icon = "__FluxWorksAssets__/graphics/resources/ores/salt.png",
-        icon_size = 64,
+        icon_size = 128,
         scale = 0.45,
         shift = { 9, 9 },
       },

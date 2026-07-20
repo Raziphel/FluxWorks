@@ -345,11 +345,14 @@ if add_incomplete then
     incomplete_rocket_part.stack_size = 50
     incomplete_rocket_part.hidden = false
 
-    incomplete_rocket_part.icon = "__FluxWorksAssets__/graphics/icons/items/fw-incomplete-rocket-part.png"
+    incomplete_rocket_part.icon = "__base__/graphics/icons/rocket-part.png"
+    incomplete_rocket_part.icon_size = 64
 
     local incomplete_rocket_part_recipe = {
         type = "recipe",
         name = "incomplete-rocket-part",
+        icon = "__base__/graphics/icons/rocket-part.png",
+        icon_size = 64,
         energy_required = 3,
         enabled = false,
         category = "crafting",

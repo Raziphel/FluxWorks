@@ -58,7 +58,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-lattice",
-    icons = single_icon(icon_path .. "fw-flux-lattice.png", 1024),
+    icons = single_icon(icon_path .. "fw-flux-lattice.png", 1254),
     subgroup = "fw-flux-systems",
     order = "c[fw-flux-lattice]",
     stack_size = 100,
@@ -98,7 +98,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-resonance-cell",
-    icons = single_icon(icon_path .. "fw-flux-resonance-cell.png", 1024),
+    icons = single_icon(icon_path .. "fw-flux-resonance-cell.png", 1254),
     subgroup = "fw-flux-systems",
     order = "e[fw-flux-resonance-cell]",
     stack_size = 100,
@@ -218,7 +218,8 @@ data:extend({
   {
     type = "item",
     name = "fw-storm-spine-segment",
-    icons = single_icon(icon_path .. "origin-projects/fw-storm-spine.png", 64),
+    icon = "__FluxWorksAssets__/graphics/technology/fw-reactor-doping.png",
+    icon_size = 256,
     subgroup = "fw-flux-origin-projects",
     order = "a[storm-spine-segment]",
     stack_size = 20,
@@ -234,7 +235,8 @@ data:extend({
   {
     type = "item",
     name = "fw-harmonic-lattice-core",
-    icons = single_icon(icon_path .. "fw-model-lattice.png", 64),
+    icon = "__FluxWorksAssets__/graphics/technology/fw-isotope-conditioning.png",
+    icon_size = 256,
     subgroup = "fw-flux-origin-projects",
     order = "c[harmonic-lattice-core]",
     stack_size = 20,
@@ -242,7 +244,8 @@ data:extend({
   {
     type = "item",
     name = "fw-living-reactor-weave",
-    icons = single_icon("__space-age__/graphics/icons/fusion-power-cell.png", 64),
+    icon = "__Krastorio2Assets__/icons/items/black-reinforced-plate-kl.png",
+    icon_size = 64,
     subgroup = "fw-flux-origin-projects",
     order = "d[living-reactor-weave]",
     stack_size = 20,

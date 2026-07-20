@@ -140,3 +140,71 @@ data:extend({
     subgroup = "fw-fabrication-components",
   },
 })
+
+local function hydraulic_recipe(name, product_name, energy_required, ingredients, amount, subgroup)
+  local product = data.raw.item[product_name]
+  local recipe = {
+    type = "recipe",
+    name = name,
+    enabled = false,
+    category = "fw-hydraulics",
+    energy_required = energy_required,
+    allow_productivity = true,
+    ingredients = ingredients,
+    results = { { type = "item", name = product_name, amount = amount } },
+    main_product = product_name,
+    subgroup = subgroup,
+  }
+
+  if product.icons then
+    recipe.icons = table.deepcopy(product.icons)
+  else
+    recipe.icon = product.icon
+    recipe.icon_size = product.icon_size
+    recipe.icon_mipmaps = product.icon_mipmaps
+  end
+
+  return recipe
+end
+
+data:extend({
+  hydraulic_recipe("fw-hydraulic-tube-drawing", "fw-copper-tube", 3.5, {
+    { type = "item", name = "copper-plate", amount = 4 },
+    { type = "item", name = "lead-plate", amount = 1 },
+    { type = "fluid", name = "lubricant", amount = 20 },
+  }, 8, "fw-intermediate-structural"),
+  hydraulic_recipe("fw-hydraulic-filter-pressing", "fw-inline-filter", 4, {
+    { type = "item", name = "fw-metal-mesh", amount = 2 },
+    { type = "item", name = "fw-carbon", amount = 2 },
+    { type = "item", name = "fw-rubber-sheet", amount = 1 },
+    { type = "fluid", name = "water", amount = 30 },
+  }, 8, "fw-intermediate-precision"),
+  hydraulic_recipe("fw-hydraulic-housing-forming", "fw-pressure-housing", 6, {
+    { type = "item", name = "fw-cermet", amount = 2 },
+    { type = "item", name = "fw-steel-beam", amount = 2 },
+    { type = "item", name = "fw-inline-filter", amount = 1 },
+    { type = "item", name = "lead-plate", amount = 1 },
+    { type = "item", name = "titanium-plate", amount = 1 },
+    { type = "fluid", name = "lubricant", amount = 30 },
+  }, 5, "fw-intermediate-structural"),
+  hydraulic_recipe("fw-hydraulic-seal-compression", "fw-reinforced-seal", 6.5, {
+    { type = "item", name = "fw-chlorinated-binder-stock", amount = 2 },
+    { type = "item", name = "fw-elastomer-matrix", amount = 3 },
+    { type = "item", name = "lead-plate", amount = 1 },
+    { type = "item", name = "fw-ceramic-insulator", amount = 2 },
+    { type = "item", name = "fw-carbon", amount = 1 },
+    { type = "item", name = "fw-salt", amount = 1 },
+    { type = "fluid", name = "water", amount = 30 },
+  }, 6, "fw-intermediate-structural"),
+  hydraulic_recipe("fw-hydraulic-regulator-calibration", "fw-flow-regulator", 7, {
+    { type = "item", name = "fw-pressure-housing", amount = 2 },
+    { type = "item", name = "fw-drive-module", amount = 1 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+    { type = "item", name = "bronze-plate", amount = 2 },
+    { type = "item", name = "fw-inline-filter", amount = 1 },
+    { type = "item", name = "fw-capacitor", amount = 2 },
+    { type = "item", name = "fw-copper-tube", amount = 2 },
+    { type = "item", name = "fw-signal-conduit", amount = 2 },
+    { type = "fluid", name = "lubricant", amount = 20 },
+  }, 5, "fw-intermediate-precision"),
+})

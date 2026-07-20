@@ -93,6 +93,10 @@ data:extend({
     }, 32),
     effects = {
       unlock("fw-hydraulic-plant"),
+      unlock("fw-hydraulic-tube-drawing"),
+      unlock("fw-hydraulic-filter-pressing"),
+      unlock("fw-hydraulic-housing-forming"),
+      unlock("fw-hydraulic-seal-compression"),
     },
     order = "d-kf[fw-hydraulic-systems]",
   },
@@ -111,6 +115,7 @@ data:extend({
     }, 36),
     effects = {
       unlock("fw-hydraulic-manifold"),
+      unlock("fw-hydraulic-regulator-calibration"),
     },
     order = "d-kg[fw-fluid-control-architecture]",
   },

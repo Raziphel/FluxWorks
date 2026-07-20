@@ -122,6 +122,7 @@ local CONDENSER_EXCLUDED_ITEMS = {
   ["processing-unit"] = true,
   ["engine-unit"] = true,
   ["electric-engine-unit"] = true,
+  ["foundation"] = true,
   ["fw-universal-collapse-core"] = true,
   ["fw-genesis-ark"] = true,
   ["fw-origin-singularity"] = true,
@@ -234,14 +235,15 @@ local function scaled_flux_ingredients(flux_breakdown, required_flux)
   local rounded = round_breakdown_to_total(scaled, required_flux)
 
   for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    local amount = rounded[color] or 0
-    if amount > 0 then
-      table.insert(ingredients, {
-        type = "fluid",
-        name = FLUX_COLOR_TO_FLUID[color],
-        amount = amount,
-      })
-    end
+    -- Matter composition always needs the complete spectrum. The valuation
+    -- breakdown controls the ratio, while one unit preserves every color's
+    -- physical role even when the resolved contribution rounds to zero.
+    local amount = math.max(1, rounded[color] or 0)
+    table.insert(ingredients, {
+      type = "fluid",
+      name = FLUX_COLOR_TO_FLUID[color],
+      amount = amount,
+    })
   end
 
   return ingredients
@@ -262,9 +264,8 @@ local function make_clone_recipe(item_name, item, flux_value, flux_breakdown)
   local energy = ((item.subgroup ~= "raw-resource" and original_recipe_time(item_name)) or clone_fallback_time(flux_value)) * 8
   local required_flux = math.max(1, math.floor((flux_value * clone_flux_markup(flux_value)) + 0.5))
   local ingredients = scaled_flux_ingredients(flux_breakdown or {}, required_flux)
-  table.insert(ingredients, { type = "item", name = item_name, amount = 1 })
   local results = {
-    { type = "item", name = item_name, amount = 2 },
+    { type = "item", name = item_name, amount = 1 },
   }
 
   local recipe = {
@@ -282,7 +283,7 @@ local function make_clone_recipe(item_name, item, flux_value, flux_breakdown)
     allow_productivity = false,
     allow_quality = false,
     energy_required = energy,
-    localised_name = { "", "[item=" .. item_name .. "] + ", flux_ingredient_tags(flux_breakdown or {}), " -> [item=" .. item_name .. "] ", { "item-name." .. item_name } },
+    localised_name = { "", flux_ingredient_tags(flux_breakdown or {}), " -> [item=" .. item_name .. "] ", { "item-name." .. item_name } },
     ingredients = ingredients,
     results = results,
     main_product = item_name,

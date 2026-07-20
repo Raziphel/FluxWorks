@@ -76,7 +76,6 @@ data:extend({
   startup_bool("fw-tab-bioprocessing-organization", true, "ca[qol]-e[bioprocessing-tab]"),
   startup_bool("fw-tab-energy-organization", true, "ca[qol]-f[energy-tab]"),
   startup_bool("fw-tab-chemistry-organization", true, "ca[qol]-g[chemistry-tab]"),
-  startup_bool("fw-tab-systems-organization", true, "ca[qol]-h[systems-tab]"),
   startup_bool("fw-tab-flux-organization", true, "ca[qol]-i[flux-tab]"),
   startup_bool("fw-tab-fabrication-organization", true, "ca[qol]-j[fabrication-tab]"),
 

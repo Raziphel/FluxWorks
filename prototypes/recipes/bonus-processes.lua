@@ -67,19 +67,8 @@ add_recipe_if_valid(recipes, {
 add_recipe_if_valid(recipes, {
   type = "recipe",
   name = "fw-gelled-napalm-mixing",
-  icons = {
-    {
-      icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-blasting-gel.png",
-      icon_size = 64,
-      icon_mipmaps = 4,
-    },
-    {
-      icon = "__base__/graphics/icons/fluid/light-oil.png",
-      icon_size = 64,
-      scale = 0.45,
-      shift = { 9, 9 },
-    },
-  },
+  icon = "__Krastorio2Assets__/icons/fluids/light-oil.png",
+  icon_size = 64,
   category = "chemistry",
   subgroup = "fw-chemistry-processes",
   order = "e[base-chemistry]-j2[gelled-napalm-mixing]",

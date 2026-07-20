@@ -1,4 +1,5 @@
 local modules = {
+  require("scripts.starting-wreckage"),
   require("scripts.rocket-remnants"),
   require("scripts.phase-vaults"),
   require("scripts.spectral-reservoirs"),

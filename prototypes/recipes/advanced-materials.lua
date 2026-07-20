@@ -130,8 +130,8 @@ data:extend({
   {
     type = "recipe",
     name = "fw-alumina-refractory",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bauxite-ore.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-alumina-refractory.png",
+    icon_size = 1024,
     category = "smelting",
     enabled = false,
     energy_required = 2.2,

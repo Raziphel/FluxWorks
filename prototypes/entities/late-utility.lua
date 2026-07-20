@@ -149,8 +149,11 @@ local rift_exchange_gate = {
     filename = "__base__/sound/metallic-chest-open.ogg",
     volume = 0.6,
   },
-  selection_box = { { -5.5, -5.5 }, { 5.5, 5.5 } },
-  collision_box = { { -3.9, -3.9 }, { 3.9, 3.9 } },
+  -- The 1254 px render occupies almost a full 12 x 12 tile footprint at 0.30 scale.
+  -- Keep the collision close to the visible chassis so players cannot walk through
+  -- the tanks and corner machinery while retaining a small placement margin.
+  selection_box = { { -5.8, -5.8 }, { 5.8, 5.8 } },
+  collision_box = { { -5.65, -5.65 }, { 5.65, 5.65 } },
   flags = { "placeable-neutral", "player-creation", "not-rotatable" },
   circuit_connector = circuit_connector_definitions["chest"],
   circuit_wire_max_distance = default_circuit_wire_max_distance,
@@ -167,15 +170,16 @@ local rift_exchange_fluid_gate = {
     volume = 200000,
     pipe_covers = pipecoverspictures(),
     pipe_connections = {
-      { flow_direction = "input-output", direction = defines.direction.north, position = { -0.5, -4.5 } },
-      { flow_direction = "input-output", direction = defines.direction.south, position = { 0.5, 4.5 } },
+      -- The rendered manifolds terminate on the centre line at the outer edge.
+      { flow_direction = "input-output", direction = defines.direction.north, position = { 0, -5.6 } },
+      { flow_direction = "input-output", direction = defines.direction.south, position = { 0, 5.6 } },
     },
     hide_connection_info = false,
     base_level = -1,
   },
-  collision_box = { { -3.9, -4.6 }, { 3.9, 4.6 } },
-  selection_box = { { -5.5, -5.5 }, { 5.5, 5.5 } },
-  window_bounding_box = { { -4.8, -4.8 }, { 4.8, 4.8 } },
+  collision_box = { { -5.65, -5.65 }, { 5.65, 5.65 } },
+  selection_box = { { -5.8, -5.8 }, { 5.8, 5.8 } },
+  window_bounding_box = { { -5.1, -5.1 }, { 5.1, 5.1 } },
   pictures = {
     picture = {
       filename = "__FluxWorksAssets__/graphics/late-utility/rift-exchange-gate/rift-exchange-fluid-gate.png",
@@ -201,7 +205,7 @@ local origin_singularity = {
   type = "container",
   name = "fw-origin-singularity",
   icon = "__FluxWorksAssets__/graphics/icons/items/origin-projects/fw-origin-singularity.png",
-  icon_size = 64,
+  icon_size = 256,
   inventory_size = 1,
   picture = {
     layers = {
@@ -438,7 +442,7 @@ data:extend({
     selectable_in_game = false,
     remove_decoratives = "false",
     icon = "__FluxWorksAssets__/graphics/icons/items/origin-projects/fw-origin-singularity.png",
-    icon_size = 64,
+    icon_size = 256,
     quality_indicator_scale = 0,
     hidden = true,
     flags = {

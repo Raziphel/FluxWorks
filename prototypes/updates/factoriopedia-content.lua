@@ -1104,6 +1104,55 @@ if mods["space-age"] then
       simulation = simulations.fw_flux_convergence,
     },
   })
+
+  local handbook_tips = {
+    { "finding-fluxworks-recipes", "a01", "[item=fw-sand]", "fw-material-foundations", "fw-comminution", simulations.fw_tip_processing_ladder },
+    { "reading-the-tech-weave", "a02", "[technology=fw-industrial-methods-science]", "fw-material-foundations", "fw-industrial-methods-science", simulations.fw_tip_processing_ladder },
+    { "mixed-ore-bus-design", "d01", "[item=fw-crushed-iron-ore]", "fw-comminution", "fw-metals-fabrication", simulations.fw_mineral_deposit },
+    { "crushing-before-smelting", "e01", "[item=fw-crushed-copper-ore]", "fw-comminution", "fw-metals-fabrication", simulations.fw_tip_processing_ladder },
+    { "structural-intermediate-backbone", "e02", "[item=fw-steel-beam]", "fw-metals-fabrication", "fw-industrial-methods-science", simulations.fw_tip_processing_ladder },
+    { "fluid-bus-and-reserves", "e03", "[fluid=fw-yellow-flux]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_tip_processing_ladder },
+    { "domain-science-overview", "f01", "[item=fw-industrial-methods-science-pack]", "fw-industrial-methods-science", "fw-planetary-convergence-science", simulations.fw_tip_processing_ladder },
+    { "industrial-methods-science", "f02", "[item=fw-industrial-methods-science-pack]", "fw-industrial-methods-science", "fw-industrial-district-project", simulations.fw_tip_processing_ladder },
+    { "systems-analysis-science", "f03", "[item=fw-systems-analysis-science-pack]", "fw-systems-analysis-science", "fw-autonomous-network-project", simulations.fw_tip_processing_ladder },
+    { "flux-theory-science", "f04", "[item=fw-flux-theory-science-pack]", "fw-flux-theory-science", "fw-spectrum-control-project", simulations.fw_tip_synthesis_cloning },
+    { "planetary-convergence-science", "f05", "[item=fw-planetary-convergence-science-pack]", "fw-planetary-convergence-science", "fw-convergence-directive-project", simulations.fw_flux_convergence },
+    { "science-pack-lab-compatibility", "f06", "[entity=lab]", "fw-industrial-methods-science", "fw-flux-theory-science", simulations.fw_tip_processing_ladder },
+    { "progression-projects", "g01", "[item=fw-industrial-district-charter]", "fw-industrial-methods-science", "fw-industrial-district-project", simulations.fw_tip_processing_ladder },
+    { "industrial-district-charter", "g02", "[item=fw-industrial-district-charter]", "fw-industrial-methods-science", "fw-industrial-district-project", simulations.fw_tip_processing_ladder },
+    { "autonomous-network-charter", "g03", "[item=fw-autonomous-network-charter]", "fw-systems-analysis-science", "fw-autonomous-network-project", simulations.fw_orbital_salvage },
+    { "spectrum-control-charter", "g04", "[item=fw-spectrum-control-charter]", "fw-flux-theory-science", "fw-spectrum-control-project", simulations.fw_tip_synthesis_cloning },
+    { "convergence-directive", "g05", "[item=fw-convergence-directive]", "fw-planetary-convergence-science", "fw-convergence-directive-project", simulations.fw_flux_convergence },
+    { "purple-flux-discipline", "h01", "[fluid=fw-purple-flux]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_tip_processing_ladder },
+    { "yellow-flux-discipline", "h02", "[fluid=fw-yellow-flux]", "fw-flux-field-theory", "fw-flux-phase-engineering", simulations.fw_petrochemical_facility },
+    { "red-flux-discipline", "h03", "[fluid=fw-red-flux]", "fw-flux-field-theory", "fw-superconductive-systems", simulations.fw_superconductive_systems },
+    { "green-flux-discipline", "h04", "[fluid=fw-green-flux]", "fw-flux-green-reclamation", "fw-flux-green-propagation", simulations.fw_green_flux_biology },
+    { "machine-recipe-ownership", "h05", "[entity=fw-synthesis-plant]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_tip_synthesis_cloning },
+    { "flux-productivity-boundaries", "h06", "[item=fw-flux-catalyst]", "fw-flux-synthesis", "fw-spectrum-control-project", simulations.fw_tip_synthesis_cloning },
+    { "vulcanus-flux-route", "n01", "[item=fw-vulcanus-slag-cermet]", "fw-vulcanus-pyrochemistry", "fw-vulcanus-industrial-symbiosis", simulations.fw_planetary_chemistry },
+    { "gleba-flux-route", "n02", "[item=fw-gleba-spore-resin]", "fw-gleba-biochemistry", "fw-gleba-regenerative-symbiosis", simulations.fw_green_flux_biology },
+    { "fulgora-flux-route", "n03", "[item=fw-fulgora-static-mesh]", "fw-fulgora-electrochemistry", "fw-fulgora-electromagnetic-symbiosis", simulations.fw_planetary_chemistry },
+    { "aquilo-flux-route", "n04", "[item=fw-aquilo-cryogel]", "fw-aquilo-cryochemistry", "fw-aquilo-thermal-symbiosis", simulations.fw_planetary_chemistry },
+    { "preparing-the-shattered-expedition", "o01", "[technology=fw-shattered-expedition-planning]", "fw-shattered-expedition-planning", "fw-shattered-landing-protocols", simulations.fw_flux_convergence },
+    { "shattered-network-logistics", "q01", "[technology=fw-shattered-network-logistics]", "fw-shattered-network-logistics", "fw-shattered-vent-harmonics", simulations.fw_flux_convergence },
+    { "factory-scaling-checklist", "z01", "[item=fw-rift-stabilizer]", "fw-flux-synthesis", "fw-rift-harmonics", simulations.fw_tip_synthesis_cloning },
+  }
+
+  local generated_tips = {}
+  for _, tip in ipairs(handbook_tips) do
+    generated_tips[#generated_tips + 1] = {
+      type = "tips-and-tricks-item",
+      name = tip[1],
+      category = "fluxworks",
+      order = tip[2],
+      indent = 1,
+      tag = tip[3],
+      trigger = { type = "research", technology = tip[4] },
+      skip_trigger = { type = "research", technology = tip[5] },
+      simulation = tip[6],
+    }
+  end
+  data:extend(generated_tips)
 end
 
 return content
