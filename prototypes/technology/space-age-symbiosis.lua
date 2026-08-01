@@ -29,7 +29,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-vulcanus-industrial-symbiosis",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-metallurgic-assemblies.png", icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-metallurgic-assemblies.png", icon_size = 256,
     prerequisites = { "fw-flux-metallurgy", "tungsten-steel", "metallurgic-science-pack" },
     unit = unit(1250, sciences({ "metallurgic-science-pack" }), 60),
     effects = {
@@ -41,7 +41,7 @@ data:extend({
   {
     type = "technology", name = "fw-gleba-regenerative-symbiosis",
     icons = {
-      { icon = "__FluxWorksAssets__/graphics/technology/fw-biosystems-engineering.png", icon_size = 1024 },
+      { icon = "__FluxWorksAssets__/graphics/technology/fw-biosystems-engineering.png", icon_size = 256 },
       { icon = "__FluxWorksAssets__/graphics/icons/items/flux-1.png", icon_size = 64, scale = 0.55, shift = { 30, 30 } },
     },
     prerequisites = { "fw-flux-green-cultivation", "carbon-fiber", "agricultural-science-pack" },
@@ -51,7 +51,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-fulgora-electromagnetic-symbiosis",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-conductive-networks.png", icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-conductive-networks.png", icon_size = 256,
     prerequisites = { "fw-fulgora-electrochemistry", "electromagnetic-science-pack", "recycling" },
     unit = unit(1250, sciences({ "electromagnetic-science-pack" }), 60),
     effects = { { type = "unlock-recipe", recipe = "fw-fulgora-yellow-holmium-reclamation" } },
@@ -59,7 +59,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-aquilo-thermal-symbiosis",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-cryogenic-control.png", icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-cryogenic-control.png", icon_size = 256,
     prerequisites = { "fw-aquilo-cryochemistry", "heating-tower", "cryogenic-science-pack" },
     unit = unit(1350, sciences({ "cryogenic-science-pack" }), 60),
     effects = { { type = "unlock-recipe", recipe = "fw-aquilo-red-ammonia-cracking" } },
@@ -67,7 +67,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-cross-planetary-industrial-convergence",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-promethium-stabilization.png", icon_size = 1254,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-promethium-stabilization.png", icon_size = 256,
     prerequisites = {
       "fw-flux-convergence", "fw-vulcanus-industrial-symbiosis",
       "fw-gleba-regenerative-symbiosis", "fw-fulgora-electromagnetic-symbiosis",

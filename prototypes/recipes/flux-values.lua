@@ -112,7 +112,7 @@ M.item_values = {
   ["fission-reactor-equipment"] = 650000,
   ["fusion-reactor-equipment"] = 4200000,
 
-  -- Vehicles are tooltip values only. The condenser is not cloning cars. Relax.
+  -- Stateful vehicles remain tooltip-only because stored equipment is not visible here.
   ["car"] = 12000,
   ["tank"] = 35000,
   ["locomotive"] = 20000,
@@ -127,7 +127,7 @@ M.item_values = {
   ["processing-unit"] = 3000,
   ["quantum-processor"] = 12000,
 
-  -- Combat junk needs real prices or the condenser turns into a war-crimes printer.
+  -- Combat equipment needs real prices so universal recovery stays conservative.
   ["firearm-magazine"] = 120,
   ["piercing-rounds-magazine"] = 280,
   ["uranium-rounds-magazine"] = 900,
@@ -235,7 +235,6 @@ M.item_values = {
   ["titanium-ore"] = 9,
   ["fw-crystalised-flux"] = 14,
   ["fw-salt"] = 4,
-  ["fw-sand"] = 3,
   ["fw-carbon"] = 8,
   ["fw-resin"] = 20,
   ["fw-chlorinated-binder-stock"] = 56,
@@ -254,7 +253,7 @@ M.item_values = {
   ["silicon"] = 10,
 
   -- The proper home-grown FluxWorks part ladder.
-  ["fw-glass"] = 7,
+  ["glass"] = 7,
   ["fw-alumina-refractory"] = 11,
   ["fw-fired-ceramic"] = 16,
   ["fw-ceramic-casing"] = 42,
@@ -417,7 +416,7 @@ M.item_color_overrides = {
   ["fw-resin"] = { "yellow" },
   ["fw-rubber-sheet"] = { "yellow" },
   ["fw-gunpowder"] = { "yellow" },
-  ["fw-glass"] = { "red" },
+  ["glass"] = { "red" },
   ["fw-fired-ceramic"] = { "red" },
   ["fw-ceramic-casing"] = { "red" },
   ["fw-circuit-contact"] = { "red" },
@@ -547,6 +546,7 @@ M.recipe_category_color_weights = {
   ["fw-flux-condensing"] = { purple = 0.25, yellow = 0.25, red = 0.25, green = 0.25 },
 }
 
-M.recipe_process_color_share = 0.18
+-- Processes should leave a visible signature without erasing feedstock history.
+M.recipe_process_color_share = 0.26
 
 return M

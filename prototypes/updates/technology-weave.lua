@@ -47,7 +47,11 @@ weave("utility-science-pack", "fw-advanced-fabrication", "utility science should
 -- Mature infrastructure returns FluxWorks disciplines to major vanilla lanes.
 weave("coal-liquefaction", "fw-petrochemical-engineering", "coal liquefaction belongs after dedicated petrochemistry")
 weave("logistic-robotics", "fw-sensor-integration", "autonomous robots need integrated sensing")
-weave("logistic-system", "fw-network-storage", "requester networks should cap the developed storage-network branch")
+if data.raw.technology["fw-aai-network-storage"] then
+  weave("logistic-system", "fw-aai-network-storage", "requester networks should cap the optional AAI storage-network branch")
+else
+  weave("logistic-system", "fw-sensor-integration", "requester networks should follow FluxWorks sensing without requiring optional storage mods")
+end
 weave("effect-transmission", "fw-field-balancing", "beacon transmission needs controlled electrical fields")
 weave("rocket-silo", "fw-computational-arrays", "rocket infrastructure needs mature control computation")
 weave("space-platform-thruster", "fw-orbital-hardening", "platform propulsion should follow orbitalized FluxWorks hardware")

@@ -90,7 +90,7 @@ condenser.fast_replaceable_group = "fw-flux-condenser"
 condenser.icon_draw_specification = { shift = {0, -0.3} }
 condenser.circuit_wire_max_distance = assembling_machine_circuit_wire_max_distance
 condenser.circuit_connector = circuit_connector_definitions["assembling-machine"]
-condenser.crafting_categories = { "fw-flux-condensing" }
+condenser.crafting_categories = { "fw-flux-extraction", "fw-flux-condensing" }
 condenser.crafting_speed = 1.05
 condenser.fluid_boxes = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"].fluid_boxes)
 local fluid_box_positions = {
@@ -101,10 +101,10 @@ local fluid_box_positions = {
 }
 for index, fluid_box in pairs(condenser.fluid_boxes) do
   if type(fluid_box) == "table" then
-    fluid_box.production_type = "input"
+    fluid_box.production_type = "output"
     fluid_box.volume = 10000
     if fluid_box.pipe_connections and fluid_box.pipe_connections[1] and fluid_box_positions[index] then
-      fluid_box.pipe_connections[1].flow_direction = "input"
+      fluid_box.pipe_connections[1].flow_direction = "output"
       fluid_box.pipe_connections[1].position = fluid_box_positions[index].position
       fluid_box.pipe_connections[1].direction = fluid_box_positions[index].direction
     end
@@ -258,6 +258,10 @@ data:extend({
   {
     type = "recipe-category",
     name = "fw-flux-condensing",
+  },
+  {
+    type = "recipe-category",
+    name = "fw-flux-extraction",
   },
   {
     type = "recipe-category",

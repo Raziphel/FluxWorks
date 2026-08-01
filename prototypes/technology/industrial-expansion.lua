@@ -1,4 +1,4 @@
-local Tech = require("__haul_lib__/utils/tech")
+local Tech = require("__razi_lib__/lib/technology")
 
 data:extend({
   {
@@ -7,7 +7,7 @@ data:extend({
     icons = {
       {
         icon = "__FluxWorksAssets__/graphics/icons/items/fw-composite-panel.png",
-        icon_size = 1024,
+        icon_size = 256,
       },
       {
         icon = "__FluxWorksAssets__/graphics/resources/ores/salt.png",
@@ -36,7 +36,7 @@ data:extend({
     type = "technology",
     name = "fw-arc-recasting",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-cermet.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-industrial-expansion", "fw-flux-metallurgy" },
     unit = {
       count = 175,
@@ -79,7 +79,7 @@ data:extend({
     type = "technology",
     name = "fw-slurry-beneficiation",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-crushed-titanium-ore.png",
-    icon_size = 128,
+    icon_size = 64,
     prerequisites = { "fw-industrial-expansion", "fw-harvester-systems" },
     unit = {
       count = 180,

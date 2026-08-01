@@ -67,7 +67,7 @@ add_recipe_if_valid(recipes, {
 add_recipe_if_valid(recipes, {
   type = "recipe",
   name = "fw-gelled-napalm-mixing",
-  icon = "__Krastorio2Assets__/icons/fluids/light-oil.png",
+  icon = "__base__/graphics/icons/fluid/light-oil.png",
   icon_size = 64,
   category = "chemistry",
   subgroup = "fw-chemistry-processes",
@@ -351,7 +351,7 @@ add_recipe_if_valid(recipes, {
   type = "recipe",
   name = "fw-flux-phase-manifold-calibration",
   icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-substrate.png",
-  icon_size = 1024,
+  icon_size = 256,
   category = "fw-flux-synthesis",
   subgroup = "fw-flux-systems",
   order = "b[systems]-g2[flux-phase-manifold-calibration]",

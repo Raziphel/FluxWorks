@@ -1,79 +1,13 @@
 local content = require("prototypes.updates.factoriopedia-content")
+local Registry = require("prototypes.lib.factoriopedia-registry")
+local registry = Registry.new(content)
 
-local covered_descriptions = {}
-local covered_simulations = {}
-
-local function set_factoriopedia_description(prototype_type, prototype_name, locale_key)
-  if not (data.raw[prototype_type] and data.raw[prototype_type][prototype_name]) then
-    return
-  end
-  covered_descriptions[prototype_type] = covered_descriptions[prototype_type] or {}
-  covered_descriptions[prototype_type][prototype_name] = locale_key
-  data.raw[prototype_type][prototype_name].factoriopedia_description = { "fw-factoriopedia." .. locale_key }
+local function set_factoriopedia_description(...)
+  registry:set_description(...)
 end
 
-local function set_factoriopedia_simulation(prototype_type, prototype_name, simulation_key)
-  if not (data.raw[prototype_type] and data.raw[prototype_type][prototype_name]) then
-    return
-  end
-
-  local simulation = content.simulations[simulation_key]
-  if not simulation then
-    return
-  end
-
-  covered_simulations[prototype_type] = covered_simulations[prototype_type] or {}
-  covered_simulations[prototype_type][prototype_name] = simulation_key
-  data.raw[prototype_type][prototype_name].factoriopedia_simulation = simulation
-end
-
-local function assert_autoplace_control_label(control_name)
-  local control = data.raw["autoplace-control"] and data.raw["autoplace-control"][control_name]
-  if not control then
-    error("Missing FluxWorks autoplace control for worldgen validation: " .. control_name)
-  end
-
-  local localised_name = control.localised_name
-  if type(localised_name) ~= "table" then
-    error("FluxWorks autoplace control is missing structured localised_name: " .. control_name)
-  end
-
-  local function contains_locale_key(value, expected_locale)
-    if value == expected_locale then
-      return true
-    end
-
-    if type(value) ~= "table" then
-      return false
-    end
-
-    for _, part in ipairs(value) do
-      if contains_locale_key(part, expected_locale) then
-        return true
-      end
-    end
-
-    return false
-  end
-
-  local expected_locale = "autoplace-control-names." .. control_name
-  if contains_locale_key(localised_name, expected_locale) then
-    return
-  end
-
-  error("FluxWorks autoplace control label drifted from its locale key: " .. control_name)
-end
-
-local function assert_resource_worldgen_entry(resource_name, control_name)
-  if not (covered_descriptions.resource and covered_descriptions.resource[resource_name]) then
-    error("Missing FluxWorks Factoriopedia resource description: " .. resource_name)
-  end
-
-  if not (covered_simulations.resource and covered_simulations.resource[resource_name]) then
-    error("Missing FluxWorks Factoriopedia resource simulation: " .. resource_name)
-  end
-
-  assert_autoplace_control_label(control_name)
+local function set_factoriopedia_simulation(...)
+  registry:set_simulation(...)
 end
 
 -- Rocket reusability entries
@@ -224,16 +158,13 @@ set_factoriopedia_description("technology", "fw-industrial-expansion", "fw-indus
 set_factoriopedia_description("technology", "fw-arc-recasting", "fw-arc-recasting-technology")
 set_factoriopedia_description("technology", "fw-reactive-powders", "fw-reactive-powders-technology")
 set_factoriopedia_description("technology", "fw-slurry-beneficiation", "fw-slurry-beneficiation-technology")
-set_factoriopedia_description("technology", "fw-pressure-containment", "fw-pressure-containment-technology")
-set_factoriopedia_description("technology", "fw-pressure-reservoirs", "fw-pressure-reservoirs-technology")
-set_factoriopedia_description("technology", "fw-bulk-logistics", "fw-bulk-logistics-technology")
-set_factoriopedia_description("technology", "fw-fast-loader-handling", "fw-fast-loader-handling-technology")
-set_factoriopedia_description("technology", "fw-bulk-storage", "fw-bulk-storage-technology")
-set_factoriopedia_description("technology", "fw-network-logistics", "fw-network-logistics-technology")
-set_factoriopedia_description("technology", "fw-network-storage", "fw-network-storage-technology")
-set_factoriopedia_description("technology", "fw-logistics-orchestration", "fw-logistics-orchestration-technology")
-set_factoriopedia_description("technology", "fw-controlled-storage", "fw-controlled-storage-technology")
-set_factoriopedia_description("technology", "fw-high-capacity-fluid-storage", "fw-high-capacity-fluid-storage-technology")
+set_factoriopedia_description("technology", "aai-loader", "fw-aai-bulk-loading-technology")
+set_factoriopedia_description("technology", "aai-fast-loader", "fw-aai-fast-loading-technology")
+set_factoriopedia_description("technology", "aai-express-loader", "fw-aai-express-loading-technology")
+set_factoriopedia_description("technology", "aai-turbo-loader", "fw-aai-turbo-loading-technology")
+set_factoriopedia_description("technology", "fw-aai-bulk-storage", "fw-aai-bulk-storage-technology")
+set_factoriopedia_description("technology", "fw-aai-network-storage", "fw-aai-network-storage-technology")
+set_factoriopedia_description("technology", "fw-aai-controlled-storage", "fw-aai-controlled-storage-technology")
 set_factoriopedia_description("technology", "fw-petrochemical-engineering", "fw-petrochemical-engineering-technology")
 set_factoriopedia_description("technology", "fw-reactive-binders", "fw-reactive-binders-technology")
 set_factoriopedia_description("technology", "fw-elastomer-engineering", "fw-elastomer-engineering-technology")
@@ -250,7 +181,6 @@ set_factoriopedia_description("technology", "fw-actinide-sorting", "fw-actinide-
 set_factoriopedia_description("technology", "fw-actinide-reforging", "fw-actinide-reforging-technology")
 set_factoriopedia_description("technology", "fw-reactor-instrumentation", "fw-reactor-instrumentation-technology")
 set_factoriopedia_description("technology", "fw-comminution", "fw-comminution-technology")
-set_factoriopedia_description("technology", "fw-aggregate-recovery", "fw-aggregate-recovery-technology")
 set_factoriopedia_description("technology", "fw-basic-separation", "fw-basic-separation-technology")
 set_factoriopedia_description("technology", "fw-brine-processing", "fw-brine-processing-technology")
 set_factoriopedia_description("technology", "fw-ore-crushing", "fw-ore-crushing-technology")
@@ -258,7 +188,6 @@ set_factoriopedia_description("technology", "fw-dense-ore-smelting", "fw-dense-o
 set_factoriopedia_description("technology", "fw-mineral-beneficiation", "fw-mineral-beneficiation-technology")
 set_factoriopedia_description("technology", "fw-flux-extraction", "fw-flux-extraction-technology")
 set_factoriopedia_description("technology", "fw-flux-mining-productivity", "fw-flux-mining-productivity-technology")
-set_factoriopedia_description("technology", "fw-glassworking", "fw-glassworking-technology")
 set_factoriopedia_description("technology", "fw-elastomer-processing", "fw-elastomer-processing-technology")
 set_factoriopedia_description("technology", "fw-material-foundations", "fw-material-foundations-technology")
 set_factoriopedia_description("technology", "fw-structural-fabrication", "fw-structural-fabrication-technology")
@@ -404,7 +333,7 @@ set_factoriopedia_simulation("radar", "remnant-beacon", "fw_orbital_salvage")
 set_factoriopedia_simulation("technology", "rocket-chunk-processing", "fw_orbital_salvage")
 
 for name, technology in pairs(data.raw.technology or {}) do
-  if string.sub(name, 1, 3) == "fw-" and not (covered_descriptions.technology and covered_descriptions.technology[name]) then
+  if string.sub(name, 1, 3) == "fw-" and not (registry.descriptions.technology and registry.descriptions.technology[name]) then
     error("Missing FluxWorks Factoriopedia technology description: " .. name)
   end
 end
@@ -416,9 +345,9 @@ for _, entry in ipairs({
   { resource = "fw-mineral-deposit", control = "fw-mineral-deposit" },
   { resource = "fw-carbonic-deposit", control = "fw-carbonic-deposit" },
 }) do
-  assert_resource_worldgen_entry(entry.resource, entry.control)
+  registry:assert_resource_worldgen_entry(entry.resource, entry.control)
 end
 
 if data.raw.resource and data.raw.resource["fw-promethium-impact"] then
-  assert_resource_worldgen_entry("fw-promethium-impact", "fw-promethium-impact")
+  registry:assert_resource_worldgen_entry("fw-promethium-impact", "fw-promethium-impact")
 end

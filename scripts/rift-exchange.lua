@@ -205,7 +205,7 @@ end
 
 local function is_gate_full(entry)
   if entry.mode == "fluid" then
-    local capacity = entry.entity.fluidbox.get_capacity(1) or 0
+    local capacity = entry.entity.get_fluid_capacity(1) or 0
     return capacity > 0 and entry.entity.get_fluid_count() >= capacity * 0.99
   end
 
@@ -249,11 +249,13 @@ local function fluid_contents_snapshot(entity)
   local contents = entity.get_fluid_contents() or {}
   for fluid_name, amount in pairs(contents) do
     if amount and amount > 0 then
-      local temperature = entity.fluidbox[1] and entity.fluidbox[1].temperature or nil
+      local fluid = entity.get_fluid(1)
+      local temperature = fluid and fluid.temperature or nil
       return fluid_name, amount, temperature
     end
   end
-  local temperature = entity.fluidbox[1] and entity.fluidbox[1].temperature or nil
+  local fluid = entity.get_fluid(1)
+  local temperature = fluid and fluid.temperature or nil
   return nil, 0, temperature
 end
 
@@ -262,21 +264,21 @@ local function swap_fluids(source_entity, target_entity)
   local target_name, target_amount, target_temperature = fluid_contents_snapshot(target_entity)
 
   if source_name and source_amount > 0 then
-    source_entity.remove_fluid({ name = source_name, amount = source_amount })
+    source_entity.remove_fluid(1, source_amount)
   end
   if target_name and target_amount > 0 then
-    target_entity.remove_fluid({ name = target_name, amount = target_amount })
+    target_entity.remove_fluid(1, target_amount)
   end
 
   if target_name and target_amount > 0 then
-    source_entity.insert_fluid({
+    source_entity.add_fluid(1, {
       name = target_name,
       amount = target_amount,
       temperature = target_temperature,
     })
   end
   if source_name and source_amount > 0 then
-    target_entity.insert_fluid({
+    target_entity.add_fluid(1, {
       name = source_name,
       amount = source_amount,
       temperature = source_temperature,
@@ -452,7 +454,7 @@ local function add_gate(entity, tags)
   storage.rift_exchange[entity.unit_number] = entry
   set_idle_power(entry)
   if entry.mode == "fluid" and tags and tags.name and (tags.count or 0) > 0 then
-    entity.insert_fluid({
+    entity.add_fluid(1, {
       name = tags.name,
       amount = tags.count or 0,
       temperature = tags.temperature,
@@ -827,7 +829,7 @@ local function update_gui(gui)
   if storage_frame then
     if entry.mode == "fluid" then
       local fluid_name, fluid_amount, fluid_temperature = fluid_contents_snapshot(entry.entity)
-      local capacity = entry.entity.fluidbox.get_capacity(1) or 0
+      local capacity = entry.entity.get_fluid_capacity(1) or 0
       storage_frame.storage_summary.caption = gate_text("fw-rift-fluid-storage-summary", format_storage_amount(fluid_amount), format_storage_amount(capacity))
       storage_frame.meter_flow.fluid_icon.sprite = fluid_name and ("fluid/" .. fluid_name) or nil
       storage_frame.meter_flow.fluid_icon.tooltip = fluid_name and { "fluid-name." .. fluid_name } or gate_text("fw-rift-no-fluid")

@@ -13,11 +13,13 @@ local function make_recipe_machine_simulation(args)
     "game.simulation.camera_zoom = " .. (args.zoom or 1),
     "game.simulation.camera_position = {" .. (args.camera_x or 0) .. ", " .. (args.camera_y or 0) .. "}",
     "",
-    "for x = -8, 8 do",
-    "  for y = -6, 6 do",
-    '    game.surfaces[1].set_tiles{{position = {x, y}, name = "' .. tile_name .. '"}}',
+    "local floor_tiles = {}",
+    "for x = -32, 32 do",
+    "  for y = -24, 24 do",
+    '    floor_tiles[#floor_tiles + 1] = {position = {x, y}, name = "' .. tile_name .. '"}',
     "  end",
     "end",
+    "game.surfaces[1].set_tiles(floor_tiles)",
     "",
     'game.surfaces[1].create_entity{name = "substation", position = {0, -4}, force = "player"}',
   }
@@ -36,7 +38,7 @@ local function make_recipe_machine_simulation(args)
   end
 
   for _, fluid in ipairs(args.fluids or {}) do
-    setup_lines[#setup_lines + 1] = 'machine.insert_fluid{name = "' .. fluid.name .. '", amount = ' .. fluid.amount .. '}'
+    setup_lines[#setup_lines + 1] = 'machine.add_fluid(1, {name = "' .. fluid.name .. '", amount = ' .. fluid.amount .. '})'
   end
 
   for _, line in ipairs(args.post_setup or {}) do
@@ -44,7 +46,7 @@ local function make_recipe_machine_simulation(args)
   end
 
   return {
-    init = "[[\n" .. table.concat(setup_lines, "\n") .. "\n  ]]",
+    init = table.concat(setup_lines, "\n"),
     update = args.update,
   }
 end
@@ -59,6 +61,14 @@ local function make_story_focus_simulation(args)
     "player.teleport({" .. (args.player_x or 0) .. ", " .. (args.player_y or 4) .. "})",
     "game.simulation.camera_player = player",
     "game.simulation.camera_player_cursor_position = player.position",
+    "",
+    "local floor_tiles = {}",
+    "for x = -32, 32 do",
+    "  for y = -24, 24 do",
+    '    floor_tiles[#floor_tiles + 1] = {position = {x, y}, name = "refined-concrete"}',
+    "  end",
+    "end",
+    "game.surfaces[1].set_tiles(floor_tiles)",
     "",
   }
 
@@ -111,7 +121,7 @@ local function make_story_focus_simulation(args)
   lines[#lines + 1] = "tip_story_init(story_table)"
 
   return {
-    init = "[[\n" .. table.concat(lines, "\n") .. "\n  ]]",
+    init = table.concat(lines, "\n"),
   }
 end
 
@@ -152,8 +162,8 @@ simulations.fw_flux_quarry =
     game.simulation.camera_zoom = 0.72
     game.simulation.camera_position = {0, 0.8}
 
-    for x = -8, 8 do
-      for y = -8, 8 do
+    for x = -32, 32 do
+      for y = -24, 24 do
         game.surfaces[1].set_tiles{{position = {x, y}, name = "dirt-7"}}
       end
     end
@@ -248,26 +258,14 @@ simulations.fw_synthesis_plant = make_recipe_machine_simulation({
 
 simulations.fw_flux_condenser = make_recipe_machine_simulation({
   machine_name = "fw-flux-condenser",
-  recipe_name = "fw-promethium-matrix",
+  recipe_name = "fw-extract-flux-from-processing-unit",
   tile_name = "black-refined-concrete",
   zoom = 0.82,
   camera_y = 0.3,
   items = {
-    { name = "fw-promethium-shard", count = 24 },
-    { name = "fw-stabilized-flux-crystal", count = 4 },
-    { name = "fw-lens-array", count = 4 },
-    { name = "fw-signal-conduit", count = 4 },
-    { name = "fw-flux-resonance-cell", count = 4 },
-    { name = "fw-aquilo-cryogel", count = 4 },
-    { name = "fw-gleba-spore-resin", count = 4 },
-    { name = "fw-flux-catalyst", count = 4 },
+    { name = "processing-unit", count = 24 },
   },
-  fluids = {
-    { name = "fw-purple-flux", amount = 192 },
-    { name = "fw-yellow-flux", amount = 156 },
-    { name = "fw-red-flux", amount = 252 },
-    { name = "fw-green-flux", amount = 120 },
-  },
+  fluids = {},
   extra_setup = {
     'game.surfaces[1].create_entity{name = "storage-tank", position = {-4, 0}, force = "player"}',
     'game.surfaces[1].create_entity{name = "storage-tank", position = {4, 0}, force = "player"}',
@@ -418,7 +416,7 @@ simulations.fw_superconductive_systems = make_recipe_machine_simulation({
 })
 
 simulations.fw_flux_convergence = make_recipe_machine_simulation({
-  machine_name = "fw-flux-condenser",
+  machine_name = "fw-synthesis-plant",
   recipe_name = "fw-rift-stabilizer",
   tile_name = "black-refined-concrete",
   zoom = 0.82,
@@ -481,7 +479,41 @@ simulations.fw_tip_flux_rift_extraction = make_story_focus_simulation({
   },
 })
 
-simulations.fw_tip_processing_ladder = make_story_focus_simulation({
+simulations.fw_tip_crushing = make_story_focus_simulation({
+  zoom = 0.9,
+  camera_y = 0.2,
+  player_y = 5.5,
+  setup_lines = {
+    "for x = -11, 11 do",
+    "  for y = -7, 7 do",
+    '    game.surfaces[1].set_tiles{{position = {x, y}, name = "refined-concrete"}}',
+    "  end",
+    "end",
+    'game.surfaces[1].create_entity{name = "substation", position = {0, -4}, force = "player"}',
+    'local iron = game.surfaces[1].create_entity{name = "crusher", position = {-5, 0}, force = "player"}',
+    'local copper = game.surfaces[1].create_entity{name = "crusher", position = {0, 0}, force = "player"}',
+    'local heavy = game.surfaces[1].create_entity{name = "crusher", position = {5, 0}, force = "player"}',
+    'game.forces.player.recipes["fw-crushed-iron-ore"].enabled = true',
+    'game.forces.player.recipes["fw-crushed-copper-ore"].enabled = true',
+    'game.forces.player.recipes["fw-crushed-tin-ore"].enabled = true',
+    'iron.set_recipe("fw-crushed-iron-ore")',
+    'copper.set_recipe("fw-crushed-copper-ore")',
+    'heavy.set_recipe("fw-crushed-tin-ore")',
+    'iron.insert{name = "iron-ore", count = 50}',
+    'copper.insert{name = "copper-ore", count = 50}',
+    'heavy.insert{name = "tin-ore", count = 50}',
+    'game.surfaces[1].create_entity{name = "steel-chest", position = {-5, 3}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "steel-chest", position = {0, 3}, force = "player"}',
+    'game.surfaces[1].create_entity{name = "steel-chest", position = {5, 3}, force = "player"}',
+  },
+  focuses = {
+    { x = -5, y = 0, hold = 1.4 },
+    { x = 0, y = 0, hold = 1.4 },
+    { x = 5, y = 0, hold = 1.4 },
+  },
+})
+
+simulations.fw_tip_machine_ladder = make_story_focus_simulation({
   zoom = 0.7,
   camera_y = 0.2,
   player_y = 5.5,
@@ -503,18 +535,18 @@ simulations.fw_tip_processing_ladder = make_story_focus_simulation({
     'foundry.set_recipe("fw-annealed-cermet")',
     'synth.set_recipe("fw-condensed-flux-matrix")',
     'harvester.insert{name = "iron-ore", count = 36}',
-    'harvester.insert_fluid{name = "fw-purple-flux", amount = 120}',
+    'harvester.add_fluid(1, {name = "fw-purple-flux", amount = 120}',
     'foundry.insert{name = "fw-cermet", count = 20}',
     'foundry.insert{name = "fw-foundry-lining", count = 10}',
     'foundry.insert{name = "titanium-plate", count = 10}',
-    'foundry.insert_fluid{name = "fw-red-flux", amount = 180}',
+    'foundry.add_fluid(1, {name = "fw-red-flux", amount = 180}',
     'synth.insert{name = "fw-stabilized-flux-crystal", count = 20}',
     'synth.insert{name = "fw-flux-lattice", count = 6}',
     'synth.insert{name = "fw-flux-catalyst", count = 4}',
-    'synth.insert_fluid{name = "fw-purple-flux", amount = 180}',
-    'synth.insert_fluid{name = "fw-yellow-flux", amount = 180}',
-    'synth.insert_fluid{name = "fw-red-flux", amount = 360}',
-    'synth.insert_fluid{name = "fw-green-flux", amount = 100}',
+    'synth.add_fluid(1, {name = "fw-purple-flux", amount = 180}',
+    'synth.add_fluid(1, {name = "fw-yellow-flux", amount = 180}',
+    'synth.add_fluid(1, {name = "fw-red-flux", amount = 360}',
+    'synth.add_fluid(1, {name = "fw-green-flux", amount = 100}',
   },
   focuses = {
     { x = -5, y = 0, hold = 1.75 },
@@ -523,7 +555,7 @@ simulations.fw_tip_processing_ladder = make_story_focus_simulation({
   },
 })
 
-simulations.fw_tip_synthesis_cloning = make_story_focus_simulation({
+simulations.fw_tip_synthesis_recovery = make_story_focus_simulation({
   zoom = 0.78,
   camera_y = 0.3,
   player_y = 5.5,
@@ -535,28 +567,19 @@ simulations.fw_tip_synthesis_cloning = make_story_focus_simulation({
     "end",
     'game.surfaces[1].create_entity{name = "substation", position = {0, -4}, force = "player"}',
     'local synth = game.surfaces[1].create_entity{name = "fw-synthesis-plant", position = {-4, 0}, force = "player"}',
-    'local condenser = game.surfaces[1].create_entity{name = "fw-flux-condenser", position = {4, 0}, force = "player"}',
+    'local extractor = game.surfaces[1].create_entity{name = "fw-flux-condenser", position = {4, 0}, force = "player"}',
     'game.forces.player.recipes["fw-condensed-flux-matrix"].enabled = true',
-    'game.forces.player.recipes["fw-promethium-matrix"].enabled = true',
+    'game.forces.player.recipes["fw-extract-flux-from-processing-unit"].enabled = true',
     'synth.set_recipe("fw-condensed-flux-matrix")',
-    'condenser.set_recipe("fw-promethium-matrix")',
+    'extractor.set_recipe("fw-extract-flux-from-processing-unit")',
     'synth.insert{name = "fw-stabilized-flux-crystal", count = 20}',
     'synth.insert{name = "fw-flux-lattice", count = 6}',
     'synth.insert{name = "fw-flux-catalyst", count = 4}',
-    'synth.insert_fluid{name = "fw-purple-flux", amount = 180}',
-    'synth.insert_fluid{name = "fw-yellow-flux", amount = 180}',
-    'synth.insert_fluid{name = "fw-red-flux", amount = 360}',
-    'synth.insert_fluid{name = "fw-green-flux", amount = 100}',
-    'condenser.insert{name = "fw-promethium-shard", count = 18}',
-    'condenser.insert{name = "fw-stabilized-flux-crystal", count = 4}',
-    'condenser.insert{name = "fw-flux-resonance-cell", count = 4}',
-    'condenser.insert{name = "fw-aquilo-cryogel", count = 4}',
-    'condenser.insert{name = "fw-gleba-spore-resin", count = 4}',
-    'condenser.insert{name = "fw-flux-catalyst", count = 4}',
-    'condenser.insert_fluid{name = "fw-purple-flux", amount = 192}',
-    'condenser.insert_fluid{name = "fw-yellow-flux", amount = 156}',
-    'condenser.insert_fluid{name = "fw-red-flux", amount = 252}',
-    'condenser.insert_fluid{name = "fw-green-flux", amount = 120}',
+    'synth.add_fluid(1, {name = "fw-purple-flux", amount = 180}',
+    'synth.add_fluid(1, {name = "fw-yellow-flux", amount = 180}',
+    'synth.add_fluid(1, {name = "fw-red-flux", amount = 360}',
+    'synth.add_fluid(1, {name = "fw-green-flux", amount = 100}',
+    'extractor.insert{name = "processing-unit", count = 20}',
   },
   focuses = {
     { x = -4, y = 0, hold = 1.75 },
@@ -605,7 +628,7 @@ simulations.fw_spectral_reservoir = make_story_focus_simulation({
     'game.surfaces[1].create_entity{name = "pipe", position = {-2, 0}, force = "player"}',
     'game.surfaces[1].create_entity{name = "pipe", position = {2, 0}, force = "player"}',
     'local reservoir = game.surfaces[1].create_entity{name = "fw-spectral-reservoir", position = {0, 0}, force = "player"}',
-    'reservoir.insert_fluid{name = "fw-green-flux", amount = 90000}',
+    'reservoir.add_fluid(1, {name = "fw-green-flux", amount = 90000}',
   },
   focuses = {
     { x = 0, y = 0, hold = 1.9 },
@@ -652,7 +675,7 @@ simulations.fw_rift_exchange_fluid_gate = make_story_focus_simulation({
     'game.surfaces[1].create_entity{name = "pipe", position = {-0.5, -6}, force = "player"}',
     'game.surfaces[1].create_entity{name = "pipe", position = {0.5, 6}, force = "player"}',
     'local gate = game.surfaces[1].create_entity{name = "fw-rift-exchange-fluid-gate", position = {0, 0}, force = "player"}',
-    'gate.insert_fluid{name = "fw-purple-flux", amount = 160000}',
+    'gate.add_fluid(1, {name = "fw-purple-flux", amount = 160000}',
   },
   focuses = {
     { x = 0, y = 0, hold = 2.1 },
@@ -667,10 +690,11 @@ simulations.fw_orbital_salvage =
   init =
   [[
     require("__core__/lualib/story")
+    game.simulation.camera_zoom = 0.38
     game.simulation.camera_position = {0, 0}
 
-    for x = -8, 8 do
-      for y = -3, 3 do
+    for x = -40, 40 do
+      for y = -24, 24 do
         game.surfaces[1].set_tiles{{position = {x, y}, name = "empty-space"}}
       end
     end
@@ -698,12 +722,28 @@ simulations.fw_orbital_salvage =
   ]]
 }
 
+local function validate_generated_simulations()
+  for name, simulation in pairs(simulations) do
+    if type(simulation.init) ~= "string" or simulation.init == "" then
+      error("FluxWorks simulation has no init source: " .. name)
+    end
+    if string.find(simulation.init, "^%s*%[%[") then
+      error("FluxWorks simulation contains a literal long-string opener: " .. name)
+    end
+    if string.find(simulation.init, "%]%]%s*$") then
+      error("FluxWorks simulation contains a literal long-string closer: " .. name)
+    end
+  end
+end
+
+validate_generated_simulations()
+
 if mods["space-age"] then
   data:extend({
     {
       type = "tips-and-tricks-item-category",
       name = "fluxworks",
-      order = "m-[fluxworks]",
+      order = "0-[fluxworks]",
     },
     {
       type = "tips-and-tricks-item",
@@ -810,7 +850,7 @@ if mods["space-age"] then
         type = "research",
         technology = "fw-tube-forming",
       },
-      simulation = simulations.fw_tip_processing_ladder,
+      simulation = simulations.fw_tip_crushing,
     },
     {
       type = "tips-and-tricks-item",
@@ -829,11 +869,11 @@ if mods["space-age"] then
         count = 1,
         match_type_only = true,
       },
-      simulation = simulations.fw_tip_processing_ladder,
+      simulation = simulations.fw_tip_machine_ladder,
     },
     {
       type = "tips-and-tricks-item",
-      name = "flux-synthesis-and-cloning",
+      name = "flux-synthesis-and-recovery",
       tag = "[entity=fw-flux-condenser]",
       category = "fluxworks",
       order = "h",
@@ -848,7 +888,7 @@ if mods["space-age"] then
         count = 1,
         match_type_only = true,
       },
-      simulation = simulations.fw_tip_synthesis_cloning,
+      simulation = simulations.fw_tip_synthesis_recovery,
     },
     {
       type = "tips-and-tricks-item",
@@ -867,7 +907,7 @@ if mods["space-age"] then
         count = 1,
         match_type_only = true,
       },
-      simulation = simulations.fw_tip_synthesis_cloning,
+      simulation = simulations.fw_synthesis_plant,
     },
     {
       type = "tips-and-tricks-item",
@@ -939,7 +979,7 @@ if mods["space-age"] then
         count = 1,
         match_type_only = true,
       },
-      simulation = simulations.fw_orbital_salvage,
+      simulation = simulations.fw_phase_vault,
     },
     {
       type = "tips-and-tricks-item",
@@ -1106,36 +1146,46 @@ if mods["space-age"] then
   })
 
   local handbook_tips = {
-    { "finding-fluxworks-recipes", "a01", "[item=fw-sand]", "fw-material-foundations", "fw-comminution", simulations.fw_tip_processing_ladder },
-    { "reading-the-tech-weave", "a02", "[technology=fw-industrial-methods-science]", "fw-material-foundations", "fw-industrial-methods-science", simulations.fw_tip_processing_ladder },
-    { "mixed-ore-bus-design", "d01", "[item=fw-crushed-iron-ore]", "fw-comminution", "fw-metals-fabrication", simulations.fw_mineral_deposit },
-    { "crushing-before-smelting", "e01", "[item=fw-crushed-copper-ore]", "fw-comminution", "fw-metals-fabrication", simulations.fw_tip_processing_ladder },
-    { "structural-intermediate-backbone", "e02", "[item=fw-steel-beam]", "fw-metals-fabrication", "fw-industrial-methods-science", simulations.fw_tip_processing_ladder },
-    { "fluid-bus-and-reserves", "e03", "[fluid=fw-yellow-flux]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_tip_processing_ladder },
-    { "domain-science-overview", "f01", "[item=fw-industrial-methods-science-pack]", "fw-industrial-methods-science", "fw-planetary-convergence-science", simulations.fw_tip_processing_ladder },
-    { "industrial-methods-science", "f02", "[item=fw-industrial-methods-science-pack]", "fw-industrial-methods-science", "fw-industrial-district-project", simulations.fw_tip_processing_ladder },
-    { "systems-analysis-science", "f03", "[item=fw-systems-analysis-science-pack]", "fw-systems-analysis-science", "fw-autonomous-network-project", simulations.fw_tip_processing_ladder },
-    { "flux-theory-science", "f04", "[item=fw-flux-theory-science-pack]", "fw-flux-theory-science", "fw-spectrum-control-project", simulations.fw_tip_synthesis_cloning },
+    { "finding-fluxworks-recipes", "a01", "[item=sand]", "fw-material-foundations", "fw-comminution", simulations.fw_tip_crushing },
+    { "reading-the-tech-weave", "a02", "[technology=fw-industrial-methods-science]", "fw-material-foundations", "fw-industrial-methods-science", simulations.fw_tip_machine_ladder },
+    { "fluxworks-design-language", "a03", "[item=fw-copper-tube]", "fw-material-foundations", "fw-metals-fabrication", simulations.fw_tip_machine_ladder },
+    { "global-recipe-compatibility", "a04", "[item=fw-bearing]", "fw-material-foundations", "fw-industrial-methods-science", simulations.fw_tip_machine_ladder },
+    { "settings-and-difficulty", "a05", "[technology=fw-material-foundations]", "fw-material-foundations", "fw-industrial-methods-science", simulations.fw_tip_crushing },
+    { "how-flux-evaluation-works", "b01", "[entity=fw-flux-condenser]", "fw-flux-extraction", "fw-flux-synthesis", simulations.fw_tip_synthesis_recovery },
+    { "flux-valuation-confidence", "b02", "[item=fw-flux-catalyst]", "fw-flux-extraction", "fw-flux-synthesis", simulations.fw_tip_synthesis_recovery },
+    { "why-extraction-is-unavailable", "b03", "[entity=fw-flux-condenser]", "fw-flux-extraction", "fw-flux-synthesis", simulations.fw_tip_synthesis_recovery },
+    { "four-spectrum-evaluation", "b04", "[fluid=fw-purple-flux]", "fw-flux-extraction", "fw-flux-field-theory", simulations.fw_tip_synthesis_recovery },
+    { "recovery-efficiency-and-conservation", "b05", "[fluid=fw-red-flux]", "fw-flux-synthesis", "fw-spectrum-control-project", simulations.fw_tip_synthesis_recovery },
+    { "flux-surplus-policy", "b06", "[entity=fw-flux-condenser]", "fw-flux-synthesis", "fw-flux-convergence", simulations.fw_tip_synthesis_recovery },
+    { "compatibility-and-unknown-items", "b07", "[item=fw-resonance-substrate]", "fw-flux-extraction", "fw-flux-synthesis", simulations.fw_tip_synthesis_recovery },
+    { "mixed-ore-bus-design", "d01", "[entity=fw-metallic-deposit]", "fw-material-foundations", "fw-comminution", simulations.fw_mineral_deposit },
+    { "crushing-before-smelting", "d02", "[recipe=crusher]", "fw-comminution", "fw-metals-fabrication", simulations.fw_tip_crushing },
+    { "structural-intermediate-backbone", "e02", "[item=fw-steel-beam]", "fw-metals-fabrication", "fw-industrial-methods-science", simulations.fw_tip_machine_ladder },
+    { "fluid-bus-and-reserves", "e03", "[fluid=fw-yellow-flux]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_tip_synthesis_recovery },
+    { "domain-science-overview", "f01", "[item=fw-industrial-methods-science-pack]", "fw-industrial-methods-science", "fw-planetary-convergence-science", simulations.fw_synthesis_plant },
+    { "industrial-methods-science", "f02", "[item=fw-industrial-methods-science-pack]", "fw-industrial-methods-science", "fw-systems-analysis-science", simulations.fw_tip_machine_ladder },
+    { "systems-analysis-science", "f03", "[item=fw-systems-analysis-science-pack]", "fw-systems-analysis-science", "fw-flux-theory-science", simulations.fw_synthesis_plant },
+    { "flux-theory-science", "f04", "[item=fw-flux-theory-science-pack]", "fw-flux-theory-science", "fw-planetary-convergence-science", simulations.fw_synthesis_plant },
     { "planetary-convergence-science", "f05", "[item=fw-planetary-convergence-science-pack]", "fw-planetary-convergence-science", "fw-convergence-directive-project", simulations.fw_flux_convergence },
-    { "science-pack-lab-compatibility", "f06", "[entity=lab]", "fw-industrial-methods-science", "fw-flux-theory-science", simulations.fw_tip_processing_ladder },
-    { "progression-projects", "g01", "[item=fw-industrial-district-charter]", "fw-industrial-methods-science", "fw-industrial-district-project", simulations.fw_tip_processing_ladder },
-    { "industrial-district-charter", "g02", "[item=fw-industrial-district-charter]", "fw-industrial-methods-science", "fw-industrial-district-project", simulations.fw_tip_processing_ladder },
-    { "autonomous-network-charter", "g03", "[item=fw-autonomous-network-charter]", "fw-systems-analysis-science", "fw-autonomous-network-project", simulations.fw_orbital_salvage },
-    { "spectrum-control-charter", "g04", "[item=fw-spectrum-control-charter]", "fw-flux-theory-science", "fw-spectrum-control-project", simulations.fw_tip_synthesis_cloning },
-    { "convergence-directive", "g05", "[item=fw-convergence-directive]", "fw-planetary-convergence-science", "fw-convergence-directive-project", simulations.fw_flux_convergence },
-    { "purple-flux-discipline", "h01", "[fluid=fw-purple-flux]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_tip_processing_ladder },
+    { "science-pack-lab-compatibility", "f06", "[entity=lab]", "fw-industrial-methods-science", "fw-systems-analysis-science", simulations.fw_synthesis_plant },
+    { "progression-projects", "g01", "[technology=fw-industrial-district-project]", "fw-industrial-methods-science", "fw-industrial-district-project", simulations.fw_tip_machine_ladder },
+    { "industrial-district-charter", "g02", "[technology=fw-industrial-district-project]", "fw-industrial-district-project", "fw-autonomous-network-project", simulations.fw_tip_machine_ladder },
+    { "autonomous-network-charter", "g03", "[technology=fw-autonomous-network-project]", "fw-autonomous-network-project", "fw-spectrum-control-project", simulations.fw_tip_machine_ladder },
+    { "spectrum-control-charter", "g04", "[technology=fw-spectrum-control-project]", "fw-spectrum-control-project", "fw-convergence-directive-project", simulations.fw_tip_synthesis_recovery },
+    { "convergence-directive", "g05", "[technology=fw-convergence-directive-project]", "fw-planetary-convergence-science", "fw-convergence-directive-project", simulations.fw_flux_convergence },
+    { "purple-flux-discipline", "h01", "[fluid=fw-purple-flux]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_flux_harvester },
     { "yellow-flux-discipline", "h02", "[fluid=fw-yellow-flux]", "fw-flux-field-theory", "fw-flux-phase-engineering", simulations.fw_petrochemical_facility },
     { "red-flux-discipline", "h03", "[fluid=fw-red-flux]", "fw-flux-field-theory", "fw-superconductive-systems", simulations.fw_superconductive_systems },
     { "green-flux-discipline", "h04", "[fluid=fw-green-flux]", "fw-flux-green-reclamation", "fw-flux-green-propagation", simulations.fw_green_flux_biology },
-    { "machine-recipe-ownership", "h05", "[entity=fw-synthesis-plant]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_tip_synthesis_cloning },
-    { "flux-productivity-boundaries", "h06", "[item=fw-flux-catalyst]", "fw-flux-synthesis", "fw-spectrum-control-project", simulations.fw_tip_synthesis_cloning },
+    { "machine-recipe-ownership", "h05", "[entity=fw-synthesis-plant]", "fw-harvester-systems", "fw-flux-synthesis", simulations.fw_tip_machine_ladder },
+    { "flux-productivity-boundaries", "h06", "[item=fw-flux-catalyst]", "fw-flux-synthesis", "fw-spectrum-control-project", simulations.fw_tip_synthesis_recovery },
     { "vulcanus-flux-route", "n01", "[item=fw-vulcanus-slag-cermet]", "fw-vulcanus-pyrochemistry", "fw-vulcanus-industrial-symbiosis", simulations.fw_planetary_chemistry },
     { "gleba-flux-route", "n02", "[item=fw-gleba-spore-resin]", "fw-gleba-biochemistry", "fw-gleba-regenerative-symbiosis", simulations.fw_green_flux_biology },
     { "fulgora-flux-route", "n03", "[item=fw-fulgora-static-mesh]", "fw-fulgora-electrochemistry", "fw-fulgora-electromagnetic-symbiosis", simulations.fw_planetary_chemistry },
     { "aquilo-flux-route", "n04", "[item=fw-aquilo-cryogel]", "fw-aquilo-cryochemistry", "fw-aquilo-thermal-symbiosis", simulations.fw_planetary_chemistry },
     { "preparing-the-shattered-expedition", "o01", "[technology=fw-shattered-expedition-planning]", "fw-shattered-expedition-planning", "fw-shattered-landing-protocols", simulations.fw_flux_convergence },
     { "shattered-network-logistics", "q01", "[technology=fw-shattered-network-logistics]", "fw-shattered-network-logistics", "fw-shattered-vent-harmonics", simulations.fw_flux_convergence },
-    { "factory-scaling-checklist", "z01", "[item=fw-rift-stabilizer]", "fw-flux-synthesis", "fw-rift-harmonics", simulations.fw_tip_synthesis_cloning },
+    { "factory-scaling-checklist", "z01", "[item=fw-rift-stabilizer]", "fw-flux-synthesis", "fw-rift-harmonics", simulations.fw_tip_synthesis_recovery },
   }
 
   local generated_tips = {}
@@ -1153,6 +1203,16 @@ if mods["space-age"] then
     }
   end
   data:extend(generated_tips)
+
+  local category = data.raw["tips-and-tricks-item-category"]["fluxworks"]
+  if not category or category.order ~= "0-[fluxworks]" then
+    error("FluxWorks Tips & Tricks category must remain first")
+  end
+  for _, tip in ipairs(handbook_tips) do
+    if not data.raw["tips-and-tricks-item"][tip[1]] then
+      error("FluxWorks handbook tip was not registered: " .. tip[1])
+    end
+  end
 end
 
 return content

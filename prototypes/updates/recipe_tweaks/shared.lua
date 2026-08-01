@@ -1,4 +1,4 @@
-local Recipe = require("__haul_lib__/utils/recipe")
+local Recipe = require("__razi_lib__/lib/recipe")
 local Startup = require("prototypes.lib.startup-settings")
 
 local shared = {
@@ -124,12 +124,19 @@ function shared.set_recipe_category(recipe_name, category)
     return
   end
 
-  recipe.category = category
+  local categories = type(category) == "table" and table.deepcopy(category) or { category }
+  recipe.categories = categories
+  recipe.category = nil
+  recipe.additional_categories = nil
   if recipe.normal then
-    recipe.normal.category = category
+    recipe.normal.categories = table.deepcopy(categories)
+    recipe.normal.category = nil
+    recipe.normal.additional_categories = nil
   end
   if recipe.expensive then
-    recipe.expensive.category = category
+    recipe.expensive.categories = table.deepcopy(categories)
+    recipe.expensive.category = nil
+    recipe.expensive.additional_categories = nil
   end
 end
 

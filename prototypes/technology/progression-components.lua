@@ -14,8 +14,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-ceramic-engineering",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-fired-ceramic.png",
-    icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-ceramic-engineering.png",
+    icon_size = 256,
     prerequisites = { "fw-structural-fabrication", "stone-wall" },
     unit = tech_unit(95, {
       { "automation-science-pack", 1 },
@@ -46,7 +46,7 @@ data:extend({
     type = "technology",
     name = "fw-conductive-networks",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-coil-block.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-conductive-assembly", "fw-electromechanical-systems" },
     unit = tech_unit(85, {
       { "automation-science-pack", 1 },
@@ -61,7 +61,7 @@ data:extend({
     type = "technology",
     name = "fw-signal-routing",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-signal-conduit.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-conductive-networks", "fw-cable-looming" },
     unit = tech_unit(92, {
       { "automation-science-pack", 1 },
@@ -76,7 +76,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-optical-instrumentation",
-    icon = "__Krastorio2Assets__/technologies/advanced-radar.png",
+    icon = "__base__/graphics/technology/radar.png",
     icon_size = 256,
     prerequisites = { "fw-instrumentation", "fw-wafer-etching" },
     unit = tech_unit(120, {
@@ -93,7 +93,7 @@ data:extend({
     type = "technology",
     name = "fw-sealed-systems",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-pressure-housing.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-material-refinement", "fw-conductive-networks" },
     unit = tech_unit(140, {
       { "automation-science-pack", 1 },
@@ -109,7 +109,7 @@ data:extend({
     type = "technology",
     name = "fw-fluid-regulation",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-flow-regulator.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-sealed-systems", "fw-signal-routing" },
     unit = tech_unit(150, {
       { "automation-science-pack", 1 },
@@ -143,7 +143,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-power-regulation",
-    icon = "__Krastorio2Assets__/technologies/energy-control-unit.png",
+    icon = "__base__/graphics/technology/advanced-electronics-2.png",
     icon_size = 256,
     prerequisites = { "fw-systems-integration", "fw-sealed-systems" },
     unit = tech_unit(180, {
@@ -161,7 +161,7 @@ data:extend({
     type = "technology",
     name = "fw-field-balancing",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-field-winding.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-power-regulation", "fw-conductive-networks" },
     unit = tech_unit(195, {
       { "automation-science-pack", 1 },
@@ -208,7 +208,7 @@ data:extend({
     type = "technology",
     name = "fw-metallurgic-assemblies",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-foundry-lining.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-industrial-expansion", "fw-ceramic-engineering", "foundry", "metallurgic-science-pack" },
     unit = tech_unit(390, {
       { "automation-science-pack", 1 },
@@ -227,7 +227,7 @@ data:extend({
     type = "technology",
     name = "fw-cryogenic-control",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-cryo-coil.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-flux-catalysis", "fw-power-regulation", "cryogenic-plant", "cryogenic-science-pack" },
     unit = tech_unit(520, {
       { "automation-science-pack", 1 },
@@ -246,7 +246,7 @@ data:extend({
     type = "technology",
     name = "fw-thermal-retention",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-thermal-buffer.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-cryogenic-control", "fw-advanced-fabrication" },
     unit = tech_unit(560, {
       { "automation-science-pack", 1 },

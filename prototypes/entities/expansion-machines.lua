@@ -2,8 +2,9 @@ local util = require("util")
 local thermal_plant_path = "__finely-crafted-graphics__/graphics/thermal-plant/"
 local oxidizer_path = "__finely-crafted-graphics__/graphics/oxidizer/"
 
-local assembler2_pipe_pictures = assembler2pipepictures()
-local assembler3_pipe_pictures = assembler3pipepictures()
+local assembler_pictures = require("__base__.prototypes.entity.assembler-pictures")
+local assembler2_pipe_pictures = assembler_pictures.assembler2pipepictures
+local assembler3_pipe_pictures = assembler_pictures.assembler3pipepictures
 
 local petro = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"])
 petro.name = "fw-petrochemical-facility"

@@ -1,58 +1,81 @@
-require("prototypes.resources.flux-rift-resource")
-require("prototypes.resources.ores")
-require("prototypes.resources.shattered-flux-vents")
-require("prototypes.entities.flux-quarry")
-require("prototypes.entities.flux-processing-machines")
-require("prototypes.entities.flux-condenser")
-require("prototypes.entities.late-utility")
-require("prototypes.entities.expansion-machines")
-require("prototypes.entities.advanced-expansion-machines")
-require("prototypes.items.crafting-tabs")
-require("prototypes.items.advanced-materials")
-require("prototypes.items.chemistry-materials")
-require("prototypes.items.metal-plates")
-require("prototypes.items.flux-systems")
-require("prototypes.items.progression-components")
-require("prototypes.items.expansion-systems")
-require("prototypes.items.advanced-expansion-systems")
-require("prototypes.technology.comminution")
-require("prototypes.technology.flux-extraction")
-require("prototypes.technology.flux-mining-productivity")
-require("prototypes.technology.material-processing")
-require("prototypes.technology.liquid-mining")
-require("prototypes.technology.industrial-expansion")
-require("prototypes.technology.flux-systems")
-require("prototypes.technology.progression-components")
-require("prototypes.fluids.fluids")
-require("prototypes.fluids.chemistry-fluids")
-require("prototypes.recipes.advanced-materials")
-require("prototypes.recipes.chemistry-processes")
-require("prototypes.recipes.industrial-processes")
-require("prototypes.recipes.bonus-processes")
-require("prototypes.recipes.metal-plates")
-require("prototypes.recipes.transmutation-recipes")
-require("prototypes.recipes.flux-systems")
-require("prototypes.recipes.progression-components")
-require("prototypes.recipes.expansion-processes")
-require("prototypes.recipes.advanced-expansion-processes")
-require("prototypes.recipes.space-age-symbiosis")
-require("prototypes.recipes.shattered-campaign")
-require("prototypes.technology.expansion-systems")
-require("prototypes.technology.flux-bonuses")
-require("prototypes.technology.advanced-expansion-systems")
-require("prototypes.technology.space-age-symbiosis")
-require("prototypes.technology.shattered-campaign")
-require("prototypes.technology.krastorio-logistics")
-require("prototypes.not-stolen-things.krastorio-logistics")
-require("prototypes.updates.shattered-planet")
-require("prototypes.updates.resource-placement")
-require("prototypes.updates.rocket-reusability")
-require("prototypes.updates.flux-asteroids")
-
--- FluxWorks fluids use dedicated pipe/tank logistics and should not generate
--- vanilla barrel items whose graphics would become part of our visual identity.
-for name, fluid in pairs(data.raw.fluid or {}) do
-  if string.sub(name, 1, 3) == "fw-" then
-    fluid.auto_barrel = false
+local function load_modules(modules)
+  for _, module_name in ipairs(modules) do
+    require(module_name)
   end
+end
+
+-- Load the public registration surface early. Dependent mods can require this
+-- module from their own data stage; FluxWorks consumes registrations later.
+require("prototypes.lib.compatibility-api")
+
+-- Physical world and machines.
+load_modules({
+  "prototypes.resources.flux-rift-resource",
+  "prototypes.resources.ores",
+  "prototypes.resources.shattered-flux-vents",
+  "prototypes.entities.flux-quarry",
+  "prototypes.entities.flux-processing-machines",
+  "prototypes.entities.flux-condenser",
+  "prototypes.entities.late-utility",
+  "prototypes.entities.expansion-machines",
+  "prototypes.entities.advanced-expansion-machines",
+})
+
+-- Player-facing catalog and the core technology tree.
+load_modules({
+  "prototypes.items.crafting-tabs",
+  "prototypes.items.advanced-materials",
+  "prototypes.items.chemistry-materials",
+  "prototypes.items.metal-plates",
+  "prototypes.items.flux-systems",
+  "prototypes.items.progression-components",
+  "prototypes.items.expansion-systems",
+  "prototypes.items.advanced-expansion-systems",
+  "prototypes.technology.comminution",
+  "prototypes.technology.flux-extraction",
+  "prototypes.technology.flux-mining-productivity",
+  "prototypes.technology.material-processing",
+  "prototypes.technology.liquid-mining",
+  "prototypes.technology.industrial-expansion",
+  "prototypes.technology.flux-systems",
+  "prototypes.technology.progression-components",
+})
+
+-- Fluids and manufacturing chains.
+load_modules({
+  "prototypes.fluids.fluids",
+  "prototypes.fluids.chemistry-fluids",
+  "prototypes.recipes.advanced-materials",
+  "prototypes.recipes.chemistry-processes",
+  "prototypes.recipes.industrial-processes",
+  "prototypes.recipes.bonus-processes",
+  "prototypes.recipes.metal-plates",
+  "prototypes.recipes.transmutation-recipes",
+  "prototypes.recipes.flux-systems",
+  "prototypes.recipes.progression-components",
+  "prototypes.recipes.expansion-processes",
+  "prototypes.recipes.advanced-expansion-processes",
+  "prototypes.recipes.space-age-symbiosis",
+  "prototypes.recipes.shattered-campaign",
+})
+
+-- Late progression, compatibility prototypes, and data-stage presentation.
+load_modules({
+  "prototypes.technology.expansion-systems",
+  "prototypes.technology.flux-bonuses",
+  "prototypes.technology.advanced-expansion-systems",
+  "prototypes.technology.space-age-symbiosis",
+  "prototypes.technology.shattered-campaign",
+  "prototypes.compat.aai-logistics",
+  "prototypes.updates.starting-loadout",
+  "prototypes.updates.shattered-planet",
+  "prototypes.updates.rocket-reusability",
+  "prototypes.updates.flux-asteroids",
+  "prototypes.menu-branding",
+})
+
+-- Flux has dedicated pipe and tank logistics; auto-generated barrels would add
+-- an unrelated vanilla item family to the crafting catalog.
+for name, fluid in pairs(data.raw.fluid or {}) do
+  if string.sub(name, 1, 3) == "fw-" then fluid.auto_barrel = false end
 end

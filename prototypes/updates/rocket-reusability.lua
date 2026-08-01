@@ -3,7 +3,7 @@ require("prototypes.updates.remnant-beacon")
 local space_age_sounds = require("__space-age__.prototypes.entity.sounds")
 local explosion_animations = require("__space-age__.prototypes.entity.explosion-animations")
 local space_age_item_sounds = require("__space-age__.prototypes.item_sounds")
-local Common = require("__haul_lib__/utils/common")
+local Prototype = require("__razi_lib__/lib/prototype")
 
 data:extend
 {
@@ -143,7 +143,7 @@ data:extend
         -- asteroid properties
         flags = { "placeable-enemy", "placeable-off-grid", "not-repairable", "not-on-map" },
         max_health = 5000,
-        mass = 500000,
+        damage_per_hp = 2,
         resistances = {
             {
                 type = "physical",
@@ -268,7 +268,6 @@ data:extend
         -- asteroid properties
         flags = nil,
         max_health = nil,
-        mass = nil,
         resistances = {
 
         },
@@ -331,7 +330,7 @@ local reusable_rocket_component_recipes = {
         ingredients = {
             { type = "item", name = "low-density-structure", amount = 2 },
             { type = "item", name = "fw-cermet", amount = 2 },
-            { type = "item", name = "fw-glass", amount = 4 }
+            { type = "item", name = "glass", amount = 4 }
         },
         results = { { type = "item", name = "fw-rocket-heatshield", amount = 1 } }
     }
@@ -341,7 +340,7 @@ data:extend(reusable_rocket_components)
 data:extend(reusable_rocket_component_recipes)
 
 if add_incomplete then
-    local incomplete_rocket_part = Common.cloneInto("item", "rocket-part", "incomplete-rocket-part")
+    local incomplete_rocket_part = Prototype.clone("item", "rocket-part", "incomplete-rocket-part")
     incomplete_rocket_part.stack_size = 50
     incomplete_rocket_part.hidden = false
 

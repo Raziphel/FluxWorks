@@ -59,7 +59,7 @@ local function make_vent(def)
     type = "resource",
     name = def.name,
     icon = def.icon,
-    icon_size = 64,
+    icon_size = 256,
     flags = { "placeable-neutral" },
     category = "basic-fluid",
     subgroup = "mineable-fluids",

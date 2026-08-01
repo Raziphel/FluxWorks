@@ -251,12 +251,12 @@ local function recipe_variants(recipe)
 end
 
 local function recipe_category(recipe)
-  local category = recipe.category
+  local category = recipe.categories and recipe.categories[1] or recipe.category
   if type(category) ~= "string" or category == "" then
-    category = recipe.normal and recipe.normal.category or category
+    category = recipe.normal and ((recipe.normal.categories and recipe.normal.categories[1]) or recipe.normal.category) or category
   end
   if type(category) ~= "string" or category == "" then
-    category = recipe.expensive and recipe.expensive.category or category
+    category = recipe.expensive and ((recipe.expensive.categories and recipe.expensive.categories[1]) or recipe.expensive.category) or category
   end
   if type(category) ~= "string" or category == "" then
     return "crafting"
@@ -415,8 +415,12 @@ end
 for recipe_name, recipe in pairs(data.raw.recipe or {}) do
   local category = recipe_category(recipe)
 
-  for _, variant in ipairs(recipe_variants(recipe)) do
-    scale_ingredient_amounts(recipe_name, category, variant.ingredients)
+  -- Extraction always consumes exactly one evaluated object. Its startup
+  -- difficulty is already represented in the shared recovery-yield function.
+  if category ~= "fw-flux-extraction" then
+    for _, variant in ipairs(recipe_variants(recipe)) do
+      scale_ingredient_amounts(recipe_name, category, variant.ingredients)
+    end
   end
 
   local time_multiplier = recipe_time_multiplier(recipe_name, category)

@@ -3,7 +3,6 @@ local sounds = require("__base__.prototypes.entity.sounds")
 local util = require("util")
 local advanced_foundry_path = "__finely-crafted-graphics__/graphics/advanced-foundry/"
 local gravity_assembler_path = "__finely-crafted-graphics__/graphics/gravity-assembler/"
-local filtration_plant_path = "__Krastorio2Assets__/buildings/filtration-plant/"
 
 local electromagnetic_pipe_pictures = require("__space-age__.prototypes.entity.electromagnetic-plant-pictures").pipe_pictures
 
@@ -70,80 +69,15 @@ local function tint_glow(animation, tint)
   end
 end
 
-local function make_flux_harvester_graphics()
-  return {
-    animation = {
-      layers = {
-        {
-          filename = filtration_plant_path .. "filtration-plant.png",
-          priority = "high",
-          width = 460,
-          height = 520,
-          frame_count = 1,
-          scale = 0.32,
-          shift = { 0, -0.12 },
-        },
-        {
-          filename = filtration_plant_path .. "filtration-plant-sh.png",
-          priority = "high",
-          width = 498,
-          height = 438,
-          frame_count = 1,
-          scale = 0.32,
-          shift = { 0.21, 0.20 },
-          draw_as_shadow = true,
-        },
-      },
-    },
-    working_visualisations = {
-      {
-        animation = {
-          filename = filtration_plant_path .. "filtration-plant-working.png",
-          priority = "high",
-          width = 340,
-          height = 370,
-          frame_count = 30,
-          line_length = 6,
-          animation_speed = 0.6,
-          scale = 0.32,
-          shift = { 0.19, -0.38 },
-        },
-      },
-      {
-        apply_recipe_tint = "primary",
-        animation = {
-          filename = filtration_plant_path .. "filtration-plant-dirty-mask.png",
-          width = 156,
-          height = 120,
-          frame_count = 30,
-          line_length = 6,
-          animation_speed = 0.6,
-          scale = 0.32,
-          shift = { 1.03, -0.65 },
-        },
-      },
-      {
-        apply_recipe_tint = "secondary",
-        animation = {
-          filename = filtration_plant_path .. "filtration-plant-clear-mask.png",
-          width = 156,
-          height = 120,
-          frame_count = 30,
-          line_length = 6,
-          animation_speed = 0.6,
-          scale = 0.32,
-          shift = { 1.03, 0.84 },
-        },
-      },
-      working_light(0.9, 9, { 0.0, -0.1 }, { r = 0.62, g = 0.34, b = 1.0 }),
-      working_light(0.5, 6, { 0.55, 0.2 }, { r = 0.28, g = 0.82, b = 1.0 }),
-    },
-  }
-end
-
 local function flux_harvester_icons()
   return {
-    { icon = "__Krastorio2Assets__/icons/entities/filtration-plant.png", icon_size = 64 },
+    { icon = "__FluxWorksAssets__/graphics/icons/items/fw-harvester-head.png", icon_size = 64 },
+    {
+      icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
+      icon_size = 64,
+      scale = 0.28,
+      shift = { 9, 9 },
+    },
   }
 end
 
@@ -260,6 +194,8 @@ end
 
 local harvester = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"])
 harvester.name = "fw-flux-harvester"
+harvester.icon = nil
+harvester.icon_size = nil
 harvester.icons = flux_harvester_icons()
 harvester.minable = { mining_time = 0.8, result = "fw-flux-harvester" }
 harvester.max_health = 700
@@ -274,17 +210,6 @@ harvester.module_slots = 4
 harvester.allowed_effects = { "consumption", "speed", "productivity", "pollution" }
 harvester.fluid_boxes = make_medium_fluid_boxes()
 harvester.fluid_boxes_off_when_no_fluid_recipe = true
-harvester.graphics_set = make_flux_harvester_graphics()
-harvester.working_sound = {
-  sound = {
-    filename = "__Krastorio2Assets__/sounds/buildings/filtration-plant.ogg",
-    volume = 0.55,
-    audible_distance_modifier = 0.6,
-  },
-  fade_in_ticks = 4,
-  fade_out_ticks = 20,
-  max_sounds_per_prototype = 3,
-}
 harvester.open_sound = sounds.mech_small_open
 harvester.close_sound = sounds.mech_small_close
 

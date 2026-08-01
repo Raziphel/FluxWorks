@@ -101,7 +101,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "lead-plate", amount = 2 },
-      { type = "item", name = "fw-glass", amount = 2 },
+      { type = "item", name = "glass", amount = 2 },
       { type = "item", name = "fw-metal-mesh", amount = 1 },
       { type = "item", name = "fw-flux-lattice", amount = 1 },
       { type = "fluid", name = "sulfuric-acid", amount = 12 },

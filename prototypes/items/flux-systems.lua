@@ -1,16 +1,16 @@
 local icon_path = "__FluxWorksAssets__/graphics/icons/items/"
 local late_utility_icon_path = "__FluxWorksAssets__/graphics/icons/items/late-utility/"
-local flux_3_icon = "__Krastorio2Assets__/icons/items/imersite-3.png"
-local flux_3_light_icon = "__Krastorio2Assets__/icons/items/imersite-3-light.png"
-local k2_ai_core = "__Krastorio2Assets__/icons/items/ai-core.png"
-local k2_big_storage_tank = "__Krastorio2Assets__/icons/entities/big-storage-tank.png"
-local k2_energy_control_unit = "__Krastorio2Assets__/icons/items/energy-control-unit.png"
-local k2_energy_storage = "__Krastorio2Assets__/icons/entities/energy-storage.png"
-local k2_fusion_reactor = "__Krastorio2Assets__/icons/entities/fusion-reactor.png"
-local k2_matter_cube = "__Krastorio2Assets__/icons/items/matter-cube.png"
-local k2_matter_stabilizer = "__Krastorio2Assets__/icons/items/matter-stabilizer.png"
-local k2_quantum_computer = "__Krastorio2Assets__/icons/entities/quantum-computer.png"
-local k2_spaceship_research_computer = "__Krastorio2Assets__/icons/entities/spaceship-research-computer.png"
+local flux_3_icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux.png"
+local flux_3_light_icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux.png"
+local k2_ai_core = "__FluxWorksAssets__/graphics/icons/items/fw-logic-matrix.png"
+local k2_big_storage_tank = "__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png"
+local k2_energy_control_unit = "__base__/graphics/icons/processing-unit.png"
+local k2_energy_storage = "__FluxWorksAssets__/graphics/icons/items/fw-thermal-buffer.png"
+local k2_fusion_reactor = "__FluxWorksAssets__/graphics/icons/items/fw-control-rod-assembly.png"
+local k2_matter_cube = "__FluxWorksAssets__/graphics/icons/items/fw-model-lattice.png"
+local k2_matter_stabilizer = "__FluxWorksAssets__/graphics/icons/items/fw-resonance-substrate.png"
+local k2_quantum_computer = "__FluxWorksAssets__/graphics/icons/items/fw-quantum-computer.png"
+local k2_spaceship_research_computer = "__FluxWorksAssets__/graphics/icons/items/fw-quantum-computer.png"
 local origin_icon_path = icon_path .. "origin-projects/"
 
 local function single_icon(icon, icon_size)
@@ -58,7 +58,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-lattice",
-    icons = single_icon(icon_path .. "fw-flux-lattice.png", 1254),
+    icons = single_icon(icon_path .. "fw-flux-lattice.png", 256),
     subgroup = "fw-flux-systems",
     order = "c[fw-flux-lattice]",
     stack_size = 100,
@@ -90,7 +90,7 @@ data:extend({
   {
     type = "item",
     name = "fw-condensed-flux-matrix",
-    icons = single_icon(icon_path .. "fw-condensed-flux-matrix.png", 64),
+    icons = single_icon(icon_path .. "fw-condensed-flux-matrix.png", 1254),
     subgroup = "fw-flux-systems",
     order = "d[fw-condensed-flux-matrix]",
     stack_size = 100,
@@ -98,7 +98,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-resonance-cell",
-    icons = single_icon(icon_path .. "fw-flux-resonance-cell.png", 1254),
+    icons = single_icon(icon_path .. "fw-flux-resonance-cell.png", 256),
     subgroup = "fw-flux-systems",
     order = "e[fw-flux-resonance-cell]",
     stack_size = 100,
@@ -122,7 +122,7 @@ data:extend({
   {
     type = "item",
     name = "fw-phase-anchor",
-    icons = single_icon(late_utility_icon_path .. "fw-phase-anchor.png", 1024),
+    icons = single_icon(late_utility_icon_path .. "fw-phase-anchor.png", 256),
     subgroup = "fw-flux-systems",
     order = "g[fw-phase-anchor]",
     stack_size = 50,
@@ -130,7 +130,7 @@ data:extend({
   {
     type = "item",
     name = "fw-entanglement-core",
-    icons = single_icon(late_utility_icon_path .. "fw-entanglement-core.png", 1024),
+    icons = single_icon(late_utility_icon_path .. "fw-entanglement-core.png", 256),
     subgroup = "fw-flux-systems",
     order = "h[fw-entanglement-core]",
     stack_size = 50,
@@ -138,7 +138,7 @@ data:extend({
   {
     type = "item",
     name = "fw-reservoir-lining",
-    icons = single_icon(late_utility_icon_path .. "fw-reservoir-lining.png", 1024),
+    icons = single_icon(late_utility_icon_path .. "fw-reservoir-lining.png", 256),
     subgroup = "fw-flux-systems",
     order = "i[fw-reservoir-lining]",
     stack_size = 50,
@@ -146,7 +146,7 @@ data:extend({
   {
     type = "item",
     name = "fw-compression-baffle",
-    icons = single_icon(late_utility_icon_path .. "fw-compression-baffle.png", 1024),
+    icons = single_icon(late_utility_icon_path .. "fw-compression-baffle.png", 256),
     subgroup = "fw-flux-systems",
     order = "j[fw-compression-baffle]",
     stack_size = 50,
@@ -154,7 +154,7 @@ data:extend({
   {
     type = "item",
     name = "fw-thermal-phase-gasket",
-    icons = single_icon(late_utility_icon_path .. "fw-thermal-phase-gasket.png", 1024),
+    icons = single_icon(late_utility_icon_path .. "fw-thermal-phase-gasket.png", 256),
     subgroup = "fw-flux-systems",
     order = "k[fw-thermal-phase-gasket]",
     stack_size = 50,
@@ -162,7 +162,7 @@ data:extend({
   {
     type = "item",
     name = "fw-rift-coupler",
-    icons = single_icon(late_utility_icon_path .. "fw-rift-coupler.png", 1024),
+    icons = single_icon(late_utility_icon_path .. "fw-rift-coupler.png", 256),
     subgroup = "fw-flux-exchange",
     order = "a[fw-rift-coupler]",
     stack_size = 20,
@@ -218,8 +218,7 @@ data:extend({
   {
     type = "item",
     name = "fw-storm-spine-segment",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-reactor-doping.png",
-    icon_size = 256,
+    icons = single_icon(icon_path .. "fw-storm-spine-segment.png", 128),
     subgroup = "fw-flux-origin-projects",
     order = "a[storm-spine-segment]",
     stack_size = 20,
@@ -227,7 +226,7 @@ data:extend({
   {
     type = "item",
     name = "fw-origin-crucible-lining",
-    icons = single_icon(k2_fusion_reactor, 64),
+    icons = single_icon(icon_path .. "fw-origin-crucible-lining.png", 128),
     subgroup = "fw-flux-origin-projects",
     order = "b[origin-crucible-lining]",
     stack_size = 20,
@@ -235,8 +234,7 @@ data:extend({
   {
     type = "item",
     name = "fw-harmonic-lattice-core",
-    icon = "__FluxWorksAssets__/graphics/technology/fw-isotope-conditioning.png",
-    icon_size = 256,
+    icons = single_icon(icon_path .. "fw-harmonic-lattice-core.png", 128),
     subgroup = "fw-flux-origin-projects",
     order = "c[harmonic-lattice-core]",
     stack_size = 20,
@@ -244,8 +242,7 @@ data:extend({
   {
     type = "item",
     name = "fw-living-reactor-weave",
-    icon = "__Krastorio2Assets__/icons/items/black-reinforced-plate-kl.png",
-    icon_size = 64,
+    icons = single_icon(icon_path .. "fw-living-reactor-weave.png", 128),
     subgroup = "fw-flux-origin-projects",
     order = "d[living-reactor-weave]",
     stack_size = 20,
@@ -253,7 +250,7 @@ data:extend({
   {
     type = "item",
     name = "fw-origin-catalyst-manifold",
-    icons = single_icon(icon_path .. "fw-hydraulic-manifold.png", 64),
+    icons = single_icon(icon_path .. "fw-origin-catalyst-manifold.png", 128),
     subgroup = "fw-flux-origin-projects",
     order = "e[origin-catalyst-manifold]",
     stack_size = 20,

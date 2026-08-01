@@ -1,30 +1,4 @@
-local M = {}
-
-local function startup_setting(name)
-  if not (settings and settings.startup) then
-    return nil
-  end
-
-  return settings.startup[name]
-end
-
-function M.value(name, fallback)
-  local setting = startup_setting(name)
-  if setting == nil or setting.value == nil then
-    return fallback
-  end
-
-  return setting.value
-end
-
-function M.enabled(name, fallback)
-  local value = M.value(name, fallback)
-  if value == nil then
-    return false
-  end
-
-  return value == true
-end
+local M = require("__razi_lib__/lib/settings")
 
 function M.difficulty_mode()
   return M.difficulty_tier("fw-balance-flux-core-difficulty", "normal")

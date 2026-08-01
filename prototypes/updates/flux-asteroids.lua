@@ -17,8 +17,8 @@ end
 local flux_chunk_item = {
   type = "item",
   name = "fw-flux-asteroid-chunk",
-  icon = "__Krastorio2Assets__/icons/items/imersite-3.png",
-  icon_size = 64,
+  icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-asteroid-chunk.png",
+  icon_size = 128,
   subgroup = "space-material",
   order = "e[rocket]-f[fw-flux-asteroid-chunk]",
   stack_size = 20,
@@ -27,8 +27,8 @@ local flux_chunk_item = {
 
 local flux_chunk = table.deepcopy(base_chunk)
 flux_chunk.name = "fw-flux-asteroid-chunk"
-flux_chunk.icon = "__Krastorio2Assets__/icons/items/imersite-3.png"
-flux_chunk.icon_size = 64
+flux_chunk.icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-asteroid-chunk.png"
+flux_chunk.icon_size = 128
 flux_chunk.localised_description = { "entity-description.fw-flux-asteroid-chunk" }
 flux_chunk.order = "a[rocket-chunk]-c[flux]"
 flux_chunk.minable = {
@@ -54,8 +54,8 @@ local flux_asteroid = {
   type = "asteroid",
   name = "fw-flux-asteroid",
   localised_description = { "entity-description.fw-flux-asteroid" },
-  icon = "__Krastorio2Assets__/icons/items/imersite-3.png",
-  icon_size = 64,
+  icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-asteroid-chunk.png",
+  icon_size = 128,
   subgroup = "space-environment",
   order = "e[used-rocket]-c[fw-flux-asteroid]",
   collision_box = { { -7.5, -7.5 }, { 7.5, 7.5 } },
@@ -63,7 +63,7 @@ local flux_asteroid = {
   collision_mask = { layers = { object = true }, not_colliding_with_itself = true },
   flags = { "placeable-enemy", "placeable-off-grid", "not-repairable", "not-on-map" },
   max_health = 3000,
-  mass = 350000,
+  damage_per_hp = 1.5,
   resistances = {
     { type = "physical", decrease = 0, percent = 45 },
     { type = "electric", decrease = 0, percent = 100 },
@@ -117,8 +117,8 @@ local flux_asteroid = {
 local flux_chunk_refining = {
   type = "recipe",
   name = "fw-flux-asteroid-refining",
-  icon = "__Krastorio2Assets__/icons/items/imersite-3.png",
-  icon_size = 64,
+  icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-asteroid-chunk.png",
+  icon_size = 128,
   category = "crushing",
   subgroup = "space-crushing",
   order = "b-a-e[fw-flux-asteroid-refining]",

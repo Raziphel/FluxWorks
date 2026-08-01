@@ -1,96 +1,74 @@
-# Credits
+# Credits and third-party notices
 
-FluxWorks ships a mix of original work and adapted third-party assets. This file tracks the outside source families that are visibly present in the current mod files.
+FluxWorks is developed by Raziphel and FluidNatalie, with graphics contributions
+by Tirisabella.
 
-## Live source families
+## Required projects
 
-- `brevven` Factorio mods (MIT):
-  - Sources:
-    - https://github.com/brevven/silicon
-    - https://github.com/brevven/titanium
-    - https://github.com/brevven/lead
-    - https://github.com/brevven/tin
-    - https://github.com/brevven/chlorine
-    - https://github.com/brevven/aluminum
-    - https://github.com/brevven/carbon
-  - Used for adapted ore, plate, chemistry, and resource-art foundations across the FluxWorks asset pack, especially:
-    - `FluxWorksAssets/graphics/resources/ores/*`
-    - `FluxWorksAssets/graphics/icons/items/fw-bz-*`
-    - `FluxWorksAssets/graphics/icons/items/*plate*.png`
-  - Runtime note:
-    - FluxWorks now points directly at `Krastorio2Assets` for the live silicon icon path, chlorine fluid icon surfaces, greenhouse/quantum-computer technology art, and fuel-refinery-style chemistry tech art instead of shipping more local lookalikes.
+FluxWorks builds on these separately distributed dependencies:
 
-- Rocket Reusability by `Lylac`: (MIT)
-  - Source:
-    - https://mods.factorio.com/mod/rocket-reusability
-  - Used for adapted rocket-reuse concepts and asset families, especially:
-    - `FluxWorksAssets/graphics/icons/items/fw-rocket-*.png`
-    - `FluxWorksAssets/graphics/resources/asteroids/fw-used-rocket*.png`
-    - `FluxWorksAssets/graphics/resources/asteroids/fw-rocket-chunk*.png`
-  - Runtime note:
-    - This is the one source family intentionally kept local in `FluxWorksAssets` rather than added as a hard dependency.
+- Factorio, Space Age, and Quality — Wube Software
+- AAI Industry, AAI Loaders, and AAI Containers & Warehouses — Earendel
+- Alien Biomes Graphics — Earendel
+- [Finely Crafted Graphics](https://mods.factorio.com/mod/finely-crafted-graphics)
+  — graphics by hurricane, distributed by plexpt (CC BY)
+- RAZI Library (`razi_lib`) — Reusable Architecture & Zero-friction Infrastructure by Raziphel and the Foundry Team
+- FluxWorks Assets — the companion graphics package maintained with FluxWorks
 
-- Memory Storage / deep-storage-unit by `notnotmelon` (MIT):
-  - Sources:
-    - https://mods.factorio.com/mod/deep-storage-unit
-    - https://github.com/notnotmelon/deep-storage-unit
-  - Used for adapted late-game deep-storage visuals and interaction patterns, especially:
-    - `graphics/late-utility/deep-storage-unit/*`
-    - `graphics/icons/items/deep-storage-unit/*`
-    - `graphics/technology/deep-storage-unit/*`
-  - FluxWorks also adapts the memory-unit style GUI and hidden-helper-entity pattern for:
-    - `scripts/phase-vaults.lua`
-    - `scripts/memory-shared.lua`
+These projects remain under their own licenses. Their inclusion here acknowledges
+the dependencies FluxWorks actually requires; it does not relicense or redistribute
+their contents.
 
-- Fluid Memory Storage by `notnotmelon` (MIT):
-  - Sources:
-    - https://mods.factorio.com/mod/fluid-memory-storage
-    - https://github.com/notnotmelon/fluid-memory-storage
-  - Used for adapted fluid-memory visuals and interaction patterns, especially:
-    - `graphics/late-utility/fluid-memory-storage/*`
-    - `graphics/icons/items/fluid-memory-storage/*`
-    - `graphics/technology/fluid-memory-storage/*`
-  - FluxWorks also adapts the fluid-memory style GUI, tinting, and hidden-helper-entity pattern for:
-    - `scripts/spectral-reservoirs.lua`
-    - `scripts/memory-shared.lua`
+## Included or adapted work
 
-- Telogistics by `S6X` (GPLv3):
-  - Source:
-    - https://mods.factorio.com/mod/Telogistics
-  - Used as a gameplay reference for the cross-planet teleporter exchange concept and GUI/control flow inspiration in:
-    - `scripts/rift-exchange.lua`
-    - `prototypes/entities/late-utility.lua`
-  - No Telogistics source files or art assets are currently shipped directly inside FluxWorks.
+- [Memory Storage](https://mods.factorio.com/mod/deep-storage-unit) and
+  [Fluid Memory Storage](https://mods.factorio.com/mod/fluid-memory-storage) —
+  adapted from the MIT-licensed mods by NotNotMelon (Zachary Picco). Original
+  machine graphics by kaueNP; packed-unit graphic derived from calcwizard's
+  MIT-licensed Packing Tape.
+- [Rocket Reusability](https://mods.factorio.com/mod/rocket-reusability) —
+  adapted from the MIT-licensed mod by redplasticstraw.
+- Brevven's MIT-licensed
+  [Silicon](https://github.com/brevven/silicon),
+  [Titanium](https://github.com/brevven/titanium),
+  [Lead](https://github.com/brevven/lead),
+  [Tin](https://github.com/brevven/tin),
+  [Chlorine](https://github.com/brevven/chlorine),
+  [Aluminum](https://github.com/brevven/aluminum), and
+  [Carbon](https://github.com/brevven/carbon) mods — adapted material,
+  processing, and resource foundations; Copyright (c) 2013, 2021, 2022 Brevven.
+- [Artisanal Reskins: Bob's Mods](https://mods.factorio.com/mod/reskins-bobs) —
+  modified MIT-licensed graphics;
+  Copyright (c) 2023 Kirazy.
 
-- Artisanal Reskins alien fluid icons:
-  - Used directly for the colored Flux fluids:
-    - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-acid.png`
-    - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-explosive.png`
-    - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-fire.png`
-    - `FluxWorksAssets/graphics/icons/fluids/ArtisanalReskins_alien-poison.png`
-  - The solder-alloy plate icon is adapted from the Artisanal Reskins entry in `factorio_free_graphics_for_modders`:
-    - `FluxWorksAssets/graphics/icons/items/fw-solder-alloy.png`
+## Design acknowledgement
 
-- Krastorio 2 assets:
-  - Sources:
-    - `/mnt/omega/Coding/Assets/Krastorio2_2.0.16`
-    - `/mnt/omega/Coding/Assets/Krastorio2Assets_2.0.4`
-  - Used for adapted singularity-megastructure building art in:
-    - `FluxWorksAssets/graphics/late-utility/origin-singularity/*`
-  - Runtime note:
-    - FluxWorks now points directly at `Krastorio2Assets` for the imersite-rift resource art, imersite-style flux crystal icons, the singularity-lab sprite used by late utility structures, the Power Regulator item, and technology art for optical instrumentation, thermal control, phase engineering, and advanced chemistry.
+[Telogistics](https://mods.factorio.com/mod/Telogistics) by S6X informed the
+cross-surface exchange concept. FluxWorks does not include Telogistics source
+code or graphics.
 
-- Finely Crafted Graphics:
-  - Source:
-    - `/mnt/omega/Coding/Assets/finely-crafted-graphics`
-    - `https://mods.factorio.com/mod/finely-crafted-graphics`
-  - Runtime note:
-    - FluxWorks now requires `Finely Crafted Graphics` directly at runtime for the flux quarry, petrochemical facility, hydraulic plant, arc foundry, synthesis plant, atomic enricher, flux condenser, origin forge, origin singularity, and linked technology or recipe icons rather than re-shipping copied files inside `FluxWorksAssets`.
+## Community acknowledgement
 
-## Notes
+Special thanks to the Foundry Team and the FluxWorks Discord community for
+their feedback, testing, ideas, compatibility discussions, and continued
+support during development.
 
-- The `brevven` repositories listed above are MIT-licensed.
-- `deep-storage-unit` and `fluid-memory-storage` are MIT-licensed.
-- Telogistics is GPLv3; FluxWorks currently credits it as a gameplay/reference influence rather than shipping its source or art directly.
-- Some files have been recolored, renamed, cropped, or folded into larger FluxWorks systems, so the shipped filenames do not always match upstream names exactly.
-- If new third-party assets are imported, add the source family and the specific shipped path pattern here at the same time.
+The MIT-licensed material above is provided under the following terms:
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

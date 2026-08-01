@@ -1,12 +1,21 @@
 local FluxValuation = require("prototypes.lib.flux-valuation")
 
 local function format_number(value)
-  local text = tostring(math.floor((value or 0) + 0.5))
+  local rounded = math.floor(((value or 0) * 10) + 0.5) / 10
+  local text = rounded < 10 and tostring(rounded) or tostring(math.floor(rounded + 0.5))
   local formatted = text
   repeat
     formatted, replacements = string.gsub(formatted, "^(-?%d+)(%d%d%d)", "%1,%2")
   until replacements == 0
   return formatted
+end
+
+-- Recipe integration passes may reapply the internal condensing category after the dynamic
+-- extractor recipes are created. Keep authored assembly in the Synthesis Plant.
+for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+  if recipe.category == "fw-flux-condensing" and recipe_name ~= "fw-flux-condenser" then
+    recipe.category = "fw-flux-synthesis"
+  end
 end
 
 local COLOR_ICONS = {
@@ -24,107 +33,11 @@ local CONFIDENCE_LABELS = {
   unknown = "Unknown",
 }
 
-local function clone_flux_markup(value)
-  if value <= 8 then
-    return 1.25
-  end
-  if value <= 24 then
-    return 1.40
-  end
-  if value <= 60 then
-    return 1.60
-  end
-  return 1.85
-end
-
-local function round_breakdown_to_total(breakdown, target_total)
-  local rounded = {
-    purple = 0,
-    yellow = 0,
-    red = 0,
-    green = 0,
-  }
-  local fractions = {}
-  local running_total = 0
-
-  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    local raw = math.max(0, breakdown[color] or 0)
-    local whole = math.floor(raw)
-    rounded[color] = whole
-    running_total = running_total + whole
-    table.insert(fractions, { color = color, frac = raw - whole })
-  end
-
-  table.sort(fractions, function(a, b)
-    if a.frac == b.frac then
-      return a.color < b.color
-    end
-    return a.frac > b.frac
-  end)
-
-  local remainder = math.max(0, target_total - running_total)
-  local index = 1
-  while remainder > 0 and index <= #fractions do
-    rounded[fractions[index].color] = rounded[fractions[index].color] + 1
-    remainder = remainder - 1
-    index = index + 1
-    if index > #fractions and remainder > 0 then
-      index = 1
-    end
-  end
-
-  return rounded
-end
-
-local function normalized_clone_breakdown(breakdown)
-  local normalized = {}
-  local total = 0
-
-  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    local amount = math.max(0, (breakdown and breakdown[color]) or 0)
-    normalized[color] = amount
-    total = total + amount
-  end
-
-  if total <= 0 then
-    for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-      normalized[color] = 1
-    end
-    return normalized, #FluxValuation.COLOR_ORDER
-  end
-
-  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    normalized[color] = normalized[color] + 1
-    total = total + 1
-  end
-
-  return normalized, total
-end
-
-local function condenser_flux_amounts(value, breakdown)
-  local required_flux = math.max(1, math.floor((value * clone_flux_markup(value)) + 0.5))
-  local normalized, total = normalized_clone_breakdown(breakdown)
-  local scaled = {}
-
-  for _, color in ipairs(FluxValuation.COLOR_ORDER) do
-    scaled[color] = ((normalized[color] or 0) / total) * required_flux
-  end
-
-  return round_breakdown_to_total(scaled, required_flux)
-end
-
-local function add_flux_value_to_item_tooltip(item, value, breakdown, confidence)
-  local prefix
-  if confidence == FluxValuation.VALUE_CONFIDENCE.unknown then
-    prefix = "\n[color=220,200,180]Estimated clone flux: [/color][color=210,210,210]"
-  elseif confidence == FluxValuation.VALUE_CONFIDENCE.inferred then
-    prefix = "\n[color=235,215,170]Estimated clone flux: [/color][color=210,210,210]"
-  else
-    prefix = "\n[color=180,220,255]Clone flux: [/color][color=210,210,210]"
-  end
-
+local function add_flux_value_to_item_tooltip(item, value, breakdown, metadata)
+  local confidence = metadata and metadata.confidence or FluxValuation.VALUE_CONFIDENCE.unknown
+  local prefix = "\n[color=180,220,255]Recoverable Flux: [/color][color=210,210,210]"
   local line = { "", prefix }
-  local required_amounts = condenser_flux_amounts(value, breakdown)
+  local required_amounts = FluxValuation.extraction_amounts(value, breakdown, metadata)
 
   for _, color in ipairs(FluxValuation.COLOR_ORDER) do
     local amount = required_amounts[color] or 0
@@ -136,6 +49,18 @@ local function add_flux_value_to_item_tooltip(item, value, breakdown, confidence
     end
   end
   table.insert(line, "[/color]")
+  local quality_parts = {}
+  for _, quality in ipairs(FluxValuation.sorted_qualities(false)) do
+    quality_parts[#quality_parts + 1] = "[quality=" .. quality.name .. "] "
+      .. format_number(FluxValuation.quality_value_multiplier(quality, item.name))
+      .. "x"
+  end
+  if #quality_parts > 0 then
+    table.insert(
+      line,
+      "\n[color=180,220,255]Quality recovery: [/color]" .. table.concat(quality_parts, "  ")
+    )
+  end
   if item.localised_description then
     item.localised_description = { "", item.localised_description, line }
   else
@@ -152,14 +77,14 @@ local function add_flux_status_to_item_tooltip(item, metadata)
     line = {
       "",
       "\n[color=255,190,120]Flux valuation: Unknown[/color] ",
-      "[color=200,200,200](needs a compatibility pass before clone costs are trusted)[/color]",
+      "[color=200,200,200](extraction disabled until compatibility data provides a trustworthy value)[/color]",
     }
   elseif confidence == FluxValuation.VALUE_CONFIDENCE.inferred then
     line = {
       "",
       "\n[color=255,220,150]Flux valuation: ",
       label,
-      "[/color] [color=200,200,200](using a partial or messy recipe path; review if this looks off)[/color]",
+      "[/color] [color=200,200,200](extraction disabled; the available recipe path is ambiguous)[/color]",
     }
   else
     line = {
@@ -178,14 +103,17 @@ local function add_flux_status_to_item_tooltip(item, metadata)
 end
 
 local valued_items = FluxValuation.collect_valued_items()
-local resolved_values = FluxValuation.resolve_item_values(valued_items)
-local resolved_metadata = FluxValuation._last_resolution_metadata or {}
-local resolved_breakdowns = FluxValuation.resolve_item_color_amounts(valued_items, resolved_values)
+local resolved_values = FluxValuation._final_values or {}
+local recoverable_values = FluxValuation._final_recoverable_values or {}
+local resolved_metadata = FluxValuation._final_metadata or {}
+local resolved_breakdowns = FluxValuation._final_breakdowns or {}
 
 for item_name, item in pairs(valued_items) do
   local value = resolved_values[item_name] or FluxValuation.estimate_flux_value(item)
   local breakdown = resolved_breakdowns[item_name] or FluxValuation.simple_item_breakdown(item, resolved_values)
   local metadata = resolved_metadata[item_name]
-  add_flux_value_to_item_tooltip(item, value, breakdown, metadata and metadata.confidence)
+  if FluxValuation.is_confident_value(metadata) then
+    add_flux_value_to_item_tooltip(item, recoverable_values[item_name] or value, breakdown, metadata)
+  end
   add_flux_status_to_item_tooltip(item, metadata)
 end

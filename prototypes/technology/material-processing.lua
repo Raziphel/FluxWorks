@@ -1,4 +1,4 @@
-local Tech = require("__haul_lib__/utils/tech")
+local Tech = require("__razi_lib__/lib/technology")
 
 local function tech_unit(count, science_packs, time)
   return {
@@ -15,24 +15,10 @@ end
 data:extend({
   {
     type = "technology",
-    name = "fw-glassworking",
-    icon = "__Krastorio2Assets__/icons/items/glass.png",
-    icon_size = 64,
-    prerequisites = { "fw-aggregate-recovery", "glass-processing" },
-    unit = tech_unit(28, {
-      { "automation-science-pack", 1 },
-    }, 15),
-    effects = {
-      unlock("fw-glass"),
-    },
-    order = "c-a[fw-glassworking]",
-  },
-  {
-    type = "technology",
     name = "fw-elastomer-processing",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-rubber-sheet.png",
-    icon_size = 1024,
-    prerequisites = { "fw-brine-processing", "fw-glassworking" },
+    icon_size = 256,
+    prerequisites = { "fw-brine-processing", "glass-processing" },
     unit = tech_unit(34, {
       { "automation-science-pack", 1 },
     }, 16),
@@ -45,8 +31,8 @@ data:extend({
     type = "technology",
     name = "fw-material-foundations",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-metal-mesh.png",
-    icon_size = 1024,
-    prerequisites = { "fw-glassworking", "fw-basic-separation" },
+    icon_size = 256,
+    prerequisites = { "glass-processing", "fw-basic-separation" },
     unit = tech_unit(42, {
       { "automation-science-pack", 1 },
     }, 18),
@@ -59,7 +45,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-structural-fabrication",
-    icon = "__Krastorio2Assets__/icons/items/iron-beam.png",
+    icon = "__base__/graphics/icons/iron-plate.png",
     icon_size = 64,
     prerequisites = { "fw-material-foundations", "fw-elastomer-processing", "steel-processing" },
     unit = tech_unit(42, {
@@ -73,7 +59,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-contact-casting",
-    icon = "__Krastorio2Assets__/icons/items/electronic-components.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
     icon_size = 64,
     prerequisites = { "fw-structural-fabrication" },
     unit = tech_unit(34, {
@@ -88,7 +74,7 @@ data:extend({
     type = "technology",
     name = "fw-tube-forming",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-copper-tube.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-structural-fabrication", "fw-contact-casting" },
     unit = tech_unit(44, {
       { "automation-science-pack", 1 },
@@ -120,7 +106,7 @@ data:extend({
     name = "fw-precision-alloys",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-bearing.png",
     icon_size = 128,
-    prerequisites = { "fw-metals-fabrication", "fw-glassworking" },
+    prerequisites = { "fw-metals-fabrication", "glass-processing" },
     unit = tech_unit(54, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -134,7 +120,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-circuit-foundry",
-    icon = "__Krastorio2Assets__/icons/items/electronic-components-2.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
     icon_size = 64,
     prerequisites = { "fw-contact-casting", "fw-metals-fabrication", "fw-precision-alloys", "automation-2", "logistics" },
     unit = tech_unit(50, {
@@ -150,7 +136,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-beam-engineering",
-    icon = "__Krastorio2Assets__/icons/items/steel-beam.png",
+    icon = "__base__/graphics/icons/steel-plate.png",
     icon_size = 64,
     prerequisites = { "fw-metals-fabrication", "fw-material-foundations" },
     unit = tech_unit(65, {
@@ -166,7 +152,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-conductive-assembly",
-    icon = "__Krastorio2Assets__/icons/items/electronic-components-1.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
     icon_size = 64,
     prerequisites = { "fw-metals-fabrication", "fw-material-foundations" },
     unit = tech_unit(65, {
@@ -181,22 +167,20 @@ data:extend({
   {
     type = "technology",
     name = "fw-cable-looming",
-    icon = "__aai-industry__/graphics/icons/small-electric-motor-stacked.png",
-    icon_size = 64,
+    icon = "__aai-industry__/graphics/technology/electric-engine.png",
+    icon_size = 256,
     prerequisites = { "fw-conductive-assembly", "fw-elastomer-processing", "electricity" },
     unit = tech_unit(70, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
     }, 24),
-    effects = {
-      unlock("fw-drive-module"),
-    },
+    effects = {},
     order = "c-l[fw-cable-looming]",
   },
   {
     type = "technology",
     name = "fw-wafer-etching",
-    icon = "__Krastorio2Assets__/icons/items/electronic-components-4.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
     icon_size = 64,
     prerequisites = { "fw-circuit-foundry", "fw-material-foundations", "advanced-circuit" },
     unit = tech_unit(80, {
@@ -227,7 +211,7 @@ data:extend({
     type = "technology",
     name = "fw-electromechanical-systems",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-inductor-coil.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-beam-engineering", "fw-wafer-etching", "fw-precision-alloys", "electric-energy-distribution-1", "battery" },
     unit = tech_unit(145, {
       { "automation-science-pack", 1 },
@@ -260,7 +244,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-signal-architecture",
-    icon = "__Krastorio2Assets__/icons/items/electronic-components-3.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
     icon_size = 64,
     prerequisites = { "fw-chip-packaging", "fw-cable-looming", "fw-capacitive-systems", "battery", "electricity" },
     unit = tech_unit(95, {
@@ -277,7 +261,7 @@ data:extend({
     type = "technology",
     name = "fw-microelectronics",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-microchip.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-signal-architecture", "processing-unit" },
     unit = tech_unit(105, {
       { "automation-science-pack", 1 },
@@ -293,7 +277,7 @@ data:extend({
     type = "technology",
     name = "fw-computational-arrays",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-memory-die.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-microelectronics", "modules", "electric-engine" },
     unit = tech_unit(140, {
       { "automation-science-pack", 1 },
@@ -326,7 +310,7 @@ data:extend({
     type = "technology",
     name = "fw-instrumentation",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-glass-lens.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-electromechanical-systems", "solar-energy" },
     unit = tech_unit(120, {
       { "automation-science-pack", 1 },
@@ -342,7 +326,7 @@ data:extend({
     type = "technology",
     name = "fw-ribbon-conductors",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-ribbon-cable.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-instrumentation", "fw-cable-looming" },
     unit = tech_unit(124, {
       { "automation-science-pack", 1 },
@@ -357,7 +341,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-systems-integration",
-    icon = "__Krastorio2Assets__/icons/items/energy-control-unit.png",
+    icon = "__base__/graphics/icons/processing-unit.png",
     icon_size = 64,
     prerequisites = { "fw-instrumentation", "fw-ribbon-conductors", "fw-microelectronics", "electric-engine" },
     unit = tech_unit(170, {
@@ -375,7 +359,7 @@ data:extend({
     type = "technology",
     name = "fw-sensor-integration",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-sensor-package.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-systems-integration", "fw-optical-instrumentation" },
     unit = tech_unit(185, {
       { "automation-science-pack", 1 },
@@ -392,7 +376,7 @@ data:extend({
     type = "technology",
     name = "fw-advanced-fabrication",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-composite-panel.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-material-refinement", "fw-systems-integration", "production-science-pack" },
     unit = tech_unit(190, {
       { "automation-science-pack", 1 },
@@ -441,23 +425,17 @@ data:extend({
   },
 })
 
-Tech:get("fw-glassworking")
-  :setCost(28)
-  :setColors("R")
-  :setTime(15)
-  :setPrerequisites({ "fw-aggregate-recovery", "glass-processing" })
-
 Tech:get("fw-elastomer-processing")
   :setCost(34)
   :setColors("R")
   :setTime(16)
-  :setPrerequisites({ "fw-brine-processing", "fw-glassworking" })
+  :setPrerequisites({ "fw-brine-processing", "glass-processing" })
 
 Tech:get("fw-material-foundations")
   :setCost(42)
   :setColors("R")
   :setTime(18)
-  :setPrerequisites({ "fw-glassworking", "fw-basic-separation" })
+  :setPrerequisites({ "glass-processing", "fw-basic-separation" })
 
 Tech:get("fw-structural-fabrication")
   :setCost(42)
@@ -487,7 +465,7 @@ Tech:get("fw-precision-alloys")
   :setCost(54)
   :setColors("RG")
   :setTime(22)
-  :setPrerequisites({ "fw-metals-fabrication", "fw-glassworking" })
+  :setPrerequisites({ "fw-metals-fabrication", "glass-processing" })
 
 Tech:get("fw-circuit-foundry")
   :setCost(50)

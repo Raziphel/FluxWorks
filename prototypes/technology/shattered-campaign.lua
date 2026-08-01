@@ -62,7 +62,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-shattered-landing-protocols",
-    icon = asset_icon("fw-ceramic-engineering.png"), icon_size = 1254,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-fired-ceramic.png", icon_size = 256,
     prerequisites = { "fw-shattered-platform-hardening", "fw-rift-logistics" },
     unit = unit(3000, 85), effects = {
       productivity("foundation", 0.20),
@@ -101,7 +101,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-shattered-aquilo-bridgehead",
-    icon = asset_icon("fw-sealed-systems.png"), icon_size = 1024,
+    icon = asset_icon("fw-sealed-systems.png"), icon_size = 256,
     prerequisites = { "fw-shattered-landing-protocols", "fw-aquilo-thermal-symbiosis" },
     unit = unit(3200, 90), effects = {
       unlock("fw-shattered-purple-bridgehead-annealing"),
@@ -111,7 +111,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-shattered-vent-harmonics",
-    icon = asset_icon("fw-spectral-fluid-retention.png"), icon_size = 1024,
+    icon = asset_icon("fw-spectral-fluid-retention.png"), icon_size = 256,
     prerequisites = {
       "fw-shattered-vulcanus-bridgehead", "fw-shattered-gleba-bridgehead",
       "fw-shattered-fulgora-bridgehead", "fw-shattered-aquilo-bridgehead",
@@ -133,7 +133,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-shattered-network-logistics",
-    icon = asset_icon("fw-rift-logistics.png"), icon_size = 1254,
+    icon = asset_icon("fw-rift-logistics.png"), icon_size = 256,
     prerequisites = { "fw-ion-storm-survival", "fw-rift-logistics" },
     unit = unit(4600, 105), effects = {
       unlock("fw-model-lattice"),
@@ -155,7 +155,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-ion-storm-capture",
-    icon = asset_icon("fw-resonance-assemblies.png"), icon_size = 1254,
+    icon = asset_icon("fw-resonance-assemblies.png"), icon_size = 256,
     prerequisites = { "fw-shattered-origin-survey", "fw-origin-infrastructure" },
     unit = unit(6200, 120), effects = {
       unlock("fw-ion-storm-harmonic-core"),

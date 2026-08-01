@@ -39,6 +39,13 @@ local function tier_icons(stem)
   }
 end
 
+local material_handling_prerequisite = data.raw.technology["aai-loader"]
+  and "aai-loader"
+  or "logistics-2"
+local autonomous_logistics_prerequisite = data.raw.technology["aai-express-loader"]
+  and "aai-express-loader"
+  or "logistics-3"
+
 local programs = {
   {
     stem = "fw-industrial-yield",
@@ -53,7 +60,7 @@ local programs = {
   {
     stem = "fw-material-handling",
     tier_icons = tier_icons("fw-material-handling"),
-    prerequisites = { "fw-bulk-logistics", "inserter-capacity-bonus-2" },
+    prerequisites = { material_handling_prerequisite, "inserter-capacity-bonus-2" },
     effects = {
       {
         { type = "inserter-stack-size-bonus", modifier = 1 },
@@ -72,7 +79,7 @@ local programs = {
   {
     stem = "fw-autonomous-logistics",
     tier_icons = tier_icons("fw-autonomous-logistics"),
-    prerequisites = { "fw-network-logistics", "worker-robots-speed-3" },
+    prerequisites = { autonomous_logistics_prerequisite, "worker-robots-speed-3" },
     effects = {
       {
         { type = "worker-robot-speed", modifier = 0.25 },
@@ -162,7 +169,11 @@ for program_index, program in ipairs(programs) do
       prerequisites = prerequisites,
       unit = {
         count = counts[tier],
-        ingredients = science_tiers[tier],
+        -- Each program is assigned its own domain pack during final fixes.
+        -- Do not share this table between prototypes: mutating one program's
+        -- science requirements would otherwise leak into every program at the
+        -- same tier and erase the distinction between research disciplines.
+        ingredients = table.deepcopy(science_tiers[tier]),
         time = times[tier],
       },
       effects = effects,

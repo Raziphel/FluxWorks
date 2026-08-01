@@ -1,5 +1,5 @@
 local resource_autoplace = require("__core__.lualib.resource-autoplace")
-local Common = require("__haul_lib__/utils/common")
+local Prototype = require("__razi_lib__/lib/prototype")
 
 local crystallized_flux_icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux.png"
 local crystallized_flux_on_belt_variants = {
@@ -93,31 +93,8 @@ data:extend({
       candidate_spot_count = 2,
     }),
     stage_counts = { 0 },
-    stages = {
-      sheet = {
-        filename = "__Krastorio2Assets__/resources/imersite/imersite-rift.png",
-        priority = "extra-high",
-        width = 500,
-        height = 500,
-        frame_count = 6,
-        variation_count = 1,
-        scale = 0.4,
-      },
-    },
-    stages_effect = {
-      sheets = {
-        {
-          filename = "__Krastorio2Assets__/resources/imersite/imersite-rift-glow.png",
-          priority = "extra-high",
-          width = 500,
-          height = 500,
-          frame_count = 6,
-          variation_count = 1,
-          scale = 0.4,
-          draw_as_glow = true,
-        },
-      },
-    },
+    stages = table.deepcopy(data.raw.resource["uranium-ore"].stages),
+    stages_effect = table.deepcopy(data.raw.resource["uranium-ore"].stages_effect),
     effect_animation_period = 5,
     effect_animation_period_deviation = 1,
     effect_darkness_multiplier = 3.5,
@@ -131,7 +108,7 @@ data:extend({
 
 if data.raw["autoplace-control"] and data.raw["autoplace-control"]["iron-ore"] then
   -- Copy iron-ore's map-gen control so this looks/behaves like a normal ore slider.
-  local flux_autoplace = Common.cloneInto("autoplace-control", "iron-ore", "fw-crystalised-flux")
+  local flux_autoplace = Prototype.clone("autoplace-control", "iron-ore", "fw-crystalised-flux")
   flux_autoplace.localised_name = { "", "[item=fw-crystalised-flux] ", { "autoplace-control-names.fw-crystalised-flux" } }
   flux_autoplace.richness = true
   flux_autoplace.order = "b-k"

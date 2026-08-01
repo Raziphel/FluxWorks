@@ -1,4 +1,4 @@
-local Tech = require("__haul_lib__/utils/tech")
+local Tech = require("__razi_lib__/lib/technology")
 
 data:extend({
   {

@@ -1,4 +1,4 @@
-local Tech = require("__haul_lib__/utils/tech")
+local Tech = require("__razi_lib__/lib/technology")
 
 data:extend({
   {
@@ -198,7 +198,7 @@ data:extend({
     type = "technology",
     name = "fw-flux-resonance",
     icon = "__FluxWorksAssets__/graphics/technology/fw-flux-resonance.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-flux-structuring", "fw-flux-red-energetics", "fw-flux-green-reclamation", "fw-harvester-systems" },
     unit = {
       count = 520,
@@ -221,7 +221,7 @@ data:extend({
     type = "technology",
     name = "fw-resonance-assemblies",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-resonance-cell.png",
-    icon_size = 1254,
+    icon_size = 256,
     prerequisites = { "fw-flux-resonance", "fw-electromagnetic-architecture" },
     unit = {
       count = 720,
@@ -409,7 +409,7 @@ data:extend({
     type = "technology",
     name = "fw-fulgora-electrochemistry",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-em-core.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-electromagnetic-architecture", "fw-flux-field-theory", "electromagnetic-science-pack" },
     unit = {
       count = 1120,
@@ -454,7 +454,7 @@ data:extend({
     type = "technology",
     name = "fw-flux-green-propagation",
     icon = "__FluxWorksAssets__/graphics/technology/fw-green-cycle-productivity.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-flux-green-cultivation", "fw-flux-chemical-synthesis" },
     unit = {
       count = 980,
@@ -474,7 +474,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-thermal-networks",
-    icon = "__Krastorio2Assets__/technologies/fusion-energy.png",
+    icon = "__space-age__/graphics/technology/fusion-reactor.png",
     icon_size = 256,
     prerequisites = { "fw-flux-field-theory", "fw-flux-metallurgy", "fw-cryogenic-control" },
     unit = {
@@ -496,7 +496,7 @@ data:extend({
     type = "technology",
     name = "fw-superconductive-systems",
     icon = "__FluxWorksAssets__/graphics/technology/fw-superconductive-productivity.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-aquilo-cryochemistry", "fw-fulgora-electrochemistry", "fw-flux-thermal-networks" },
     unit = {
       count = 1180,
@@ -521,7 +521,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-phase-engineering",
-    icon = "__Krastorio2Assets__/technologies/matter-processing.png",
+    icon = "__space-age__/graphics/technology/quantum-processor.png",
     icon_size = 256,
     prerequisites = { "fw-flux-field-theory", "fw-resonance-assemblies", "fw-superconductive-systems" },
     unit = {
@@ -607,7 +607,7 @@ data:extend({
     type = "technology",
     name = "fw-rift-logistics",
     icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-coupler.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = {
       "fw-rift-harmonics",
       "fw-deep-phase-storage",
@@ -714,7 +714,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-convergence",
-    icon = "__Krastorio2Assets__/icons/items/matter-stabilizer.png",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-resonance-substrate.png",
     icon_size = 64,
     prerequisites = {
       "fw-flux-synthesis",
@@ -751,7 +751,7 @@ data:extend({
     type = "technology",
     name = "fw-rift-harmonics",
     icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-entanglement-core.png",
-    icon_size = 1024,
+    icon_size = 256,
     prerequisites = { "fw-flux-convergence", "fw-fusion-lattices", "fw-spectral-fluid-retention" },
     unit = {
       count = 1750,
@@ -926,7 +926,7 @@ Tech:get("fw-flux-resonance")
   :setCost(520)
   :setColors("RGBPY")
   :setTime(45)
-  :setPrerequisites({ "fw-flux-structuring", "fw-flux-red-energetics", "fw-flux-green-reclamation", "fw-flux-purple-transmutation" })
+  :setPrerequisites({ "fw-flux-structuring", "fw-flux-red-energetics", "fw-flux-green-reclamation", "fw-harvester-systems" })
 
 Tech:get("fw-resonance-assemblies")
   :setCost(720)

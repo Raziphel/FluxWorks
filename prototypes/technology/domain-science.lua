@@ -26,14 +26,13 @@ local packs = {
 for _, pack in ipairs(packs) do
   data:extend({
     {
-      type = "tool",
+      type = "item",
       name = pack.name,
       icon = pack.icon,
       icon_size = 64,
       subgroup = "fw-science-packs",
       order = pack.order,
       stack_size = 200,
-      durability = 1,
       weight = 1000,
     },
   })
@@ -48,7 +47,7 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-metal-mesh", amount = 1 },
       { type = "item", name = "fw-iron-beam", amount = 1 },
-      { type = "item", name = "fw-glass", amount = 1 },
+      { type = "item", name = "glass", amount = 1 },
       { type = "item", name = "fw-carbon", amount = 2 },
     },
     results = { { type = "item", name = "fw-industrial-methods-science-pack", amount = 2 } },
@@ -93,16 +92,9 @@ data:extend({
     category = "fw-flux-condensing",
     energy_required = 30,
     ingredients = {
-      { type = "item", name = "fw-aquilo-cryogel", amount = 1 },
-      { type = "item", name = "fw-gleba-spore-resin", amount = 1 },
-      { type = "item", name = "fw-fulgora-static-mesh", amount = 1 },
-      { type = "item", name = "fw-vulcanus-slag-cermet", amount = 1 },
       { type = "item", name = "fw-promethium-matrix", amount = 1 },
       { type = "item", name = "fw-rift-stabilizer", amount = 1 },
-      { type = "fluid", name = "fw-purple-flux", amount = 80 },
-      { type = "fluid", name = "fw-yellow-flux", amount = 60 },
-      { type = "fluid", name = "fw-red-flux", amount = 100 },
-      { type = "fluid", name = "fw-green-flux", amount = 50 },
+      { type = "item", name = "fw-condensed-flux-matrix", amount = 2 },
     },
     results = { { type = "item", name = "fw-planetary-convergence-science-pack", amount = 4 } },
     subgroup = "fw-science-packs",

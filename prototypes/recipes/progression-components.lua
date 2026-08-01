@@ -24,7 +24,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "stone-brick", amount = 2 },
-      { type = "item", name = "fw-sand", amount = 3 },
+      { type = "item", name = "sand", amount = 3 },
       { type = "item", name = "fw-alumina-refractory", amount = 1 },
     },
     results = { { type = "item", name = "fw-fired-ceramic", amount = 2 } },
@@ -41,7 +41,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "stone-brick", amount = 2 },
-      { type = "item", name = "fw-sand", amount = 2 },
+      { type = "item", name = "sand", amount = 2 },
       { type = "item", name = "fw-salt", amount = 1 },
       { type = "item", name = "fw-alumina-refractory", amount = 1 },
       { type = "item", name = "fw-crystalised-flux", amount = 1 },
@@ -173,7 +173,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-pressure-housing", amount = 1 },
-      { type = "item", name = "fw-drive-module", amount = 1 },
+      { type = "item", name = "electric-motor", amount = 1 },
       { type = "item", name = "fw-bearing", amount = 1 },
       { type = "item", name = "bronze-plate", amount = 1 },
       { type = "item", name = "fw-inline-filter", amount = 1 },
@@ -214,7 +214,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-transformer-core", amount = 1 },
-      { type = "item", name = "fw-drive-module", amount = 1 },
+      { type = "item", name = "electric-engine-unit", amount = 1 },
       { type = "item", name = "fw-coil-block", amount = 1 },
       { type = "item", name = "fw-ribbon-cable", amount = 1 },
       { type = "item", name = "fw-solder-wire", amount = 1 },

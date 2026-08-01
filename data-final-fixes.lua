@@ -1,69 +1,74 @@
-local function require_many(modules)
+local function load_modules(modules)
   for _, module_name in ipairs(modules) do
     require(module_name)
   end
 end
 
-require_many({
+-- Prototypes that depend on the complete base and compatibility prototype set.
+load_modules({
   "prototypes.updates.resource-placement",
-  "prototypes.updates.rocket-reusability-final-fixes",
+  "prototypes.updates.asteroid-crushing",
+  "prototypes.updates.rocket-reusability-late",
   "prototypes.technology.domain-science",
   "prototypes.technology.progression-projects",
   "prototypes.technology.industrial-research-programs",
   "prototypes.updates.factoriopedia",
-  "prototypes.recipes.flux-condensing",
   "prototypes.recipes.red-flux-fuels",
   "prototypes.recipes.purple-flux-materials",
   "prototypes.recipes.yellow-flux-mechanics",
   "prototypes.recipes.red-flux-sources",
   "prototypes.recipes.red-flux-mechanics",
   "prototypes.recipes.green-flux-mechanics",
+})
+
+-- Cross-mod recipe and technology integration. Ordering is intentional: broad
+-- recipe changes land before presentation and final progression reconciliation.
+load_modules({
   "prototypes.updates.chemistry-integration",
   "prototypes.updates.recipe-tweaks",
+  -- Capability-driven external integration must land before Flux valuation so
+  -- every generated recovery recipe prices the final bill of materials.
+  "prototypes.compat.global-recipe-integration",
   "prototypes.updates.difficulty-overrides",
   "prototypes.updates.technology-weave",
   "prototypes.updates.domain-science-integration",
   "prototypes.updates.crafting-tabs",
-  "prototypes.updates.flux-tooltips",
   "prototypes.updates.flux-composition-doctrine",
   "prototypes.updates.recipe-icons",
   "prototypes.updates.visual-identity",
   "prototypes.updates.recipe-decomposition",
-  "prototypes.updates.ore-icon-final-fixes",
-  "prototypes.updates.aai-industry",
-  "prototypes.updates.recipe-complexity-normalization",
-  "prototypes.updates.validate-aai-industry",
-  "prototypes.updates.validate-item-uses",
-  "prototypes.updates.validate-coke-steel",
-  "prototypes.updates.validate-logistics-recipes",
-  "prototypes.updates.validate-recipe-complexity",
-  "prototypes.updates.validate-flux-composition-doctrine",
-  "prototypes.updates.validate-domain-science",
-  "prototypes.updates.validate-progression-projects",
-  "prototypes.updates.validate-research-programs",
-  "prototypes.updates.validate-progression-graph",
-  "prototypes.updates.validate-progression-ladders",
-  "prototypes.updates.validate-recipe-decomposition",
-  "prototypes.updates.validate-prototype-icons",
-  "prototypes.updates.validate-technology-icons",
-  "prototypes.updates.validate-crafting-tabs",
+  "prototypes.updates.ore-icons",
+  "prototypes.compat.aai-suite",
 })
 
-local foundation_item = data.raw.item and data.raw.item["foundation"]
-local foundation_place_as_tile = foundation_item and foundation_item.place_as_tile
-local foundation_tile_condition = foundation_place_as_tile and foundation_place_as_tile.tile_condition
+-- Reapply the integration after broad recipe edits have landed.
+require("prototypes.updates.aai-industry")()
 
-if foundation_tile_condition then
-  local has_shattered_space = false
+-- Platform handling is a player-selected balance rule, so land it after every
+-- dependency has had a chance to adjust the shared acceleration expression.
+require("prototypes.updates.space-platform-drag").apply()
+require("prototypes.updates.player-tuning").apply()
 
-  for _, tile_name in ipairs(foundation_tile_condition) do
-    if tile_name == "fw-shattered-space" then
-      has_shattered_space = true
-      break
-    end
-  end
+-- These checks operate on the completed cross-mod recipes. They deliberately
+-- follow AAI's substitutions, which can replace an entire ingredient list.
+require("prototypes.updates.recipe_tweaks.ingredient_boundaries")()
 
-  if not has_shattered_space then
-    foundation_tile_condition[#foundation_tile_condition + 1] = "fw-shattered-space"
-  end
+-- Exact API promises land after broad rewrites and before recovery valuation.
+require("prototypes.compat.api-finalization")
+require("prototypes.recipes.flux-condensing")
+require("prototypes.updates.progression-reconciliation")
+require("prototypes.updates.flux-tooltips")
+
+-- Factorio 2.1 replaced singular recipe categories and product probability
+-- fields. Normalize after every compatibility rewrite and before validation.
+require("__razi_lib__/lib/recipe").normalize_all_2_1()
+
+require("prototypes.validation.init")
+
+-- FluxWorks owns its menu playlist now that authored stage saves are available.
+local utility_constants = data.raw["utility-constants"] and data.raw["utility-constants"].default
+if utility_constants then
+  utility_constants.main_menu_simulations = require("prototypes.menu-simulations")
+  local menu_branding = require("prototypes.updates.menu-branding")
+  menu_branding.apply(utility_constants.main_menu_simulations)
 end

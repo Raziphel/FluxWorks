@@ -7,7 +7,12 @@ end
 require_many({
   "prototypes.updates.crusher-integration",
   "prototypes.updates.fulgora-scrap",
+  "prototypes.updates.planetary-self-sufficiency",
   "prototypes.updates.progression-gates",
   "prototypes.updates.powered-machines",
-  "prototypes.updates.aai-industry",
 })
+
+-- Establish AAI substitutions before final-stage recipe classification. The
+-- integration is deliberately callable again after other mods finish rewriting
+-- recipes in data-final-fixes.
+require("prototypes.updates.aai-industry")()

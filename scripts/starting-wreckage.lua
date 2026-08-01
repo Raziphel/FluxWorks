@@ -1,5 +1,22 @@
 local StartingWreckage = {}
 
+local function loadout()
+  local setting = settings.startup["fw-starting-crash-loadout"]
+  return setting and setting.value or "normal"
+end
+
+local function set_items(remote_type, replacements)
+  local interface = remote.interfaces.freeplay
+  local setter = "set_" .. remote_type .. "_items"
+  if not interface or not interface[setter] then return end
+
+  local items = {}
+  for item_name, count in pairs(replacements) do
+    if prototypes.item[item_name] then items[item_name] = count end
+  end
+  remote.call("freeplay", setter, items)
+end
+
 local function add_items(remote_type, additions)
   local interface = remote.interfaces.freeplay
   local getter = "get_" .. remote_type .. "_items"
@@ -103,8 +120,21 @@ end
 function StartingWreckage.on_init()
   if game.tick >= 2 or not remote.interfaces.freeplay then return end
 
+  local selected_loadout = loadout()
+
+  if selected_loadout == "hard" then
+    -- Keep only the means to defend yourself. Everything else must be rebuilt.
+    set_items("created", {
+      pistol = 1,
+      ["firearm-magazine"] = 10,
+    })
+    set_items("ship", {})
+    set_items("debris", {})
+    return
+  end
+
   -- AAI Industry already supplies burner drills, a burner assembler, belts, and motors.
-  -- These additions complete a small starter base without replacing the early game.
+  -- These additions complete a small powered starter base without replacing the early game.
   add_items("ship", {
     boiler = 1,
     ["steam-engine"] = 1,
@@ -124,7 +154,20 @@ function StartingWreckage.on_init()
     ["copper-plate"] = 40,
     ["firearm-magazine"] = 12,
     wood = 50,
+    ["solar-panel"] = 8,
+    accumulator = 6,
   })
+
+  if selected_loadout == "easy" then
+    -- The matching 6x6 grid allows the reactor and roboport to fit together.
+    add_items("created", {
+      ["modular-armor"] = 1,
+      ["construction-robot"] = 10,
+      ["personal-roboport-equipment"] = 1,
+      ["fission-reactor-equipment"] = 1,
+      ["repair-pack"] = 20,
+    })
+  end
 
   add_crash_field()
 end

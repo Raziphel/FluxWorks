@@ -75,9 +75,10 @@ local function update_unit_exterior(unit_data, inventory_count)
   local total_count = unit_data.count + inventory_count
 
   if inventory_count > 0 then
-    local visible = unit_data.entity.fluidbox[1]
+    local visible = unit_data.entity.get_fluid(1)
     local temperature = Shared.combine_temperatures(unit_data.count, unit_data.temperature, inventory_count, visible.temperature)
     visible.temperature = temperature
+    unit_data.entity.set_fluid(1, visible)
     unit_data.temperature = temperature
   end
 
@@ -87,9 +88,9 @@ local function update_unit_exterior(unit_data, inventory_count)
 end
 
 local function detect_item(unit_data)
-  local fluid = unit_data.entity.fluidbox[1]
+  local fluid = unit_data.entity.get_fluid(1)
   if fluid then
-    unit_data.entity.fluidbox.set_filter(1, { name = fluid.name, force = true })
+    unit_data.entity.set_fluid_filter(1, { name = fluid.name, force = true })
     unit_data.item = fluid.name
     unit_data.temperature = fluid.temperature
     render_fluid_animation(unit_data, fluid.name)
@@ -114,11 +115,9 @@ local function update_unit(unit_data, unit_number, force)
 
   local inventory_count = unit_data.entity.get_fluid_count(unit_data.item)
   if inventory_count > unit_data.comfortable then
-    local amount_removed = unit_data.entity.remove_fluid({
-      name = unit_data.item,
-      amount = inventory_count - unit_data.comfortable,
-    })
-    unit_data.temperature = Shared.combine_temperatures(unit_data.count, unit_data.temperature, amount_removed, unit_data.entity.fluidbox[1].temperature)
+    local removed = unit_data.entity.remove_fluid(1, inventory_count - unit_data.comfortable)
+    local amount_removed = removed and removed.amount or 0
+    unit_data.temperature = Shared.combine_temperatures(unit_data.count, unit_data.temperature, amount_removed, removed and removed.temperature)
     unit_data.count = unit_data.count + amount_removed
     inventory_count = inventory_count - amount_removed
     changed = true
@@ -129,7 +128,7 @@ local function update_unit(unit_data, unit_number, force)
 
     local to_add = math.min(unit_data.comfortable - inventory_count, unit_data.count)
     if to_add > 0.001 then
-      local amount_added = unit_data.entity.insert_fluid({
+      local amount_added = unit_data.entity.add_fluid(1, {
         name = unit_data.item,
         amount = to_add,
         temperature = unit_data.temperature,
@@ -224,7 +223,7 @@ local function add_reservoir(entity, tags)
   local powersource, combinator = build_helper_entities(entity)
   local unit_data = {
     entity = entity,
-    comfortable = 0.5 * entity.fluidbox.get_capacity(1),
+    comfortable = 0.5 * entity.get_fluid_capacity(1),
     powersource = powersource,
     combinator = combinator,
     count = 0,
@@ -237,7 +236,7 @@ local function add_reservoir(entity, tags)
     unit_data.count = tags.count or 0
     unit_data.temperature = tags.temperature
     unit_data.item = tags.name
-    entity.fluidbox.set_filter(1, { name = tags.name, force = true })
+    entity.set_fluid_filter(1, { name = tags.name, force = true })
     render_fluid_animation(unit_data, tags.name)
     update_unit(unit_data, entity.unit_number, true)
   else
@@ -307,9 +306,10 @@ local function pre_mined(event)
 
   local in_inventory = entity.get_fluid_count(unit_data.item)
   if in_inventory > 0 then
-    local temperature = entity.fluidbox[1].temperature
-    local new_count = unit_data.count + entity.remove_fluid({ name = unit_data.item, amount = in_inventory })
-    unit_data.temperature = Shared.combine_temperatures(unit_data.count, unit_data.temperature, in_inventory, temperature)
+    local removed = entity.remove_fluid(1, in_inventory)
+    local amount_removed = removed and removed.amount or 0
+    local new_count = unit_data.count + amount_removed
+    unit_data.temperature = Shared.combine_temperatures(unit_data.count, unit_data.temperature, amount_removed, removed and removed.temperature)
     unit_data.count = new_count
   end
 end
@@ -363,7 +363,8 @@ local function update_gui(gui, fresh_gui)
 
       local temperature = 0
       if inventory_count ~= 0 then
-        temperature = Shared.combine_temperatures(unit_data.count, unit_data.temperature, inventory_count, entity.fluidbox[1].temperature)
+        local visible = entity.get_fluid(1)
+        temperature = Shared.combine_temperatures(unit_data.count, unit_data.temperature, inventory_count, visible and visible.temperature)
       end
       content_flow.temperature.caption = {
         "",

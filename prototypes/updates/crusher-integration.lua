@@ -1,4 +1,4 @@
-local Recipe = require("__haul_lib__/utils/recipe")
+local Recipe = require("__razi_lib__/lib/recipe")
 
 -- Make the base crusher stop acting precious and just work with our crushing chain everywhere.
 

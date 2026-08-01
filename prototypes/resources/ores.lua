@@ -324,14 +324,14 @@ data:extend({
     heat_capacity = "0.1kJ",
     base_color = { r = 0.60, g = 0.90, b = 0.50 },
     flow_color = { r = 0.60, g = 1.00, b = 0.50 },
-    icon = "__Krastorio2Assets__/icons/fluids/chlorine.png",
+    icon = "__base__/graphics/icons/fluid/sulfuric-acid.png",
     icon_size = 64,
     order = "a[fluid]-f[fw-chlorine]",
   },
   {
     type = "recipe",
     name = "fw-chlorine",
-    icon = "__Krastorio2Assets__/icons/fluids/chlorine.png",
+    icon = "__base__/graphics/icons/fluid/sulfuric-acid.png",
     icon_size = 64,
     category = "chemistry",
     ingredients = { { type = "item", name = "fw-salt", amount = 2 } },
@@ -420,7 +420,7 @@ data:extend({
         { type = "item", name = "iron-ore", amount_min = 2, amount_max = 3 },
         { type = "item", name = "copper-ore", amount_min = 1, amount_max = 2, probability = 0.95 },
         { type = "item", name = "lead-ore", amount = 1, probability = 0.65 },
-        { type = "item", name = "tin-ore", amount = 1, probability = 0.30 },
+        { type = "item", name = "tin-ore", amount = 1, probability = 0.40 },
       },
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
@@ -577,7 +577,25 @@ if data.raw.item["promethium-asteroid-chunk"] and Startup.enabled("fw-worldgen-e
       type = "resource",
       name = "fw-promethium-impact",
       icons = {
-        { icon = resource_icon_path .. "fw-promethium-impact.png", icon_size = 64, tint = PROMETHIUM_IMPACT_TINT },
+        {
+          icon = "__base__/graphics/icons/stone.png",
+          icon_size = 64,
+          tint = { r = 0.66, g = 0.60, b = 0.70, a = 1.00 },
+        },
+        {
+          icon = "__space-age__/graphics/icons/promethium-asteroid-chunk.png",
+          icon_size = 64,
+          scale = 0.62,
+          shift = { -4, -3 },
+          tint = PROMETHIUM_IMPACT_TINT,
+        },
+        {
+          icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux.png",
+          icon_size = 64,
+          scale = 0.30,
+          shift = { 9, 9 },
+          tint = { r = 0.98, g = 0.60, b = 1.00, a = 1.00 },
+        },
       },
       flags = { "placeable-neutral" },
       order = "a-b-e",
@@ -666,11 +684,11 @@ override_ore_item_icon("silicon-ore", "fw-bz-silicon-ore.png", 64)
 override_ore_item_icon("carbon-ore", "fw-bz-carbon-ore.png", 128)
 override_ore_item_icon("bauxite-ore", "fw-bauxite-ore.png", 64)
 
--- Disable legacy standalone ore worldgen so Nauvis stays focused on mixed deposits.
-if not Startup.enabled("fw-worldgen-enable-legacy-standalone-ores", false) then
-  for _, legacy_resource in pairs({ "fw-lead-ore", "fw-bauxite-ore", "fw-titanium-ore" }) do
-    if data.raw.resource[legacy_resource] then
-      data.raw.resource[legacy_resource].autoplace = nil
+-- Keep Nauvis focused on mixed deposits unless separate ore patches are requested.
+if not Startup.enabled("fw-worldgen-enable-standalone-ores", false) then
+  for _, resource_name in pairs({ "fw-lead-ore", "fw-bauxite-ore", "fw-titanium-ore" }) do
+    if data.raw.resource[resource_name] then
+      data.raw.resource[resource_name].autoplace = nil
     end
   end
 end

@@ -171,7 +171,6 @@ data:extend({
       { type = "item", name = "fw-cermet", amount = 12 },
       { type = "item", name = "fw-pressure-housing", amount = 6 },
       { type = "item", name = "fw-flow-regulator", amount = 4 },
-      { type = "item", name = "fw-drive-module", amount = 8 },
       { type = "item", name = "fw-control-assembly", amount = 6 },
       { type = "item", name = "advanced-circuit", amount = 12 },
       { type = "item", name = "electric-motor", amount = 10 },

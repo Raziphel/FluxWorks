@@ -1,6 +1,5 @@
--- Worldgen notes for the mess we are making here.
--- Flux and promethium can show up anywhere, but the mixed deposits and weird specialty bits
--- should still lean toward planets that feel right for them.
+-- Shared resources appear broadly; mixed deposits and specialty resources retain
+-- planet-specific placement so each surface keeps a distinct material identity.
 local global_resource_names = {
   "fw-crystalised-flux",
 }
@@ -22,14 +21,6 @@ local planet_specific_resource_names = {
   },
   gleba = {
     "fw-silica-vein",
-    "fw-carbonic-deposit",
-  },
-  fulgora = {
-    "fw-metallic-deposit",
-  },
-  vulcanus = {
-    "fw-mineral-deposit",
-    "fw-carbonic-deposit",
   },
 }
 
@@ -50,7 +41,7 @@ local preset_control_defaults = {
   ["fw-salt"] = { frequency = "very-low", size = "small", richness = "normal" },
 }
 
-local legacy_hidden_controls = {
+local standalone_ore_controls = {
   "fw-titanium-ore",
   "fw-lead-ore",
   "fw-bauxite-ore",
@@ -120,7 +111,7 @@ end
 
 if data.raw.planet and data.raw.planet["nauvis"] then
   register_resources_on_planet(data.raw.planet["nauvis"], nauvis_resource_names)
-  for _, resource_name in pairs(legacy_hidden_controls) do
+  for _, resource_name in pairs(standalone_ore_controls) do
     unregister_resource_on_planet(data.raw.planet["nauvis"], resource_name)
   end
   for _, resource_name in pairs(vanilla_replaced_controls) do
@@ -175,7 +166,7 @@ for _, preset_group in pairs(data.raw["map-gen-presets"] or {}) do
               controls[resource_name] = controls[resource_name] or table.deepcopy(preset_control_defaults[resource_name] or { frequency = "normal", size = "normal", richness = "normal" })
             end
           end
-          for _, resource_name in pairs(legacy_hidden_controls) do
+          for _, resource_name in pairs(standalone_ore_controls) do
             controls[resource_name] = nil
           end
           for _, resource_name in pairs(vanilla_replaced_controls) do
@@ -214,7 +205,7 @@ end
 
 -- Hide the old standalone ore sliders.
 -- If we are doing mixed deposits, the UI should commit to the bit.
-for _, resource_name in pairs(legacy_hidden_controls) do
+for _, resource_name in pairs(standalone_ore_controls) do
   local control = data.raw["autoplace-control"] and data.raw["autoplace-control"][resource_name]
   if control then
     control.hidden = true
@@ -225,5 +216,21 @@ for _, resource_name in pairs(vanilla_replaced_controls) do
   local control = data.raw["autoplace-control"] and data.raw["autoplace-control"][resource_name]
   if control then
     control.hidden = true
+  end
+end
+
+-- Foundation is also the construction bridge into the Shattered Planet.
+local foundation = data.raw.item and data.raw.item["foundation"]
+local allowed_tiles = foundation and foundation.place_as_tile and foundation.place_as_tile.tile_condition
+if allowed_tiles then
+  local supports_shattered_space = false
+  for _, tile_name in ipairs(allowed_tiles) do
+    if tile_name == "fw-shattered-space" then
+      supports_shattered_space = true
+      break
+    end
+  end
+  if not supports_shattered_space then
+    allowed_tiles[#allowed_tiles + 1] = "fw-shattered-space"
   end
 end

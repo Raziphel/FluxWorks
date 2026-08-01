@@ -54,7 +54,7 @@ end
 data:extend({
   process_tech(
     "fw-reactive-chemistry-productivity",
-    "__Krastorio2Assets__/technologies/advanced-chemistry.png",
+    "__base__/graphics/technology/explosives.png",
     256,
     { "fw-flux-reactive-slurries", "production-science-pack" },
     science_ingredients(
@@ -75,7 +75,7 @@ data:extend({
   process_tech(
     "fw-green-reclamation-productivity",
     "__FluxWorksAssets__/graphics/icons/items/fw-nutrient-bed.png",
-    1024,
+    256,
     { "fw-flux-green-cultivation", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -93,7 +93,7 @@ data:extend({
   process_tech(
     "fw-green-cultivation-productivity",
     "__FluxWorksAssets__/graphics/technology/fw-biosystems-engineering.png",
-    1024,
+    256,
     { "fw-flux-green-cultivation", "production-science-pack" },
     science_ingredients(
       "automation-science-pack",
@@ -113,7 +113,7 @@ data:extend({
   ),
   process_tech(
     "fw-green-propagation-productivity",
-    "__Krastorio2Assets__/icons/items/biomass-3.png",
+    "__space-age__/graphics/icons/bioflux.png",
     64,
     { "fw-flux-green-propagation", "production-science-pack" },
     science_ingredients(

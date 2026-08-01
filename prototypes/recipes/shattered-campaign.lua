@@ -59,7 +59,7 @@ data:extend({
   },
   {
     type = "recipe", name = "fw-shattered-vent-spectrum-condensation", enabled = false,
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-condensed-flux-matrix.png", icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-condensed-flux-matrix.png", icon_size = 1254,
     category = "fw-flux-synthesis", subgroup = "fw-flux-systems", order = "g[shattered]-a[vent-condensation]",
     energy_required = 20, allow_productivity = true,
     ingredients = {
@@ -74,7 +74,7 @@ data:extend({
   },
   {
     type = "recipe", name = "fw-shattered-rift-coupler-array", enabled = false,
-    icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-coupler.png", icon_size = 1024,
+    icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-rift-coupler.png", icon_size = 256,
     category = "fw-flux-synthesis", subgroup = "fw-flux-exchange", order = "c[shattered]-a[coupler-array]",
     energy_required = 30, allow_productivity = false,
     ingredients = {

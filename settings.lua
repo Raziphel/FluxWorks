@@ -49,13 +49,23 @@ data:extend({
   startup_difficulty("fw-balance-late-machines-difficulty", "aa[balance]-l[late]"),
   startup_difficulty("fw-balance-orbital-recipes-difficulty", "aa[balance]-m[orbital]"),
   startup_difficulty("fw-balance-crafting-time-difficulty", "aa[balance]-n[craft-time]"),
+  startup_choice(
+    "fw-starting-crash-loadout",
+    "normal",
+    { "easy", "normal", "hard" },
+    "aa[balance]-o[starting-loadout]"
+  ),
+  startup_difficulty("fw-balance-space-platform-drag", "aa[balance]-p[space-platform-drag]"),
+  startup_difficulty("fw-balance-asteroid-pressure", "aa[balance]-q[asteroid-pressure]"),
+  startup_difficulty("fw-balance-space-logistics", "aa[balance]-r[space-logistics]"),
+  startup_difficulty("fw-balance-spoilage-pressure", "aa[balance]-s[spoilage-pressure]"),
 
   startup_worldgen_profile("fw-worldgen-metallic-deposit-profile", "ab[worldgen]-a[metallic]"),
   startup_worldgen_profile("fw-worldgen-mineral-deposit-profile", "ab[worldgen]-b[mineral]"),
   startup_worldgen_profile("fw-worldgen-carbonic-deposit-profile", "ab[worldgen]-c[carbonic]"),
   startup_worldgen_profile("fw-worldgen-silica-vein-profile", "ab[worldgen]-d[silica]"),
   startup_worldgen_profile("fw-worldgen-salt-profile", "ab[worldgen]-e[salt]"),
-  startup_bool("fw-worldgen-enable-legacy-standalone-ores", false, "ab[worldgen]-f[legacy-ores]"),
+  startup_bool("fw-worldgen-enable-standalone-ores", false, "ab[worldgen]-f[standalone-ores]"),
   startup_worldgen_profile("fw-worldgen-lead-ore-profile", "ab[worldgen]-g[lead]"),
   startup_worldgen_profile("fw-worldgen-bauxite-ore-profile", "ab[worldgen]-h[bauxite]"),
   startup_worldgen_profile("fw-worldgen-titanium-ore-profile", "ab[worldgen]-i[titanium]"),
@@ -68,6 +78,12 @@ data:extend({
   startup_bool("fw-enable-orbital-and-planetary-integration", true, "ba[overhaul]-d[orbital-planetary]"),
   startup_bool("fw-enable-fulgora-scrap-integration", true, "ba[overhaul]-e[fulgora-scrap]"),
   startup_bool("fw-enable-machine-part-rehoming", true, "ba[overhaul]-f[machine-rehoming]"),
+  startup_choice(
+    "fw-global-compatibility-mode",
+    "broad",
+    { "off", "conservative", "broad" },
+    "ba[overhaul]-g[global-compatibility]"
+  ),
 
   startup_bool("fw-enable-crafting-tab-reorganization", true, "ca[qol]-a[crafting-tabs]"),
   startup_bool("fw-tab-logistics-organization", true, "ca[qol]-b[logistics-tab]"),

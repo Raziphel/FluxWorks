@@ -13,44 +13,34 @@ if not scrap_recycling then
   return
 end
 
-local fluxworks_scrap_results = {
-  { type = "item", name = "iron-gear-wheel", amount = 1, probability = 0.16, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "solid-fuel", amount = 1, probability = 0.05, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "concrete", amount = 1, probability = 0.04, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "ice", amount = 1, probability = 0.03, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "steel-plate", amount = 1, probability = 0.03, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "battery", amount = 1, probability = 0.03, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "advanced-circuit", amount = 1, probability = 0.02, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "processing-unit", amount = 1, probability = 0.01, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "low-density-structure", amount = 1, probability = 0.01, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "holmium-ore", amount = 1, probability = 0.02, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "copper-cable", amount = 1, probability = 0.03, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-circuit-substrate", amount = 1, probability = 0.03, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-composite-panel", amount = 1, probability = 0.02, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-glass-lens", amount = 1, probability = 0.03, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-inductor-coil", amount = 1, probability = 0.02, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-capacitor", amount = 1, probability = 0.02, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-pressure-housing", amount = 1, probability = 0.008, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-foundry-lining", amount = 1, probability = 0.007, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "silicon", amount = 1, probability = 0.04, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "tin-plate", amount = 1, probability = 0.03, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "lead-plate", amount = 1, probability = 0.03, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-solder-alloy", amount = 1, probability = 0.025, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-bearing", amount = 1, probability = 0.02, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-ceramic-insulator", amount = 1, probability = 0.025, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-light-frame", amount = 1, probability = 0.012, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-signal-conduit", amount = 1, probability = 0.01, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-sensor-package", amount = 1, probability = 0.008, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-power-regulator", amount = 1, probability = 0.007, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "supercapacitor", amount = 1, probability = 0.005, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-fulgora-static-mesh", amount = 1, probability = 0.003, show_details_in_recipe_tooltip = false },
-  { type = "item", name = "fw-transformer-core", amount = 1, probability = 0.006, show_details_in_recipe_tooltip = false },
+-- Match Space Age's scrap doctrine: recover useful manufactured parts, then
+-- recycle those parts further when their constituent materials are needed.
+local fluxworks_component_results = {
+  { type = "item", name = "fw-circuit-substrate", amount = 1, probability = 0.025 },
+  { type = "item", name = "fw-glass-lens", amount = 1, probability = 0.025 },
+  { type = "item", name = "fw-inductor-coil", amount = 1, probability = 0.020 },
+  { type = "item", name = "fw-capacitor", amount = 1, probability = 0.015 },
+  { type = "item", name = "fw-ceramic-insulator", amount = 1, probability = 0.015 },
+  { type = "item", name = "fw-composite-panel", amount = 1, probability = 0.012 },
+  { type = "item", name = "fw-light-frame", amount = 1, probability = 0.008 },
+  { type = "item", name = "fw-pressure-housing", amount = 1, probability = 0.006 },
+  { type = "item", name = "fw-foundry-lining", amount = 1, probability = 0.004 },
 }
 
-scrap_recycling.results = table.deepcopy(fluxworks_scrap_results)
-if scrap_recycling.normal then
-  scrap_recycling.normal.results = table.deepcopy(fluxworks_scrap_results)
+local function append_components(results)
+  if not results then return end
+
+  local existing = {}
+  for _, result in ipairs(results) do
+    existing[result.name or result[1]] = true
+  end
+  for _, result in ipairs(fluxworks_component_results) do
+    if data.raw.item[result.name] and not existing[result.name] then
+      results[#results + 1] = table.deepcopy(result)
+    end
+  end
 end
-if scrap_recycling.expensive then
-  scrap_recycling.expensive.results = table.deepcopy(fluxworks_scrap_results)
-end
+
+append_components(scrap_recycling.results)
+append_components(scrap_recycling.normal and scrap_recycling.normal.results)
+append_components(scrap_recycling.expensive and scrap_recycling.expensive.results)

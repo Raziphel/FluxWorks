@@ -5,10 +5,10 @@ local domains = {
     consumers = {
       "fw-precision-alloys", "fw-circuit-foundry", "fw-beam-engineering",
       "fw-conductive-assembly", "fw-machine-casings", "fw-material-refinement",
-      "fw-bulk-logistics", "fw-industrial-expansion", "fw-advanced-fabrication",
+      "fw-industrial-expansion", "fw-advanced-fabrication",
       "fw-lightweight-framing",
       "fw-metallurgic-assemblies", "fw-elastomer-engineering", "fw-polymer-stabilization",
-      "fw-hydraulic-systems", "fw-pressure-containment", "fw-orbital-hardening",
+      "fw-hydraulic-systems", "fw-orbital-hardening",
       "fw-material-handling-1", "fw-material-handling-2", "fw-material-handling-3",
       "fw-industrial-yield-1", "fw-industrial-yield-2", "fw-industrial-yield-3",
     },
@@ -20,14 +20,21 @@ local domains = {
       "research-speed-5", "effect-transmission", "nuclear-fuel-reprocessing",
       "speed-module-2", "productivity-module-2", "efficiency-module-2", "quality-module-2",
     },
+    supporting_consumers = {
+      "fw-computational-arrays",
+      "fw-superconductive-systems",
+      "fw-flux-synthesis",
+      "fw-deep-phase-storage",
+      "fw-origin-infrastructure",
+    },
   },
   {
     technology = "fw-systems-analysis-science",
     pack = "fw-systems-analysis-science-pack",
     consumers = {
       "fw-power-regulation", "fw-field-balancing", "fw-fluid-control-architecture",
-      "fw-logic-weaving", "fw-logistics-orchestration", "fw-reactor-instrumentation",
-      "fw-computational-arrays", "fw-conductive-networks", "fw-network-logistics",
+      "fw-logic-weaving", "fw-reactor-instrumentation",
+      "fw-computational-arrays", "fw-conductive-networks",
       "fw-superconductive-systems", "fw-reactor-safeguards",
       "fw-autonomous-logistics-1", "fw-autonomous-logistics-2", "fw-autonomous-logistics-3",
       "fw-rail-network-control-1", "fw-rail-network-control-2", "fw-rail-network-control-3",
@@ -42,12 +49,20 @@ local domains = {
       "research-speed-6", "power-armor-mk2", "personal-roboport-mk2-equipment",
       "toolbelt-4", "toolbelt-5", "processing-unit-productivity",
     },
+    supporting_consumers = {
+      "fw-flux-field-theory",
+      "fw-flux-phase-engineering",
+      "fw-rift-logistics",
+      "fw-shattered-network-logistics",
+      "fw-origin-transcendence",
+    },
   },
   {
     technology = "fw-flux-theory-science",
     pack = "fw-flux-theory-science-pack",
     consumers = {
-      "fw-flux-field-theory", "fw-flux-phase-engineering", "fw-flux-synthesis",
+      "fw-flux-field-theory", "fw-flux-phase-engineering", "fw-flux-purple-transmutation",
+      "fw-flux-synthesis",
       "fw-flux-thermal-networks", "fw-flux-chemical-synthesis", "fw-flux-green-propagation",
       "fw-flux-overdrive", "fw-flux-convergence", "fw-deep-phase-storage",
       "fw-spectral-fluid-retention", "fw-rift-logistics",
@@ -64,12 +79,20 @@ local domains = {
       "electric-weapons-damage-2", "electric-weapons-damage-3", "tesla-weapons",
       "railgun", "mech-armor", "rocket-turret", "asteroid-productivity",
     },
+    supporting_consumers = {
+      "fw-rift-harmonics",
+      "fw-shattered-vent-harmonics",
+      "fw-ion-storm-capture",
+      "fw-shattered-origin-survey",
+      "fw-origin-transcendence",
+    },
   },
   {
     technology = "fw-planetary-convergence-science",
     pack = "fw-planetary-convergence-science-pack",
     consumers = {
-      "fw-rift-harmonics", "fw-shattered-expedition-planning", "fw-shattered-platform-hardening",
+      "fw-rift-harmonics", "fw-rift-logistics",
+      "fw-shattered-expedition-planning", "fw-shattered-platform-hardening",
       "fw-shattered-landing-protocols", "fw-shattered-vulcanus-bridgehead",
       "fw-shattered-gleba-bridgehead", "fw-shattered-fulgora-bridgehead",
       "fw-shattered-aquilo-bridgehead", "fw-shattered-vent-harmonics",
@@ -100,46 +123,115 @@ local function contains(entries, name)
   return false
 end
 
+local function require_domain(technology_name, domain, add_prerequisite)
+  local technology = data.raw.technology and data.raw.technology[technology_name]
+  if not technology then
+    error("FluxWorks domain science references missing consumer " .. technology_name)
+  end
+
+  if add_prerequisite then
+    technology.prerequisites = technology.prerequisites or {}
+    if not contains(technology.prerequisites, domain.technology) then
+      technology.prerequisites[#technology.prerequisites + 1] = domain.technology
+    end
+  end
+
+  technology.unit = technology.unit or {}
+  technology.unit.ingredients = technology.unit.ingredients or {}
+  if not contains(technology.unit.ingredients, domain.pack) then
+    technology.unit.ingredients[#technology.unit.ingredients + 1] = { domain.pack, 1 }
+  end
+end
+
+for _, technology_name in ipairs({
+  "aai-loader",
+  "aai-fast-loader",
+  "fw-aai-bulk-storage",
+}) do
+  if data.raw.technology and data.raw.technology[technology_name] then
+    domains[1].consumers[#domains[1].consumers + 1] = technology_name
+  end
+end
+
+for _, technology_name in ipairs({
+  "aai-express-loader",
+  "aai-turbo-loader",
+  "fw-aai-network-storage",
+  "fw-aai-controlled-storage",
+}) do
+  if data.raw.technology and data.raw.technology[technology_name] then
+    domains[2].consumers[#domains[2].consumers + 1] = technology_name
+  end
+end
+
 for _, domain in ipairs(domains) do
   local unlock = data.raw.technology and data.raw.technology[domain.technology]
-  local pack = data.raw.tool and data.raw.tool[domain.pack]
+  local pack = data.raw.item and data.raw.item[domain.pack]
   if not (unlock and pack) then
     error("FluxWorks domain science definition is incomplete for " .. domain.pack)
   end
 
   for _, technology_name in ipairs(domain.consumers) do
-    local technology = data.raw.technology and data.raw.technology[technology_name]
-    if not technology then
-      error("FluxWorks domain science references missing consumer " .. technology_name)
-    end
-
-    technology.prerequisites = technology.prerequisites or {}
-    if not contains(technology.prerequisites, domain.technology) then
-      technology.prerequisites[#technology.prerequisites + 1] = domain.technology
-    end
-
-    technology.unit = technology.unit or {}
-    technology.unit.ingredients = technology.unit.ingredients or {}
-    if not contains(technology.unit.ingredients, domain.pack) then
-      technology.unit.ingredients[#technology.unit.ingredients + 1] = { domain.pack, 1 }
-    end
+    require_domain(technology_name, domain, true)
   end
 
   -- The science ingredient is itself the progression gate for established technologies.
   -- Avoid injecting redundant prerequisite edges into the base/mod technology graph:
   -- compatibility mods can rearrange those edges, while the pack requirement stays safe.
   for _, technology_name in ipairs(domain.external_consumers or {}) do
-    local technology = data.raw.technology and data.raw.technology[technology_name]
-    if not technology then
-      error("FluxWorks domain science references missing external consumer " .. technology_name)
-    end
+    require_domain(technology_name, domain, false)
+  end
 
-    technology.unit = technology.unit or {}
-    technology.unit.ingredients = technology.unit.ingredients or {}
-    if not contains(technology.unit.ingredients, domain.pack) then
-      technology.unit.ingredients[#technology.unit.ingredients + 1] = { domain.pack, 1 }
-    end
+  -- A few technologies deliberately combine disciplines. These are supporting
+  -- requirements, not a blanket rule that every late technology consumes every
+  -- earlier pack. Requiring the domain unlock as well as the bottle keeps the
+  -- resulting technology graph honest and the research available when shown.
+  for _, technology_name in ipairs(domain.supporting_consumers or {}) do
+    require_domain(technology_name, domain, true)
   end
 end
+
+-- Technologies such as Research Productivity deliberately consume the complete
+-- science catalog. Extend that semantic rule instead of maintaining another
+-- name list: if a technology already requires every vanilla and Space Age
+-- science pack, it also requires every FluxWorks domain pack.
+local complete_science_catalog = {
+  "automation-science-pack",
+  "logistic-science-pack",
+  "military-science-pack",
+  "chemical-science-pack",
+  "production-science-pack",
+  "utility-science-pack",
+  "space-science-pack",
+  "metallurgic-science-pack",
+  "electromagnetic-science-pack",
+  "agricultural-science-pack",
+  "cryogenic-science-pack",
+  "promethium-science-pack",
+}
+
+local all_science_consumers = {}
+for technology_name, technology in pairs(data.raw.technology or {}) do
+  local ingredients = technology.unit and technology.unit.ingredients
+  local consumes_complete_catalog = ingredients ~= nil
+
+  for _, science_pack in ipairs(complete_science_catalog) do
+    if not contains(ingredients, science_pack) then
+      consumes_complete_catalog = false
+      break
+    end
+  end
+
+  if consumes_complete_catalog then
+    for _, domain in ipairs(domains) do
+      require_domain(technology_name, domain, false)
+    end
+    all_science_consumers[#all_science_consumers + 1] = technology_name
+  end
+end
+
+table.sort(all_science_consumers)
+domains.complete_science_catalog = complete_science_catalog
+domains.all_science_consumers = all_science_consumers
 
 return domains

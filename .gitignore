@@ -1,4 +1,5 @@
 .codex
+.codex-preview/
 secrets.txt
 tools/
 /.agents

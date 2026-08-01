@@ -1,4 +1,4 @@
-local Tech = require("__haul_lib__/utils/tech")
+local Tech = require("__razi_lib__/lib/technology")
 
 local function tech_unit(count, science_packs, time)
   return {
@@ -16,8 +16,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-comminution",
-    icon = "__space-age__/graphics/icons/crusher.png",
-    icon_size = 64,
+    icon = "__space-age__/graphics/technology/advanced-asteroid-processing.png",
+    icon_size = 256,
     prerequisites = { "automation", "steel-processing" },
     unit = tech_unit(16, {
       { "automation-science-pack", 1 },
@@ -29,24 +29,12 @@ data:extend({
   },
   {
     type = "technology",
-    name = "fw-aggregate-recovery",
-    icon = "__Krastorio2Assets__/icons/items/sand-2.png",
-    icon_size = 64,
-    prerequisites = { "fw-comminution" },
-    unit = tech_unit(18, {
-      { "automation-science-pack", 1 },
-    }, 12),
-    effects = {
-      unlock("fw-sand"),
-    },
-    order = "a-b-d[fw-aggregate-recovery]",
-  },
-  {
-    type = "technology",
     name = "fw-basic-separation",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-inline-filter.png",
-    icon_size = 1024,
-    prerequisites = { "fw-aggregate-recovery", "logistics" },
+    -- The three output streams make the purpose readable at research-tree scale:
+    -- one mixed feed becomes several useful fractions.
+    icon = "__base__/graphics/technology/advanced-oil-processing.png",
+    icon_size = 256,
+    prerequisites = { "sand-processing", "logistics" },
     unit = tech_unit(18, {
       { "automation-science-pack", 1 },
     }, 15),
@@ -73,7 +61,7 @@ data:extend({
     type = "technology",
     name = "fw-ore-crushing",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-crushed-lead-ore.png",
-    icon_size = 128,
+    icon_size = 64,
     prerequisites = { "fw-basic-separation" },
     unit = tech_unit(28, {
       { "automation-science-pack", 1 },
@@ -91,11 +79,28 @@ data:extend({
   {
     type = "technology",
     name = "fw-dense-ore-smelting",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-tin-ore.png",
-    icon_size = 64,
-    prerequisites = { "fw-ore-crushing", "steel-processing" },
+    icons = {
+      {
+        icon = "__aai-industry__/graphics/technology/industrial-furnace.png",
+        icon_size = 256,
+      },
+      {
+        icon = "__base__/graphics/icons/iron-plate.png",
+        icon_size = 64,
+        scale = 1.1,
+        shift = { -70, 70 },
+      },
+      {
+        icon = "__base__/graphics/icons/copper-plate.png",
+        icon_size = 64,
+        scale = 1.1,
+        shift = { 70, 70 },
+      },
+    },
+    prerequisites = { "fw-ore-crushing", "steel-processing", "logistic-science-pack" },
     unit = tech_unit(32, {
       { "automation-science-pack", 1 },
+      { "logistic-science-pack", 1 },
     }, 18),
     effects = {
       unlock("iron-plate-from-crushed"),
@@ -124,33 +129,17 @@ data:extend({
   },
 })
 
-local steel_processing = data.raw.technology and data.raw.technology["steel-processing"]
-if not steel_processing then
-  error("FluxWorks coke metallurgy requires steel-processing")
-end
-steel_processing.effects = steel_processing.effects or {}
-steel_processing.effects[#steel_processing.effects + 1] = unlock("fw-coke")
-
-local basic_separation = data.raw.technology["fw-basic-separation"]
-basic_separation.effects[#basic_separation.effects + 1] = unlock("fw-coke-purification")
-
 Tech:get("fw-comminution")
   :setCost(16)
   :setColors("R")
   :setTime(12)
   :setPrerequisites({ "automation", "steel-processing" })
 
-Tech:get("fw-aggregate-recovery")
-  :setCost(18)
-  :setColors("R")
-  :setTime(12)
-  :setPrerequisites({ "fw-comminution" })
-
 Tech:get("fw-basic-separation")
   :setCost(18)
   :setColors("R")
   :setTime(15)
-  :setPrerequisites({ "fw-aggregate-recovery", "logistics" })
+  :setPrerequisites({ "sand-processing", "logistics" })
 
 Tech:get("fw-brine-processing")
   :setCost(20)
@@ -166,9 +155,9 @@ Tech:get("fw-ore-crushing")
 
 Tech:get("fw-dense-ore-smelting")
   :setCost(32)
-  :setColors("R")
+  :setColors("RG")
   :setTime(18)
-  :setPrerequisites({ "fw-ore-crushing", "steel-processing" })
+  :setPrerequisites({ "fw-ore-crushing", "steel-processing", "logistic-science-pack" })
 
 Tech:get("fw-mineral-beneficiation")
   :setCost(40)

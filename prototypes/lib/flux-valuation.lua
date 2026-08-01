@@ -1,4 +1,5 @@
 local FluxValues = require("prototypes.recipes.flux-values")
+local Compatibility = require("prototypes.lib.compatibility-api")
 
 local M = {}
 
@@ -28,6 +29,9 @@ M.EXCLUDED_ITEMS = {
   ["selection-tool"] = true,
   ["spidertron-remote"] = true,
 }
+for item_name, excluded in pairs(Compatibility.recovery_exclusions) do
+  if excluded then M.EXCLUDED_ITEMS[item_name] = true end
+end
 
 M.NON_CONVERTIBLE_ITEM_PATTERNS = {
   "^fw%-.*flux",
@@ -40,6 +44,21 @@ M.VALUE_LOCKS = FluxValues.item_value_locks or {}
 M.FLUID_VALUE_OVERRIDES = FluxValues.fluid_values or {}
 M.ITEM_COLOR_OVERRIDES = FluxValues.item_color_overrides or {}
 M.FLUID_COLOR_OVERRIDES = FluxValues.fluid_color_overrides or {}
+for item_name, value in pairs(Compatibility.item_values) do
+  M.VALUE_OVERRIDES[item_name] = value
+end
+for item_name, value in pairs(Compatibility.item_value_locks) do
+  M.VALUE_LOCKS[item_name] = value
+end
+for fluid_name, value in pairs(Compatibility.fluid_values) do
+  M.FLUID_VALUE_OVERRIDES[fluid_name] = value
+end
+for item_name, spectrum in pairs(Compatibility.item_spectra) do
+  M.ITEM_COLOR_OVERRIDES[item_name] = spectrum
+end
+for fluid_name, spectrum in pairs(Compatibility.fluid_spectra) do
+  M.FLUID_COLOR_OVERRIDES[fluid_name] = spectrum
+end
 M.RECIPE_CATEGORY_VALUE_MULTIPLIERS = FluxValues.recipe_category_multipliers or {}
 M.RECIPE_CATEGORY_TIME_MULTIPLIERS = FluxValues.recipe_category_time_multipliers or {}
 M.RECIPE_CATEGORY_COLOR_WEIGHTS = FluxValues.recipe_category_color_weights or {}
@@ -53,11 +72,25 @@ M.VALUE_CONFIDENCE = {
   inferred = "inferred",
   unknown = "unknown",
 }
+M.EXTRACTION_EFFICIENCY = {
+  locked = 0.72,
+  anchored = 0.68,
+  derived = 0.62,
+  inferred = 0,
+  unknown = 0,
+}
+M.MAX_EXTRACTION_FLUID_PER_COLOR = 9000
 M.FLUX_FLUID_TO_COLOR = {
   ["fw-purple-flux"] = "purple",
   ["fw-yellow-flux"] = "yellow",
   ["fw-red-flux"] = "red",
   ["fw-green-flux"] = "green",
+}
+M.COLOR_TO_FLUX_FLUID = {
+  purple = "fw-purple-flux",
+  yellow = "fw-yellow-flux",
+  red = "fw-red-flux",
+  green = "fw-green-flux",
 }
 
 local CONFIDENCE_RANK = {
@@ -180,9 +213,15 @@ local function round_breakdown_to_total(breakdown, target_total)
   local rounded = make_breakdown()
   local fractions = {}
   local running_total = 0
+  local source_total = total_breakdown_value(breakdown)
+  if source_total <= 0 then
+    rounded.purple = math.max(0, target_total)
+    return rounded
+  end
+  local normalization = source_total > 0 and (target_total / source_total) or 0
 
   for _, color in ipairs(M.COLOR_ORDER) do
-    local raw = math.max(0, breakdown[color] or 0)
+    local raw = math.max(0, breakdown[color] or 0) * normalization
     local whole = math.floor(raw)
     rounded[color] = whole
     running_total = running_total + whole
@@ -197,14 +236,22 @@ local function round_breakdown_to_total(breakdown, target_total)
   end)
 
   local remainder = math.max(0, target_total - running_total)
+  -- Some modded items legitimately resolve into the millions. Distributing one
+  -- unit per loop made data-final-fixes scale with total value instead of the
+  -- number of prototypes.
+  if remainder >= #fractions and #fractions > 0 then
+    local rounds = math.floor(remainder / #fractions)
+    for _, fraction in ipairs(fractions) do
+      rounded[fraction.color] = rounded[fraction.color] + rounds
+    end
+    remainder = remainder - (rounds * #fractions)
+  end
+
   local index = 1
   while remainder > 0 and index <= #fractions do
     rounded[fractions[index].color] = rounded[fractions[index].color] + 1
     remainder = remainder - 1
     index = index + 1
-    if index > #fractions and remainder > 0 then
-      index = 1
-    end
   end
 
   return rounded
@@ -257,12 +304,12 @@ local function find_fluid_prototype(fluid_name)
 end
 
 local function resolve_recipe_category(recipe)
-  local category = recipe.category
+  local category = recipe.categories and recipe.categories[1] or recipe.category
   if type(category) ~= "string" or category == "" then
-    category = recipe.normal and recipe.normal.category or category
+    category = recipe.normal and ((recipe.normal.categories and recipe.normal.categories[1]) or recipe.normal.category) or category
   end
   if type(category) ~= "string" or category == "" then
-    category = recipe.expensive and recipe.expensive.category or category
+    category = recipe.expensive and ((recipe.expensive.categories and recipe.expensive.categories[1]) or recipe.expensive.category) or category
   end
   if type(category) ~= "string" or category == "" then
     return "crafting"
@@ -403,18 +450,43 @@ function M.estimate_fluid_value(fluid)
   return math.max(0.02, math.min(12, value))
 end
 
-function M.quality_value_multiplier(quality)
-  return 1
+function M.quality_value_multiplier(quality, item_name)
+  local quality_name = quality and quality.name or "normal"
+  local item_overrides = item_name and Compatibility.item_quality_multipliers[item_name]
+  if item_overrides and item_overrides[quality_name] then
+    return item_overrides[quality_name]
+  end
+  if Compatibility.quality_multipliers[quality_name] then
+    return Compatibility.quality_multipliers[quality_name]
+  end
+  local level = math.max(0, quality and quality.level or 0)
+  -- Quality is costly enough that full material-value preservation would make
+  -- extraction an economic trap. This premium is meaningful but deliberately
+  -- smaller than the expected crafting cost of producing that quality.
+  return math.min(8, 1 + (0.30 * level) + (0.05 * level * level))
 end
 
-function M.value_for_quality(base_value, quality)
-  return math.max(1, math.floor((base_value or 1) + 0.5))
+function M.value_for_quality(base_value, quality, item_name)
+  return math.max(
+    1,
+    math.floor(((base_value or 1) * M.quality_value_multiplier(quality, item_name)) + 0.5)
+  )
+end
+
+function M.is_quality_recoverable(quality, item_name)
+  local quality_name = quality and quality.name or "normal"
+  if Compatibility.quality_exclusions[quality_name] then return false end
+  local item_exclusions = item_name and Compatibility.item_quality_exclusions[item_name]
+  return not (item_exclusions and item_exclusions[quality_name])
 end
 
 function M.sorted_qualities(include_normal)
   local qualities = {}
   for _, quality in pairs(data.raw.quality or {}) do
-    if quality.name ~= "quality-unknown" and (include_normal or quality.name ~= "normal") then
+    if quality.name ~= "quality-unknown"
+      and not Compatibility.quality_exclusions[quality.name]
+      and (include_normal or quality.name ~= "normal")
+    then
       table.insert(qualities, quality)
     end
   end
@@ -472,7 +544,7 @@ local function result_amount_for(recipe, item_name)
   if results then
     for _, result in pairs(results) do
       if entry_type(result) == "item" and entry_name(result) == item_name then
-        local probability = result.probability or 1
+        local probability = result.independent_probability or result.probability or 1
         total = total + (entry_amount(result) * probability)
       end
     end
@@ -504,7 +576,7 @@ local function recipe_result_profile(recipe, item_name)
     for _, result in pairs(results) do
       local kind = entry_type(result)
       local name = entry_name(result)
-      local probability = result.probability or 1
+      local probability = result.independent_probability or result.probability or 1
       local has_range = result.amount_min ~= nil or result.amount_max ~= nil
 
       if has_range then
@@ -564,6 +636,29 @@ local function is_primary_valuation_recipe(recipe, item_name)
     return false
   end
 
+  local category = resolve_recipe_category(recipe)
+  local recipe_name = recipe.name or ""
+  for _, unsafe_fragment in ipairs({
+    "recycl", "void", "creative", "free", "barrel", "canister",
+    "unpack", "pack%-", "reverse", "uncraft", "disassembl",
+  }) do
+    if string.find(string.lower(recipe_name), unsafe_fragment)
+      or string.find(string.lower(category), unsafe_fragment)
+    then
+      return false
+    end
+  end
+
+  local ingredients = get_entries(recipe, "ingredients")
+  if not ingredients or #ingredients == 0 then
+    return false
+  end
+  for _, ingredient in pairs(ingredients) do
+    if entry_amount(ingredient) <= 0 or ingredient.catalyst_amount then
+      return false
+    end
+  end
+
   return true
 end
 
@@ -580,7 +675,11 @@ local function base_item_value(item_name, item)
 end
 
 local function is_resource_anchored_item(item)
-  return item and item.subgroup == "raw-resource"
+  -- A subgroup is presentation, not economic evidence. Third-party mods often
+  -- put trophies, infinite resources, and generated intermediates here.
+  return item
+    and item.subgroup == "raw-resource"
+    and (M.VALUE_LOCKS[item.name] ~= nil or M.VALUE_OVERRIDES[item.name] ~= nil)
 end
 
 local function override_floor_value(item_name)
@@ -654,7 +753,14 @@ local function collect_recipe_candidates(candidate_items)
   local fallback_recipes_by_result = {}
 
   for recipe_name, recipe in pairs(data.raw.recipe or {}) do
-    if not recipe.hidden and recipe_name ~= "fw-flux-condenser" and string.sub(recipe_name, 1, 12) ~= "fw-exchange-" and recipe.category ~= "recycling" then
+    local category = resolve_recipe_category(recipe)
+    local excluded_category = string.find(string.lower(category), "recycl", 1, true)
+      or string.find(string.lower(category), "void", 1, true)
+    if not recipe.hidden
+      and recipe_name ~= "fw-flux-condenser"
+      and string.sub(recipe_name, 1, 12) ~= "fw-exchange-"
+      and not excluded_category
+    then
       local function register_result(name)
         if not name or not candidate_items[name] then
           return
@@ -688,42 +794,172 @@ local function collect_recipe_candidates(candidate_items)
   return primary_recipes_by_result, fallback_recipes_by_result
 end
 
-local function default_item_color_signature(item)
+local placed_entity_cache = {}
+
+local function placed_entity(item)
+  if not item or not item.place_result then return nil end
+  if placed_entity_cache[item.place_result] ~= nil then
+    return placed_entity_cache[item.place_result] or nil
+  end
+  for prototype_type, prototypes in pairs(data.raw) do
+    if prototype_type ~= "item" and prototype_type ~= "recipe" then
+      local prototype = prototypes[item.place_result]
+      if prototype then
+        placed_entity_cache[item.place_result] = prototype
+        return prototype
+      end
+    end
+  end
+  placed_entity_cache[item.place_result] = false
+  return nil
+end
+
+local function contains_any(text, fragments)
+  local lowered = string.lower(text or "")
+  for _, fragment in ipairs(fragments) do
+    if string.find(lowered, fragment, 1, true) then return true end
+  end
+  return false
+end
+
+-- Built-in spectra predate the public compatibility API and use compact lists
+-- such as { "green", "yellow" }. API registrations use weighted maps such as
+-- { green = 0.7, yellow = 0.3 }. Keep both representations valid at the single
+-- evaluator boundary so neither source silently loses its spectrum identity.
+local function override_color_weight(spectrum, target_color)
+  if not spectrum then return 0 end
+
+  local weighted = spectrum[target_color]
+  if type(weighted) == "number" then
+    return math.max(0, weighted)
+  end
+
+  for _, color in ipairs(spectrum) do
+    if color == target_color then
+      return 1
+    end
+  end
+  return 0
+end
+
+local function override_total_weight(spectrum)
+  local total = 0
+  for _, color in ipairs(M.COLOR_ORDER) do
+    total = total + override_color_weight(spectrum, color)
+  end
+  return total
+end
+
+local function default_item_color_weights(item)
+  local weights = make_breakdown()
   local override = M.ITEM_COLOR_OVERRIDES[item.name]
   if override then
-    return normalize_signature(override)
+    for _, color in ipairs(M.COLOR_ORDER) do
+      weights[color] = override_color_weight(override, color)
+    end
+  else
+    weights.purple = 0.35
+    local searchable = (item.name or "") .. " " .. (item.subgroup or "")
+    local entity = placed_entity(item)
+
+    if item.fuel_value or item.type == "ammo" or item.type == "gun" then
+      weights.red = weights.red + 1.6
+    end
+    if item.type == "module" or item.type == "tool" then
+      weights.yellow = weights.yellow + 1.4
+    end
+    if item.spoil_ticks or item.spoil_result or item.plant_result then
+      weights.green = weights.green + 2.0
+    end
+
+    if entity then
+      if entity.energy_source or entity.energy_usage or entity.max_energy_usage then
+        weights.red = weights.red + 0.8
+      end
+      if entity.circuit_wire_max_distance
+        or entity.circuit_connector
+        or entity.control_behavior
+        or entity.module_slots
+      then
+        weights.yellow = weights.yellow + 1.0
+      end
+      if entity.crafting_categories or entity.resource_categories then
+        weights.purple = weights.purple + 0.8
+      end
+
+      if entity.type == "agricultural-tower" or entity.type == "plant" then
+        weights.green = weights.green + 2.2
+      elseif entity.type == "electric-turret"
+        or entity.type == "generator"
+        or entity.type == "reactor"
+        or entity.type == "fusion-reactor"
+      then
+        weights.red = weights.red + 1.5
+      elseif entity.type == "arithmetic-combinator"
+        or entity.type == "decider-combinator"
+        or entity.type == "selector-combinator"
+        or entity.type == "radar"
+        or entity.type == "lab"
+      then
+        weights.yellow = weights.yellow + 1.7
+      elseif entity.type == "container"
+        or entity.type == "logistic-container"
+        or entity.type == "storage-tank"
+        or entity.type == "wall"
+      then
+        weights.purple = weights.purple + 1.5
+      end
+    end
+
+    if contains_any(searchable, {
+      "circuit", "computer", "processor", "sensor", "signal", "data", "logic", "chip", "electro",
+    }) then
+      weights.yellow = weights.yellow + 1.2
+    end
+    if contains_any(searchable, {
+      "fuel", "rocket", "reactor", "thermal", "heat", "explosive", "ammo", "weapon",
+    }) then
+      weights.red = weights.red + 1.2
+    end
+    if contains_any(searchable, {
+      "bio", "agric", "seed", "spore", "nutrient", "wood", "fish", "egg", "plant",
+    }) then
+      weights.green = weights.green + 1.4
+    end
+    if contains_any(searchable, {
+      "plate", "ore", "brick", "concrete", "frame", "beam", "wall", "container", "structure",
+    }) then
+      weights.purple = weights.purple + 1.0
+    end
   end
 
-  if not item then
-    return make_signature()
+  local total = total_breakdown_value(weights)
+  if total <= 0 then
+    weights.purple = 1
+    return weights
   end
-
-  if item.subgroup == "raw-resource" then
-    return make_signature()
+  for _, color in ipairs(M.COLOR_ORDER) do
+    weights[color] = weights[color] / total
   end
+  return weights
+end
 
-  return make_signature()
+local function default_item_color_signature(item)
+  local signature = make_signature()
+  if not item then return signature end
+  local weights = default_item_color_weights(item)
+  for _, color in ipairs(M.COLOR_ORDER) do
+    signature[color] = (weights[color] or 0) >= 0.15
+  end
+  return signature
 end
 
 local function default_item_breakdown(item, known_values)
   local total = known_values[item.name] or M.VALUE_OVERRIDES[item.name] or M.estimate_flux_value(item)
-  local signature = default_item_color_signature(item)
-  local colors = M.signature_to_ordered_colors(signature)
+  local weights = default_item_color_weights(item)
   local breakdown = make_breakdown()
-
-  if #colors == 0 then
-    breakdown.purple = total
-    return breakdown
-  end
-
-  if #colors == 1 then
-    breakdown[colors[1]] = total
-    return breakdown
-  end
-
-  local share = total / #colors
-  for _, color in ipairs(colors) do
-    breakdown[color] = share
+  for _, color in ipairs(M.COLOR_ORDER) do
+    breakdown[color] = total * (weights[color] or 0)
   end
   return round_breakdown_to_total(breakdown, math.max(1, math.floor(total + 0.5)))
 end
@@ -738,15 +974,44 @@ end
 local function fluid_color_signature(fluid_name)
   local override = M.FLUID_COLOR_OVERRIDES[fluid_name]
   if override then
-    return normalize_signature(override)
+    local signature = make_signature()
+    for _, color in ipairs(M.COLOR_ORDER) do
+      signature[color] = override_color_weight(override, color) > 0
+    end
+    return signature
   end
   local flux_color = M.FLUX_FLUID_TO_COLOR[fluid_name]
   if flux_color then
     return normalize_signature({ flux_color })
   end
   local fluid = find_fluid_prototype(fluid_name)
-  if fluid and fluid.fuel_value then
-    return normalize_signature({ "red" })
+  if fluid then
+    local colors = {}
+    local searchable = fluid_name .. " " .. (fluid.subgroup or "")
+    local default_temperature = fluid.default_temperature or 15
+    if fluid.fuel_value or default_temperature >= 200 then
+      colors[#colors + 1] = "red"
+    end
+    if contains_any(searchable, {
+      "bio", "nutrient", "spore", "sludge", "sewage", "blood", "fish", "algae",
+    }) then
+      colors[#colors + 1] = "green"
+    end
+    if fluid.gas_temperature
+      or contains_any(searchable, {
+        "acid", "oil", "gas", "electrolyte", "ammonia", "chlor", "resin", "solvent",
+      })
+    then
+      colors[#colors + 1] = "yellow"
+    end
+    if contains_any(searchable, {
+      "molten", "slurry", "brine", "mineral", "concrete", "metal",
+    }) then
+      colors[#colors + 1] = "purple"
+    end
+    if #colors > 0 then
+      return normalize_signature(colors)
+    end
   end
   return make_signature()
 end
@@ -761,6 +1026,19 @@ local function fluid_breakdown(fluid_name, amount)
   end
 
   local total = value * amount
+  local override = M.FLUID_COLOR_OVERRIDES[fluid_name]
+  if override then
+    local override_total = override_total_weight(override)
+    local weighted = make_breakdown()
+    if override_total <= 0 then
+      return weighted
+    end
+    for _, color in ipairs(M.COLOR_ORDER) do
+      weighted[color] = total * (override_color_weight(override, color) / override_total)
+    end
+    return weighted
+  end
+
   local signature = fluid_color_signature(fluid_name)
   local colors = M.signature_to_ordered_colors(signature)
   local breakdown = make_breakdown()
@@ -784,7 +1062,11 @@ end
 local function item_color_signature(item_name, known_colors)
   local override = M.ITEM_COLOR_OVERRIDES[item_name]
   if override then
-    return normalize_signature(override)
+    local signature = make_signature()
+    for _, color in ipairs(M.COLOR_ORDER) do
+      signature[color] = override_color_weight(override, color) > 0
+    end
+    return signature
   end
   if known_colors[item_name] then
     return clone_signature(known_colors[item_name])
@@ -915,12 +1197,72 @@ function M.collect_convertible_items()
   return collect_items(M.is_convertible)
 end
 
+function M.collect_extractable_items()
+  return collect_items(function(item)
+    -- Stateful vehicle/equipment items can contain inventories or grids that
+    -- the prototype valuation cannot see. Everything else with a real item
+    -- prototype can be destructively evaluated by the extractor.
+    return M.is_valued_item(item) and item.type ~= "item-with-entity-data"
+  end)
+end
+
 function M.is_confident_value(metadata)
   local confidence = metadata and metadata.confidence or M.VALUE_CONFIDENCE.unknown
   return confidence == M.VALUE_CONFIDENCE.locked
     or confidence == M.VALUE_CONFIDENCE.anchored
     or confidence == M.VALUE_CONFIDENCE.derived
-    or confidence == M.VALUE_CONFIDENCE.inferred
+end
+
+function M.extraction_efficiency(metadata)
+  local confidence = metadata and metadata.confidence or M.VALUE_CONFIDENCE.unknown
+  return M.EXTRACTION_EFFICIENCY[confidence] or M.EXTRACTION_EFFICIENCY.unknown
+end
+
+function M.extraction_difficulty_multiplier()
+  local setting = settings
+    and settings.startup
+    and settings.startup["fw-balance-condensing-difficulty"]
+  local difficulty = setting and setting.value or "normal"
+  if difficulty == "easy" then
+    return 1.20
+  end
+  if difficulty == "hard" then
+    return 0.75
+  end
+  return 1
+end
+
+function M.extraction_amounts(value, breakdown, metadata)
+  local recovered_total = math.max(
+    0.25,
+    (value or 1) * M.extraction_efficiency(metadata) * M.extraction_difficulty_multiplier()
+  )
+  local source = clone_breakdown(breakdown)
+  local source_total = total_breakdown_value(source)
+
+  if source_total <= 0 then
+    source.purple = 1
+    source_total = 1
+  end
+
+  local amounts = make_breakdown()
+  for _, color in ipairs(M.COLOR_ORDER) do
+    local share = math.max(0, source[color] or 0) / source_total
+    if share > 0 then
+      local flux_fluid = M.COLOR_TO_FLUX_FLUID[color]
+      local unit_value = M.FLUID_VALUE_OVERRIDES[flux_fluid] or 1
+      amounts[color] = math.min(
+        M.MAX_EXTRACTION_FLUID_PER_COLOR,
+        (recovered_total * share) / unit_value
+      )
+    end
+  end
+  return amounts, recovered_total
+end
+
+function M.flux_unit_value(color)
+  local fluid_name = M.COLOR_TO_FLUX_FLUID[color]
+  return fluid_name and (M.FLUID_VALUE_OVERRIDES[fluid_name] or 1) or nil
 end
 
 function M.resolve_item_values(candidate_items)
@@ -991,6 +1333,13 @@ function M.resolve_item_values(candidate_items)
                 break
               end
               recipe_confidence = weaker_confidence(recipe_confidence, ingredient_meta.confidence)
+            elseif not M.FLUID_VALUE_OVERRIDES[entry_name(ingredient)] then
+              -- Physical properties can provide a tooltip estimate, but they do
+              -- not prove the economic value of an arbitrary modded fluid.
+              recipe_confidence = weaker_confidence(
+                recipe_confidence,
+                M.VALUE_CONFIDENCE.inferred
+              )
             end
           end
 
@@ -1045,6 +1394,72 @@ function M.resolve_item_values(candidate_items)
   M._last_resolved_value_recipes = chosen_recipes
   M._last_resolution_metadata = metadata
   return values
+end
+
+function M.resolve_recoverable_values(candidate_items, resolved_values)
+  local full_values = resolved_values or M.resolve_item_values(candidate_items)
+  local chosen_recipes = M._last_resolved_value_recipes or {}
+  local recoverable = {}
+  local visiting = {}
+
+  local function resolve(item_name)
+    if recoverable[item_name] then
+      return recoverable[item_name]
+    end
+    if visiting[item_name] then
+      return nil
+    end
+
+    visiting[item_name] = true
+    local item = candidate_items[item_name] or find_item_prototype(item_name)
+    local recipe = chosen_recipes[item_name]
+    local material_value = nil
+
+    if recipe then
+      local total = 0
+      local complete = true
+      for _, ingredient in pairs(get_entries(recipe, "ingredients") or {}) do
+        local amount = entry_amount(ingredient)
+        if entry_type(ingredient) == "item" then
+          local ingredient_value = resolve(entry_name(ingredient))
+          if not ingredient_value then
+            complete = false
+            break
+          end
+          total = total + (ingredient_value * amount)
+        else
+          local fluid_name = entry_name(ingredient)
+          local fluid_value = M.FLUID_VALUE_OVERRIDES[fluid_name]
+            or M.estimate_fluid_value(find_fluid_prototype(fluid_name))
+          if not fluid_value then
+            complete = false
+            break
+          end
+          total = total + (fluid_value * amount)
+        end
+      end
+      local output_amount = result_amount_for(recipe, item_name)
+      if complete and output_amount > 0 then
+        material_value = total / output_amount
+      end
+    end
+
+    if not material_value then
+      material_value = M.VALUE_LOCKS[item_name]
+        or M.VALUE_OVERRIDES[item_name]
+        or (item and M.estimate_flux_value(item))
+        or 1
+    end
+
+    visiting[item_name] = nil
+    recoverable[item_name] = math.max(0.25, math.min(full_values[item_name] or material_value, material_value))
+    return recoverable[item_name]
+  end
+
+  for item_name, _ in pairs(candidate_items) do
+    resolve(item_name)
+  end
+  return recoverable
 end
 
 function M.resolve_item_color_amounts(candidate_items, known_values)
@@ -1153,13 +1568,8 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
 
     local process_budget = (cost * process_share) / out_amount
     local process_weights = recipe_category_color_weights(recipe)
-    local inherited_is_generic_purple = signature_is_only_color(inherited_signature, "purple")
-    local constrained_weights = filter_weights_to_signature(process_weights, inherited_signature)
-    if constrained_weights and not inherited_is_generic_purple then
-      process_weights = constrained_weights
-    elseif has_any_color(inherited_signature) and not inherited_is_generic_purple then
-      process_budget = 0
-    end
+    -- Process identity is allowed to introduce a new spectrum rather than only
+    -- reinforcing ingredient colors.
     for _, color in ipairs(M.COLOR_ORDER) do
       derived[color] = derived[color] + ((process_weights[color] or 0) * process_budget)
     end
@@ -1181,9 +1591,10 @@ function M.resolve_item_color_amounts(candidate_items, known_values)
     breakdown_visiting[item_name] = true
 
     local item = candidate_items[item_name] or find_item_prototype(item_name)
-    local recipe = choose_recipe(item_name)
-    local derived = recipe and select(1, derive_recipe_breakdown(recipe, item_name)) or nil
     local total_value = known_values[item_name] or M.VALUE_OVERRIDES[item_name] or (item and M.estimate_flux_value(item)) or 1
+    local explicit_spectrum = M.ITEM_COLOR_OVERRIDES[item_name] ~= nil
+    local recipe = not explicit_spectrum and choose_recipe(item_name) or nil
+    local derived = recipe and select(1, derive_recipe_breakdown(recipe, item_name)) or nil
     local resolved = derived or (item and default_item_breakdown(item, known_values or {})) or make_breakdown()
     local rounded = round_breakdown_to_total(resolved, math.max(1, math.floor(total_value + 0.5)))
 
