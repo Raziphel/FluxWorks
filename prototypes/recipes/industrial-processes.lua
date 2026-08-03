@@ -26,7 +26,7 @@ data:extend({
     type = "recipe",
     name = "fw-silica-beneficiation",
     icons = {
-      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore-clean.png", icon_size = 64 },
+      { icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore-clean.png", icon_size = 256 },
       { icon = "__FluxWorksAssets__/graphics/icons/items/flux-2.png", icon_size = 64, scale = 0.45, shift = { 8, -8 } },
     },
     category = "fw-flux-harvesting",

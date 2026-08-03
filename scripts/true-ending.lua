@@ -1,9 +1,15 @@
 local M = {}
+local Startup = require("prototypes.lib.startup-settings")
 
 local STRUCTURE_NAME = "fw-origin-singularity"
 local POWER_NAME = "fw-origin-singularity-power-interface"
 local SURFACE_NAME = "shattered-planet"
-local ACTIVATION_ENERGY = 120000000000
+local origin_difficulty = Startup.difficulty_tier("fw-balance-origin-singularity-difficulty", "normal")
+local ACTIVATION_ENERGY = ({
+  easy = 30000000000,
+  normal = 120000000000,
+  hard = 240000000000,
+})[origin_difficulty] or 120000000000
 local PROCESS_INTERVAL = 30
 local BAR_LEFT_TOP = { x = 3.0, y = -1.9 }
 local BAR_RIGHT_BOTTOM = { x = 3.35, y = 1.9 }
@@ -255,7 +261,7 @@ local function process_structures()
 end
 
 function M.register_events(registrar)
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_built_entity,
     defines.events.on_robot_built_entity,
     defines.events.script_raised_built,
@@ -263,7 +269,7 @@ function M.register_events(registrar)
     defines.events.on_space_platform_built_entity,
   }, on_created)
 
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_player_mined_entity,
     defines.events.on_robot_mined_entity,
     defines.events.on_entity_died,
@@ -271,7 +277,7 @@ function M.register_events(registrar)
     defines.events.on_space_platform_mined_entity,
   }, on_removed)
 
-  registrar.on_nth_tick(PROCESS_INTERVAL, process_structures)
+  registrar:on_nth_tick(PROCESS_INTERVAL, process_structures)
 end
 
 function M.on_init()

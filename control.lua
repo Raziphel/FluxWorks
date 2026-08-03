@@ -3,8 +3,10 @@ local modules = {
   require("scripts.rocket-remnants"),
   require("scripts.phase-vaults"),
   require("scripts.spectral-reservoirs"),
+  require("scripts.flux-extractor"),
   require("scripts.rift-exchange"),
   require("scripts.shattered-planet"),
+  require("scripts.shattered-asteroids"),
   require("scripts.true-ending"),
 }
 

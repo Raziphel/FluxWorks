@@ -185,6 +185,17 @@ return function(shared)
       { type = "item", name = "fw-hydraulic-manifold", amount = 1 },
     })
 
+    -- Factorio 2.1's unloading extension is active cargo-handling machinery,
+    -- not four passive chests bolted onto a cargo bay.
+    set_recipe_ingredients("landing-pad-unloading-bay", {
+      { type = "item", name = "cargo-bay", amount = 1 },
+      { type = "item", name = "bulk-inserter", amount = 4 },
+      { type = "item", name = "electric-engine-unit", amount = 8 },
+      { type = "item", name = "fw-bearing", amount = 4 },
+      { type = "item", name = "fw-hydraulic-manifold", amount = 2 },
+      { type = "item", name = "fw-signal-conduit", amount = 2 },
+    })
+
     set_recipe_ingredients("asteroid-collector", {
       { type = "item", name = "low-density-structure", amount = 20 },
       { type = "item", name = "electric-engine-unit", amount = 8 },

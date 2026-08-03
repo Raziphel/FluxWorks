@@ -9,13 +9,14 @@ function Registry.new(content)
   }, Registry)
 end
 
-function Registry:set_description(prototype_type, prototype_name, locale_key)
+function Registry:set_description(prototype_type, prototype_name, locale_key, locale_section)
   local prototype = data.raw[prototype_type] and data.raw[prototype_type][prototype_name]
   if not prototype then return end
 
+  locale_section = locale_section or "fw-factoriopedia"
   self.descriptions[prototype_type] = self.descriptions[prototype_type] or {}
-  self.descriptions[prototype_type][prototype_name] = locale_key
-  prototype.factoriopedia_description = { "fw-factoriopedia." .. locale_key }
+  self.descriptions[prototype_type][prototype_name] = locale_section .. "." .. locale_key
+  prototype.factoriopedia_description = { locale_section .. "." .. locale_key }
 end
 
 function Registry:set_simulation(prototype_type, prototype_name, simulation_key)

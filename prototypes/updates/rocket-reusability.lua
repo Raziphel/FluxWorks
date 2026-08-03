@@ -356,8 +356,6 @@ if add_incomplete then
         enabled = false,
         category = "crafting",
         ingredients = {
-            { type = "item", name = "processing-unit",       amount = 1 },
-            { type = "item", name = "low-density-structure", amount = 1 },
             { type = "item", name = "fw-rocket-engine", amount = 1 },
             { type = "item", name = "fw-rocket-avionics", amount = 1 },
             { type = "item", name = "fw-rocket-heatshield", amount = 1 }

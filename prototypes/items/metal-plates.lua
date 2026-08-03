@@ -65,7 +65,7 @@ data:extend({
     type = "item",
     name = "silicon",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore-clean.png",
-    icon_size = 64,
+    icon_size = 256,
     inventory_move_sound = item_sounds.resource_inventory_move,
     pick_sound = item_sounds.resource_inventory_pickup,
     drop_sound = item_sounds.resource_inventory_move,

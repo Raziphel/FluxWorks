@@ -76,14 +76,14 @@ local function enforce_existing_surface()
 end
 
 function M.register_events(registrar)
-  registrar.on_event(defines.events.on_surface_created, function(event)
+  registrar:on_event(defines.events.on_surface_created, function(event)
     local surface = game.surfaces[event.surface_index]
     if surface then
       enforce_surface(surface)
     end
   end)
 
-  registrar.on_event(defines.events.on_chunk_generated, function(event)
+  registrar:on_event(defines.events.on_chunk_generated, function(event)
     local surface = event.surface
     if is_shattered_surface(surface) and chunk_is_out_of_bounds(event.position) then
       surface.delete_chunk(event.position)

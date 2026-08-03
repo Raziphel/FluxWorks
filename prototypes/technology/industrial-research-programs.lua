@@ -31,11 +31,12 @@ end
 
 local program_icon_path = "__FluxWorksAssets__/graphics/technology/programs/"
 
-local function tier_icons(stem)
+local function tier_icons(stem, icon_size)
+  icon_size = icon_size or 64
   return {
-    { program_icon_path .. stem .. "-1.png", 64 },
-    { program_icon_path .. stem .. "-2.png", 64 },
-    { program_icon_path .. stem .. "-3.png", 64 },
+    { program_icon_path .. stem .. "-1.png", icon_size },
+    { program_icon_path .. stem .. "-2.png", icon_size },
+    { program_icon_path .. stem .. "-3.png", icon_size },
   }
 end
 
@@ -97,7 +98,7 @@ local programs = {
   },
   {
     stem = "fw-rail-network-control",
-    tier_icons = tier_icons("fw-rail-network-control"),
+    tier_icons = tier_icons("fw-rail-network-control", 256),
     prerequisites = { "fw-signal-architecture", "braking-force-2" },
     effects = {
       { { type = "train-braking-force-bonus", modifier = 0.10 } },
@@ -149,6 +150,7 @@ local programs = {
 local prototypes = {}
 local counts = { 240, 700, 1800 }
 local times = { 35, 45, 60 }
+local tier_numerals = { "I", "II", "III" }
 
 for program_index, program in ipairs(programs) do
   for tier = 1, 3 do
@@ -164,6 +166,11 @@ for program_index, program in ipairs(programs) do
     prototypes[#prototypes + 1] = {
       type = "technology",
       name = name,
+      -- Keep these names independent of locale fallback behavior used by
+      -- generated, numbered prototypes.
+      localised_name = program.stem == "fw-industrial-yield"
+        and { "", "Industrial Yield Analysis ", tier_numerals[tier] }
+        or nil,
       icon = program.tier_icons[tier][1],
       icon_size = program.tier_icons[tier][2],
       prerequisites = prerequisites,

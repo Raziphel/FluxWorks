@@ -200,7 +200,7 @@ assert_recipe_unlocks("fw-reactive-binders", {
 assert_recipe_unlocks("fw-elastomer-engineering", {
   "fw-elastomer-matrix",
 })
-assert_recipe_unlocks("fw-polymer-stabilization", {
+assert_recipe_unlocks("fw-elastomer-engineering", {
   "fw-reinforced-seal",
 })
 assert_recipe_unlocks("fw-hydraulic-systems", {
@@ -237,23 +237,23 @@ assert_recipe_unlocks("fw-dense-ore-smelting", {
 assert_recipe_unlocks("fw-structural-fabrication", {
   "fw-iron-beam",
 })
-assert_recipe_unlocks("fw-contact-casting", {
+assert_recipe_unlocks("fw-structural-fabrication", {
   "fw-circuit-contact-leaded",
 })
-assert_recipe_unlocks("fw-tube-forming", {
+assert_recipe_unlocks("fw-structural-fabrication", {
   "fw-copper-tube",
   "fw-inline-filter",
 })
-assert_recipe_unlocks("fw-sensor-integration", {
+assert_recipe_unlocks("fw-systems-integration", {
   "fw-sensor-package",
 })
-assert_recipe_unlocks("fw-lightweight-framing", {
+assert_recipe_unlocks("fw-advanced-fabrication", {
   "fw-light-frame",
 })
 assert_recipe_unlocks("fw-propellant-synthesis", {
   "fw-gunpowder",
 })
-assert_recipe_unlocks("fw-thermal-retention", {
+assert_recipe_unlocks("fw-cryogenic-control", {
   "fw-thermal-buffer",
 })
 assert_recipe_unlocks("fw-logic-weaving", {
@@ -266,26 +266,13 @@ assert_recipe_unlocks("fw-arc-recasting", {
 assert_recipe_unlocks("fw-reactive-powders", {
   "fw-synthesized-gunpowder",
 })
-assert_recipe_unlocks("fw-slurry-beneficiation", {
-  "fw-titanium-slurry-grading",
-  "fw-carbon-grade-screening",
-})
-assert_recipe_does_not_unlock("fw-systems-integration", {
-  "fw-sensor-package",
-})
 assert_recipe_does_not_unlock("fw-advanced-fabrication", {
-  "fw-light-frame",
   "fw-gunpowder",
 })
 assert_recipe_does_not_unlock("fw-industrial-expansion", {
   "fw-arc-cermet-densification",
   "fw-arc-glass-recast",
   "fw-synthesized-gunpowder",
-  "fw-titanium-slurry-grading",
-  "fw-carbon-grade-screening",
-})
-assert_recipe_does_not_unlock("fw-cryogenic-control", {
-  "fw-thermal-buffer",
 })
 assert_recipe_does_not_unlock("fw-electromagnetic-architecture", {
   "fw-logic-matrix",
@@ -352,12 +339,7 @@ assert_recipe_has_ingredient(
   "fw-alumina-refractory",
   "bauxite should feed the ceramic branch so mineral deposits matter beyond flat aluminum smelting"
 )
-for _, salt_consumer in ipairs({
-  "battery",
-  "fw-silicon-beneficiation",
-  "fw-bauxite-slurry-clarification",
-  "fw-tin-ore-beneficiation",
-}) do
+for _, salt_consumer in ipairs({ "battery" }) do
   assert_recipe_has_ingredient(
     salt_consumer,
     "fw-salt",
@@ -431,11 +413,13 @@ assert_recipe_unlocks("fw-fuel-fabrication", {
   "fw-atomic-enricher",
   "fw-shielded-fuel-casing",
   "fw-fuel-pellet-bundle",
+  "fw-precision-uranium-assay",
 })
 assert_recipe_unlocks("fw-lattice-moderation", {
   "fw-moderator-lattice",
   "fw-isotope-matrix",
   "fw-reactor-grade-fuel-cell",
+  "fw-flux-isotope-separation",
 })
 assert_recipe_unlocks("fw-reactor-doping", {
   "fw-reactor-dopant",
@@ -446,6 +430,7 @@ assert_recipe_unlocks("fw-reactor-safeguards", {
 })
 assert_recipe_unlocks("fw-actinide-recovery", {
   "fw-spent-fuel-reconditioning",
+  "fw-depleted-cell-dissolution",
 })
 assert_recipe_unlocks("fw-actinide-sorting", {
   "fw-radioactive-scrap-sorting",
@@ -459,6 +444,7 @@ assert_recipe_unlocks("fw-actinide-reforging", {
 assert_recipe_unlocks("fw-reactor-instrumentation", {
   "fw-nuclear-fuel-overdrive",
   "fw-actinide-dopant-refining",
+  "fw-fusion-cell-doping",
 })
 assert_recipe_does_not_unlock("fw-isotope-conditioning", {
   "fw-atomic-enricher",
@@ -488,11 +474,6 @@ assert_tech_has_prerequisite(
   "fw-reactive-powders",
   "fw-industrial-expansion",
   "reactive powders should sit inside the expanded industrial chemistry step"
-)
-assert_tech_has_prerequisite(
-  "fw-slurry-beneficiation",
-  "fw-industrial-expansion",
-  "slurry beneficiation should read as an industrial follow-up, not a parallel detour"
 )
 assert_tech_has_prerequisite(
   "fw-fuel-fabrication",

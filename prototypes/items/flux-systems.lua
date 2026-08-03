@@ -66,7 +66,8 @@ data:extend({
   {
     type = "item",
     name = "fw-harvester-head",
-    icons = single_icon(icon_path .. "fw-harvester-head.png", 64),
+    icon = icon_path .. "fw-harvester-head.png",
+    icon_size = 256,
     subgroup = "fw-flux-systems",
     order = "c1[fw-harvester-head]",
     stack_size = 50,
@@ -90,7 +91,7 @@ data:extend({
   {
     type = "item",
     name = "fw-condensed-flux-matrix",
-    icons = single_icon(icon_path .. "fw-condensed-flux-matrix.png", 1254),
+    icons = single_icon(icon_path .. "fw-condensed-flux-matrix-v2.png", 256),
     subgroup = "fw-flux-systems",
     order = "d[fw-condensed-flux-matrix]",
     stack_size = 100,
@@ -106,7 +107,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-phase-manifold",
-    icons = single_icon(icon_path .. "fw-flux-phase-manifold.png", 64),
+    icons = single_icon(icon_path .. "fw-flux-phase-manifold-v2.png", 256),
     subgroup = "fw-flux-systems",
     order = "f[fw-flux-phase-manifold]",
     stack_size = 50,

@@ -66,8 +66,8 @@ data:extend({
   {
     type = "item",
     name = "fw-power-regulator",
-    icon = "__base__/graphics/icons/processing-unit.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-power-regulator-v2.png",
+    icon_size = 256,
     subgroup = "fw-intermediate-electrical",
     order = "i[fw-power-regulator]",
     stack_size = 100,
@@ -129,8 +129,8 @@ data:extend({
   {
     type = "item",
     name = "fw-promethium-shard",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-shard.png",
-    icon_size = 1254,
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-promethium-shard-v2.png",
+    icon_size = 256,
     subgroup = "fw-flux-resources",
     order = "f[fw-promethium-shard]",
     stack_size = 100,

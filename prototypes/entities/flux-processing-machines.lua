@@ -3,6 +3,7 @@ local sounds = require("__base__.prototypes.entity.sounds")
 local util = require("util")
 local advanced_foundry_path = "__finely-crafted-graphics__/graphics/advanced-foundry/"
 local gravity_assembler_path = "__finely-crafted-graphics__/graphics/gravity-assembler/"
+local quantum_stabilizer_path = "__finely-crafted-graphics__/graphics/quantum-stabilizer/"
 
 local electromagnetic_pipe_pictures = require("__space-age__.prototypes.entity.electromagnetic-plant-pictures").pipe_pictures
 
@@ -17,61 +18,9 @@ local function working_light(intensity, size, shift, color)
   }
 end
 
-local function scale_sprite(sprite, factor)
-  if type(sprite) ~= "table" then
-    return
-  end
-
-  if sprite.scale then
-    sprite.scale = sprite.scale * factor
-  end
-
-  if sprite.shift and sprite.shift[1] and sprite.shift[2] then
-    sprite.shift = { sprite.shift[1] * factor, sprite.shift[2] * factor }
-  end
-
-  if sprite.hr_version then
-    scale_sprite(sprite.hr_version, factor)
-  end
-end
-
-local function scale_animation(animation, factor)
-  if type(animation) ~= "table" then
-    return
-  end
-
-  if animation.layers then
-    for _, layer in ipairs(animation.layers) do
-      scale_sprite(layer, factor)
-    end
-    return
-  end
-
-  scale_sprite(animation, factor)
-end
-
-local function tint_glow(animation, tint)
-  if type(animation) ~= "table" then
-    return
-  end
-
-  if animation.layers then
-    for _, layer in ipairs(animation.layers) do
-      if layer.draw_as_glow then
-        layer.tint = tint
-      end
-    end
-    return
-  end
-
-  if animation.draw_as_glow then
-    animation.tint = tint
-  end
-end
-
 local function flux_harvester_icons()
   return {
-    { icon = "__FluxWorksAssets__/graphics/icons/items/fw-harvester-head.png", icon_size = 64 },
+    { icon = quantum_stabilizer_path .. "quantum-stabilizer-icon.png", icon_size = 64 },
     {
       icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
       icon_size = 64,
@@ -88,7 +37,7 @@ local function make_harvester_fluid_boxes()
       pipe_picture = electromagnetic_pipe_pictures,
       pipe_covers = pipecoverspictures(),
       volume = 200,
-      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.south, position = { -0.5, 1 } } },
+      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.south, position = { 0, 2 } } },
       secondary_draw_orders = { north = -1 },
     },
     {
@@ -96,7 +45,7 @@ local function make_harvester_fluid_boxes()
       pipe_picture = electromagnetic_pipe_pictures,
       pipe_covers = pipecoverspictures(),
       volume = 200,
-      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.east, position = { 0.5, 0 } } },
+      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.east, position = { 2, 0 } } },
       secondary_draw_orders = { north = -1 },
     },
     {
@@ -104,7 +53,7 @@ local function make_harvester_fluid_boxes()
       pipe_picture = electromagnetic_pipe_pictures,
       pipe_covers = pipecoverspictures(),
       volume = 200,
-      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.north, position = { 0.5, -1 } } },
+      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.north, position = { 0, -2 } } },
       secondary_draw_orders = { north = -1 },
     },
     {
@@ -112,7 +61,7 @@ local function make_harvester_fluid_boxes()
       pipe_picture = electromagnetic_pipe_pictures,
       pipe_covers = pipecoverspictures(),
       volume = 200,
-      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.west, position = { -0.5, 0 } } },
+      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.west, position = { -2, 0 } } },
       secondary_draw_orders = { north = -1 },
     },
   }
@@ -162,7 +111,7 @@ local function make_large_fluid_boxes()
       pipe_picture = electromagnetic_pipe_pictures,
       pipe_covers = pipecoverspictures(),
       volume = 300,
-      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.north, position = { -1, -2 } } },
+      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.north, position = { -1, -3 } } },
       secondary_draw_orders = { north = -1 },
     },
     {
@@ -170,7 +119,7 @@ local function make_large_fluid_boxes()
       pipe_picture = electromagnetic_pipe_pictures,
       pipe_covers = pipecoverspictures(),
       volume = 300,
-      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.north, position = { 1, -2 } } },
+      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.north, position = { 1, -3 } } },
       secondary_draw_orders = { north = -1 },
     },
     {
@@ -178,7 +127,7 @@ local function make_large_fluid_boxes()
       pipe_picture = electromagnetic_pipe_pictures,
       pipe_covers = pipecoverspictures(),
       volume = 300,
-      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.south, position = { -1, 2 } } },
+      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.south, position = { -1, 3 } } },
       secondary_draw_orders = { north = -1 },
     },
     {
@@ -186,7 +135,7 @@ local function make_large_fluid_boxes()
       pipe_picture = electromagnetic_pipe_pictures,
       pipe_covers = pipecoverspictures(),
       volume = 300,
-      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.south, position = { 1, 2 } } },
+      pipe_connections = { { flow_direction = "input-output", direction = defines.direction.south, position = { 1, 3 } } },
       secondary_draw_orders = { north = -1 },
     },
   }
@@ -199,8 +148,8 @@ harvester.icon_size = nil
 harvester.icons = flux_harvester_icons()
 harvester.minable = { mining_time = 0.8, result = "fw-flux-harvester" }
 harvester.max_health = 700
-harvester.collision_box = { { -1.7, -1.7 }, { 1.7, 1.7 } }
-harvester.selection_box = { { -2, -2 }, { 2, 2 } }
+harvester.collision_box = { { -2.2, -2.2 }, { 2.2, 2.2 } }
+harvester.selection_box = { { -2.5, -2.5 }, { 2.5, 2.5 } }
 harvester.fast_replaceable_group = "fw-flux-processing"
 harvester.crafting_categories = { "fw-flux-harvesting" }
 harvester.crafting_speed = 2.2
@@ -208,10 +157,71 @@ harvester.energy_usage = "2.2MW"
 harvester.ingredient_count = 12
 harvester.module_slots = 4
 harvester.allowed_effects = { "consumption", "speed", "productivity", "pollution" }
-harvester.fluid_boxes = make_medium_fluid_boxes()
+harvester.fluid_boxes = make_harvester_fluid_boxes()
 harvester.fluid_boxes_off_when_no_fluid_recipe = true
 harvester.open_sound = sounds.mech_small_open
 harvester.close_sound = sounds.mech_small_close
+harvester.graphics_set = {
+  animation = {
+    layers = {
+      {
+        filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-shadow.png",
+        priority = "high",
+        width = 900,
+        height = 420,
+        repeat_count = 104,
+        animation_speed = 0.35,
+        scale = 0.4,
+        draw_as_shadow = true,
+      },
+      {
+        priority = "high",
+        width = 410,
+        height = 410,
+        frame_count = 104,
+        lines_per_file = 8,
+        animation_speed = 0.35,
+        scale = 0.4,
+        stripes = {
+          { filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
+          { filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-animation-2.png", width_in_frames = 8, height_in_frames = 5 },
+        },
+      },
+    },
+  },
+  working_visualisations = {
+    {
+      fadeout = true,
+      animation = {
+        priority = "high",
+        width = 410,
+        height = 410,
+        frame_count = 104,
+        lines_per_file = 8,
+        animation_speed = 0.35,
+        scale = 0.4,
+        draw_as_glow = true,
+        blend_mode = "additive",
+        tint = { r = 0.78, g = 0.26, b = 1.0, a = 0.9 },
+        stripes = {
+          { filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-animation-emission-1.png", width_in_frames = 8, height_in_frames = 8 },
+          { filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-animation-emission-2.png", width_in_frames = 8, height_in_frames = 5 },
+        },
+      },
+    },
+    working_light(0.95, 9, { 0, -0.4 }, { r = 0.67, g = 0.18, b = 1.0 }),
+  },
+}
+harvester.working_sound = {
+  sound = {
+    filename = "__space-age__/sound/entity/electromagnetic-plant/electromagnetic-plant-loop.ogg",
+    volume = 0.48,
+    audible_distance_modifier = 0.55,
+  },
+  fade_in_ticks = 6,
+  fade_out_ticks = 24,
+  max_sounds_per_prototype = 2,
+}
 
 local arc_foundry = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"])
 arc_foundry.name = "fw-arc-foundry"
@@ -219,8 +229,8 @@ arc_foundry.icon = advanced_foundry_path .. "advanced-foundry-icon.png"
 arc_foundry.icon_size = 64
 arc_foundry.minable = { mining_time = 1, result = "fw-arc-foundry" }
 arc_foundry.max_health = 950
-arc_foundry.collision_box = { { -2.1, -2.1 }, { 2.1, 2.1 } }
-arc_foundry.selection_box = { { -2.5, -2.5 }, { 2.5, 2.5 } }
+arc_foundry.collision_box = { { -3.2, -3.2 }, { 3.2, 3.2 } }
+arc_foundry.selection_box = { { -3.5, -3.5 }, { 3.5, 3.5 } }
 arc_foundry.fast_replaceable_group = "fw-flux-processing"
 arc_foundry.crafting_categories = { "fw-arc-smelting" }
 arc_foundry.crafting_speed = 3.2
@@ -312,7 +322,7 @@ synthesis_plant.max_health = 900
 synthesis_plant.collision_box = { { -1.6, -1.6 }, { 1.6, 1.6 } }
 synthesis_plant.selection_box = { { -2, -2 }, { 2, 2 } }
 synthesis_plant.fast_replaceable_group = "fw-flux-processing"
-synthesis_plant.crafting_categories = { "fw-flux-synthesis" }
+synthesis_plant.crafting_categories = { "fw-flux-synthesis", "fw-flux-condensing" }
 synthesis_plant.crafting_speed = 2.9
 synthesis_plant.energy_usage = "4.6MW"
 synthesis_plant.ingredient_count = 20

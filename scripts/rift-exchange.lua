@@ -1,4 +1,5 @@
 local Shared = require("scripts.memory-shared")
+local Startup = require("prototypes.lib.startup-settings")
 
 local M = {}
 
@@ -8,11 +9,17 @@ local FLUID_GATE_NAME = "fw-rift-exchange-fluid-gate"
 local FLUID_POWER_NAME = "fw-rift-exchange-fluid-power-interface"
 local GUI_NAME = "fw_rift_exchange_gui"
 local PROCESS_INTERVAL = 30
-local CYCLE_ENERGY = 10000000000
-local CYCLE_POWER_USAGE = 1000000000
+local logistics_profiles = {
+  easy = { energy = 4000000000, power = 500000000, contamination = 60 * 40 },
+  normal = { energy = 10000000000, power = 1000000000, contamination = 60 * 25 },
+  hard = { energy = 20000000000, power = 1500000000, contamination = 60 * 12 },
+}
+local logistics = logistics_profiles[Startup.difficulty_tier("fw-balance-rift-logistics", "normal")]
+local CYCLE_ENERGY = logistics.energy
+local CYCLE_POWER_USAGE = logistics.power
 local BAR_LEFT_TOP = { x = 2.45, y = -1.5 }
 local BAR_RIGHT_BOTTOM = { x = 2.75, y = 1.5 }
-local CONTAMINATION_INTERVAL = 60 * 25
+local CONTAMINATION_INTERVAL = logistics.contamination
 local WILDCARD_IDS = {
   [""] = true,
   anything = true,
@@ -41,6 +48,21 @@ local ACTIVATION_MODE_ITEMS = {
 }
 
 local surface_label
+
+local function completed_research_levels(force, name)
+  local technology = force and force.technologies and force.technologies[name]
+  if not technology then return 0 end
+  if technology.researched then return technology.level end
+  return math.max(0, technology.level - 1)
+end
+
+local function cycle_energy(entry)
+  local force = entry and entry.entity and entry.entity.valid and entry.entity.force
+  local synchronized = force and force.technologies["fw-rift-network-synchronization"]
+  local baseline = synchronized and synchronized.researched and 0.85 or 1
+  local levels = completed_research_levels(force, "fw-rift-transfer-harmonics")
+  return CYCLE_ENERGY * math.max(0.40, baseline * (1 - 0.03 * levels))
+end
 
 local function gate_text(key, ...)
   return { "mod-gui." .. key, ... }
@@ -94,7 +116,7 @@ local function set_idle_power(entry)
 end
 
 local function set_cycle_power(entry)
-  entry.powersource.electric_buffer_size = CYCLE_ENERGY
+  entry.powersource.electric_buffer_size = cycle_energy(entry)
 end
 
 local function current_status(entry)
@@ -102,7 +124,7 @@ local function current_status(entry)
     if not (entry.target_unit_number and storage.rift_exchange[entry.target_unit_number]) then
       return gate_text("fw-rift-status-lost-target")
     end
-    return gate_text("fw-rift-status-charging", string.format("%.1f", (entry.powersource.energy / CYCLE_ENERGY) * 100))
+    return gate_text("fw-rift-status-charging", string.format("%.1f", (entry.powersource.energy / cycle_energy(entry)) * 100))
   end
   return gate_text("fw-rift-status-idle")
 end
@@ -112,7 +134,7 @@ local function charge_ratio(entry)
     return 0
   end
 
-  return math.max(0, math.min(1, (entry.powersource.energy or 0) / CYCLE_ENERGY))
+  return math.max(0, math.min(1, (entry.powersource.energy or 0) / cycle_energy(entry)))
 end
 
 local function update_progress_bar(entry)
@@ -557,7 +579,7 @@ local function process_gates()
         entry.powersource.energy = 0
         set_idle_power(entry)
         update_display_text(entry)
-      elseif entry.powersource.energy >= CYCLE_ENERGY * 0.999 then
+      elseif entry.powersource.energy >= cycle_energy(entry) * 0.999 then
         complete_cycle(entry)
       else
         if current_energy <= (entry.last_energy or 0) + 1000 then
@@ -820,7 +842,7 @@ local function update_gui(gui)
   controls.link_id.text = entry.link_id or ""
   controls.destination.selected_index = dropdown_index_for(entry, names)
   controls.power.caption = gate_text("fw-rift-power-draw", format_power_amount(CYCLE_POWER_USAGE))
-  controls.buffer.caption = gate_text("fw-rift-charge", format_energy_amount(entry.powersource.energy or 0), format_energy_amount(CYCLE_ENERGY))
+  controls.buffer.caption = gate_text("fw-rift-charge", format_energy_amount(entry.powersource.energy or 0), format_energy_amount(cycle_energy(entry)))
   controls.status.caption = current_status(entry)
   controls.message.caption = entry.last_message or ""
   controls.progress.value = charge_ratio(entry)
@@ -858,7 +880,7 @@ local function update_gui(gui)
 end
 
 function M.register_events(registrar)
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_built_entity,
     defines.events.on_robot_built_entity,
     defines.events.script_raised_built,
@@ -866,7 +888,7 @@ function M.register_events(registrar)
     defines.events.on_space_platform_built_entity,
   }, on_created)
 
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_player_mined_entity,
     defines.events.on_robot_mined_entity,
     defines.events.on_entity_died,
@@ -874,9 +896,9 @@ function M.register_events(registrar)
     defines.events.on_space_platform_mined_entity,
   }, on_removed)
 
-  registrar.on_nth_tick(PROCESS_INTERVAL, process_gates)
+  registrar:on_nth_tick(PROCESS_INTERVAL, process_gates)
 
-  registrar.on_nth_tick(15, function()
+  registrar:on_nth_tick(15, function()
     for _, player in pairs(game.connected_players) do
       local gui = player.gui.screen[GUI_NAME]
       if gui then
@@ -885,7 +907,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_gui_opened, function(event)
+  registrar:on_event(defines.events.on_gui_opened, function(event)
     if event.gui_type ~= defines.gui_type.entity or not event.entity or not GATE_CONFIGS[event.entity.name] then
       return
     end
@@ -906,7 +928,7 @@ function M.register_events(registrar)
     update_gui(frame)
   end)
 
-  registrar.on_event(defines.events.on_gui_closed, function(event)
+  registrar:on_event(defines.events.on_gui_closed, function(event)
     local player = game.get_player(event.player_index)
     if event.gui_type == defines.gui_type.custom then
       local gui = player.gui.screen[GUI_NAME]
@@ -916,7 +938,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_gui_click, function(event)
+  registrar:on_event(defines.events.on_gui_click, function(event)
     local element = event.element
     if not (element and element.valid and element.tags and element.tags.unit_number) then
       return
@@ -930,7 +952,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_gui_text_changed, function(event)
+  registrar:on_event(defines.events.on_gui_text_changed, function(event)
     local element = event.element
     if not (element and element.valid and element.tags and element.tags.unit_number and element.name == "link_id") then
       return
@@ -943,7 +965,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_gui_selection_state_changed, function(event)
+  registrar:on_event(defines.events.on_gui_selection_state_changed, function(event)
     local element = event.element
     if not (element and element.valid and element.tags and element.tags.unit_number) then
       return

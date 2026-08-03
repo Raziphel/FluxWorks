@@ -15,6 +15,7 @@ local DIFFICULTY_SETTINGS = {
   "fw-balance-late-machines-difficulty",
   "fw-balance-orbital-recipes-difficulty",
   "fw-balance-crafting-time-difficulty",
+  "fw-balance-origin-singularity-difficulty",
 }
 
 local function tier(name)
@@ -60,6 +61,7 @@ local PROFILE = {
   late = tier_multiplier("fw-balance-late-machines-difficulty", 0.70, 1.62),
   orbital = tier_multiplier("fw-balance-orbital-recipes-difficulty", 0.68, 1.82),
   time = tier_multiplier("fw-balance-crafting-time-difficulty", 0.82, 1.24),
+  origin = tier_multiplier("fw-balance-origin-singularity-difficulty", 0.25, 2.00),
 }
 
 local function tier_time_adjust(name, easy_delta, hard_delta)
@@ -175,6 +177,7 @@ local ORBITAL_RECIPES = {
   ["space-platform-hub"] = true,
   ["cargo-landing-pad"] = true,
   ["cargo-bay"] = true,
+  ["landing-pad-unloading-bay"] = true,
   ["asteroid-collector"] = true,
   ["thruster"] = true,
 }
@@ -350,7 +353,9 @@ local function ingredient_multiplier(recipe_name, category, ingredient)
 
   if is_fw_name(recipe_name) then
     multiplier = combine_multiplier(multiplier, PROFILE.fw_core)
-    if category == "fw-flux-harvesting" then
+    if category == "fw-origin-forging" then
+      multiplier = combine_multiplier(multiplier, PROFILE.origin)
+    elseif category == "fw-flux-harvesting" then
       multiplier = combine_multiplier(multiplier, PROFILE.harvesting)
     elseif category == "fw-flux-synthesis" then
       multiplier = combine_multiplier(multiplier, PROFILE.synthesis)

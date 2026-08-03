@@ -39,10 +39,10 @@ end
 data:extend({
   {
     type = "technology", name = "fw-shattered-expedition-planning",
-    icon = "__space-age__/graphics/icons/shattered-planet.png", icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-shattered-expedition-planning-v3.png", icon_size = 256,
     prerequisites = {
       "promethium-science-pack", "fw-cross-planetary-industrial-convergence",
-      "fw-rift-harmonics", "fw-fusion-lattices",
+      "fw-rift-harmonics", "fw-fusion-lattices", "lightning-collector",
     },
     unit = unit(2400, 75),
     effects = {
@@ -53,7 +53,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-shattered-platform-hardening",
-    icon = asset_icon("fw-industrial-expansion.png"), icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-shattered-platform-hardening-v3.png", icon_size = 256,
     prerequisites = { "fw-shattered-expedition-planning", "advanced-asteroid-processing" },
     unit = unit(2700, 80), effects = {
       productivity("space-platform-foundation", 0.15),
@@ -62,7 +62,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-shattered-landing-protocols",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-fired-ceramic.png", icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/technology/native/fw-shattered-landing-protocols.png", icon_size = 256,
     prerequisites = { "fw-shattered-platform-hardening", "fw-rift-logistics" },
     unit = unit(3000, 85), effects = {
       productivity("foundation", 0.20),
@@ -144,7 +144,7 @@ data:extend({
   },
   {
     type = "technology", name = "fw-shattered-origin-survey",
-    icon = asset_icon("fw-isotope-conditioning.png"), icon_size = 256,
+    icon = "__FluxWorksAssets__/graphics/technology/fw-origin-survey-lattice-v3.png", icon_size = 256,
     prerequisites = { "fw-shattered-network-logistics", "fw-shattered-vent-harmonics" },
     unit = unit(5200, 110), effects = {
       unlock("fw-harmonic-lattice-core"),

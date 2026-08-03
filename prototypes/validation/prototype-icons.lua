@@ -38,6 +38,7 @@ local shared_fallback_icons = {
   ["__FluxWorksAssets__/graphics/icons/items/fw-quantum-computer.png"] = true,
   ["__FluxWorksAssets__/graphics/icons/items/fw-thermal-buffer.png"] = true,
   ["__FluxWorksAssets__/graphics/icons/items/fw-control-rod-assembly.png"] = true,
+  ["__FluxWorksAssets__/graphics/icons/items/fw-harvester-head.png"] = true,
   ["__FluxWorksAssets__/graphics/icons/items/fluid-memory-storage/fluid-memory-unit.png"] = true,
   ["__FluxWorksAssets__/graphics/icons/items/deep-storage-unit/memory-unit.png"] = true,
 }

@@ -1,5 +1,6 @@
 local FluxValues = require("prototypes.recipes.flux-values")
 local Compatibility = require("prototypes.lib.compatibility-api")
+local Startup = require("prototypes.lib.startup-settings")
 
 local M = {}
 
@@ -1219,10 +1220,7 @@ function M.extraction_efficiency(metadata)
 end
 
 function M.extraction_difficulty_multiplier()
-  local setting = settings
-    and settings.startup
-    and settings.startup["fw-balance-condensing-difficulty"]
-  local difficulty = setting and setting.value or "normal"
+  local difficulty = Startup.difficulty_tier("fw-balance-condensing-difficulty", "normal")
   if difficulty == "easy" then
     return 1.20
   end

@@ -1,5 +1,19 @@
 local util = require("util")
+local Startup = require("prototypes.lib.startup-settings")
 local styles = data.raw["gui-style"].default
+
+local origin_difficulty = Startup.difficulty_tier("fw-balance-origin-singularity-difficulty", "normal")
+local origin_buffer_capacity = ({
+  easy = "30GJ",
+  normal = "120GJ",
+  hard = "240GJ",
+})[origin_difficulty] or "120GJ"
+
+local rift_logistics = ({
+  easy = { buffer = "4GJ", input = "500MW" },
+  normal = { buffer = "10GJ", input = "1GW" },
+  hard = { buffer = "20GJ", input = "1500MW" },
+})[Startup.difficulty_tier("fw-balance-rift-logistics", "normal")]
 
 styles.fw_memory_entity_preview = {
   type = "empty_widget_style",
@@ -51,16 +65,16 @@ local phase_vault = {
     layers = {
       {
         filename = "__FluxWorksAssets__/graphics/late-utility/deep-storage-unit/memory-unit.png",
-        width = 500,
-        height = 500,
+        width = 256,
+        height = 256,
         priority = "high",
         scale = 0.5,
         shift = util.by_pixel(0, 0),
       },
       {
         filename = "__FluxWorksAssets__/graphics/late-utility/deep-storage-unit/hr-memory-unit.png",
-        width = 1000,
-        height = 1000,
+        width = 512,
+        height = 512,
         priority = "high",
         scale = 0.25,
         shift = util.by_pixel(0, 0),
@@ -110,7 +124,7 @@ local spectral_reservoir = {
     picture = {
       filename = "__FluxWorksAssets__/graphics/late-utility/fluid-memory-storage/fluid-memory-unit.png",
       priority = "high",
-      size = { 462, 412 },
+      size = { 256, 256 },
       shift = util.by_pixel(0, 0),
       scale = 0.5,
     },
@@ -403,8 +417,8 @@ data:extend({
     energy_source = {
       type = "electric",
       usage_priority = "secondary-input",
-      buffer_capacity = "10GJ",
-      input_flow_limit = "1GW",
+      buffer_capacity = rift_logistics.buffer,
+      input_flow_limit = rift_logistics.input,
     },
     energy_usage = "0W",
     collision_box = { { -3.9, -4.6 }, { 3.9, 4.6 } },
@@ -431,7 +445,7 @@ data:extend({
     energy_source = {
       type = "electric",
       usage_priority = "secondary-input",
-      buffer_capacity = "120GJ",
+      buffer_capacity = origin_buffer_capacity,
       input_flow_limit = "250MW",
     },
     energy_usage = "0W",
@@ -459,8 +473,8 @@ data:extend({
     energy_source = {
       type = "electric",
       usage_priority = "secondary-input",
-      buffer_capacity = "10GJ",
-      input_flow_limit = "1GW",
+      buffer_capacity = rift_logistics.buffer,
+      input_flow_limit = rift_logistics.input,
     },
     energy_usage = "0W",
     collision_box = { { -3.9, -3.9 }, { 3.9, 3.9 } },

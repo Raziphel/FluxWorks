@@ -1,5 +1,14 @@
 local resource_autoplace = require("__core__.lualib.resource-autoplace")
 local Prototype = require("__razi_lib__/lib/prototype")
+local Startup = require("prototypes.lib.startup-settings")
+
+local rift_profiles = {
+  sparse = { density = 0.55, spots = 0.60, richness = 0.72, additional = 0.68 },
+  standard = { density = 1.00, spots = 1.00, richness = 1.00, additional = 1.00 },
+  abundant = { density = 1.55, spots = 1.45, richness = 1.40, additional = 1.35 },
+}
+local rift_profile = rift_profiles[Startup.value("fw-worldgen-flux-rift-profile", "standard")]
+  or rift_profiles.standard
 
 local crystallized_flux_icon = "__FluxWorksAssets__/graphics/icons/items/crystallized-flux.png"
 local crystallized_flux_on_belt_variants = {
@@ -79,16 +88,16 @@ data:extend({
     autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-crystalised-flux",
       order = "f",
-      base_density = 0.14,
-      richness_multiplier = 1.6,
+      base_density = 0.14 * rift_profile.density,
+      richness_multiplier = 1.6 * rift_profile.richness,
       richness_multiplier_distance_bonus = 1.4,
-      base_spots_per_km2 = 0.022,
+      base_spots_per_km2 = 0.022 * rift_profile.spots,
       has_starting_area_placement = false,
       random_spot_size_minimum = 0.01,
       random_spot_size_maximum = 0.07,
       regular_blob_amplitude_multiplier = 1,
-      richness_post_multiplier = 1.2,
-      additional_richness = 250000,
+      richness_post_multiplier = 1.2 * rift_profile.richness,
+      additional_richness = math.floor(250000 * rift_profile.additional + 0.5),
       regular_rq_factor_multiplier = 0.08,
       candidate_spot_count = 2,
     }),

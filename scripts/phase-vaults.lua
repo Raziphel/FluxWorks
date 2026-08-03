@@ -508,7 +508,7 @@ local function prime_unit(event, element)
 end
 
 function M.register_events(registrar)
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_built_entity,
     defines.events.on_robot_built_entity,
     defines.events.script_raised_built,
@@ -516,7 +516,7 @@ function M.register_events(registrar)
     defines.events.on_space_platform_built_entity,
   }, on_created)
 
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_player_mined_entity,
     defines.events.on_robot_mined_entity,
     defines.events.on_entity_died,
@@ -524,14 +524,14 @@ function M.register_events(registrar)
     defines.events.on_space_platform_mined_entity,
   }, on_destroyed)
 
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_pre_player_mined_item,
     defines.events.on_robot_pre_mined,
     defines.events.on_marked_for_deconstruction,
     defines.events.on_space_platform_pre_mined,
   }, pre_mined)
 
-  registrar.on_nth_tick(Shared.update_rate, function(event)
+  registrar:on_nth_tick(Shared.update_rate, function(event)
     local smooth_ups = event.tick % Shared.update_slots
     for unit_number, unit_data in pairs(storage.phase_vault_units or {}) do
       if unit_data.lag_id == smooth_ups then
@@ -541,7 +541,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_nth_tick(2, function()
+  registrar:on_nth_tick(2, function()
     for _, player in pairs(game.connected_players) do
       if player.opened_gui_type == defines.gui_type.item then
         local gui = player.gui.relative[GUI_NAME]
@@ -552,7 +552,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_player_changed_surface, function(event)
+  registrar:on_event(defines.events.on_player_changed_surface, function(event)
     local player = game.get_player(event.player_index)
     if player.opened_gui_type == defines.gui_type.item then
       local gui = player.gui.relative[GUI_NAME]
@@ -562,7 +562,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_gui_opened, function(event)
+  registrar:on_event(defines.events.on_gui_opened, function(event)
     if event.gui_type ~= defines.gui_type.entity or not event.entity or event.entity.name ~= VAULT_NAME then
       return
     end
@@ -632,7 +632,7 @@ function M.register_events(registrar)
     update_gui(main_frame, true)
   end)
 
-  registrar.on_event(defines.events.on_gui_closed, function(event)
+  registrar:on_event(defines.events.on_gui_closed, function(event)
     local player = game.get_player(event.player_index)
     if event.gui_type == defines.gui_type.item then
       local gui = player.gui.relative[GUI_NAME]
@@ -642,7 +642,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_gui_click, function(event)
+  registrar:on_event(defines.events.on_gui_click, function(event)
     local element = event.element
     if not (element and element.valid and element.tags and element.tags.unit_number) then
       return

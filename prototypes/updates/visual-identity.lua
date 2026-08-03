@@ -23,79 +23,8 @@ for technology_name, icon_data in pairs(technology_icons) do
   end
 end
 
--- Prefer one readable native illustration per technology. Small corner badges
--- become visual noise in the research tree and look pasted on at larger scale.
-local native_technology_icons = {
-  ["fw-actinide-recovery.png"] = { "base", "nuclear-fuel-reprocessing", "uranium-processing" },
-  ["fw-asteroid-refinement-productivity.png"] = { "space-age", "asteroid-productivity", "advanced-asteroid-processing" },
-  ["fw-biosystems-engineering.png"] = { "space-age", "biochamber", "bacteria-cultivation" },
-  ["fw-ceramic-engineering.png"] = { "space-age", "foundry", "tungsten-carbide" },
-  ["fw-conductive-networks.png"] = { "base", "circuit-network", "electric-energy-distribution-2" },
-  ["fw-cryogenic-control.png"] = { "space-age", "cryogenic-plant", "aquilo" },
-  ["fw-cryogenic-loop-productivity.png"] = { "space-age", "cryogenic-plant", "research-productivity" },
-  ["fw-deep-phase-storage.png"] = { "base", "electric-energy-acumulators", "battery-mk2-equipment" },
-  ["fw-electromagnetic-architecture.png"] = { "space-age", "electromagnetic-plant", "tesla-weapons" },
-  ["fw-fluid-control-architecture.png"] = { "base", "fluid-handling", "advanced-oil-processing" },
-  ["fw-flux-chemical-synthesis.png"] = { "base", "sulfur-processing", "advanced-oil-processing" },
-  ["fw-flux-field-theory.png"] = { "space-age", "electromagnetic-science-pack", "fusion-reactor" },
-  ["fw-flux-green-cultivation.png"] = { "space-age", "agriculture", "bioflux-processing" },
-  ["fw-flux-phase-engineering.png"] = { "space-age", "quantum-processor", "fusion-reactor" },
-  ["fw-flux-resonance.png"] = { "space-age", "fusion-reactor", "electromagnetic-science-pack" },
-  ["fw-flux-stabilization.png"] = { "base", "advanced-circuit", "battery" },
-  ["fw-flux-thermal-networks.png"] = { "space-age", "heating-tower", "base", "fluid-handling" },
-  ["fw-green-cycle-productivity.png"] = { "space-age", "bioflux-processing", "research-productivity" },
-  ["fw-hydraulic-systems.png"] = { "base", "fluid-handling", "engine" },
-  ["fw-industrial-expansion.png"] = { "base", "automation-3", "advanced-material-processing-2" },
-  ["fw-isotope-conditioning.png"] = { "base", "uranium-processing", "kovarex-enrichment-process" },
-  ["fw-liquid-mining.png"] = { "base", "oil-gathering", "electric-mining-drill" },
-  ["fw-metallurgic-assemblies.png"] = { "space-age", "foundry", "metallurgic-science-pack" },
-  ["fw-optical-instrumentation.png"] = { "base", "laser", "circuit-network" },
-  ["fw-petrochemical-engineering.png"] = { "base", "advanced-oil-processing", "plastics" },
-  ["fw-polymer-stabilization.png"] = { "base", "plastics", "sulfur-processing" },
-  ["fw-promethium-stabilization.png"] = { "space-age", "promethium-science-pack", "quantum-processor" },
-  ["fw-reactive-chemistry-productivity.png"] = { "base", "explosives", "space-age", "research-productivity" },
-  ["fw-reactor-doping.png"] = { "base", "nuclear-power", "uranium-processing" },
-  ["fw-reactor-instrumentation.png"] = { "base", "nuclear-power", "circuit-network" },
-  ["fw-remnant-beacon.png"] = { "base", "effect-transmission", "radar" },
-  ["fw-resonance-assemblies.png"] = { "space-age", "fusion-reactor", "base", "automation-3" },
-  ["fw-rift-logistics.png"] = { "space-age", "quantum-processor", "base", "logistic-system" },
-  ["fw-rocket-chunk-processing.png"] = { "base", "rocket-silo", "advanced-material-processing-2" },
-  ["fw-sealed-systems.png"] = { "base", "fluid-handling", "battery" },
-  ["fw-spectral-fluid-retention.png"] = { "space-age", "holmium-processing", "base", "fluid-handling" },
-  ["fw-superconductive-productivity.png"] = { "space-age", "electromagnetic-science-pack", "research-productivity" },
-}
-
-local function native_technology_path(mod_name, icon_name)
-  return "__" .. mod_name .. "__/graphics/technology/" .. icon_name .. ".png"
-end
-
-local function rendered_technology_filename(technology)
-  local filename = technology.icon and string.match(
-      technology.icon,
-      "^__FluxWorksAssets__/graphics/technology/([^/]+%.png)$"
-    )
-  if filename then return filename end
-  for _, layer in ipairs(technology.icons or {}) do
-    filename = layer.icon and string.match(
-      layer.icon,
-      "^__FluxWorksAssets__/graphics/technology/([^/]+%.png)$"
-    )
-    if filename then return filename end
-  end
-end
-
-for _, technology in pairs(data.raw.technology or {}) do
-  local filename = rendered_technology_filename(technology)
-  local icon_data = filename and native_technology_icons[filename]
-  if icon_data then
-    technology.icon = native_technology_path(icon_data[1], icon_data[2])
-    technology.icon_size = 256
-    technology.icons = nil
-  end
-end
-
 local technology_item_icons = {
-  ["fw-flux-mining-productivity"] = { "__FluxWorksAssets__/graphics/technology/native/fw-flux-mining-productivity.png", 64 },
+  ["fw-flux-mining-productivity"] = { "__FluxWorksAssets__/graphics/technology/native/fw-flux-mining-productivity.png", 256 },
   ["fw-flux-green-reclamation"] = { "__FluxWorksAssets__/graphics/technology/native/fw-flux-green-reclamation.png", 64 },
   ["fw-aquilo-cryochemistry"] = { "__FluxWorksAssets__/graphics/technology/native/fw-aquilo-cryochemistry.png", 64 },
   ["fw-flux-reactive-slurries"] = { "__FluxWorksAssets__/graphics/technology/native/fw-flux-reactive-slurries.png", 64 },
@@ -107,7 +36,7 @@ local technology_item_icons = {
   ["fw-elastomer-engineering"] = { "fw-elastomer-matrix.png", 64 },
   ["fw-flux-red-energetics"] = { "fw-annealed-cermet.png", 256 },
   ["fw-fusion-lattices"] = { "fw-flux-lattice.png", 256 },
-  ["fw-power-regulation"] = { "fw-power-regulator.png", 256 },
+  ["fw-power-regulation"] = { "fw-power-regulator-v2.png", 256 },
   ["fw-wafer-etching"] = { "fw-silicon-wafer.png", 128 },
 }
 
@@ -135,7 +64,7 @@ for technology_name, icon_data in pairs(origin_technology_icons) do
 end
 
 local item_icons = {
-  ["fw-power-regulator"] = { "fw-power-regulator.png", 256 },
+  ["fw-power-regulator"] = { "fw-power-regulator-v2.png", 256 },
 }
 
 for item_name, icon_data in pairs(item_icons) do
@@ -161,6 +90,36 @@ for technology_name, technology in pairs(data.raw.technology or {}) do
     local primary = technology.icons[1]
     technology.icon = primary.icon
     technology.icon_size = primary.icon_size or 64
+    technology.icons = nil
+  end
+end
+
+-- Final milestone pass: technologies that share an industrial family still need
+-- distinct silhouettes in the research tree. Reuse authored FluxWorks items that
+-- communicate the actual reward instead of repeating a neighboring technology tile.
+local distinct_technology_icons = {
+  ["fw-industrial-expansion"] = { item_path .. "fw-drive-module.png", 128 },
+  ["fw-signal-architecture"] = { item_path .. "fw-ribbon-cable.png", 256 },
+  ["fw-vulcanus-industrial-symbiosis"] = { technology_path .. "fw-metallurgic-assemblies.png", 256 },
+  ["fw-gleba-regenerative-symbiosis"] = { item_path .. "fw-gleba-spore-resin.png", 128 },
+  ["fw-aquilo-thermal-symbiosis"] = { item_path .. "fw-aquilo-cryogel.png", 128 },
+  ["fw-superconductive-systems"] = { item_path .. "fw-transformer-core.png", 256 },
+  ["fw-cross-planetary-industrial-convergence"] = { item_path .. "fw-promethium-matrix.png", 256 },
+  ["fw-shattered-vulcanus-bridgehead"] = { item_path .. "fw-vulcanus-promethium-refractory-assay.png", 256 },
+  ["fw-shattered-gleba-bridgehead"] = { item_path .. "fw-gleba-promethium-radiotrophic-assay.png", 256 },
+  ["fw-shattered-fulgora-bridgehead"] = { item_path .. "fw-fulgora-promethium-phase-assay.png", 256 },
+  ["fw-shattered-aquilo-bridgehead"] = { item_path .. "fw-aquilo-promethium-cryophase-assay.png", 256 },
+  ["fw-ion-storm-survival"] = { item_path .. "fw-storm-spine-segment.png", 128 },
+  ["fw-shattered-network-logistics"] = { technology_path .. "fw-rift-logistics.png", 256 },
+  ["fw-ion-storm-capture"] = { item_path .. "fw-harmonic-lattice-core.png", 128 },
+  ["fw-actinide-reforging"] = { item_path .. "fw-recovered-actinides.png", 64 },
+}
+
+for technology_name, icon_data in pairs(distinct_technology_icons) do
+  local technology = data.raw.technology and data.raw.technology[technology_name]
+  if technology then
+    technology.icon = icon_data[1]
+    technology.icon_size = icon_data[2]
     technology.icons = nil
   end
 end

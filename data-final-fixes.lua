@@ -12,13 +12,15 @@ load_modules({
   "prototypes.technology.domain-science",
   "prototypes.technology.progression-projects",
   "prototypes.technology.industrial-research-programs",
-  "prototypes.updates.factoriopedia",
   "prototypes.recipes.red-flux-fuels",
   "prototypes.recipes.purple-flux-materials",
   "prototypes.recipes.yellow-flux-mechanics",
   "prototypes.recipes.red-flux-sources",
   "prototypes.recipes.red-flux-mechanics",
   "prototypes.recipes.green-flux-mechanics",
+  "prototypes.technology.mastery-research",
+  "prototypes.technology.progression-programs",
+  "prototypes.updates.factoriopedia",
 })
 
 -- Cross-mod recipe and technology integration. Ordering is intentional: broad
@@ -30,8 +32,10 @@ load_modules({
   -- every generated recovery recipe prices the final bill of materials.
   "prototypes.compat.global-recipe-integration",
   "prototypes.updates.difficulty-overrides",
+  "prototypes.updates.research-difficulty",
   "prototypes.updates.technology-weave",
   "prototypes.updates.domain-science-integration",
+  "prototypes.updates.progression-compression",
   "prototypes.updates.crafting-tabs",
   "prototypes.updates.flux-composition-doctrine",
   "prototypes.updates.recipe-icons",
@@ -58,6 +62,8 @@ require("prototypes.compat.api-finalization")
 require("prototypes.recipes.flux-condensing")
 require("prototypes.updates.progression-reconciliation")
 require("prototypes.updates.flux-tooltips")
+require("prototypes.updates.remove-obsolete-beneficiation")
+require("prototypes.updates.owned-iconography")
 
 -- Factorio 2.1 replaced singular recipe categories and product probability
 -- fields. Normalize after every compatibility rewrite and before validation.

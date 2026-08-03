@@ -42,6 +42,8 @@ data:extend({
     }, 30),
     effects = {
       unlock("fw-chlorinated-binder-stock"),
+      unlock("fw-catalytic-polymerization"),
+      unlock("fw-sour-gas-desulfurization"),
     },
     order = "d-kc[fw-reactive-binders]",
   },
@@ -59,6 +61,7 @@ data:extend({
     }, 32),
     effects = {
       unlock("fw-elastomer-matrix"),
+      unlock("fw-heavy-oil-dewaxing"),
     },
     order = "d-kd[fw-elastomer-engineering]",
   },
@@ -97,6 +100,9 @@ data:extend({
       unlock("fw-hydraulic-filter-pressing"),
       unlock("fw-hydraulic-housing-forming"),
       unlock("fw-hydraulic-seal-compression"),
+      unlock("fw-hydraulic-bearing-forging"),
+      unlock("fw-hydraulic-mesh-stamping"),
+      unlock("fw-hydraulic-cable-sheathing"),
     },
     order = "d-kf[fw-hydraulic-systems]",
   },

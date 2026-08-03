@@ -22,7 +22,7 @@ Add FluxWorks as an optional dependency:
 {
   "dependencies": [
     "base >= 2.1.0",
-    "? FluxWorks >= 0.0.1"
+    "? FluxWorks >= 1.0.0"
   ]
 }
 ```

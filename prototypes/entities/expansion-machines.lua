@@ -12,8 +12,8 @@ petro.icon = thermal_plant_path .. "thermal-plant-icon.png"
 petro.icon_size = 64
 petro.minable = { mining_time = 0.5, result = "fw-petrochemical-facility" }
 petro.max_health = 650
-petro.collision_box = { { -2.5, -2.5 }, { 2.5, 2.5 } }
-petro.selection_box = { { -3, -3 }, { 3, 3 } }
+petro.collision_box = { { -2.1, -2.1 }, { 2.1, 2.1 } }
+petro.selection_box = { { -2.2, -2.2 }, { 2.2, 2.2 } }
 petro.crafting_categories = { "fw-petrochemistry" }
 petro.crafting_speed = 2.8
 petro.energy_usage = "4.8MW"

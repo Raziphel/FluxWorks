@@ -4,8 +4,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-extraction",
-    icon = "__finely-crafted-graphics__/graphics/core-extractor/core-extractor-icon.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/technology/native/fw-flux-extraction.png",
+    icon_size = 256,
     prerequisites = { "fw-liquid-mining", "fw-material-refinement", "fw-sealed-systems" },
     unit = {
       count = 160,
@@ -25,6 +25,6 @@ data:extend({
 
 Tech:get("fw-flux-extraction")
   :setCost(160)
-  :setColors("RGC")
+  :setColors("RGB")
   :setTime(32)
   :setPrerequisites({ "fw-liquid-mining", "fw-material-refinement", "fw-sealed-systems" })

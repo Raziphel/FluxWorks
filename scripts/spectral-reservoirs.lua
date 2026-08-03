@@ -10,6 +10,19 @@ local GUI_NAME = "fw_spectral_reservoir_gui"
 local FLUID_DIVISOR = 1000
 local CONTAMINATION_INTERVAL = 60 * 20
 
+local function completed_research_levels(force, name)
+  local technology = force and force.technologies and force.technologies[name]
+  if not technology then return 0 end
+  if technology.researched then return technology.level end
+  return math.max(0, technology.level - 1)
+end
+
+local function reservoir_capacity(unit_data)
+  local force = unit_data.entity and unit_data.entity.valid and unit_data.entity.force
+  local levels = completed_research_levels(force, "fw-spectral-reservoir-density")
+  return unit_data.comfortable * 200 * (1 + 0.10 * levels)
+end
+
 local function ensure_state()
   storage.spectral_reservoir_units = storage.spectral_reservoir_units or {}
 end
@@ -115,7 +128,8 @@ local function update_unit(unit_data, unit_number, force)
 
   local inventory_count = unit_data.entity.get_fluid_count(unit_data.item)
   if inventory_count > unit_data.comfortable then
-    local removed = unit_data.entity.remove_fluid(1, inventory_count - unit_data.comfortable)
+    local available_capacity = math.max(0, reservoir_capacity(unit_data) - unit_data.count)
+    local removed = unit_data.entity.remove_fluid(1, math.min(inventory_count - unit_data.comfortable, available_capacity))
     local amount_removed = removed and removed.amount or 0
     unit_data.temperature = Shared.combine_temperatures(unit_data.count, unit_data.temperature, amount_removed, removed and removed.temperature)
     unit_data.count = unit_data.count + amount_removed
@@ -358,7 +372,7 @@ local function update_gui(gui, fresh_gui)
       content_flow.storage_flow.current_storage.caption = {
         "",
         { "", "[font=default-semibold][color=255,230,192]", localised_name },
-        { "", ":[/color][/font] ", Shared.compactify(count + inventory_count) },
+        { "", ":[/color][/font] ", Shared.compactify(count + inventory_count), " / ", Shared.compactify(reservoir_capacity(unit_data)) },
       }
 
       local temperature = 0
@@ -413,7 +427,7 @@ local function update_gui(gui, fresh_gui)
 end
 
 function M.register_events(registrar)
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_built_entity,
     defines.events.on_robot_built_entity,
     defines.events.script_raised_built,
@@ -421,7 +435,7 @@ function M.register_events(registrar)
     defines.events.on_space_platform_built_entity,
   }, on_created)
 
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_player_mined_entity,
     defines.events.on_robot_mined_entity,
     defines.events.on_entity_died,
@@ -429,14 +443,14 @@ function M.register_events(registrar)
     defines.events.on_space_platform_mined_entity,
   }, on_destroyed)
 
-  registrar.on_event({
+  registrar:on_event({
     defines.events.on_pre_player_mined_item,
     defines.events.on_robot_pre_mined,
     defines.events.on_marked_for_deconstruction,
     defines.events.on_space_platform_pre_mined,
   }, pre_mined)
 
-  registrar.on_nth_tick(Shared.update_rate, function(event)
+  registrar:on_nth_tick(Shared.update_rate, function(event)
     local smooth_ups = event.tick % Shared.update_slots
     for unit_number, unit_data in pairs(storage.spectral_reservoir_units or {}) do
       if unit_data.lag_id == smooth_ups then
@@ -446,7 +460,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_nth_tick(2, function()
+  registrar:on_nth_tick(2, function()
     for _, player in pairs(game.connected_players) do
       if player.opened_gui_type == defines.gui_type.custom then
         local gui = player.gui.screen[GUI_NAME]
@@ -457,7 +471,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_player_changed_surface, function(event)
+  registrar:on_event(defines.events.on_player_changed_surface, function(event)
     local player = game.get_player(event.player_index)
     if player.opened_gui_type == defines.gui_type.custom then
       local gui = player.gui.screen[GUI_NAME]
@@ -467,7 +481,7 @@ function M.register_events(registrar)
     end
   end)
 
-  registrar.on_event(defines.events.on_gui_opened, function(event)
+  registrar:on_event(defines.events.on_gui_opened, function(event)
     if event.gui_type ~= defines.gui_type.entity or not event.entity or event.entity.name ~= RESERVOIR_NAME then
       return
     end
@@ -522,7 +536,7 @@ function M.register_events(registrar)
     update_gui(main_frame, true)
   end)
 
-  registrar.on_event(defines.events.on_gui_closed, function(event)
+  registrar:on_event(defines.events.on_gui_closed, function(event)
     local player = game.get_player(event.player_index)
     if event.gui_type == defines.gui_type.custom then
       local gui = player.gui.screen[GUI_NAME]

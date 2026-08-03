@@ -10,6 +10,32 @@ local function contains(entries, name)
   return false
 end
 
+local reach_cache = {}
+
+local function reaches(technology_name, prerequisite_name, visiting)
+  if technology_name == prerequisite_name then return true end
+  reach_cache[technology_name] = reach_cache[technology_name] or {}
+  if reach_cache[technology_name][prerequisite_name] ~= nil then
+    return reach_cache[technology_name][prerequisite_name]
+  end
+  visiting = visiting or {}
+  if visiting[technology_name] then return false end
+  visiting[technology_name] = true
+
+  local technology = data.raw.technology and data.raw.technology[technology_name]
+  for _, prerequisite in pairs((technology and technology.prerequisites) or {}) do
+    if reaches(prerequisite, prerequisite_name, visiting) then
+      visiting[technology_name] = nil
+      reach_cache[technology_name][prerequisite_name] = true
+      return true
+    end
+  end
+
+  visiting[technology_name] = nil
+  reach_cache[technology_name][prerequisite_name] = false
+  return false
+end
+
 for _, domain in ipairs(domains) do
   local pack = data.raw.item and data.raw.item[domain.pack]
   local recipe = data.raw.recipe and data.raw.recipe[domain.pack]
@@ -23,7 +49,8 @@ for _, domain in ipairs(domains) do
     error("FluxWorks science pack must use its own clean, single-layer bottle icon: " .. domain.pack)
   end
 
-  if #domain.consumers < 15 then
+  local minimum_consumers = domain.pack == "fw-planetary-convergence-science-pack" and 20 or 25
+  if #domain.consumers + #(domain.ingredient_consumers or {}) < minimum_consumers then
     error("FluxWorks domain science needs broad research utility, not a token consumer list: " .. domain.pack)
   end
   if #(domain.external_consumers or {}) < 15 then
@@ -54,7 +81,7 @@ for _, domain in ipairs(domains) do
 
   for _, technology_name in ipairs(domain.consumers) do
     local technology = data.raw.technology[technology_name]
-    if not contains(technology.prerequisites, domain.technology) then
+    if not reaches(technology_name, domain.technology) then
       error(technology_name .. " is not gated by " .. domain.technology)
     end
     if not contains(technology.unit and technology.unit.ingredients, domain.pack) then
@@ -73,10 +100,18 @@ for _, domain in ipairs(domains) do
     end
   end
 
+
+  for _, technology_name in ipairs(domain.ingredient_consumers or {}) do
+    local technology = data.raw.technology[technology_name]
+    if not technology or not contains(technology.unit and technology.unit.ingredients, domain.pack) then
+      error(technology_name .. " does not consume pivotal domain science " .. domain.pack)
+    end
+  end
+
   for _, technology_name in ipairs(domain.supporting_consumers or {}) do
     local technology = data.raw.technology[technology_name]
     if not technology
-      or not contains(technology.prerequisites, domain.technology)
+      or not reaches(technology_name, domain.technology)
       or not contains(technology.unit and technology.unit.ingredients, domain.pack)
     then
       error(technology_name .. " does not preserve supporting discipline " .. domain.pack)
@@ -120,22 +155,30 @@ local advertised_promises = {
   ["fw-industrial-methods-science-pack"] = {
     "fw-advanced-fabrication",
     "fw-hydraulic-systems",
-    "fw-lightweight-framing",
+    "fw-metallurgic-assemblies",
+    "fw-flux-extraction",
+    "fw-actinide-reforging",
   },
   ["fw-systems-analysis-science-pack"] = {
     "fw-computational-arrays",
     "fw-logic-weaving",
     "fw-power-regulation",
+    "fw-rift-network-synchronization",
+    "fw-spectral-reservoir-density",
   },
   ["fw-flux-theory-science-pack"] = {
     "fw-flux-synthesis",
     "fw-rift-harmonics",
     "fw-flux-purple-transmutation",
+    "fw-unified-spectrum-control",
+    "fw-flux-synthesis-mastery",
   },
   ["fw-planetary-convergence-science-pack"] = {
     "fw-shattered-expedition-planning",
     "fw-ion-storm-capture",
     "fw-rift-logistics",
+    "fw-convergence-research",
+    "fw-shattered-planet-yield",
   },
 }
 
@@ -146,6 +189,16 @@ for pack_name, technology_names in pairs(advertised_promises) do
       error(technology_name .. " no longer fulfills the advertised promise of " .. pack_name)
     end
   end
+end
+
+local flux_extraction = data.raw.technology and data.raw.technology["fw-flux-extraction"]
+if not flux_extraction
+  or contains(flux_extraction.unit and flux_extraction.unit.ingredients, "cryogenic-science-pack")
+then
+  error("Flux Extraction must remain a midgame technology and must not consume Cryogenic Science")
+end
+if not contains(flux_extraction.unit and flux_extraction.unit.ingredients, "fw-industrial-methods-science-pack") then
+  error("Flux Extraction must consume Industrial Methods Science")
 end
 
 local recipe_identities = {

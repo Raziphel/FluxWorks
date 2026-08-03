@@ -2,8 +2,13 @@ local content = require("prototypes.updates.factoriopedia-content")
 local Registry = require("prototypes.lib.factoriopedia-registry")
 local registry = Registry.new(content)
 
-local function set_factoriopedia_description(...)
-  registry:set_description(...)
+local function set_factoriopedia_description(prototype_type, prototype_name, locale_key)
+  if prototype_type == "technology" and prototype_name:sub(1, 3) == "fw-" then
+    registry:set_description(prototype_type, prototype_name, prototype_name, "technology-description")
+    return
+  end
+
+  registry:set_description(prototype_type, prototype_name, locale_key)
 end
 
 local function set_factoriopedia_simulation(...)
@@ -284,6 +289,18 @@ set_factoriopedia_description("technology", "fw-autonomous-network-project", "fw
 set_factoriopedia_description("technology", "fw-spectrum-control-project", "fw-spectrum-control-project-technology")
 set_factoriopedia_description("technology", "fw-convergence-directive-project", "fw-convergence-directive-project-technology")
 
+for _, name in ipairs({
+  "fw-purple-spectrum-calibration", "fw-yellow-spectrum-calibration",
+  "fw-red-spectrum-calibration", "fw-green-spectrum-calibration",
+  "fw-unified-spectrum-control", "fw-spectral-recovery-theory",
+  "fw-actinide-closure", "fw-rift-network-synchronization",
+  "fw-flux-synthesis-mastery", "fw-spectral-reservoir-density",
+  "fw-rift-transfer-harmonics", "fw-convergence-research",
+  "fw-harvester-throughput", "fw-shattered-planet-yield",
+}) do
+  set_factoriopedia_description("technology", name, name .. "-technology")
+end
+
 for _, stem in ipairs({
   "fw-industrial-yield",
   "fw-material-handling",
@@ -331,6 +348,10 @@ set_factoriopedia_simulation("storage-tank", "fw-rift-exchange-fluid-gate", "fw_
 set_factoriopedia_simulation("item", "remnant-beacon", "fw_orbital_salvage")
 set_factoriopedia_simulation("radar", "remnant-beacon", "fw_orbital_salvage")
 set_factoriopedia_simulation("technology", "rocket-chunk-processing", "fw_orbital_salvage")
+
+for _, technology in ipairs(require("prototypes.technology.progression-programs")) do
+  set_factoriopedia_description("technology", technology.name, technology.name)
+end
 
 for name, technology in pairs(data.raw.technology or {}) do
   if string.sub(name, 1, 3) == "fw-" and not (registry.descriptions.technology and registry.descriptions.technology[name]) then

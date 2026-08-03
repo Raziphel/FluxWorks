@@ -130,7 +130,7 @@ data:extend({
     type = "recipe",
     name = "silicon",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-bz-silicon-ore-clean.png",
-    icon_size = 64,
+    icon_size = 256,
     category = "smelting",
     enabled = false,
     energy_required = 3.6,

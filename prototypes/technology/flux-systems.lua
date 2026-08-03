@@ -67,7 +67,7 @@ data:extend({
     type = "technology",
     name = "fw-harvester-systems",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-harvester-head.png",
-    icon_size = 64,
+    icon_size = 256,
     prerequisites = { "fw-flux-stabilization", "fw-power-regulation", "fw-liquid-mining" },
     unit = {
       count = 320,
@@ -641,8 +641,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-flux-overdrive",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-condensed-flux-matrix.png",
-    icon_size = 64,
+    icon = "__FluxWorksAssets__/graphics/technology/native/fw-flux-overdrive.png",
+    icon_size = 256,
     prerequisites = { "fw-flux-thermal-networks", "fw-superconductive-systems", "fw-vulcanus-pyrochemistry", "fw-promethium-stabilization" },
     unit = {
       count = 1320,
@@ -750,7 +750,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-rift-harmonics",
-    icon = "__FluxWorksAssets__/graphics/icons/items/late-utility/fw-entanglement-core.png",
+    icon = "__FluxWorksAssets__/graphics/technology/fw-rift-harmonics-v3.png",
     icon_size = 256,
     prerequisites = { "fw-flux-convergence", "fw-fusion-lattices", "fw-spectral-fluid-retention" },
     unit = {
@@ -839,7 +839,7 @@ data:extend({
   {
     type = "technology",
     name = "fw-origin-transcendence",
-    icon = "__FluxWorksAssets__/graphics/icons/items/origin-projects/fw-origin-singularity.png",
+    icon = "__FluxWorksAssets__/graphics/technology/fw-origin-transcendence-v3.png",
     icon_size = 256,
     prerequisites = { "fw-storm-megastructures" },
     unit = {

@@ -2,6 +2,8 @@ local forbidden_icon_prefixes = {
   "__Krastorio2Assets__/",
 }
 
+local seen_active_icons = {}
+
 for name, technology in pairs(data.raw.technology or {}) do
   if string.sub(name, 1, 3) == "fw-" then
     local layers = technology.icons or (technology.icon and { { icon = technology.icon } }) or {}
@@ -19,6 +21,15 @@ for name, technology in pairs(data.raw.technology or {}) do
             .. name .. " -> " .. layer.icon)
         end
       end
+    end
+
+    if technology.hidden ~= true and technology.enabled ~= false then
+      local icon = layers[1].icon
+      local previous = icon and seen_active_icons[icon]
+      if previous then
+        error("Active FluxWorks technologies share one graphic: " .. previous .. " and " .. name .. " -> " .. icon)
+      end
+      if icon then seen_active_icons[icon] = name end
     end
   end
 end

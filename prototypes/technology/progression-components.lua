@@ -125,7 +125,7 @@ data:extend({
     type = "technology",
     name = "fw-polymer-chemistry",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-chlorinated-binder-stock.png",
-    icon_size = 64,
+    icon_size = 256,
     prerequisites = { "fw-liquid-mining", "fw-material-foundations", "sulfur-processing" },
     unit = tech_unit(130, {
       { "automation-science-pack", 1 },

@@ -59,6 +59,11 @@ data:extend({
   startup_difficulty("fw-balance-asteroid-pressure", "aa[balance]-q[asteroid-pressure]"),
   startup_difficulty("fw-balance-space-logistics", "aa[balance]-r[space-logistics]"),
   startup_difficulty("fw-balance-spoilage-pressure", "aa[balance]-s[spoilage-pressure]"),
+  startup_difficulty("fw-balance-origin-singularity-difficulty", "aa[balance]-t[origin-singularity]"),
+  startup_difficulty("fw-balance-shattered-asteroid-pressure", "aa[balance]-u[shattered-asteroids]"),
+  startup_difficulty("fw-balance-ion-storm-intensity", "aa[balance]-v[ion-storm]"),
+  startup_difficulty("fw-balance-research-cost", "aa[balance]-w[research]"),
+  startup_difficulty("fw-balance-rift-logistics", "aa[balance]-x[rift-logistics]"),
 
   startup_worldgen_profile("fw-worldgen-metallic-deposit-profile", "ab[worldgen]-a[metallic]"),
   startup_worldgen_profile("fw-worldgen-mineral-deposit-profile", "ab[worldgen]-b[mineral]"),
@@ -71,6 +76,8 @@ data:extend({
   startup_worldgen_profile("fw-worldgen-titanium-ore-profile", "ab[worldgen]-i[titanium]"),
   startup_bool("fw-worldgen-enable-promethium-impacts", true, "ab[worldgen]-j[promethium-enabled]"),
   startup_worldgen_profile("fw-worldgen-promethium-impact-profile", "ab[worldgen]-k[promethium-profile]"),
+  startup_worldgen_profile("fw-worldgen-flux-rift-profile", "ab[worldgen]-l[flux-rift]"),
+  startup_worldgen_profile("fw-worldgen-shattered-vent-profile", "ab[worldgen]-m[shattered-vents]"),
 
   startup_bool("fw-enable-recipe-integration", true, "ba[overhaul]-a[recipe-integration]"),
   startup_bool("fw-enable-core-material-replacements", true, "ba[overhaul]-b[core-materials]"),
@@ -97,6 +104,7 @@ data:extend({
 
   startup_bool("enable-incomplete-rocket-parts", true, "da[other]-a[incomplete-parts]"),
   startup_bool("enable-incomplete-rocket-parts-productivity", false, "da[other]-b[incomplete-productivity]"),
+  startup_bool("fw-enable-unattended-shattered-asteroids", true, "ea[performance]-a[unattended-asteroids]"),
 
   {
     type = "string-setting",
@@ -104,6 +112,6 @@ data:extend({
     setting_type = "runtime-global",
     default_value = "300kW",
     allowed_values = { "0W", "60kW", "180kW", "300kW", "480kW", "600kW", "1.2MW", "2.4MW", "3.6MW", "5MW", "10MW", "20MW", "50MW" },
-    order = "ea[performance]-a[memory-power-usage]",
+    order = "ea[performance]-b[memory-power-usage]",
   },
 })

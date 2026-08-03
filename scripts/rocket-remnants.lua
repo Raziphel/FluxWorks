@@ -109,7 +109,7 @@ local function on_rocket_launched(event)
 end
 
 function M.register_events(registrar)
-  registrar.on_event(defines.events.on_rocket_launched, on_rocket_launched)
+  registrar:on_event(defines.events.on_rocket_launched, on_rocket_launched)
 end
 
 function M.on_init()

@@ -124,14 +124,13 @@ for _, spec in ipairs(bacteria_specs) do
   if bacteria.spoil_result ~= spec.product then
     error(bacteria_name .. " must spoil into " .. spec.product)
   end
-  if not bacteria.icons or #bacteria.icons ~= 1 then
+  local icon_layers = bacteria.icons or (bacteria.icon and { { icon = bacteria.icon } }) or {}
+  if #icon_layers ~= 1 then
     error(bacteria_name .. " should use one full bacterial icon without a resource badge")
   end
-  local icon_path = bacteria.icons[1].icon or ""
-  if spec.rock == "copper-stromatolite"
-      and spec.key ~= "salt"
-      and not string.find(icon_path, "copper%-bacteria") then
-    error(bacteria_name .. " must inherit the copper-bacteria graphic family")
+  local icon_path = icon_layers[1].icon or ""
+  if spec.key ~= "salt" and not string.find(icon_path, "__FluxWorksAssets__", 1, true) then
+    error(bacteria_name .. " must use dedicated FluxWorks bacterial artwork")
   end
   if spec.key == "salt" and not string.find(icon_path, "fw%-salt%-bacteria") then
     error("Salt bacteria must use the dedicated mineral-white copper-bacteria recolor")

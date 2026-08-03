@@ -48,6 +48,7 @@ data:extend({
       unlock("fw-atomic-enricher"),
       unlock("fw-shielded-fuel-casing"),
       unlock("fw-fuel-pellet-bundle"),
+      unlock("fw-precision-uranium-assay"),
     },
     order = "d-hd[fw-fuel-fabrication]",
   },
@@ -69,6 +70,7 @@ data:extend({
       unlock("fw-moderator-lattice"),
       unlock("fw-isotope-matrix"),
       unlock("fw-reactor-grade-fuel-cell"),
+      unlock("fw-flux-isotope-separation"),
     },
     order = "d-he[fw-lattice-moderation]",
   },
@@ -76,7 +78,7 @@ data:extend({
     type = "technology",
     name = "fw-reactor-doping",
     icon = icon_path .. "fw-reactor-dopant.png",
-    icon_size = 64,
+    icon_size = 256,
     prerequisites = {
       "fw-fuel-fabrication",
       "fw-lattice-moderation",
@@ -101,7 +103,7 @@ data:extend({
     type = "technology",
     name = "fw-reactor-safeguards",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-control-rod-assembly.png",
-    icon_size = 64,
+    icon_size = 256,
     prerequisites = { "fw-reactor-doping", "fw-thermal-retention" },
     unit = tech_unit(580, {
       { "automation-science-pack", 1 },
@@ -141,6 +143,7 @@ data:extend({
     }, 42),
     effects = {
       unlock("fw-spent-fuel-reconditioning"),
+      unlock("fw-depleted-cell-dissolution"),
     },
     order = "d-hh[fw-actinide-recovery]",
   },
@@ -148,7 +151,7 @@ data:extend({
     type = "technology",
     name = "fw-actinide-sorting",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-radioactive-scrap.png",
-    icon_size = 64,
+    icon_size = 256,
     prerequisites = { "fw-actinide-recovery", "fw-reactor-safeguards" },
     unit = tech_unit(700, {
       { "automation-science-pack", 1 },
@@ -176,7 +179,7 @@ data:extend({
       },
       {
         icon = "__FluxWorksAssets__/graphics/icons/items/fw-radioactive-scrap.png",
-        icon_size = 64,
+        icon_size = 256,
         scale = 0.45,
         shift = { 9, 9 },
       },
@@ -223,6 +226,7 @@ data:extend({
     effects = {
       unlock("fw-nuclear-fuel-overdrive"),
       unlock("fw-actinide-dopant-refining"),
+      unlock("fw-fusion-cell-doping"),
     },
     order = "d-hk[fw-reactor-instrumentation]",
   },

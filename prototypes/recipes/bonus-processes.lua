@@ -48,7 +48,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 7.5,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-reactive-slurry" }, " Focusing" },
-  localised_description = { "", "Turns demolition gel into a denser double-yield charge instead of another open-ended productivity target." },
+  localised_description = { "recipe-description.fw-reactive-slurry-focusing" },
   ingredients = {
     { type = "item", name = "explosives", amount = 1 },
     { type = "fluid", name = "fw-blasting-gel", amount = 20 },
@@ -76,7 +76,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 8.0,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-napalm" }, " Gel Mixing" },
-  localised_description = { "", "A hotter, denser napalm blend that trades extra Flux conditioning for a much fatter fluid batch." },
+  localised_description = { "recipe-description.fw-gelled-napalm-mixing" },
   ingredients = {
     { type = "fluid", name = "fw-blasting-gel", amount = 30 },
     { type = "fluid", name = "light-oil", amount = 20 },
@@ -108,7 +108,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 7.0,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-green-flux-bioflux-cultivation" }, " Compost Bloom" },
-  localised_description = { "", "A spoilage-heavy recovery loop that climbs back to bioflux instead of stopping at basic nutrients." },
+  localised_description = { "recipe-description.fw-green-flux-compost-bloom" },
   ingredients = {
     { type = "item", name = "fw-nutrient-bed", amount = 1 },
     { type = "item", name = "spoilage", amount = 12 },
@@ -139,7 +139,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 8.0,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-green-flux-biolubricant-culture" }, " Bloom" },
-  localised_description = { "", "Pushes the Green Flux line toward bulk lubricant output instead of another invisible research multiplier." },
+  localised_description = { "recipe-description.fw-green-flux-biolubricant-bloom" },
   ingredients = {
     { type = "item", name = "fw-nutrient-bed", amount = 1 },
     { type = "item", name = "bioflux", amount = 2 },
@@ -167,7 +167,7 @@ local aquaculture_bloom_recipe = {
   energy_required = 7.5,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-green-flux-aquaculture-feed" }, " Bloom" },
-  localised_description = { "", "Turns Green Flux aquaculture into an actual breeding surge rather than a flat recipe productivity buff." },
+  localised_description = { "recipe-description.fw-green-flux-aquaculture-bloom" },
   ingredients = {
     { type = "item", name = "raw-fish", amount = 1 },
     { type = "item", name = "bioflux", amount = 1 },
@@ -202,7 +202,7 @@ local function add_seedbank_recipe(seed_name, order_suffix)
     energy_required = 8.5,
     allow_productivity = false,
     localised_name = { "", { "item-name." .. seed_name }, " Seedbanking" },
-    localised_description = { "", "Builds a managed seed reserve with bioflux support instead of leaning on an infinite propagation bonus." },
+    localised_description = { "recipe-description.fw-green-flux-seedbanking" },
     ingredients = {
       { type = "item", name = seed_name, amount = 1 },
       { type = "item", name = "bioflux", amount = 1 },
@@ -249,7 +249,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 8.5,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-spectral-coolant-blend" }, " Recycling" },
-  localised_description = { "", "A closed-loop coolant pass that leans on cryogel recovery instead of infinite cryochemistry productivity." },
+  localised_description = { "recipe-description.fw-spectral-coolant-recycling" },
   ingredients = {
     { type = "item", name = "ice", amount = 4 },
     { type = "item", name = "fw-aquilo-cryogel", amount = 1 },
@@ -283,7 +283,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 11.0,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-aquilo-cryogel" }, " Annealing" },
-  localised_description = { "", "Uses a colder, better-controlled pass that can preserve part of the thermal hardware in the loop." },
+  localised_description = { "recipe-description.fw-aquilo-cryogel-annealing" },
   ingredients = {
     { type = "item", name = "fw-salt", amount = 2 },
     { type = "item", name = "lithium", amount = 2 },
@@ -320,7 +320,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 11.5,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-flux-resonance-cell" }, " Calibration" },
-  localised_description = { "", "A tuned assembly pass that prioritizes catalyst retention over brute-force productivity stacking." },
+  localised_description = { "recipe-description.fw-flux-resonance-cell-calibration" },
   ingredients = {
     { type = "item", name = "fw-stabilized-flux-crystal", amount = 2 },
     { type = "item", name = "fw-resonance-substrate", amount = 1 },
@@ -359,7 +359,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 15.5,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-flux-phase-manifold" }, " Calibration" },
-  localised_description = { "", "A calmer high-end manifold build that pays you back in reliability instead of another infinite number." },
+  localised_description = { "recipe-description.fw-flux-phase-manifold-calibration" },
   ingredients = {
     { type = "item", name = "fw-flux-resonance-cell", amount = 2 },
     { type = "item", name = "fw-resonance-substrate", amount = 2 },
@@ -401,7 +401,7 @@ add_recipe_if_valid(recipes, {
   energy_required = 9.5,
   allow_productivity = false,
   localised_name = { "", { "recipe-name.fw-flux-asteroid-deep-refining" }, " Core Sorting" },
-  localised_description = { "", "Sorts asteroid cores for cleaner catalyst retention and steadier crystal recovery rather than another passive multiplier." },
+  localised_description = { "recipe-description.fw-flux-asteroid-core-sorting" },
   ingredients = {
     { type = "item", name = "fw-flux-asteroid-chunk", amount = 2 },
     { type = "item", name = "fw-flux-catalyst", amount = 1 },

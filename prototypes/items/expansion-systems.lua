@@ -25,7 +25,7 @@ data:extend({
     type = "item",
     name = "fw-chlorinated-binder-stock",
     icon = icon_path .. "fw-chlorinated-binder-stock.png",
-    icon_size = 64,
+    icon_size = 256,
     subgroup = "fw-chemistry-materials",
     order = "p[fw-chlorinated-binder-stock]",
     stack_size = 200,

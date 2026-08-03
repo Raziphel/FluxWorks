@@ -12,8 +12,8 @@ data:extend({
   {
     type = "item",
     name = "fw-crushed-iron-ore",
-    icon = "__base__/graphics/icons/iron-plate.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-crushed-iron-ore-v2.png",
+    icon_size = 256,
     subgroup = "raw-material",
     order = "f-a[fw-crushed-iron-ore]",
     stack_size = 100,
@@ -21,8 +21,8 @@ data:extend({
   {
     type = "item",
     name = "fw-crushed-copper-ore",
-    icon = "__base__/graphics/icons/copper-plate.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-crushed-copper-ore-v2.png",
+    icon_size = 256,
     subgroup = "raw-material",
     order = "f-b[fw-crushed-copper-ore]",
     stack_size = 100,
@@ -75,8 +75,8 @@ data:extend({
   {
     type = "item",
     name = "fw-iron-beam",
-    icon = "__base__/graphics/icons/iron-plate.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-iron-beam.png",
+    icon_size = 256,
     subgroup = "fw-intermediate-structural",
     order = "c[fw-iron-beam]",
     stack_size = 100,
@@ -84,8 +84,8 @@ data:extend({
   {
     type = "item",
     name = "fw-steel-beam",
-    icon = "__base__/graphics/icons/steel-plate.png",
-    icon_size = 64,
+    icon = icon_path .. "fw-steel-beam.png",
+    icon_size = 256,
     subgroup = "fw-intermediate-structural",
     order = "d[fw-steel-beam]",
     stack_size = 100,

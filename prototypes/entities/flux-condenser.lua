@@ -2,9 +2,21 @@ local item_sounds = require("__base__.prototypes.item_sounds")
 local sounds = require("__base__.prototypes.entity.sounds")
 local util = require("util")
 local convector_path = "__finely-crafted-graphics__/graphics/convector/"
-local quantum_stabilizer_path = "__finely-crafted-graphics__/graphics/quantum-stabilizer/"
-local condenser_icon = "__FluxWorksAssets__/graphics/icons/items/fw-flux-condenser.png"
+local fusion_reactor_path = "__finely-crafted-graphics__/graphics/fusion-reactor/"
+local condenser_icon = fusion_reactor_path .. "fusion-reactor-icon.png"
 local origin_forge_icon = "__FluxWorksAssets__/graphics/icons/items/origin-projects/fw-origin-forge.png"
+
+local function condenser_icons()
+  return {
+    { icon = condenser_icon, icon_size = 64 },
+    {
+      icon = "__FluxWorksAssets__/graphics/icons/items/flux.png",
+      icon_size = 64,
+      scale = 0.26,
+      shift = { 9, 9 },
+    },
+  }
+end
 
 local function working_light(intensity, size, shift, color)
   return {
@@ -78,139 +90,75 @@ local function make_origin_forge_graphics()
   }
 end
 
-local condenser = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-3"])
+local condenser = table.deepcopy(data.raw.container["steel-chest"])
 condenser.name = "fw-flux-condenser"
-condenser.icon = condenser_icon
-condenser.icon_size = 64
+condenser.icon = nil
+condenser.icon_size = nil
+condenser.icons = condenser_icons()
 condenser.minable = { mining_time = 0.8, result = "fw-flux-condenser" }
 condenser.max_health = 1500
 condenser.collision_box = { { -2.6, -2.6 }, { 2.6, 2.6 } }
 condenser.selection_box = { { -3, -3 }, { 3, 3 } }
-condenser.fast_replaceable_group = "fw-flux-condenser"
+condenser.inventory_size = 48
 condenser.icon_draw_specification = { shift = {0, -0.3} }
-condenser.circuit_wire_max_distance = assembling_machine_circuit_wire_max_distance
-condenser.circuit_connector = circuit_connector_definitions["assembling-machine"]
-condenser.crafting_categories = { "fw-flux-extraction", "fw-flux-condensing" }
-condenser.crafting_speed = 1.05
-condenser.fluid_boxes = table.deepcopy(data.raw["assembling-machine"]["chemical-plant"].fluid_boxes)
-local fluid_box_positions = {
-  { position = { -1.5, -2.59 }, direction = defines.direction.north },
-  { position = { 1.5, -2.59 }, direction = defines.direction.north },
-  { position = { -1.5, 2.59 }, direction = defines.direction.south },
-  { position = { 1.5, 2.59 }, direction = defines.direction.south },
-}
-for index, fluid_box in pairs(condenser.fluid_boxes) do
-  if type(fluid_box) == "table" then
-    fluid_box.production_type = "output"
-    fluid_box.volume = 10000
-    if fluid_box.pipe_connections and fluid_box.pipe_connections[1] and fluid_box_positions[index] then
-      fluid_box.pipe_connections[1].flow_direction = "output"
-      fluid_box.pipe_connections[1].position = fluid_box_positions[index].position
-      fluid_box.pipe_connections[1].direction = fluid_box_positions[index].direction
-    end
-  end
-end
-condenser.fluid_boxes_off_when_no_fluid_recipe = true
-condenser.energy_source = {
-  type = "electric",
-  usage_priority = "secondary-input",
-  emissions_per_minute = { pollution = 0 },
-}
-condenser.energy_usage = "7.5MW"
-condenser.ingredient_count = 40
-condenser.max_item_product_count = 40
-condenser.module_slots = 3
-condenser.allowed_effects = { "consumption", "speed", "productivity", "pollution", "quality" }
-condenser.graphics_set = {
-  animation_progress = 0.5,
-  animation = {
-    layers = {
-      {
-        priority = "high",
-        width = 410,
-        height = 410,
-        frame_count = 104,
-        lines_per_file = 8,
-        animation_speed = 0.16,
-        shift = util.by_pixel(0, -8.5),
-        scale = 0.5,
-        stripes = {
-          { filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-animation-1.png", width_in_frames = 8, height_in_frames = 8 },
-          { filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-animation-2.png", width_in_frames = 8, height_in_frames = 5 },
-        },
-      },
-      {
-        filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-shadow.png",
-        priority = "high",
-        width = 900,
-        height = 420,
-        frame_count = 1,
-        line_length = 1,
-        repeat_count = 104,
-        animation_speed = 0.16,
-        shift = util.by_pixel(13, 1),
-        scale = 0.5,
-        draw_as_shadow = true,
-      },
-    },
-  },
-  working_visualisations = {
+condenser.picture = {
+  layers = {
     {
-      fadeout = true,
-      animation = {
-        priority = "high",
-        width = 410,
-        height = 410,
-        frame_count = 104,
-        lines_per_file = 8,
-        animation_speed = 0.16,
-        shift = util.by_pixel(0, -10),
-        scale = 0.5,
-        draw_as_glow = true,
-        blend_mode = "additive",
-        stripes = {
-          { filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-animation-emission-1.png", width_in_frames = 8, height_in_frames = 8 },
-          { filename = quantum_stabilizer_path .. "quantum-stabilizer-hr-animation-emission-2.png", width_in_frames = 8, height_in_frames = 5 },
-        },
-      },
+      filename = fusion_reactor_path .. "fusion-reactor-hr-shadow.png",
+      priority = "high", width = 700, height = 600, scale = 0.5,
+      shift = util.by_pixel(18, 5), draw_as_shadow = true,
     },
     {
-      light = {
-        intensity = 0.95,
-        size = 10,
-        shift = { 0.0, -0.3 },
-        color = { r = 0.5, g = 0.85, b = 1.0 },
-      },
-    },
-    {
-      light = {
-        intensity = 0.45,
-        size = 6,
-        shift = { 1.1, 0.4 },
-        color = { r = 0.95, g = 0.35, b = 1.0 },
-      },
+      filename = fusion_reactor_path .. "fusion-reactor-hr-animation.png",
+      priority = "high", width = 400, height = 400, scale = 0.5,
+      shift = util.by_pixel(0, -8),
     },
   },
 }
 
 condenser.open_sound = { filename = "__base__/sound/open-close/electric-large-open.ogg", volume = 0.6 }
 condenser.close_sound = { filename = "__base__/sound/open-close/electric-large-close.ogg", volume = 0.6 }
-condenser.working_sound = {
-  sound = {
-    filename = "__space-age__/sound/entity/fusion/fusion-generator.ogg",
-    volume = 0.38,
-    audible_distance_modifier = 0.55,
-  },
-  fade_in_ticks = 6,
-  fade_out_ticks = 30,
-  max_sounds_per_prototype = 2,
-  sound_accents = {
-    { sound = { filename = "__space-age__/sound/entity/electromagnetic-plant/electromagnetic-plant-warmup.ogg", volume = 0.35, audible_distance_modifier = 0.25 }, frame = 1 },
-    { sound = { filename = "__space-age__/sound/entity/electromagnetic-plant/emp-electric-4.ogg", volume = 0.36, audible_distance_modifier = 0.28 }, frame = 1 },
-  },
-}
 
-local origin_forge = table.deepcopy(condenser)
+local function extraction_manifold(name, fluid, direction, position)
+  local tank = table.deepcopy(data.raw["storage-tank"]["storage-tank"])
+  tank.name = name
+  tank.localised_name = { "entity-name.fw-flux-condenser" }
+  tank.icon = nil
+  tank.icon_size = nil
+  tank.icons = condenser_icons()
+  tank.hidden = true
+  tank.flags = { "placeable-off-grid", "not-on-map", "not-selectable-in-game", "not-blueprintable", "not-deconstructable" }
+  tank.collision_mask = { layers = {} }
+  tank.collision_box = { { -2.6, -2.6 }, { 2.6, 2.6 } }
+  tank.selection_box = { { 0, 0 }, { 0, 0 } }
+  tank.selectable_in_game = false
+  tank.two_direction_only = false
+  tank.pictures = { picture = { filename = "__core__/graphics/empty.png", width = 1, height = 1 } }
+  tank.fluid_box = {
+    volume = 10000,
+    filter = fluid,
+    pipe_covers = pipecoverspictures(),
+    pipe_connections = { { direction = direction, position = position } },
+  }
+  return tank
+end
+
+local extractor_power = table.deepcopy(data.raw["electric-energy-interface"]["electric-energy-interface"])
+extractor_power.name = "fw-flux-condenser-power-interface"
+extractor_power.hidden = true
+extractor_power.flags = { "placeable-off-grid", "not-on-map", "not-selectable-in-game", "not-blueprintable", "not-deconstructable" }
+extractor_power.collision_mask = { layers = {} }
+extractor_power.collision_box = { { 0, 0 }, { 0, 0 } }
+extractor_power.selection_box = { { 0, 0 }, { 0, 0 } }
+extractor_power.selectable_in_game = false
+extractor_power.energy_source = { type = "electric", usage_priority = "secondary-input", buffer_capacity = "1875kJ", input_flow_limit = "7.5MW" }
+-- Runtime removes exactly one 15-tick processing quantum from this buffer.
+-- Keeping prototype usage at zero prevents idle drain while preserving a hard
+-- 7.5 MW network requirement whenever the extractor is working.
+extractor_power.energy_usage = "0W"
+extractor_power.picture = { filename = "__core__/graphics/empty.png", width = 1, height = 1 }
+
+local origin_forge = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-3"])
 origin_forge.name = "fw-origin-forge"
 origin_forge.minable = { mining_time = 1, result = "fw-origin-forge" }
 origin_forge.max_health = 2200
@@ -219,6 +167,7 @@ origin_forge.selection_box = { { -3.5, -3.5 }, { 3.5, 3.5 } }
 origin_forge.fast_replaceable_group = "fw-flux-condenser"
 origin_forge.crafting_categories = { "fw-origin-forging" }
 origin_forge.crafting_speed = 0.85
+origin_forge.energy_source = { type = "electric", usage_priority = "secondary-input", emissions_per_minute = { pollution = 0 } }
 origin_forge.energy_usage = "18MW"
 origin_forge.ingredient_count = 48
 origin_forge.max_item_product_count = 48
@@ -256,6 +205,26 @@ origin_forge.working_sound = {
 
 data:extend({
   {
+    type = "animation",
+    name = "fw-flux-condenser-working-animation",
+    filename = fusion_reactor_path .. "fusion-reactor-hr-animation.png",
+    priority = "high", width = 400, height = 400, frame_count = 64,
+    line_length = 8, animation_speed = 0.28, scale = 0.5,
+    shift = util.by_pixel(0, -8),
+  },
+  {
+    type = "animation",
+    name = "fw-flux-condenser-working-glow",
+    filename = fusion_reactor_path .. "fusion-reactor-hr-animation-emission.png",
+    priority = "high", width = 400, height = 400, frame_count = 64,
+    line_length = 8, animation_speed = 0.28, scale = 0.5,
+    -- The emission sheet sits above its authored reactor recess when drawn
+    -- through the runtime rendering API. Keep the body animation anchored and
+    -- lower only the tinted liquid mask onto the circular lid.
+    shift = util.by_pixel(0, 6),
+    blend_mode = "additive", draw_as_glow = true,
+  },
+  {
     type = "recipe-category",
     name = "fw-flux-condensing",
   },
@@ -270,8 +239,7 @@ data:extend({
   {
     type = "item",
     name = "fw-flux-condenser",
-    icon = condenser_icon,
-    icon_size = 64,
+    icons = condenser_icons(),
     subgroup = "production-machine",
     order = "f[fw-flux-condenser]",
     inventory_move_sound = item_sounds.metal_large_inventory_move,
@@ -296,8 +264,7 @@ data:extend({
   {
     type = "recipe",
     name = "fw-flux-condenser",
-    icon = condenser_icon,
-    icon_size = 64,
+    icons = condenser_icons(),
     enabled = false,
     energy_required = 12,
     ingredients = {
@@ -337,4 +304,9 @@ data:extend({
   },
   condenser,
   origin_forge,
+  extraction_manifold("fw-flux-condenser-purple-output", "fw-purple-flux", defines.direction.north, { -1.5, -2.59 }),
+  extraction_manifold("fw-flux-condenser-yellow-output", "fw-yellow-flux", defines.direction.north, { 1.5, -2.59 }),
+  extraction_manifold("fw-flux-condenser-red-output", "fw-red-flux", defines.direction.south, { -1.5, 2.59 }),
+  extraction_manifold("fw-flux-condenser-green-output", "fw-green-flux", defines.direction.south, { 1.5, 2.59 }),
+  extractor_power,
 })

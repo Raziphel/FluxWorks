@@ -6,11 +6,18 @@ local domains = {
       "fw-precision-alloys", "fw-circuit-foundry", "fw-beam-engineering",
       "fw-conductive-assembly", "fw-machine-casings", "fw-material-refinement",
       "fw-industrial-expansion", "fw-advanced-fabrication",
-      "fw-lightweight-framing",
-      "fw-metallurgic-assemblies", "fw-elastomer-engineering", "fw-polymer-stabilization",
+      "fw-metallurgic-assemblies", "fw-elastomer-engineering",
       "fw-hydraulic-systems", "fw-orbital-hardening",
+      "fw-flux-extraction",
       "fw-material-handling-1", "fw-material-handling-2", "fw-material-handling-3",
       "fw-industrial-yield-1", "fw-industrial-yield-2", "fw-industrial-yield-3",
+    },
+    ingredient_consumers = {
+      "fw-lightweight-framing", "fw-propellant-synthesis",
+      "fw-reactive-powders", "fw-petrochemical-engineering",
+      "fw-reactive-binders", "fw-polymer-stabilization", "fw-isotope-conditioning",
+      "fw-fuel-fabrication", "fw-lattice-moderation", "fw-actinide-recovery",
+      "fw-actinide-sorting", "fw-actinide-reforging",
     },
     external_consumers = {
       "production-science-pack", "advanced-material-processing-2", "automation-3",
@@ -26,6 +33,7 @@ local domains = {
       "fw-flux-synthesis",
       "fw-deep-phase-storage",
       "fw-origin-infrastructure",
+      "fw-flux-mining-productivity",
     },
   },
   {
@@ -39,6 +47,11 @@ local domains = {
       "fw-autonomous-logistics-1", "fw-autonomous-logistics-2", "fw-autonomous-logistics-3",
       "fw-rail-network-control-1", "fw-rail-network-control-2", "fw-rail-network-control-3",
       "fw-research-methodology-1", "fw-research-methodology-2", "fw-research-methodology-3",
+    },
+    ingredient_consumers = {
+      "fw-electromagnetic-architecture", "fw-orbital-hardening", "fw-reactor-doping",
+      "fw-fusion-lattices", "fw-deep-phase-storage", "fw-spectral-fluid-retention",
+      "fw-rift-network-synchronization", "fw-spectral-reservoir-density",
     },
     external_consumers = {
       "utility-science-pack", "logistic-system",
@@ -55,6 +68,7 @@ local domains = {
       "fw-rift-logistics",
       "fw-shattered-network-logistics",
       "fw-origin-transcendence",
+      "fw-flux-mining-productivity",
     },
   },
   {
@@ -69,6 +83,16 @@ local domains = {
       "fw-phase-assembly-productivity", "fw-green-cultivation-productivity",
       "fw-green-propagation-productivity", "fw-green-reclamation-productivity",
       "fw-flux-process-mastery-1", "fw-flux-process-mastery-2", "fw-flux-process-mastery-3",
+    },
+    ingredient_consumers = {
+      "fw-flux-metallurgy", "fw-resonance-assemblies", "fw-flux-asteroid-harvesting",
+      "fw-aquilo-cryochemistry", "fw-gleba-biochemistry", "fw-vulcanus-pyrochemistry",
+      "fw-fulgora-electrochemistry", "fw-flux-reactive-slurries",
+      "fw-flux-green-cultivation", "fw-superconductive-systems", "fw-fusion-lattices",
+      "fw-yellow-spectrum-calibration",
+      "fw-red-spectrum-calibration", "fw-green-spectrum-calibration",
+      "fw-unified-spectrum-control", "fw-spectral-recovery-theory",
+      "fw-flux-synthesis-mastery",
     },
     external_consumers = {
       "space-platform-thruster", "planet-discovery-vulcanus", "planet-discovery-gleba",
@@ -85,6 +109,7 @@ local domains = {
       "fw-ion-storm-capture",
       "fw-shattered-origin-survey",
       "fw-origin-transcendence",
+      "fw-flux-mining-productivity",
     },
   },
   {
@@ -99,6 +124,11 @@ local domains = {
       "fw-ion-storm-survival", "fw-shattered-network-logistics", "fw-shattered-origin-survey",
       "fw-ion-storm-capture", "fw-origin-infrastructure", "fw-storm-megastructures",
       "fw-origin-transcendence",
+    },
+    ingredient_consumers = {
+      "fw-rift-network-synchronization", "fw-rift-transfer-harmonics",
+      "fw-convergence-research", "fw-shattered-planet-yield",
+      "fw-flux-mining-productivity",
     },
     external_consumers = {
       "research-productivity", "worker-robots-speed-7",
@@ -179,6 +209,13 @@ for _, domain in ipairs(domains) do
   -- Avoid injecting redundant prerequisite edges into the base/mod technology graph:
   -- compatibility mods can rearrange those edges, while the pack requirement stays safe.
   for _, technology_name in ipairs(domain.external_consumers or {}) do
+    require_domain(technology_name, domain, false)
+  end
+
+  -- These technologies are already downstream of the domain unlock through
+  -- their existing branches. The bottle is the visible pivotal requirement;
+  -- a second direct prerequisite edge would be redundant and Factorio drops it.
+  for _, technology_name in ipairs(domain.ingredient_consumers or {}) do
     require_domain(technology_name, domain, false)
   end
 

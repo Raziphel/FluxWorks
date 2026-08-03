@@ -256,17 +256,13 @@ simulations.fw_synthesis_plant = make_recipe_machine_simulation({
   },
 })
 
-simulations.fw_flux_condenser = make_recipe_machine_simulation({
-  machine_name = "fw-flux-condenser",
-  recipe_name = "fw-extract-flux-from-processing-unit",
+simulations.fw_flux_condenser = make_story_focus_simulation({
   tile_name = "black-refined-concrete",
   zoom = 0.82,
   camera_y = 0.3,
-  items = {
-    { name = "processing-unit", count = 24 },
-  },
-  fluids = {},
-  extra_setup = {
+  setup_lines = {
+    'local extractor = game.surfaces[1].create_entity{name = "fw-flux-condenser", position = {0, 0}, force = "player"}',
+    'extractor.insert{name = "processing-unit", count = 24}',
     'game.surfaces[1].create_entity{name = "storage-tank", position = {-4, 0}, force = "player"}',
     'game.surfaces[1].create_entity{name = "storage-tank", position = {4, 0}, force = "player"}',
     'game.surfaces[1].create_entity{name = "steel-chest", position = {-4, 3}, force = "player"}',
@@ -569,9 +565,8 @@ simulations.fw_tip_synthesis_recovery = make_story_focus_simulation({
     'local synth = game.surfaces[1].create_entity{name = "fw-synthesis-plant", position = {-4, 0}, force = "player"}',
     'local extractor = game.surfaces[1].create_entity{name = "fw-flux-condenser", position = {4, 0}, force = "player"}',
     'game.forces.player.recipes["fw-condensed-flux-matrix"].enabled = true',
-    'game.forces.player.recipes["fw-extract-flux-from-processing-unit"].enabled = true',
     'synth.set_recipe("fw-condensed-flux-matrix")',
-    'extractor.set_recipe("fw-extract-flux-from-processing-unit")',
+    'extractor.insert{name = "processing-unit", count = 24}',
     'synth.insert{name = "fw-stabilized-flux-crystal", count = 20}',
     'synth.insert{name = "fw-flux-lattice", count = 6}',
     'synth.insert{name = "fw-flux-catalyst", count = 4}',
@@ -848,7 +843,7 @@ if mods["space-age"] then
       },
       skip_trigger = {
         type = "research",
-        technology = "fw-tube-forming",
+        technology = "fw-structural-fabrication",
       },
       simulation = simulations.fw_tip_crushing,
     },

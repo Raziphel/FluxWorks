@@ -9,7 +9,6 @@ FluxWorks builds on these separately distributed dependencies:
 
 - Factorio, Space Age, and Quality — Wube Software
 - AAI Industry, AAI Loaders, and AAI Containers & Warehouses — Earendel
-- Alien Biomes Graphics — Earendel
 - [Finely Crafted Graphics](https://mods.factorio.com/mod/finely-crafted-graphics)
   — graphics by hurricane, distributed by plexpt (CC BY)
 - RAZI Library (`razi_lib`) — Reusable Architecture & Zero-friction Infrastructure by Raziphel and the Foundry Team
@@ -40,6 +39,8 @@ their contents.
 - [Artisanal Reskins: Bob's Mods](https://mods.factorio.com/mod/reskins-bobs) —
   modified MIT-licensed graphics;
   Copyright (c) 2023 Kirazy.
+- [Unused Renders](https://github.com/malcolmriley/unused-renders) by Malcolm
+  Riley — adapted metal-beam renders, licensed under CC BY 4.0.
 
 ## Design acknowledgement
 

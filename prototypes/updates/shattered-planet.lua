@@ -4,20 +4,30 @@ local tile_graphics = require("__base__/prototypes/tile/tile-graphics")
 local tile_pollution = require("__base__/prototypes/tile/tile-pollution-values")
 local tile_sounds = require("__base__/prototypes/tile/tile-sounds")
 local tile_trigger_effects = require("__space-age__/prototypes/tile/tile-trigger-effects")
+local Startup = require("prototypes.lib.startup-settings")
+
+local vent_profiles = {
+  sparse = { frequency = 0.62, richness = 0.72 },
+  standard = { frequency = 1.00, richness = 1.00 },
+  abundant = { frequency = 1.45, richness = 1.35 },
+}
+local vent_profile = vent_profiles[Startup.value("fw-worldgen-shattered-vent-profile", "standard")]
+  or vent_profiles.standard
+local vent_probability = 0.00085 * vent_profile.frequency
+local vent_richness = 125000 * vent_profile.richness
+
+local storm_profiles = {
+  easy = { damage = 90, energy = "750MJ", interval = 60 * 12 },
+  normal = { damage = 180, energy = "1500MJ", interval = 60 * 6 },
+  hard = { damage = 300, energy = "2500MJ", interval = 60 * 3 },
+}
+local storm_profile = storm_profiles[Startup.difficulty_tier("fw-balance-ion-storm-intensity", "normal")]
 
 local tile_spritesheet_layout = tile_graphics.tile_spritesheet_layout
 local tile_layer_offset = 60
 local shattered_surface_width = 3200
 local shattered_surface_height = 3200
-local alien_biomes_loaded = mods["alien-biomes-graphics"] ~= nil
-
-local function shattered_tile_texture(alien_biomes_texture, fallback_texture)
-  if alien_biomes_loaded then
-    return alien_biomes_texture
-  end
-
-  return fallback_texture
-end
+local shattered_terrain_path = "__FluxWorksAssets__/graphics/terrain/shattered/"
 
 local empty_space_transitions =
 {
@@ -196,42 +206,42 @@ data:extend({
   {
     type = "noise-expression",
     name = "fw_shattered_red_vent_probability",
-    expression = "(control:fw_shattered_flux_vents:size > 0) * 0.00085 * clamp((fw_shattered_red_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4501, octaves = 2, input_scale = 1/15}))",
+    expression = ("(control:fw_shattered_flux_vents:size > 0) * %.8f * clamp((fw_shattered_red_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4501, octaves = 2, input_scale = 1/15}))"):format(vent_probability),
   },
   {
     type = "noise-expression",
     name = "fw_shattered_red_vent_richness",
-    expression = "(fw_shattered_red_biome > 0) * 125000 * control:fw_shattered_flux_vents:richness",
+    expression = ("(fw_shattered_red_biome > 0) * %.0f * control:fw_shattered_flux_vents:richness"):format(vent_richness),
   },
   {
     type = "noise-expression",
     name = "fw_shattered_purple_vent_probability",
-    expression = "(control:fw_shattered_flux_vents:size > 0) * 0.00085 * clamp((fw_shattered_purple_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4502, octaves = 2, input_scale = 1/15}))",
+    expression = ("(control:fw_shattered_flux_vents:size > 0) * %.8f * clamp((fw_shattered_purple_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4502, octaves = 2, input_scale = 1/15}))"):format(vent_probability),
   },
   {
     type = "noise-expression",
     name = "fw_shattered_purple_vent_richness",
-    expression = "(fw_shattered_purple_biome > 0) * 125000 * control:fw_shattered_flux_vents:richness",
+    expression = ("(fw_shattered_purple_biome > 0) * %.0f * control:fw_shattered_flux_vents:richness"):format(vent_richness),
   },
   {
     type = "noise-expression",
     name = "fw_shattered_yellow_vent_probability",
-    expression = "(control:fw_shattered_flux_vents:size > 0) * 0.00085 * clamp((fw_shattered_yellow_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4503, octaves = 2, input_scale = 1/15}))",
+    expression = ("(control:fw_shattered_flux_vents:size > 0) * %.8f * clamp((fw_shattered_yellow_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4503, octaves = 2, input_scale = 1/15}))"):format(vent_probability),
   },
   {
     type = "noise-expression",
     name = "fw_shattered_yellow_vent_richness",
-    expression = "(fw_shattered_yellow_biome > 0) * 125000 * control:fw_shattered_flux_vents:richness",
+    expression = ("(fw_shattered_yellow_biome > 0) * %.0f * control:fw_shattered_flux_vents:richness"):format(vent_richness),
   },
   {
     type = "noise-expression",
     name = "fw_shattered_green_vent_probability",
-    expression = "(control:fw_shattered_flux_vents:size > 0) * 0.00085 * clamp((fw_shattered_green_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4504, octaves = 2, input_scale = 1/15}))",
+    expression = ("(control:fw_shattered_flux_vents:size > 0) * %.8f * clamp((fw_shattered_green_biome - 0.48) * 2.1, 0, 1) * (0.50 + 0.35 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 4504, octaves = 2, input_scale = 1/15}))"):format(vent_probability),
   },
   {
     type = "noise-expression",
     name = "fw_shattered_green_vent_richness",
-    expression = "(fw_shattered_green_biome > 0) * 125000 * control:fw_shattered_flux_vents:richness",
+    expression = ("(fw_shattered_green_biome > 0) * %.0f * control:fw_shattered_flux_vents:richness"):format(vent_richness),
   },
   {
     type = "noise-expression",
@@ -358,10 +368,7 @@ data:extend({
     "b[natural]-z[shattered]-a[red]",
     tile_layer_offset + 1,
     { 176, 74, 58 },
-    shattered_tile_texture(
-      "__alien-biomes-graphics__/graphics/terrain/mineral-red-dirt-1.png",
-      "__base__/graphics/terrain/red-desert-0.png"
-    ),
+    shattered_terrain_path .. "fw-shattered-red-land.png",
     "fw_shattered_red_tile_probability"
   ),
   make_tile(
@@ -369,10 +376,7 @@ data:extend({
     "b[natural]-z[shattered]-b[purple]",
     tile_layer_offset + 2,
     { 166, 126, 201 },
-    shattered_tile_texture(
-      "__alien-biomes-graphics__/graphics/terrain/vegetation-purple-grass-1.png",
-      "__base__/graphics/terrain/dirt-1.png"
-    ),
+    shattered_terrain_path .. "fw-shattered-purple-land.png",
     "fw_shattered_purple_tile_probability"
   ),
   make_tile(
@@ -380,10 +384,7 @@ data:extend({
     "b[natural]-z[shattered]-c[yellow]",
     tile_layer_offset + 3,
     { 222, 196, 94 },
-    shattered_tile_texture(
-      "__alien-biomes-graphics__/graphics/terrain/vegetation-yellow-grass-1.png",
-      "__base__/graphics/terrain/grass-1.png"
-    ),
+    shattered_terrain_path .. "fw-shattered-yellow-land.png",
     "fw_shattered_yellow_tile_probability"
   ),
   make_tile(
@@ -391,10 +392,7 @@ data:extend({
     "b[natural]-z[shattered]-d[green]",
     tile_layer_offset + 4,
     { 79, 187, 77 },
-    shattered_tile_texture(
-      "__alien-biomes-graphics__/graphics/terrain/vegetation-green-grass-1.png",
-      "__base__/graphics/terrain/grass-1.png"
-    ),
+    shattered_terrain_path .. "fw-shattered-green-land.png",
     "fw_shattered_green_tile_probability"
   ),
 })
@@ -406,6 +404,15 @@ if shattered_location then
 end
 
 local shattered_planet = table.deepcopy(data.raw.planet["nauvis"])
+local fulgora_lightning = data.raw.planet.fulgora and data.raw.planet.fulgora.lightning_properties
+local ion_lightning = table.deepcopy(data.raw.lightning.lightning)
+
+ion_lightning.name = "fw-ion-lightning"
+ion_lightning.damage = { amount = storm_profile.damage, type = "electric" }
+ion_lightning.energy = storm_profile.energy
+ion_lightning.time_to_damage = 7
+
+data:extend({ ion_lightning })
 
 shattered_planet.name = "shattered-planet"
 shattered_planet.icon = "__space-age__/graphics/icons/shattered-planet.png"
@@ -429,6 +436,19 @@ shattered_planet.surface_properties = {
   ["solar-power"] = 80,
   pressure = 100,
   gravity = 8,
+}
+shattered_planet.lightning_properties = table.deepcopy(fulgora_lightning)
+shattered_planet.lightning_properties.lightnings_per_chunk_per_tick = 1 / storm_profile.interval
+shattered_planet.lightning_properties.search_radius = 12
+shattered_planet.lightning_properties.lightning_types = { "fw-ion-lightning" }
+shattered_planet.lightning_properties.priority_rules = {
+  { type = "id", string = "lightning-collector", priority_bonus = 10000 },
+  { type = "prototype", string = "lightning-attractor", priority_bonus = 1000 },
+  { type = "prototype", string = "logistic-robot", priority_bonus = 120 },
+  { type = "prototype", string = "construction-robot", priority_bonus = 120 },
+  { type = "prototype", string = "electric-pole", priority_bonus = 15 },
+  { type = "prototype", string = "power-switch", priority_bonus = 15 },
+  { type = "impact-soundset", string = "metal", priority_bonus = 2 },
 }
 shattered_planet.surface_render_parameters = {
   fog = effects.default_fog_effect_properties(),
