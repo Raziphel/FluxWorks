@@ -69,26 +69,45 @@ local function entry_name(entry)
   return entry and (entry.name or entry[1])
 end
 
+local function is_fluxworks_ingredient(name)
+  return name and string.sub(name, 1, 3) == "fw-"
+end
+
 local function filter_ingredients(recipe_name, ingredients, keep_names)
   if not ingredients then return end
 
   local keep = {}
-  for _, name in ipairs(keep_names) do keep[name] = true end
-
-  local filtered = {}
-  for _, ingredient in ipairs(ingredients) do
-    if keep[entry_name(ingredient)] then
-      filtered[#filtered + 1] = ingredient
+  local required_fluxworks = {}
+  for _, name in ipairs(keep_names) do
+    keep[name] = true
+    if is_fluxworks_ingredient(name) then
+      required_fluxworks[name] = true
     end
   end
 
-  if #filtered ~= #keep_names then
-    local available = {}
-    for _, ingredient in ipairs(ingredients) do
-      available[#available + 1] = entry_name(ingredient) or "<unnamed>"
+  local filtered = {}
+  local found_fluxworks = {}
+  for _, ingredient in ipairs(ingredients) do
+    local name = entry_name(ingredient)
+    -- FluxWorks owns and limits its component contribution. Ingredients from
+    -- base or other mods remain intact so alternate production chains do not
+    -- need a per-mod compatibility exception.
+    if keep[name] or not is_fluxworks_ingredient(name) then
+      filtered[#filtered + 1] = ingredient
     end
-    error(("Recipe complexity normalization for %s expected %d ingredients but found %d (available: %s)"):format(
-      recipe_name, #keep_names, #filtered, table.concat(available, ", ")
+    if required_fluxworks[name] then found_fluxworks[name] = true end
+  end
+
+  local missing = {}
+  for name in pairs(required_fluxworks) do
+    if not found_fluxworks[name] then
+      missing[#missing + 1] = name
+    end
+  end
+  if #missing > 0 then
+    table.sort(missing)
+    error(("Recipe complexity normalization for %s is missing required FluxWorks ingredients: %s"):format(
+      recipe_name, table.concat(missing, ", ")
     ))
   end
   return filtered

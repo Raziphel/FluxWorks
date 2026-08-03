@@ -802,15 +802,26 @@ end
 assert_recipe_unlocks("fw-shattered-network-logistics", { "fw-model-lattice" })
 assert_recipe_unlocks("fw-shattered-origin-survey", { "fw-harmonic-lattice-core" })
 
+local function recipe_has_category(recipe, expected_category)
+  if recipe.category == expected_category then return true end
+  for _, category in pairs(recipe.categories or {}) do
+    if category == expected_category then return true end
+  end
+  return false
+end
+
 local foundation_recipes = {}
 for recipe_name, recipe in pairs(data.raw.recipe or {}) do
-  for _, result in ipairs(recipe.results or {}) do
-    if (result.name or result[1]) == "foundation" then
-      foundation_recipes[#foundation_recipes + 1] = recipe_name
-      break
+  if not recipe_has_category(recipe, "recycling") then
+    for _, result in ipairs(recipe.results or {}) do
+      if (result.name or result[1]) == "foundation" then
+        foundation_recipes[#foundation_recipes + 1] = recipe_name
+        break
+      end
     end
   end
 end
+table.sort(foundation_recipes)
 assert(
   #foundation_recipes == 1 and foundation_recipes[1] == "foundation",
   "Foundation must have one canonical manufacturing recipe; found: " .. table.concat(foundation_recipes, ", ")
