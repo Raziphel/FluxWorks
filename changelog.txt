@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: 2026-08-03
+  Compatibility:
+    - Preserved ingredients supplied by other mods when FluxWorks normalizes recipe complexity.
+    - Excluded recycling processes when validating canonical Foundation manufacturing recipes.
+---------------------------------------------------------------------------------------------------
 Version: 0.1.0
 Date: 2026-08-03
   Release:
