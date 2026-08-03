@@ -296,7 +296,6 @@ data:extend({
       { type = "item", name = "fw-promethium-matrix", amount = 4 },
       { type = "item", name = "fusion-power-cell", amount = 12 },
       { type = "item", name = "superconductor", amount = 16 },
-      { type = "item", name = "supercapacitor", amount = 16 },
     },
     results = {
       { type = "item", name = "fw-origin-forge", amount = 1 },

@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: 2026-08-04
+  Compatibility:
+    - Limited the seven-ingredient complexity cap to FluxWorks-owned recipes so external overhaul recipes retain their intended complexity.
+    - Applied exact curated ingredient boundaries to FluxWorks recipes while preserving ingredients supplied by other mods on shared recipes.
+  Changes:
+    - Streamlined the Origin Forge recipe to seven distinct ingredients.
+  Diagnostics:
+    - Reported all over-complex FluxWorks recipes in a single validation error.
+---------------------------------------------------------------------------------------------------
 Version: 0.1.1
 Date: 2026-08-03
   Compatibility:

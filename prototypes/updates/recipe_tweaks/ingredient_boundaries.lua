@@ -78,6 +78,7 @@ local function filter_ingredients(recipe_name, ingredients, keep_names)
 
   local keep = {}
   local required_fluxworks = {}
+  local recipe_is_fluxworks_owned = is_fluxworks_ingredient(recipe_name)
   for _, name in ipairs(keep_names) do
     keep[name] = true
     if is_fluxworks_ingredient(name) then
@@ -89,10 +90,11 @@ local function filter_ingredients(recipe_name, ingredients, keep_names)
   local found_fluxworks = {}
   for _, ingredient in ipairs(ingredients) do
     local name = entry_name(ingredient)
-    -- FluxWorks owns and limits its component contribution. Ingredients from
+    -- FluxWorks recipes use their exact curated boundary. For shared recipes,
+    -- FluxWorks only limits its own component contribution; ingredients from
     -- base or other mods remain intact so alternate production chains do not
     -- need a per-mod compatibility exception.
-    if keep[name] or not is_fluxworks_ingredient(name) then
+    if keep[name] or (not recipe_is_fluxworks_owned and not is_fluxworks_ingredient(name)) then
       filtered[#filtered + 1] = ingredient
     end
     if required_fluxworks[name] then found_fluxworks[name] = true end

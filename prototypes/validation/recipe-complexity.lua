@@ -1,4 +1,3 @@
-local recipe_touches_fluxworks = require("prototypes.updates.recipe-decomposition")
 local MAXIMUM_INGREDIENTS = 7
 local COMPACT_COMPONENTS = {
   "fw-ceramic-casing",
@@ -13,20 +12,37 @@ local COMPACT_COMPONENTS = {
   "fw-transformer-core",
 }
 
+local function is_fluxworks_recipe(recipe_name)
+  return type(recipe_name) == "string" and string.sub(recipe_name, 1, 3) == "fw-"
+end
+
+local complexity_violations = {}
+
 for recipe_name, recipe in pairs(data.raw.recipe or {}) do
-  if recipe_touches_fluxworks(recipe) then
+  -- FluxWorks can enforce a total complexity budget for recipes it owns. A
+  -- base or third-party recipe merely consuming a FluxWorks component remains
+  -- under its owner's control; shared recipe boundaries are handled by the
+  -- targeted normalizer instead of a global ingredient-count assertion.
+  if is_fluxworks_recipe(recipe_name) then
     for _, ingredients in ipairs({
       recipe.ingredients,
       recipe.normal and recipe.normal.ingredients,
       recipe.expensive and recipe.expensive.ingredients,
     }) do
       if ingredients and #ingredients > MAXIMUM_INGREDIENTS then
-        error(("%s has %d ingredients; FluxWorks recipes are capped at %d to avoid parts-checklist crafting"):format(
-          recipe_name, #ingredients, MAXIMUM_INGREDIENTS
-        ))
+        complexity_violations[#complexity_violations + 1] = ("%s has %d ingredients"):format(
+          recipe_name, #ingredients
+        )
       end
     end
   end
+end
+
+if #complexity_violations > 0 then
+  table.sort(complexity_violations)
+  error(("FluxWorks-owned recipes are capped at %d ingredients to avoid parts-checklist crafting:\n  - %s"):format(
+    MAXIMUM_INGREDIENTS, table.concat(complexity_violations, "\n  - ")
+  ))
 end
 
 -- Four inputs is enough detail for parts that recur throughout the factory.
