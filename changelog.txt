@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.4
+Date: 2026-08-04
+  Progression:
+    - Moved Liquid Ore Extraction directly after Basic Fluid Handling as a 20-pack automation-science technology.
+    - Kept Latex Polymerization on Polymer Chemistry so early fluid mining does not bypass plastic progression.
+  Bugfixes:
+    - Replaced Factorio's uranium-specific fluid-mining placement warning with a generic Fluid mining not researched message.
+  Diagnostics:
+    - Added regression coverage for Fluid Mining cost, prerequisites, science packs, and the mining-with-fluid capability.
+---------------------------------------------------------------------------------------------------
 Version: 0.1.3
 Date: 2026-08-04
   Features:
@@ -21,6 +31,7 @@ Date: 2026-08-04
     - Ordered crushed ores consistently in the Intermediate Products crafting tab.
     - Prevented Industrial Methods and Systems Analysis science packs from being handcrafted.
   Graphics:
+    - Replaced the mod thumbnail with the new four-color Flux gear over the Shattered Planet.
     - Replaced the Material Handling technology icons with distinct FluxWorks artwork.
     - Corrected the Acid Synthesis recipe icon to show sulfuric acid.
   Locale:

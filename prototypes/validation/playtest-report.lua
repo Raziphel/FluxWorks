@@ -45,6 +45,20 @@ assert_report(not tech_unlocks("fw-precision-alloys", "fw-ceramic-insulator"), "
 assert_report(not recipe_has("solar-panel", "fw-power-regulator"), "solar panels still use power regulators")
 assert_report(not recipe_has("solar-panel", "fw-copper-tube"), "solar panels still use formed tubes")
 assert_report(not data.raw.resource.stone.minable.required_fluid, "stone mining still requires fluid")
+local liquid_mining = data.raw.technology["fw-liquid-mining"]
+assert_report(liquid_mining.unit.count == 20, "Fluid mining is not an early 20-pack milestone")
+assert_report(#(liquid_mining.prerequisites or {}) == 1
+  and liquid_mining.prerequisites[1] == "basic-fluid-handling",
+  "Fluid mining does not follow Basic Fluid Handling directly")
+assert_report(tech_uses("fw-liquid-mining", "automation-science-pack")
+  and not tech_uses("fw-liquid-mining", "logistic-science-pack")
+  and not tech_uses("fw-liquid-mining", "chemical-science-pack"),
+  "Fluid mining is not automation-science only")
+local enables_fluid_mining = false
+for _, effect in ipairs(liquid_mining.effects or {}) do
+  if effect.type == "mining-with-fluid" and effect.modifier == true then enables_fluid_mining = true end
+end
+assert_report(enables_fluid_mining, "Fluid mining does not enable fluid-fed drills")
 assert_report(not recipe_has("pumpjack", "fw-alumina-refractory"), "pumpjacks still require alumina refractory")
 assert_report(not recipe_has("oil-refinery", "lubricant"), "the refinery still requires its own lubricant output")
 assert_report(not recipe_has("oil-refinery", "electric-engine-unit"),

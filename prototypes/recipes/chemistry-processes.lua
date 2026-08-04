@@ -510,7 +510,7 @@ data:extend({
 })
 
 add_unlock("fw-liquid-mining", "fw-chlorine-pressurization")
-add_unlock("fw-liquid-mining", "fw-latex-polymerization")
+add_unlock("fw-polymer-chemistry", "fw-latex-polymerization")
 add_unlock("fw-polymer-chemistry", "fw-resin-polymerization")
 add_unlock("fw-polymer-chemistry", "fw-sulfur-bonding")
 add_unlock("fw-polymer-chemistry", "fw-acid-synthesis")

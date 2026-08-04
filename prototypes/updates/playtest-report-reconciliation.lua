@@ -185,6 +185,17 @@ if steam_power and steam_power.unit then
   steam_power.unit.ingredients = { { "automation-science-pack", 1 } }
 end
 
+-- Fluid-fed drills are an early mining capability. Compatibility passes may
+-- weave this node into later chemistry, so restore its final bootstrap shape.
+local liquid_mining = data.raw.technology and data.raw.technology["fw-liquid-mining"]
+if liquid_mining then
+  liquid_mining.prerequisites = { "basic-fluid-handling" }
+  liquid_mining.unit = liquid_mining.unit or {}
+  liquid_mining.unit.count = 20
+  liquid_mining.unit.time = 15
+  liquid_mining.unit.ingredients = { { "automation-science-pack", 1 } }
+end
+
 -- Electricity establishes only bootstrap electrical capability. Every more
 -- advanced assembly remains on its dedicated technology lane.
 for _, recipe_name in ipairs({

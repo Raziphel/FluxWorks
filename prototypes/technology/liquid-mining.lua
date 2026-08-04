@@ -6,14 +6,13 @@ data:extend({
     name = "fw-liquid-mining",
     icon = "__base__/graphics/icons/pumpjack.png",
     icon_size = 64,
-    prerequisites = { "fw-tube-forming", "fluid-handling", "sulfur-processing" },
+    prerequisites = { "basic-fluid-handling" },
     unit = {
-      count = 70,
+      count = 20,
       ingredients = {
         { "automation-science-pack", 1 },
-        { "logistic-science-pack", 1 },
       },
-      time = 24,
+      time = 15,
     },
     effects = {
       { type = "mining-with-fluid", modifier = true },
@@ -25,7 +24,7 @@ data:extend({
 })
 
 Tech:get("fw-liquid-mining")
-  :setCost(70)
-  :setColors("RG")
-  :setTime(24)
-  :setPrerequisites({ "fw-tube-forming", "fluid-handling", "sulfur-processing" })
+  :setCost(20)
+  :setColors("R")
+  :setTime(15)
+  :setPrerequisites({ "basic-fluid-handling" })
