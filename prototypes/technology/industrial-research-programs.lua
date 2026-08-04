@@ -168,9 +168,7 @@ for program_index, program in ipairs(programs) do
       name = name,
       -- Keep these names independent of locale fallback behavior used by
       -- generated, numbered prototypes.
-      localised_name = program.stem == "fw-industrial-yield"
-        and { "", "Industrial Yield Analysis ", tier_numerals[tier] }
-        or nil,
+      localised_name = { "", { "technology-name." .. program.stem }, " ", tier_numerals[tier] },
       icon = program.tier_icons[tier][1],
       icon_size = program.tier_icons[tier][2],
       prerequisites = prerequisites,

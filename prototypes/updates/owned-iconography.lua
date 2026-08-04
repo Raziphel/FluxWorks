@@ -56,7 +56,6 @@ local clean_programs = {
   "fw-control-miniaturization",
   "fw-cryogenic-reclamation",
   "fw-flux-process-mastery",
-  "fw-material-handling",
   "fw-orbital-recovery",
   "fw-polymer-throughput",
   "fw-precision-ceramics",
@@ -65,6 +64,12 @@ local clean_programs = {
   "fw-research-methodology",
   "fw-spectral-hardware",
 }
+
+for tier = 1, 3 do
+  technology_icons["fw-material-handling-" .. tier] = {
+    technology .. "clean/fw-material-handling-" .. tier .. "-v2.png", 256,
+  }
+end
 
 for _, stem in ipairs(clean_programs) do
   for tier = 1, 3 do

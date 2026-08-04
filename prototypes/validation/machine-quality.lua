@@ -56,7 +56,9 @@ end
 
 for category_name, minimum_recipes in pairs({
   ["fw-petrochemistry"] = 6,
-  ["fw-hydraulics"] = 9,
+  -- Eight purposeful pressure/fluid recipes remain after retiring the copper
+  -- tube duplicate; do not count filler recipes merely to inflate this number.
+  ["fw-hydraulics"] = 8,
 }) do
   local actual_recipes = count_recipes(category_name)
   if actual_recipes < minimum_recipes then

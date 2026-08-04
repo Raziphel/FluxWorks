@@ -3,7 +3,7 @@ local domains = {
     technology = "fw-industrial-methods-science",
     pack = "fw-industrial-methods-science-pack",
     consumers = {
-      "fw-precision-alloys", "fw-circuit-foundry", "fw-beam-engineering",
+      "fw-circuit-foundry", "fw-beam-engineering",
       "fw-conductive-assembly", "fw-machine-casings", "fw-material-refinement",
       "fw-industrial-expansion", "fw-advanced-fabrication",
       "fw-metallurgic-assemblies", "fw-elastomer-engineering",

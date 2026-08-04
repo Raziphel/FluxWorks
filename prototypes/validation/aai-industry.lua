@@ -2,6 +2,9 @@ if not mods["aai-industry"] then
   return
 end
 
+local Startup = require("prototypes.lib.startup-settings")
+local skip_burner_stage = Startup.enabled("fw-skip-burner-stage", false)
+
 local function ingredient_name(ingredient)
   return ingredient.name or ingredient[1]
 end
@@ -128,7 +131,6 @@ for _, assertion in ipairs({
   { "chemical-plant", "engine-unit", "chemical processing should sit on real engine hardware once AAI's machine ladder is present" },
   { "chemical-plant", "electric-motor", "chemical processing should inherit AAI's powered machine chain" },
   { "oil-refinery", "engine-unit", "refinery progression should still acknowledge the base AAI engine ladder before the full electric engine tier takes over" },
-  { "oil-refinery", "electric-engine-unit", "refinery progression should use powered engine assemblies instead of skipping from pipes to Flux controls" },
   { "oil-refinery", "electric-motor", "refinery progression should sit on top of AAI's powered machine chain" },
   { "pumpjack", "engine-unit", "pumpjacks should continue to acknowledge AAI's engine ladder even after FluxWorks adds its own machine parts" },
   { "pumpjack", "electric-motor", "pumpjacks should graduate into AAI's powered actuator branch" },
@@ -155,7 +157,9 @@ for _, assertion in ipairs({
   { "area-mining-drill", "fw-harvester-head", "AAI area mining should use the FluxWorks extraction head rather than raw plates" },
   { "area-mining-drill", "fw-sensor-package", "AAI area mining should inherit FluxWorks instrumentation" },
 }) do
-  assert_recipe_has_ingredient(assertion[1], assertion[2], assertion[3])
+  if not (skip_burner_stage and assertion[2] == "burner-lab") then
+    assert_recipe_has_ingredient(assertion[1], assertion[2], assertion[3])
+  end
 end
 
 for _, compact_recipe in ipairs({

@@ -85,11 +85,12 @@ data:extend({
   startup_bool("fw-enable-orbital-and-planetary-integration", true, "ba[overhaul]-d[orbital-planetary]"),
   startup_bool("fw-enable-fulgora-scrap-integration", true, "ba[overhaul]-e[fulgora-scrap]"),
   startup_bool("fw-enable-machine-part-rehoming", true, "ba[overhaul]-f[machine-rehoming]"),
+  startup_bool("fw-skip-burner-stage", false, "ba[overhaul]-g[skip-burner-stage]"),
   startup_choice(
     "fw-global-compatibility-mode",
     "broad",
     { "off", "conservative", "broad" },
-    "ba[overhaul]-g[global-compatibility]"
+    "ba[overhaul]-h[global-compatibility]"
   ),
 
   startup_bool("fw-enable-crafting-tab-reorganization", true, "ca[qol]-a[crafting-tabs]"),

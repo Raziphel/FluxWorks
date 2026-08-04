@@ -40,16 +40,23 @@ local function collect_recipe_uses(item_name)
   local uses = {}
 
   for recipe_name, recipe in pairs(data.raw.recipe or {}) do
-    for _, ingredient in pairs(recipe.ingredients or {}) do
-      if is_item_ingredient(ingredient, item_name) then
-        uses[#uses + 1] = recipe_name
-        break
+    -- Recycling is a disposal path, not a reason for an intermediate to exist.
+    if not string.match(recipe_name, "%-recycling$") then
+      for _, ingredient in pairs(recipe.ingredients or {}) do
+        if is_item_ingredient(ingredient, item_name) then
+          uses[#uses + 1] = recipe_name
+          break
+        end
       end
     end
   end
 
   table.sort(uses)
   return uses
+end
+
+if data.raw.item["fw-copper-tube"] or data.raw.recipe["fw-copper-tube"] then
+  error("Retired duplicate intermediate fw-copper-tube is still present")
 end
 
 local function collect_technology_uses(item_name)

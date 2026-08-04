@@ -1,4 +1,36 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.3
+Date: 2026-08-04
+  Features:
+    - Added the Skip burner stage startup setting, disabled by default, to hide burner technologies and begin with electrical infrastructure when enabled.
+  Progression:
+    - Removed seven reported bootstrap softlocks involving refined silicon, wet stone mining, power regulators, alumina refractory, oil refining, plastic, and advanced circuits.
+    - Moved basic fluid handling, steam power, military, defenses, radar, lamps, and rail transport into practical early-game positions.
+    - Reduced Electricity to 10 automation science packs and made the early steam path use short automation-science milestones.
+    - Removed cryogenic science from Propellant Synthesis and Flux Catalysis.
+    - Made crushed-ore smelting available with Ore Crushing and retired the redundant Dense Ore Smelting technology.
+    - Retired the empty duplicate Precision Alloys technology and removed duplicate early unlocks.
+    - Locked Promethium Impact Field mining behind Purple Flux extraction.
+  Balance:
+    - Simplified early boiler, railway, military, radar, wall, lamp, pole, refinery, solar-panel, and fluid-infrastructure recipes.
+    - Increased rail recipe output and removed inappropriate advanced components from basic infrastructure.
+    - Rounded FluxWorks research costs and times to clean increments of five.
+  Changes:
+    - Retired unused copper tubes and cleaned their remaining recipe references.
+    - Separated bootstrap electricity unlocks from advanced fabrication components.
+    - Ordered crushed ores consistently in the Intermediate Products crafting tab.
+    - Prevented Industrial Methods and Systems Analysis science packs from being handcrafted.
+  Graphics:
+    - Replaced the Material Handling technology icons with distinct FluxWorks artwork.
+    - Corrected the Acid Synthesis recipe icon to show sulfuric acid.
+  Locale:
+    - Added the missing Material Handling technology names and updated affected descriptions.
+  Bugfixes:
+    - Removed duplicate technology prerequisites when retired progression nodes converge on the same replacement.
+    - Corrected coal crafting-tab placement, duplicate iron-beam unlocks, rubber-sheet valuation, and excessive Fluid Handling unlocks.
+  Diagnostics:
+    - Added regression checks for the reported softlocks, burner-stage setting, recipe ownership, unlock placement, and endgame Promethium mining gate.
+---------------------------------------------------------------------------------------------------
 Version: 0.1.2
 Date: 2026-08-04
   Compatibility:

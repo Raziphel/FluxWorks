@@ -205,7 +205,6 @@ assert_recipe_unlocks("fw-elastomer-engineering", {
 })
 assert_recipe_unlocks("fw-hydraulic-systems", {
   "fw-hydraulic-plant",
-  "fw-hydraulic-tube-drawing",
   "fw-hydraulic-filter-pressing",
   "fw-hydraulic-housing-forming",
   "fw-hydraulic-seal-compression",
@@ -226,7 +225,7 @@ assert_recipe_unlocks("fw-ore-crushing", {
   "fw-crushed-lead-ore",
   "fw-crushed-titanium-ore",
 })
-assert_recipe_unlocks("fw-dense-ore-smelting", {
+assert_recipe_unlocks("fw-ore-crushing", {
   "iron-plate-from-crushed",
   "copper-plate-from-crushed",
   "tin-plate-from-crushed",
@@ -241,7 +240,6 @@ assert_recipe_unlocks("fw-structural-fabrication", {
   "fw-circuit-contact-leaded",
 })
 assert_recipe_unlocks("fw-structural-fabrication", {
-  "fw-copper-tube",
   "fw-inline-filter",
 })
 assert_recipe_unlocks("fw-systems-integration", {
@@ -301,15 +299,6 @@ assert_recipe_lacks_ingredients(
     "fw-hydraulic-manifold",
   },
   "core control hardware must stay craftable before the dedicated hydraulic lane opens"
-)
-assert_recipe_lacks_ingredients(
-  "fw-copper-tube",
-  {
-    "tin-plate",
-    "bronze-plate",
-    "fw-solder-alloy",
-  },
-  "early tube forming should stay on guaranteed bootstrap metals instead of depending on the later conductive alloy lane"
 )
 assert_recipe_lacks_ingredients(
   "fw-metal-mesh",

@@ -183,7 +183,6 @@ local ORBITAL_RECIPES = {
 }
 
 local FLUID_INGREDIENTS = {
-  ["fw-copper-tube"] = true,
   ["fw-flow-regulator"] = true,
   ["fw-thermal-buffer"] = true,
   ["fw-inline-filter"] = true,

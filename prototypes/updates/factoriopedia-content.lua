@@ -302,7 +302,7 @@ simulations.fw_hydraulic_plant = make_recipe_machine_simulation({
   items = {
     { name = "fw-flow-regulator", count = 10 },
     { name = "fw-pressure-housing", count = 10 },
-    { name = "fw-copper-tube", count = 20 },
+    { name = "pipe", count = 20 },
     { name = "fw-reinforced-seal", count = 10 },
     { name = "fw-capacitor", count = 10 },
   },
@@ -1143,7 +1143,7 @@ if mods["space-age"] then
   local handbook_tips = {
     { "finding-fluxworks-recipes", "a01", "[item=sand]", "fw-material-foundations", "fw-comminution", simulations.fw_tip_crushing },
     { "reading-the-tech-weave", "a02", "[technology=fw-industrial-methods-science]", "fw-material-foundations", "fw-industrial-methods-science", simulations.fw_tip_machine_ladder },
-    { "fluxworks-design-language", "a03", "[item=fw-copper-tube]", "fw-material-foundations", "fw-metals-fabrication", simulations.fw_tip_machine_ladder },
+    { "fluxworks-design-language", "a03", "[item=pipe]", "fw-material-foundations", "fw-metals-fabrication", simulations.fw_tip_machine_ladder },
     { "global-recipe-compatibility", "a04", "[item=fw-bearing]", "fw-material-foundations", "fw-industrial-methods-science", simulations.fw_tip_machine_ladder },
     { "settings-and-difficulty", "a05", "[technology=fw-material-foundations]", "fw-material-foundations", "fw-industrial-methods-science", simulations.fw_tip_crushing },
     { "how-flux-evaluation-works", "b01", "[entity=fw-flux-condenser]", "fw-flux-extraction", "fw-flux-synthesis", simulations.fw_tip_synthesis_recovery },

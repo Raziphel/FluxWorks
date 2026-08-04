@@ -10,7 +10,7 @@ end
 local expected_unlocks = {
   ["fw-basic-separation"] = { "fw-carbon-refining", "fw-salt-from-water" },
   ["fw-structural-fabrication"] = {
-    "fw-iron-beam", "fw-circuit-contact-leaded", "fw-copper-tube", "fw-inline-filter",
+    "fw-iron-beam", "fw-circuit-contact-leaded", "fw-inline-filter",
   },
   ["fw-wafer-etching"] = { "fw-silicon-wafer", "fw-chip-carrier" },
   ["fw-conductive-assembly"] = { "fw-tinned-cable" },
