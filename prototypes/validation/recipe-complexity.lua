@@ -1,4 +1,24 @@
-local MAXIMUM_INGREDIENTS = 7
+local MAXIMUM_INGREDIENTS = 6
+local INGREDIENT_CAP_OVERRIDES = {
+  -- These are explicit four-planet convergence recipes. Their width represents
+  -- independent production lanes rather than repeated subcomponents.
+  ["fw-converged-quantum-processor"] = 7,
+}
+local CURATED_SHARED_RECIPES = {
+  "artillery-turret", "artillery-wagon", "assembling-machine-3", "beacon",
+  "big-electric-pole", "big-mining-drill", "biochamber", "biolab",
+  "bulk-inserter", "cargo-bay", "cargo-landing-pad", "centrifuge",
+  "cryogenic-plant", "electric-furnace", "electromagnetic-plant",
+  "electromagnetic-science-pack", "fission-reactor-equipment", "fluoroketone",
+  "foundry", "fusion-generator", "fusion-power-cell", "fusion-reactor",
+  "fusion-reactor-equipment", "heat-pipe", "laser-turret", "mech-armor",
+  "nuclear-reactor", "oil-refinery", "personal-roboport-equipment",
+  "personal-roboport-mk2-equipment", "power-armor-mk2", "quantum-processor",
+  "rail-chain-signal", "rail-signal", "railgun", "railgun-turret", "recycler",
+  "roboport", "rocket-silo", "rocket-turret", "space-platform-starter-pack",
+  "spidertron", "tank", "teslagun", "tesla-turret", "train-stop",
+  "turbo-splitter",
+}
 local COMPACT_COMPONENTS = {
   "fw-ceramic-casing",
   "fw-control-assembly",
@@ -29,6 +49,24 @@ for recipe_name, recipe in pairs(data.raw.recipe or {}) do
       recipe.normal and recipe.normal.ingredients,
       recipe.expensive and recipe.expensive.ingredients,
     }) do
+      local maximum = INGREDIENT_CAP_OVERRIDES[recipe_name] or MAXIMUM_INGREDIENTS
+      if ingredients and #ingredients > maximum then
+        complexity_violations[#complexity_violations + 1] = ("%s has %d ingredients"):format(
+          recipe_name, #ingredients
+        )
+      end
+    end
+  end
+end
+
+for _, recipe_name in ipairs(CURATED_SHARED_RECIPES) do
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if recipe then
+    for _, ingredients in ipairs({
+      recipe.ingredients,
+      recipe.normal and recipe.normal.ingredients,
+      recipe.expensive and recipe.expensive.ingredients,
+    }) do
       if ingredients and #ingredients > MAXIMUM_INGREDIENTS then
         complexity_violations[#complexity_violations + 1] = ("%s has %d ingredients"):format(
           recipe_name, #ingredients
@@ -40,7 +78,7 @@ end
 
 if #complexity_violations > 0 then
   table.sort(complexity_violations)
-  error(("FluxWorks-owned recipes are capped at %d ingredients to avoid parts-checklist crafting:\n  - %s"):format(
+  error(("FluxWorks-owned and curated shared recipes are capped at %d ingredients to avoid parts-checklist crafting:\n  - %s"):format(
     MAXIMUM_INGREDIENTS, table.concat(complexity_violations, "\n  - ")
   ))
 end

@@ -1,6 +1,7 @@
 -- The final data stage is our test suite. Keep every contract in one list.
 local validators = {
   "prototypes.validation.playtest-report",
+  "prototypes.validation.dual-pipe-networks",
   "prototypes.validation.compatibility-api",
   "prototypes.validation.aai-industry",
   "prototypes.validation.combat-materials",

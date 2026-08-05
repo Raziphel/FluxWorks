@@ -1,3 +1,5 @@
+local Startup = require("prototypes.lib.startup-settings")
+local storm_profiles = require("prototypes.lib.ion-storm-profiles")
 local planet = data.raw.planet and data.raw.planet["shattered-planet"]
 local lightning = data.raw.lightning and data.raw.lightning["fw-ion-lightning"]
 local collector_item = data.raw.item and data.raw.item["lightning-collector"]
@@ -7,8 +9,21 @@ if not (planet and planet.lightning_properties) then
   error("Shattered Planet must have a real ion-lightning climate")
 end
 
-if not lightning or lightning.damage.amount < 150 or lightning.energy ~= "1500MJ" then
-  error("Shattered Planet ion lightning lost its high-energy hazard identity")
+local storm_mode = Startup.difficulty_tier("fw-balance-ion-storm-intensity", "normal")
+local expected_storm = storm_profiles[storm_mode]
+if not lightning
+  or lightning.damage.amount ~= expected_storm.damage
+  or lightning.energy ~= expected_storm.energy
+then
+  error("Shattered Planet ion lightning does not match the " .. storm_mode .. " storm profile")
+end
+
+if not (storm_profiles.easy.damage < storm_profiles.normal.damage
+  and storm_profiles.normal.damage < storm_profiles.hard.damage
+  and storm_profiles.easy.interval > storm_profiles.normal.interval
+  and storm_profiles.normal.interval > storm_profiles.hard.interval)
+then
+  error("Shattered Planet ion storm difficulty profiles are not strictly ordered")
 end
 
 if planet.lightning_properties.lightning_types[1] ~= "fw-ion-lightning" then
@@ -21,9 +36,9 @@ if not (fulgora and fulgora.lightning_properties) then
 end
 
 if planet.lightning_properties.lightnings_per_chunk_per_tick
-  <= fulgora.lightning_properties.lightnings_per_chunk_per_tick
+  ~= 1 / expected_storm.interval
 then
-  error("Shattered Planet ion lightning must be denser than Fulgora lightning")
+  error("Shattered Planet ion lightning cadence does not match the " .. storm_mode .. " storm profile")
 end
 
 local expedition = data.raw.technology and data.raw.technology["fw-shattered-expedition-planning"]

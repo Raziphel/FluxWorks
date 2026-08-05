@@ -37,10 +37,10 @@ local programs = {
   {
     stem = "fw-precision-ceramics",
     title = "Precision Ceramics",
-    description = "Improves yield across fired ceramic, wafer, insulation, and casing production.",
+    description = "Improves yield across fired ceramic, insulation, and casing production.",
     icon = "__FluxWorksAssets__/graphics/technology/fw-ceramic-engineering.png",
     prerequisite = "fw-ceramic-engineering",
-    recipes = { "fw-fired-ceramic", "fw-ceramic-wafer", "fw-ceramic-insulator", "fw-ceramic-casing" },
+    recipes = { "fw-fired-ceramic", "fw-ceramic-insulator", "fw-ceramic-casing" },
   },
   {
     stem = "fw-pressure-systems",

@@ -5,6 +5,7 @@ local tile_pollution = require("__base__/prototypes/tile/tile-pollution-values")
 local tile_sounds = require("__base__/prototypes/tile/tile-sounds")
 local tile_trigger_effects = require("__space-age__/prototypes/tile/tile-trigger-effects")
 local Startup = require("prototypes.lib.startup-settings")
+local storm_profiles = require("prototypes.lib.ion-storm-profiles")
 
 local vent_profiles = {
   sparse = { frequency = 0.62, richness = 0.72 },
@@ -16,11 +17,6 @@ local vent_profile = vent_profiles[Startup.value("fw-worldgen-shattered-vent-pro
 local vent_probability = 0.00085 * vent_profile.frequency
 local vent_richness = 125000 * vent_profile.richness
 
-local storm_profiles = {
-  easy = { damage = 90, energy = "750MJ", interval = 60 * 12 },
-  normal = { damage = 180, energy = "1500MJ", interval = 60 * 6 },
-  hard = { damage = 300, energy = "2500MJ", interval = 60 * 3 },
-}
 local storm_profile = storm_profiles[Startup.difficulty_tier("fw-balance-ion-storm-intensity", "normal")]
 
 local tile_spritesheet_layout = tile_graphics.tile_spritesheet_layout

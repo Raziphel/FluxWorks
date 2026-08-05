@@ -11,7 +11,7 @@ FluxWorks builds on these separately distributed dependencies:
 - AAI Industry, AAI Loaders, and AAI Containers & Warehouses — Earendel
 - [Finely Crafted Graphics](https://mods.factorio.com/mod/finely-crafted-graphics)
   — graphics by hurricane, distributed by plexpt (CC BY)
-- RAZI Library (`razi_lib`) — Reusable Architecture & Zero-friction Infrastructure by Raziphel and the Foundry Team
+- RAZI Library (`razi_lib`) — Reusable Architecture & Zero-friction Infrastructure by Raziphel
 - FluxWorks Assets — the companion graphics package maintained with FluxWorks
 
 These projects remain under their own licenses. Their inclusion here acknowledges

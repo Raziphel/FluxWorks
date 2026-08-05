@@ -147,6 +147,9 @@ assert_many({ "item", "recipe" }, {
   "pipe",
   "pipe-to-ground",
   "pump",
+  "fw-copper-pipe",
+  "fw-copper-pipe-to-ground",
+  "fw-copper-pump",
   "offshore-pump",
 }, "fw-logistics-fluid-handling")
 

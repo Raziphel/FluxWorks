@@ -94,7 +94,11 @@ if electricity then
   electricity.prerequisites = {}
   electricity.unit = nil
   electricity.research_trigger = { type = "craft-item", item = "copper-plate", count = 10 }
-  for _, recipe_name in ipairs({ "boiler", "steam-engine", "offshore-pump" }) do
+  for _, recipe_name in ipairs({
+    "boiler", "steam-engine", "offshore-pump",
+    "pipe", "pipe-to-ground", "pump",
+    "fw-copper-pipe", "fw-copper-pipe-to-ground", "fw-copper-pump",
+  }) do
     add_unlock(electricity, recipe_name)
     if data.raw.recipe[recipe_name] then data.raw.recipe[recipe_name].enabled = false end
   end
@@ -106,7 +110,7 @@ if automation_science then
 end
 
 for _, recipe_name in ipairs({
-  "motor", "iron-stick", "fw-bearing", "processed-fuel", "pipe", "lab",
+  "motor", "iron-stick", "fw-bearing", "processed-fuel", "lab",
 }) do enable_recipe(recipe_name) end
 
 -- No surviving recipe may quietly demand a hidden burner item.

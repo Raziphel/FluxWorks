@@ -129,7 +129,6 @@ data:extend({
     }, 20),
     effects = {
       unlock("fw-solder-wire"),
-      unlock("fw-ceramic-wafer"),
     },
     order = "c-i[fw-circuit-foundry]",
   },

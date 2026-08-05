@@ -125,8 +125,6 @@ local function deepen_aai_fluxworks_synergy()
     { "assembling-machine-3", "fw-transformer-core", 1 },
     { "chemical-plant", "engine-unit", 2 },
     { "chemical-plant", "electric-motor", 1 },
-    { "oil-refinery", "engine-unit", 2 },
-    { "oil-refinery", "electric-engine-unit", 2 },
     { "oil-refinery", "electric-motor", 2 },
     { "pumpjack", "engine-unit", 2 },
     { "pumpjack", "electric-motor", 2 },

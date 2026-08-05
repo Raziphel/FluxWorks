@@ -47,6 +47,7 @@ load_modules({
 
 -- Reapply the integration after broad recipe edits have landed.
 require("prototypes.updates.aai-industry")()
+require("prototypes.updates.dual-pipe-networks")
 
 -- Platform handling is a player-selected balance rule, so land it after every
 -- dependency has had a chance to adjust the shared acceleration expression.

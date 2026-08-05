@@ -1,4 +1,23 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: 2026-08-05
+  Features:
+    - Split early fluid logistics into lead and copper pipe, underground-pipe, and pump families that can run beside one another without connecting.
+  Balance:
+    - Audited more than 600 FluxWorks-owned or modified recipes and reduced ordinary recipes to six ingredient types or fewer.
+    - Reworked orbital, planetary, reactor, combat, logistics, electrical, AAI Industry, and native FluxWorks recipes around representative assemblies instead of repeating their subcomponents.
+    - Kept seven ingredients only for Promethium Science and Converged Quantum Processor recipes, where the width represents four independent planetary production lanes.
+  Changes:
+    - Removed the single-use Ceramic Wafer item and recipe, folded its ceramic role into Memory Die, and added a migration to Ceramic Insulators.
+    - Restored Flux Harvester conversion recipes to the familiar destination-item graphics instead of crushed or processed variants.
+    - Prevented broad compatibility from appending redundant generic motors to explicitly curated machine recipes.
+  Bugfixes:
+    - Fixed Easy and Hard Ion Storm presets failing a validator that assumed Normal-mode lightning energy.
+    - Fixed Skip burner stage failing validation after it correctly bypassed Fluid Mining's hidden Basic Fluid Handling prerequisite.
+  Diagnostics:
+    - Tightened FluxWorks recipe complexity validation to six ingredients, with an explicit convergence exception.
+    - Added complexity coverage for curated shared recipes and validation for both independent pipe networks.
+---------------------------------------------------------------------------------------------------
 Version: 0.1.4
 Date: 2026-08-04
   Progression:

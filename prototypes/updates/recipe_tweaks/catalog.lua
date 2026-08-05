@@ -1,4 +1,5 @@
 return function(shared)
+  local Compatibility = require("prototypes.lib.compatibility-api")
   local enable_orbital_and_planetary_integration = shared.enable_orbital_and_planetary_integration
   local patch_many_recipes = shared.patch_many_recipes
   local patch_recipe_set = shared.patch_recipe_set
@@ -151,20 +152,17 @@ return function(shared)
     set_recipe_ingredients("rocket-silo", {
       { type = "item", name = "steel-plate", amount = 1000 },
       { type = "item", name = "concrete", amount = 1000 },
-      { type = "item", name = "pipe", amount = 100 },
       { type = "item", name = "processing-unit", amount = 200 },
       { type = "item", name = "electric-engine-unit", amount = 200 },
       { type = "item", name = "fw-composite-panel", amount = 6 },
       { type = "item", name = "fw-power-regulator", amount = 2 },
     })
+    Compatibility.exclude_recipe("rocket-silo")
 
     set_recipe_ingredients("space-platform-foundation", {
       { type = "item", name = "steel-plate", amount = 20 },
       { type = "item", name = "copper-cable", amount = 20 },
       { type = "item", name = "fw-composite-panel", amount = 4 },
-      { type = "item", name = "fw-annealed-cermet", amount = 1 },
-      { type = "item", name = "fw-foundry-lining", amount = 1 },
-      { type = "item", name = "fw-signal-conduit", amount = 1 },
     })
 
     set_recipe_ingredients("cargo-landing-pad", {
@@ -172,18 +170,17 @@ return function(shared)
       { type = "item", name = "steel-plate", amount = 25 },
       { type = "item", name = "processing-unit", amount = 10 },
       { type = "item", name = "fw-composite-panel", amount = 4 },
-      { type = "item", name = "fw-pressure-housing", amount = 1 },
-      { type = "item", name = "fw-signal-conduit", amount = 1 },
     })
+    Compatibility.exclude_recipe("cargo-landing-pad")
 
     set_recipe_ingredients("cargo-bay", {
       { type = "item", name = "steel-plate", amount = 20 },
       { type = "item", name = "low-density-structure", amount = 20 },
       { type = "item", name = "processing-unit", amount = 5 },
       { type = "item", name = "fw-rocket-avionics", amount = 1 },
-      { type = "item", name = "fw-pressure-housing", amount = 1 },
       { type = "item", name = "fw-hydraulic-manifold", amount = 1 },
     })
+    Compatibility.exclude_recipe("cargo-bay")
 
     -- Factorio 2.1's unloading extension is active cargo-handling machinery,
     -- not four passive chests bolted onto a cargo bay.
@@ -191,7 +188,6 @@ return function(shared)
       { type = "item", name = "cargo-bay", amount = 1 },
       { type = "item", name = "bulk-inserter", amount = 4 },
       { type = "item", name = "electric-engine-unit", amount = 8 },
-      { type = "item", name = "fw-bearing", amount = 4 },
       { type = "item", name = "fw-hydraulic-manifold", amount = 2 },
       { type = "item", name = "fw-signal-conduit", amount = 2 },
     })
@@ -201,40 +197,39 @@ return function(shared)
       { type = "item", name = "electric-engine-unit", amount = 8 },
       { type = "item", name = "processing-unit", amount = 5 },
       { type = "item", name = "fw-harvester-head", amount = 1 },
-      { type = "item", name = "fw-flow-regulator", amount = 1 },
-      { type = "item", name = "fw-annealed-cermet", amount = 1 },
-      { type = "item", name = "fw-pressure-housing", amount = 1 },
     })
+    -- The Harvester Head already represents the collector's production
+    -- machinery. Do not let broad compatibility append another generic motor.
+    Compatibility.exclude_recipe("asteroid-collector")
 
     set_recipe_ingredients("thruster", {
       { type = "item", name = "steel-plate", amount = 10 },
       { type = "item", name = "processing-unit", amount = 10 },
-      { type = "item", name = "electric-engine-unit", amount = 5 },
-      { type = "item", name = "fw-annealed-cermet", amount = 2 },
+      { type = "item", name = "fw-rocket-engine", amount = 2 },
       { type = "item", name = "fw-thermal-buffer", amount = 1 },
-      { type = "item", name = "fw-pressure-housing", amount = 1 },
       { type = "item", name = "pipe", amount = 6 },
     })
+    Compatibility.exclude_recipe("thruster")
 
     set_recipe_ingredients("foundry", {
       { type = "item", name = "tungsten-carbide", amount = 50 },
       { type = "item", name = "steel-plate", amount = 50 },
       { type = "item", name = "refined-concrete", amount = 20 },
       { type = "fluid", name = "lubricant", amount = 20 },
-      { type = "item", name = "fw-cermet", amount = 8 },
       { type = "item", name = "fw-foundry-lining", amount = 1 },
       { type = "item", name = "fw-vulcanus-slag-cermet", amount = 1 },
     })
+    Compatibility.exclude_recipe("foundry")
 
     set_recipe_ingredients("electromagnetic-plant", {
       { type = "item", name = "holmium-plate", amount = 150 },
       { type = "item", name = "steel-plate", amount = 50 },
       { type = "item", name = "processing-unit", amount = 50 },
       { type = "item", name = "refined-concrete", amount = 50 },
-      { type = "item", name = "fw-ribbon-cable", amount = 6 },
       { type = "item", name = "fw-em-core", amount = 1 },
       { type = "item", name = "fw-fulgora-static-mesh", amount = 1 },
     })
+    Compatibility.exclude_recipe("electromagnetic-plant")
 
     set_recipe_ingredients("cryogenic-plant", {
       { type = "item", name = "refined-concrete", amount = 40 },
@@ -242,19 +237,17 @@ return function(shared)
       { type = "item", name = "processing-unit", amount = 20 },
       { type = "item", name = "lithium-plate", amount = 20 },
       { type = "item", name = "fw-cryo-coil", amount = 1 },
-      { type = "item", name = "fw-aquilo-cryogel", amount = 1 },
-      { type = "item", name = "fw-thermal-buffer", amount = 1 },
-      { type = "item", name = "pipe", amount = 4 },
     })
+    Compatibility.exclude_recipe("cryogenic-plant")
 
     set_recipe_ingredients("biochamber", {
       { type = "item", name = "nutrients", amount = 5 },
       { type = "item", name = "pentapod-egg", amount = 1 },
       { type = "item", name = "iron-plate", amount = 20 },
       { type = "item", name = "electronic-circuit", amount = 5 },
-      { type = "item", name = "fw-inline-filter", amount = 2 },
       { type = "item", name = "fw-gleba-spore-resin", amount = 1 },
     })
+    Compatibility.exclude_recipe("biochamber")
 
     set_recipe_ingredients("biolab", {
       { type = "item", name = "lab", amount = 1 },
@@ -263,18 +256,16 @@ return function(shared)
       { type = "item", name = "capture-robot-rocket", amount = 2 },
       { type = "item", name = "uranium-235", amount = 3 },
       { type = "item", name = "fw-gleba-spore-resin", amount = 1 },
-      { type = "item", name = "fw-logic-matrix", amount = 1 },
     })
+    Compatibility.exclude_recipe("biolab")
 
     set_recipe_ingredients("nuclear-reactor", {
       { type = "item", name = "concrete", amount = 500 },
       { type = "item", name = "steel-plate", amount = 500 },
       { type = "item", name = "advanced-circuit", amount = 500 },
       { type = "item", name = "copper-plate", amount = 500 },
-      { type = "item", name = "titanium-plate", amount = 12 },
       { type = "item", name = "fw-isotope-matrix", amount = 2 },
       { type = "item", name = "fw-control-rod-assembly", amount = 2 },
-      { type = "item", name = "fw-reactor-coolant-cartridge", amount = 1 },
     })
   end
 
@@ -292,7 +283,6 @@ return function(shared)
     { type = "item", name = "copper-cable", amount = 6 },
     { type = "item", name = "fw-aluminum-beam", amount = 2 },
     { type = "item", name = "fw-power-regulator", amount = 1 },
-    { type = "item", name = "fw-transformer-core", amount = 1 },
   })
 
   set_recipe_ingredients("oil-refinery", {
@@ -300,8 +290,6 @@ return function(shared)
     { type = "item", name = "stone-brick", amount = 10 },
     { type = "item", name = "electronic-circuit", amount = 10 },
     { type = "item", name = "pipe", amount = 10 },
-    { type = "item", name = "fw-copper-tube", amount = 4 },
-    { type = "item", name = "fw-steel-beam", amount = 2 },
     { type = "item", name = "fw-inline-filter", amount = 2 },
   })
 
@@ -318,7 +306,6 @@ return function(shared)
     { type = "item", name = "transport-belt", amount = 4 },
     { type = "item", name = "glass", amount = 4 },
     { type = "item", name = "fw-glass-lens", amount = 2 },
-    { type = "item", name = "fw-steel-beam", amount = 1 },
   })
 
   set_recipe_ingredients("recycler", {
@@ -327,25 +314,23 @@ return function(shared)
     { type = "item", name = "iron-gear-wheel", amount = 40 },
     { type = "item", name = "concrete", amount = 20 },
     { type = "item", name = "fw-inline-filter", amount = 3 },
-    { type = "item", name = "fw-cermet", amount = 2 },
   })
+  Compatibility.exclude_recipe("recycler")
 
   set_recipe_ingredients("flamethrower-turret", {
     { type = "item", name = "steel-plate", amount = 30 },
     { type = "item", name = "iron-gear-wheel", amount = 15 },
     { type = "item", name = "engine-unit", amount = 5 },
-    { type = "item", name = "lead-plate", amount = 6 },
     { type = "item", name = "pipe", amount = 10 },
     { type = "item", name = "fw-flow-regulator", amount = 1 },
   })
+  Compatibility.exclude_recipe("flamethrower-turret")
 
   set_recipe_ingredients("superconductor", {
     { type = "item", name = "holmium-plate", amount = 1 },
     { type = "item", name = "copper-plate", amount = 1 },
     { type = "item", name = "plastic-bar", amount = 1 },
     { type = "fluid", name = "light-oil", amount = 5 },
-    { type = "item", name = "fw-ribbon-cable", amount = 2 },
-    { type = "item", name = "fw-cryo-coil", amount = 1 },
     { type = "item", name = "fw-aquilo-cryogel", amount = 1 },
   })
 
@@ -355,7 +340,6 @@ return function(shared)
     { type = "item", name = "electronic-circuit", amount = 4 },
     { type = "fluid", name = "electrolyte", amount = 10 },
     { type = "item", name = "fw-capacitor", amount = 2 },
-    { type = "item", name = "fw-power-regulator", amount = 1 },
     { type = "item", name = "fw-fulgora-static-mesh", amount = 1 },
   })
 
@@ -364,34 +348,33 @@ return function(shared)
     { type = "item", name = "superconductor", amount = 1 },
     { type = "item", name = "lithium-plate", amount = 2 },
     { type = "fluid", name = "fluoroketone-cold", amount = 10 },
-    { type = "item", name = "silicon", amount = 4 },
-    { type = "item", name = "fw-em-core", amount = 1 },
     { type = "item", name = "fw-logic-matrix", amount = 1 },
-    { type = "item", name = "fw-resonance-substrate", amount = 1 },
   })
 
   set_recipe_ingredients("fw-rocket-engine", {
     { type = "item", name = "engine-unit", amount = 1 },
     { type = "item", name = "electric-engine-unit", amount = 1 },
-    { type = "item", name = "aluminum-plate", amount = 2 },
     { type = "item", name = "titanium-plate", amount = 2 },
     { type = "item", name = "fw-light-frame", amount = 1 },
-    { type = "item", name = "fw-bearing", amount = 2 },
+  })
+
+  set_recipe_ingredients("fusion-reactor-equipment", {
+    { type = "item", name = "fission-reactor-equipment", amount = 1 },
+    { type = "item", name = "fusion-power-cell", amount = 10 },
+    { type = "item", name = "quantum-processor", amount = 5 },
+    { type = "item", name = "fw-flux-phase-manifold", amount = 1 },
   })
 
   set_recipe_ingredients("fw-logic-matrix", {
     { type = "item", name = "fw-em-core", amount = 1 },
     { type = "item", name = "fw-microchip", amount = 1 },
-    { type = "item", name = "fw-sensor-package", amount = 1 },
     { type = "item", name = "processing-unit", amount = 1 },
     { type = "item", name = "fw-resonance-substrate", amount = 1 },
-    { type = "item", name = "fw-lens-array", amount = 1 },
   })
 
   set_recipe_ingredients("fw-synthesis-plant", {
     { type = "item", name = "chemical-plant", amount = 2 },
     { type = "item", name = "fw-pressure-housing", amount = 3 },
-    { type = "item", name = "fw-flow-regulator", amount = 2 },
     { type = "item", name = "fw-circuit-substrate", amount = 3 },
     { type = "item", name = "fw-cermet", amount = 4 },
     { type = "item", name = "advanced-circuit", amount = 6 },
@@ -400,20 +383,15 @@ return function(shared)
   set_recipe_ingredients("fw-flux-harvester", {
     { type = "item", name = "crusher", amount = 1 },
     { type = "item", name = "chemical-plant", amount = 1 },
-    { type = "item", name = "fw-pressure-housing", amount = 1 },
-    { type = "item", name = "fw-flow-regulator", amount = 1 },
     { type = "item", name = "fw-harvester-head", amount = 1 },
     { type = "item", name = "fw-cermet", amount = 6 },
   })
 
   set_recipe_ingredients("fw-flux-condenser", {
     { type = "item", name = "fw-annealed-cermet", amount = 8 },
-    { type = "item", name = "fw-resonance-substrate", amount = 4 },
     { type = "item", name = "fw-harvester-head", amount = 2 },
     { type = "item", name = "fw-condensed-flux-matrix", amount = 6 },
-    { type = "item", name = "fw-flux-resonance-cell", amount = 4 },
     { type = "item", name = "fw-flux-phase-manifold", amount = 2 },
-    { type = "item", name = "fw-em-core", amount = 2 },
   })
 
   -- Infrastructure, utility, and combat recipes stay specialized without
@@ -576,7 +554,6 @@ return function(shared)
     { type = "item", name = "processing-unit", amount = 60 },
     { type = "item", name = "electric-engine-unit", amount = 40 },
     { type = "item", name = "low-density-structure", amount = 30 },
-    { type = "item", name = "battery", amount = 40 },
     { type = "item", name = "fw-rocket-engine", amount = 2 },
     { type = "item", name = "fw-cermet", amount = 2 },
     { type = "item", name = "fw-logic-matrix", amount = 1 },
@@ -584,12 +561,9 @@ return function(shared)
 
   set_recipe_ingredients("mech-armor", {
     { type = "item", name = "power-armor-mk2", amount = 1 },
-    { type = "item", name = "holmium-plate", amount = 200 },
-    { type = "item", name = "processing-unit", amount = 100 },
     { type = "item", name = "superconductor", amount = 50 },
     { type = "item", name = "supercapacitor", amount = 50 },
     { type = "item", name = "fw-rift-stabilizer", amount = 1 },
-    { type = "item", name = "fw-flux-resonance-cell", amount = 1 },
     { type = "item", name = "fw-em-core", amount = 1 },
   })
 
@@ -597,7 +571,6 @@ return function(shared)
     { type = "item", name = "exoskeleton-equipment", amount = 4 },
     { type = "item", name = "fission-reactor-equipment", amount = 2 },
     { type = "item", name = "rocket-turret", amount = 1 },
-    { type = "item", name = "radar", amount = 2 },
     { type = "item", name = "titanium-plate", amount = 20 },
     { type = "item", name = "fw-bearing", amount = 1 },
     { type = "item", name = "fw-logic-matrix", amount = 1 },

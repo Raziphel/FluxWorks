@@ -308,15 +308,6 @@ data:extend({
   },
   {
     type = "item",
-    name = "fw-ceramic-wafer",
-    icon = icon_path .. "fw-ceramic-wafer.png",
-    icon_size = 256,
-    subgroup = "fw-intermediate-precision",
-    order = "e[fw-ceramic-wafer]",
-    stack_size = 200,
-  },
-  {
-    type = "item",
     name = "fw-silicon-wafer",
     icon = icon_path .. "fw-silicon-wafer.png",
     icon_size = 128,

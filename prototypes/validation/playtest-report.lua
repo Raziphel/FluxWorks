@@ -47,9 +47,14 @@ assert_report(not recipe_has("solar-panel", "fw-copper-tube"), "solar panels sti
 assert_report(not data.raw.resource.stone.minable.required_fluid, "stone mining still requires fluid")
 local liquid_mining = data.raw.technology["fw-liquid-mining"]
 assert_report(liquid_mining.unit.count == 20, "Fluid mining is not an early 20-pack milestone")
-assert_report(#(liquid_mining.prerequisites or {}) == 1
-  and liquid_mining.prerequisites[1] == "basic-fluid-handling",
-  "Fluid mining does not follow Basic Fluid Handling directly")
+if Startup.enabled("fw-skip-burner-stage", false) then
+  assert_report(#(liquid_mining.prerequisites or {}) == 0,
+    "Fluid mining retains a hidden Basic Fluid Handling prerequisite in skip-burner mode")
+else
+  assert_report(#(liquid_mining.prerequisites or {}) == 1
+    and liquid_mining.prerequisites[1] == "basic-fluid-handling",
+    "Fluid mining does not follow Basic Fluid Handling directly")
+end
 assert_report(tech_uses("fw-liquid-mining", "automation-science-pack")
   and not tech_uses("fw-liquid-mining", "logistic-science-pack")
   and not tech_uses("fw-liquid-mining", "chemical-science-pack"),
