@@ -7,6 +7,7 @@ local programs = {
   "fw-flux-process-mastery",
 }
 
+local ResearchDifficulty = require("prototypes.lib.research-difficulty")
 local expected_counts = { 240, 700, 1800 }
 local domain_packs = {
   "fw-industrial-methods-science-pack",
@@ -46,8 +47,18 @@ for _, stem in ipairs(programs) do
       error("FluxWorks research program technology has no tangible effect: " .. name)
     end
 
-    if not technology.unit or technology.unit.count ~= expected_counts[tier] then
-      error("FluxWorks research program cost drifted for " .. name)
+    local expected_count = ResearchDifficulty.normalized_count(
+      ResearchDifficulty.scaled_count(
+        expected_counts[tier],
+        ResearchDifficulty.profile.count
+      )
+    )
+    if not technology.unit or technology.unit.count ~= expected_count then
+      error(("FluxWorks research program cost drifted for %s: expected %s, got %s"):format(
+        name,
+        tostring(expected_count),
+        tostring(technology.unit and technology.unit.count)
+      ))
     end
 
     for _, pack in ipairs(domain_packs) do

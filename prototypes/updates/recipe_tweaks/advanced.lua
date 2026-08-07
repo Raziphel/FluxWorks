@@ -156,8 +156,6 @@ return function(shared)
   -- Advanced equipment uses the corresponding high-grade component families.
   if enable_orbital_and_planetary_integration then
     patch_recipe_set({
-      { "engine-unit", "fw-pressure-housing", 1 },
-      { "electric-engine-unit", "fw-flow-regulator", 1 },
       { "centrifuge", "fw-pressure-housing", 1 },
       { "electrolyser", "fw-pressure-housing", 1 },
       { "recycler", "fw-pressure-housing", 1 },

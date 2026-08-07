@@ -131,7 +131,6 @@ for _, assertion in ipairs({
   { "oil-refinery", "electric-motor", "refinery progression should sit on top of AAI's powered machine chain" },
   { "pumpjack", "engine-unit", "pumpjacks should continue to acknowledge AAI's engine ladder even after FluxWorks adds its own machine parts" },
   { "pumpjack", "electric-motor", "pumpjacks should graduate into AAI's powered actuator branch" },
-  { "pumpjack", "fw-flow-regulator", "fluid extraction should consume FluxWorks regulation once the AAI-powered machine base already exists" },
   { "pumpjack", "fw-bearing", "pumpjacks should also cash in the FluxWorks bearing branch instead of stopping at generic driven parts" },
   { "big-mining-drill", "electric-engine-unit", "late extraction should keep the full AAI powered-engine tax visible instead of flattening back to control boxes" },
   { "big-mining-drill", "fw-harvester-head", "late extraction should use one complete FluxWorks extraction assembly instead of repeating its control, regulation, and sensing subcomponents" },

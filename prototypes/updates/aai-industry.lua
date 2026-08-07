@@ -128,7 +128,6 @@ local function deepen_aai_fluxworks_synergy()
     { "oil-refinery", "electric-motor", 2 },
     { "pumpjack", "engine-unit", 2 },
     { "pumpjack", "electric-motor", 2 },
-    { "pumpjack", "fw-flow-regulator", 1 },
     { "pumpjack", "fw-bearing", 2 },
     { "big-mining-drill", "electric-engine-unit", 2 },
     { "big-mining-drill", "fw-control-assembly", 1 },

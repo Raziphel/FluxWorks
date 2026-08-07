@@ -546,7 +546,6 @@ return function(shared)
     "laser-turret",
     "flamethrower-turret",
     "artillery-turret",
-    "land-mine",
   }, "fw-cermet", 1)
 
   if enable_combat_recipe_integration then

@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.1
+Date: 2026-08-07
+  Bugfixes:
+    - Fixed Easy and Hard research-cost settings failing data-stage validation after correctly scaling finite FluxWorks technology costs.
+    - Removed premature Cermet, Pressure Housing, and Flow Regulator requirements from early military, engine, and oil-extraction recipes.
+  Compatibility:
+    - Kept AAI Industry pumpjacks on their early engine, electric-motor, and bearing progression without pulling in later fluid-regulation research.
+  Diagnostics:
+    - Made research-program validation account for the selected cost profile and the final five-pack research-cost rounding pass.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.0
 Date: 2026-08-05
   Features:
