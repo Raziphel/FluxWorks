@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.3
+Date: 2026-08-09
+  Bugfixes:
+    - Corrected icon-size declarations for the Petrochemical Facility, Reactive Powders, Bauxite Slurry Clarification, and Tin Ore Beneficiation so their sprites load successfully.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.2
 Date: 2026-08-09
   Bugfixes:
