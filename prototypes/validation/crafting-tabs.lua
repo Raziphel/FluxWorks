@@ -388,13 +388,28 @@ assert_many({ "item", "recipe" }, {
 }, "fw-energy-reactors")
 
 assert_many({ "item", "recipe" }, {
-  "solid-fuel",
   "rocket-fuel",
   "nuclear-fuel",
   "fusion-power-cell",
   "fw-shielded-fuel-casing",
   "fw-fuel-pellet-bundle",
 }, "fw-energy-fuels")
+
+assert_many({ "item" }, { "solid-fuel" }, "fw-chemistry-petrochem")
+assert_many({ "recipe" }, {
+  "solid-fuel-from-heavy-oil",
+  "solid-fuel-from-light-oil",
+  "solid-fuel-from-petroleum-gas",
+  "solid-fuel-from-ammonia",
+}, "fw-chemistry-petrochem")
+assert_many({ "item" }, {
+  "water-barrel", "fluoroketone-hot-barrel", "fluoroketone-cold-barrel",
+}, "fw-chemistry-barrels")
+assert_many({ "recipe" }, {
+  "water-barrel", "empty-water-barrel",
+  "fluoroketone-hot-barrel", "empty-fluoroketone-hot-barrel",
+  "fluoroketone-cold-barrel", "empty-fluoroketone-cold-barrel",
+}, "fw-chemistry-barrels")
 
 assert_many({ "recipe" }, {
   "fw-reactor-grade-fuel-cell",

@@ -53,8 +53,19 @@ end
 if not collector_item or collector_item.place_result ~= "lightning-collector" then
   error("Lightning collectors must remain directly placeable expedition equipment")
 end
-if not collector_entity or collector_entity.surface_conditions then
-  error("Lightning collectors must be placeable on Shattered Planet land")
+if not collector_entity then
+  error("Lightning collector entity is unavailable")
+end
+for _, condition in ipairs(collector_entity.surface_conditions or {}) do
+  local property = condition.property
+  local surface_property = data.raw["surface-property"] and data.raw["surface-property"][property]
+  local value = planet.surface_properties and planet.surface_properties[property]
+    or surface_property and surface_property.default_value
+  if type(value) == "number"
+    and ((condition.min and value < condition.min) or (condition.max and value > condition.max))
+  then
+    error("Lightning collectors remain blocked on Shattered Planet by surface property " .. property)
+  end
 end
 
 for _, tile_name in ipairs({

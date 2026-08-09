@@ -6,7 +6,7 @@ data:extend({
     name = "fw-liquid-mining",
     icon = "__base__/graphics/icons/pumpjack.png",
     icon_size = 64,
-    prerequisites = { "basic-fluid-handling" },
+    prerequisites = { "electric-mining-drill", "oil-processing" },
     unit = {
       count = 20,
       ingredients = {
@@ -27,4 +27,4 @@ Tech:get("fw-liquid-mining")
   :setCost(20)
   :setColors("R")
   :setTime(15)
-  :setPrerequisites({ "basic-fluid-handling" })
+  :setPrerequisites({ "electric-mining-drill", "oil-processing" })

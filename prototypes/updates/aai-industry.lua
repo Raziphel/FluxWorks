@@ -186,7 +186,7 @@ local function deepen_aai_fluxworks_synergy()
   set_recipe_ingredients("steam-engine", {
     { type = "item", name = "iron-plate", amount = 10 },
     { type = "item", name = "electric-motor", amount = 3 },
-    { type = "item", name = "bronze-plate", amount = 1 },
+    { type = "item", name = "iron-gear-wheel", amount = 2 },
     { type = "item", name = "pipe", amount = 5 },
   })
   set_recipe_ingredients("electric-mining-drill", {

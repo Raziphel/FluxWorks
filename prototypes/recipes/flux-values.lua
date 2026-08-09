@@ -26,6 +26,7 @@ M.item_values = {
   ["steel-plate"] = 28,
   ["stone-brick"] = 7,
   ["plastic-bar"] = 40,
+  ["fw-rubber-sheet"] = 30,
   ["solid-fuel"] = 120,
   ["sulfur"] = 45,
   ["battery"] = 90,

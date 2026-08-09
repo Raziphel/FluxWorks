@@ -154,6 +154,7 @@ for _, entry in ipairs({
 end
 
 for _, name in pairs({
+  "small-iron-electric-pole",
   "small-electric-pole",
   "medium-electric-pole",
   "big-electric-pole",
@@ -163,7 +164,8 @@ for _, name in pairs({
 end
 
 for _, entry in pairs({
-  { "small-electric-pole", "a[power-distribution]-a[small-electric-pole]" },
+  { "small-iron-electric-pole", "a[power-distribution]-a[small-iron-electric-pole]" },
+  { "small-electric-pole", "a[power-distribution]-b[small-electric-pole]" },
   { "medium-electric-pole", "a[power-distribution]-b[medium-electric-pole]" },
   { "big-electric-pole", "a[power-distribution]-c[big-electric-pole]" },
   { "substation", "a[power-distribution]-d[substation]" },

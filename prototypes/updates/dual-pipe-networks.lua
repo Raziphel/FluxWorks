@@ -36,26 +36,31 @@ end
 
 -- Ordinary machines can accept either pipe material. The pipe families remain
 -- exclusive, so adjacent lead and copper lines never merge with one another.
-for _, prototypes in pairs(data.raw) do
+for prototype_type, prototypes in pairs(data.raw) do
   for _, prototype in pairs(prototypes) do
-    visit_pipe_connections(prototype, function(connection)
-      if connection.connection_category == nil then
-        connection.connection_category = table.deepcopy(shared_categories)
-      elseif connection.connection_category == "default" then
-        connection.connection_category = table.deepcopy(shared_categories)
-      elseif type(connection.connection_category) == "table" then
-        local expanded = {}
-        for _, category in pairs(connection.connection_category) do
-          if category == "default" then
-            table.insert(expanded, lead_category)
-            table.insert(expanded, copper_category)
-          else
-            table.insert(expanded, category)
+    -- Pipe families own their connection category. In particular, underground
+    -- connections accept at most one category in Factorio 2.1; widening a
+    -- third-party pipe-to-ground to both FluxWorks families makes it invalid.
+    if prototype_type ~= "pipe" and prototype_type ~= "pipe-to-ground" and prototype_type ~= "pump" then
+      visit_pipe_connections(prototype, function(connection)
+        if connection.connection_category == nil then
+          connection.connection_category = table.deepcopy(shared_categories)
+        elseif connection.connection_category == "default" then
+          connection.connection_category = table.deepcopy(shared_categories)
+        elseif type(connection.connection_category) == "table" then
+          local expanded = {}
+          for _, category in pairs(connection.connection_category) do
+            if category == "default" then
+              table.insert(expanded, lead_category)
+              table.insert(expanded, copper_category)
+            else
+              table.insert(expanded, category)
+            end
           end
+          connection.connection_category = expanded
         end
-        connection.connection_category = expanded
-      end
-    end)
+      end)
+    end
   end
 end
 
@@ -77,18 +82,21 @@ local lead_specs = {
     name = "pipe",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-lead-pipe.png",
     localised_name = { "entity-name.fw-lead-pipe" },
+    localised_description = { "entity-description.fw-lead-pipe" },
   },
   {
     type = "pipe-to-ground",
     name = "pipe-to-ground",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-lead-pipe-to-ground.png",
     localised_name = { "entity-name.fw-lead-pipe-to-ground" },
+    localised_description = { "entity-description.fw-lead-pipe-to-ground" },
   },
   {
     type = "pump",
     name = "pump",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-lead-pump.png",
     localised_name = { "entity-name.fw-lead-pump" },
+    localised_description = { "entity-description.fw-lead-pump" },
   },
 }
 
@@ -103,6 +111,9 @@ for _, spec in ipairs(lead_specs) do
   entity.localised_name = spec.localised_name
   item.localised_name = spec.localised_name
   recipe.localised_name = spec.localised_name
+  entity.localised_description = spec.localised_description
+  item.localised_description = spec.localised_description
+  recipe.localised_description = spec.localised_description
   set_icon(entity, spec.icon)
   set_icon(item, spec.icon)
   set_icon(recipe, spec.icon)
@@ -130,18 +141,21 @@ local copper_specs = {
     source = "pipe",
     name = "fw-copper-pipe",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-copper-pipe.png",
+    localised_description = { "entity-description.fw-copper-pipe" },
   },
   {
     type = "pipe-to-ground",
     source = "pipe-to-ground",
     name = "fw-copper-pipe-to-ground",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-copper-pipe-to-ground.png",
+    localised_description = { "entity-description.fw-copper-pipe-to-ground" },
   },
   {
     type = "pump",
     source = "pump",
     name = "fw-copper-pump",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-copper-pump.png",
+    localised_description = { "entity-description.fw-copper-pump" },
   },
 }
 
@@ -150,10 +164,12 @@ for index, spec in ipairs(copper_specs) do
   local item = table.deepcopy(data.raw.item[spec.source])
   entity.name = spec.name
   entity.localised_name = { "entity-name." .. spec.name }
+  entity.localised_description = spec.localised_description
   entity.minable.result = spec.name
   entity.fast_replaceable_group = "fw-copper-pipe"
   item.name = spec.name
   item.localised_name = { "entity-name." .. spec.name }
+  item.localised_description = spec.localised_description
   item.place_result = spec.name
   item.order = "a[pipes]-" .. string.char(97 + index * 2) .. "[" .. spec.name .. "]"
   set_icon(entity, spec.icon)
@@ -206,6 +222,7 @@ data:extend({
 for _, spec in ipairs(copper_specs) do
   local recipe = data.raw.recipe[spec.name]
   recipe.localised_name = { "entity-name." .. spec.name }
+  recipe.localised_description = spec.localised_description
   set_icon(recipe, spec.icon)
 end
 

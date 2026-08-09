@@ -47,7 +47,7 @@ data:extend({
     type = "recipe",
     name = "fw-crushed-lead-ore",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-crushed-lead-ore.png",
-    icon_size = 64,
+    icon_size = 256,
     category = "basic-crushing",
     enabled = false,
     energy_required = 1.0,
@@ -59,7 +59,7 @@ data:extend({
     type = "recipe",
     name = "fw-crushed-titanium-ore",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-crushed-titanium-ore.png",
-    icon_size = 64,
+    icon_size = 256,
     category = "basic-crushing",
     enabled = false,
     energy_required = 1.4,
@@ -78,7 +78,6 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "silicon-ore", amount = 2 },
-      { type = "item", name = "fw-salt", amount = 1 },
     },
     results = {
       { type = "item", name = "silicon", amount = 1 },
@@ -462,7 +461,7 @@ data:extend({
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
     icon_size = 128,
     category = "crafting",
-    enabled = true,
+    enabled = false,
     energy_required = 0.8,
     allow_productivity = true,
     ingredients = {
@@ -476,7 +475,7 @@ data:extend({
     name = "fw-gunpowder",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-gunpowder.png",
     icon_size = 128,
-    category = "crafting",
+    category = "chemistry",
     enabled = false,
     energy_required = 1.6,
     allow_productivity = true,

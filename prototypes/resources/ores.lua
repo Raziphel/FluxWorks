@@ -23,39 +23,6 @@ local CARBONIC_DEPOSIT_TINT = { r = 0.18, g = 0.19, b = 0.22, a = 1 }
 local PROMETHIUM_IMPACT_TINT = { r = 0.86, g = 0.58, b = 1.00, a = 1 }
 local SILICA_VEIN_TINT = { r = 0.48, g = 0.78, b = 1.00, a = 1 }
 local NO_TINT = { r = 1, g = 1, b = 1, a = 1 }
-local WORLDGEN_PROFILES = {
-  sparse = { density = 0.72, spots = 0.78, richness = 0.86, additional = 0.82, rq = 0.94 },
-  standard = { density = 1.00, spots = 1.00, richness = 1.00, additional = 1.00, rq = 1.00 },
-  abundant = { density = 1.28, spots = 1.20, richness = 1.16, additional = 1.18, rq = 1.06 },
-}
-
-local function worldgen_profile(name)
-  local value = Startup.value(name, "standard")
-  if WORLDGEN_PROFILES[value] then
-    return value
-  end
-  return "standard"
-end
-
-local function scaled_autoplace(settings_name, params)
-  local profile = WORLDGEN_PROFILES[worldgen_profile(settings_name)] or WORLDGEN_PROFILES.standard
-  local scaled = table.deepcopy(params)
-  scaled.base_density = scaled.base_density * profile.density
-  scaled.base_spots_per_km2 = scaled.base_spots_per_km2 * profile.spots
-  if scaled.richness_multiplier then
-    scaled.richness_multiplier = scaled.richness_multiplier * profile.richness
-  end
-  if scaled.richness_post_multiplier then
-    scaled.richness_post_multiplier = scaled.richness_post_multiplier * profile.richness
-  end
-  if scaled.additional_richness then
-    scaled.additional_richness = math.max(1, math.floor((scaled.additional_richness * profile.additional) + 0.5))
-  end
-  scaled.regular_rq_factor_multiplier = scaled.regular_rq_factor_multiplier * profile.rq
-  scaled.starting_rq_factor_multiplier = scaled.starting_rq_factor_multiplier * profile.rq
-  return resource_autoplace.resource_autoplace_settings(scaled)
-end
-
 -- Reuse stone particles and tint them white so salt mining reads clearly.
 local salt_particle = table.deepcopy(data.raw["optimized-particle"]["stone-particle"])
 salt_particle.name = "fw-salt-particle"
@@ -94,7 +61,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = scaled_autoplace("fw-worldgen-titanium-ore-profile", {
+    autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-titanium-ore",
       order = "a-t",
       base_density = ORE_RARITY["fw-titanium-ore"].base_density,
@@ -150,7 +117,7 @@ data:extend({
     minable = { mining_time = 1, result = "lead-ore" },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = scaled_autoplace("fw-worldgen-lead-ore-profile", {
+    autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-lead-ore",
       order = "a-l",
       base_density = ORE_RARITY["fw-lead-ore"].base_density,
@@ -210,7 +177,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = scaled_autoplace("fw-worldgen-bauxite-ore-profile", {
+    autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-bauxite-ore",
       order = "a-b",
       base_density = ORE_RARITY["fw-bauxite-ore"].base_density,
@@ -270,7 +237,7 @@ data:extend({
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
     autoplace = (function()
-      local autoplace = scaled_autoplace("fw-worldgen-salt-profile", {
+      local autoplace = resource_autoplace.resource_autoplace_settings({
         name = "fw-salt",
         order = "a-s",
         base_density = ORE_RARITY["fw-salt"].base_density,
@@ -373,7 +340,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = scaled_autoplace("fw-worldgen-silica-vein-profile", {
+    autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-silica-vein",
       order = "a-v",
       base_density = 5.2,
@@ -406,6 +373,7 @@ data:extend({
   {
     type = "resource",
     name = "fw-metallic-deposit",
+    subgroup = "raw-resource",
     icons = {
       { icon = resource_icon_path .. "fw-metallic-deposit.png", icon_size = 64, tint = METALLIC_DEPOSIT_TINT },
       { icon = "__base__/graphics/icons/iron-ore.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 0.82, g = 0.86, b = 0.90, a = 1.00 } },
@@ -425,7 +393,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = scaled_autoplace("fw-worldgen-metallic-deposit-profile", {
+    autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-metallic-deposit",
       order = "a-m",
       base_density = 12.0,
@@ -461,6 +429,7 @@ data:extend({
   {
     type = "resource",
     name = "fw-mineral-deposit",
+    subgroup = "raw-resource",
     icons = {
       { icon = resource_icon_path .. "fw-mineral-deposit.png", icon_size = 64, tint = MINERAL_DEPOSIT_TINT },
       { icon = bz_icon_path .. "fw-bauxite-ore.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 1.00, g = 0.82, b = 0.74, a = 1.00 } },
@@ -482,7 +451,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = scaled_autoplace("fw-worldgen-mineral-deposit-profile", {
+    autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-mineral-deposit",
       order = "a-n",
       base_density = 6.6,
@@ -518,6 +487,7 @@ data:extend({
   {
     type = "resource",
     name = "fw-carbonic-deposit",
+    subgroup = "raw-resource",
     icons = {
       { icon = resource_icon_path .. "fw-carbonic-deposit.png", icon_size = 64, tint = CARBONIC_DEPOSIT_TINT },
       { icon = "__base__/graphics/icons/coal.png", icon_size = 64, scale = 0.34, shift = { -9, 8 }, tint = { r = 0.58, g = 0.58, b = 0.60, a = 1.00 } },
@@ -536,7 +506,7 @@ data:extend({
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-    autoplace = scaled_autoplace("fw-worldgen-carbonic-deposit-profile", {
+    autoplace = resource_autoplace.resource_autoplace_settings({
       name = "fw-carbonic-deposit",
       order = "a-o",
       base_density = 7.8,
@@ -551,13 +521,13 @@ data:extend({
     stage_counts = { 24000, 14500, 8600, 4800, 2100, 760, 240, 100 },
     stages = {
       sheet = {
-        filename = mixed_deposit_path .. "carbonic-deposit-sheet-vivid.png",
+        filename = "__base__/graphics/entity/coal/coal.png",
         priority = "extra-high",
         size = 128,
         frame_count = 8,
         variation_count = 8,
         scale = 0.5,
-        tint = CARBONIC_DEPOSIT_TINT,
+        tint = NO_TINT,
       },
     },
   },
@@ -610,7 +580,7 @@ if data.raw.item["promethium-asteroid-chunk"] and Startup.enabled("fw-worldgen-e
       collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
       selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
       autoplace = (function()
-        return scaled_autoplace("fw-worldgen-promethium-impact-profile", {
+        return resource_autoplace.resource_autoplace_settings({
           name = "fw-promethium-impact",
           order = "a-p",
           base_density = 0.20,

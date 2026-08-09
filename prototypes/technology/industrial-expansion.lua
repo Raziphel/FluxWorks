@@ -58,7 +58,7 @@ data:extend({
     type = "technology",
     name = "fw-reactive-powders",
     icon = "__FluxWorksAssets__/graphics/icons/fluids/fw-blasting-gel.png",
-    icon_size = 64,
+    icon_size = 256,
     prerequisites = { "fw-industrial-expansion", "fw-propellant-synthesis" },
     unit = {
       count = 170,

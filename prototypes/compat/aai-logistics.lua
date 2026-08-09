@@ -171,12 +171,8 @@ if mods["aai-containers"] then
     end
   end
 
-  add_technology("fw-aai-bulk-storage", "__base__/graphics/technology/steel-processing.png",
-    { "fw-metals-fabrication", "steel-processing", "logistics" },
-    science_unit(90, { "automation-science-pack", "logistic-science-pack" }, 24),
-    bulk_storage, "c-m-c[fw-aai-bulk-storage]")
   add_technology("fw-aai-network-storage", "__base__/graphics/technology/logistic-robotics.png",
-    { "fw-aai-bulk-storage", "fw-signal-architecture", "logistic-robotics" },
+    { "aai-warehouse-base", "fw-signal-architecture", "logistic-robotics" },
     science_unit(185, { "automation-science-pack", "logistic-science-pack", "chemical-science-pack" }, 30),
     network_storage, "c-n-b[fw-aai-network-storage]")
   add_technology("fw-aai-controlled-storage", "__base__/graphics/technology/logistic-system.png",

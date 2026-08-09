@@ -24,6 +24,7 @@ data:extend({
     }, 12),
     effects = {
       unlock("crusher"),
+      unlock("fw-silicon-beneficiation"),
     },
     order = "a-b-c[fw-comminution]",
   },
@@ -61,7 +62,7 @@ data:extend({
     type = "technology",
     name = "fw-ore-crushing",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-crushed-lead-ore.png",
-    icon_size = 64,
+    icon_size = 256,
     prerequisites = { "fw-basic-separation" },
     unit = tech_unit(28, {
       { "automation-science-pack", 1 },
@@ -123,7 +124,6 @@ data:extend({
       { "logistic-science-pack", 1 },
     }, 18),
     effects = {
-      unlock("fw-silicon-beneficiation"),
     },
     order = "a-b-i[fw-mineral-beneficiation]",
   },

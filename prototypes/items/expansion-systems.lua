@@ -5,7 +5,7 @@ data:extend({
     type = "item",
     name = "fw-petrochemical-facility",
     icon = "__finely-crafted-graphics__/graphics/thermal-plant/thermal-plant-icon.png",
-    icon_size = 64,
+    icon_size = 256,
     subgroup = "fw-chemistry-machines",
     order = "a[fw-petrochemical-facility]",
     place_result = "fw-petrochemical-facility",

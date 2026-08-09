@@ -1,4 +1,43 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.2
+Date: 2026-08-09
+  Bugfixes:
+    - Removed the Solder Alloy and Bronze Plate furnace softlock by making both alloys available to ordinary smelting machines.
+    - Moved Pressure Housing and Flow Regulator production out of endgame specialist machines and onto the green-science assembler lane.
+    - Made crushed-ore processing a real yield upgrade over direct smelting instead of an equal or losing conversion.
+    - Corrected Mineral Beneficiation prerequisites and artwork, Precision Ceramics prerequisites, duplicate component unlocks, and unrelated Logistics 2 unlocks.
+    - Removed glass from Aluminum Beam production, added an explicit Rubber Sheet Flux value, and removed FluxWorks' duplicate AAI bulk-storage research.
+    - Removed the later bronze requirement from the bootstrap steam engine.
+    - Closed the Crusher, refined-silicon, and green-circuit progression loop by making basic silicon beneficiation available with the Crusher.
+    - Prevented Refined Carbon from being selected automatically by fuel-burning furnaces by moving it to crusher processing.
+    - Made Skip burner stage starts handcraft their first science packs, retain the vanilla burner miner and inserter, and use an unpowered offshore pump.
+    - Removed stray early unlocks for regular silicon and chemical gunpowder so their later technologies are now authoritative.
+  Progression:
+    - Made Fluid Regulation a red-and-green-science technology and added it as a Railway prerequisite before trains consume Flow Regulators.
+    - Established single research owners for Iron Beam, Steel Beam, Inline Filter, Leaded Circuit Contacts, Tinned Cable, and Solder Alloy.
+    - Restored Automation to 10 red science packs without an electric-miner prerequisite.
+    - Moved Liquid Ore Extraction directly after electric mining so water-fed mixed deposits are usable before oil processing.
+    - Moved Primitive Gunpowder Mixing to the first Military technology and kept chemical Gunpowder Mixing on its later propellant research.
+    - Kept the early silicon beneficiation route on the Crusher while the carbon-smelted silicon route remains on later electromechanical processing.
+    - Restored the wooden pole as the cheap bootstrap option and kept the sturdier iron pole as the more material-intensive alternative.
+  Compatibility:
+    - Restored the lead pipe family, including its ingredients, appearance, and names, while retaining the separate copper network and removing iron pipes.
+    - Hid AAI's automatic Burner Mechanics trigger from the technology tree so established saves do not gain an isolated completed node.
+    - Kept third-party underground pipes on one connection category while FluxWorks machines continue to accept both isolated pipe networks.
+    - Limited progression and recipe-complexity enforcement to FluxWorks-owned recipes so external vehicles, boilers, and overhaul recipes retain their own schedules and complexity.
+    - Made Shattered Planet lightning placement accommodate compatible third-party collector conditions instead of rejecting them outright.
+    - Avoided overflowing Factorio's localized-string parameter limit when other mods already provide unusually large item descriptions.
+    - Added compatibility technology aliases for mods that identify custom science technologies by their science-pack prototype names.
+  Changes:
+    - Made Refined Silicon available in the Crusher, Industrial Furnace, and Arc Foundry instead of requiring one exclusive machine.
+    - Clarified that lead and copper pipes are intentionally separate networks and do not connect directly to one another.
+    - Rounded FluxWorks crafting times to quarter-second increments.
+    - Moved Solid Fuel and water, hot-fluoroketone, and cold-fluoroketone barrels into the Chemistry tab.
+    - Grouped salt with raw resources, placed both small electric poles together, and corrected mixed-deposit filter grouping and carbonic-deposit sprite-sheet handling.
+    - Removed redundant Sparse, Standard, and Abundant startup profiles for resources; the world-generation frequency, size, and richness sliders now control resource patches directly.
+  Graphics:
+    - Unified all six crushed-ore icons around one detailed pile style and gave Elastomer Matrix a distinct reinforced-lattice silhouette.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.1
 Date: 2026-08-07
   Bugfixes:

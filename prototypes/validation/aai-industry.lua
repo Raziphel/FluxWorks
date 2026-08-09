@@ -82,10 +82,15 @@ end
 
 local offshore_pump = data.raw["offshore-pump"] and data.raw["offshore-pump"]["offshore-pump"]
 assert_true(offshore_pump ~= nil, "AAI Industry integration failure: missing offshore-pump prototype")
-assert_true(
-  offshore_pump.energy_source ~= nil and offshore_pump.energy_source.type == "electric",
-  "AAI Industry integration failure: offshore-pump should remain electrically powered when AAI is active"
-)
+if skip_burner_stage then
+  assert_true(offshore_pump.energy_source and offshore_pump.energy_source.type == "void",
+    "AAI Industry integration failure: skip-burner offshore pump must bootstrap steam without electricity")
+else
+  assert_true(
+    offshore_pump.energy_source ~= nil and offshore_pump.energy_source.type == "electric",
+    "AAI Industry integration failure: offshore-pump should remain electrically powered when AAI is active"
+  )
+end
 assert_true(
   not (data.raw.recipe and data.raw.recipe["electronic-circuit-wood"]),
   "AAI Industry integration failure: the alternate wood electronic-circuit recipe should be removed"

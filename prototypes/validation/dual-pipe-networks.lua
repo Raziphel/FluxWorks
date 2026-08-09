@@ -64,3 +64,11 @@ local machine_categories = chemical_plant and chemical_plant.fluid_boxes
 if machine_categories[1] ~= "fw-lead-pipe" or machine_categories[2] ~= "fw-copper-pipe" then
   error("Ordinary fluid machines must accept both FluxWorks pipe families")
 end
+
+for entity_name, entity in pairs(data.raw["pipe-to-ground"] or {}) do
+  for _, connection in pairs((entity.fluid_box and entity.fluid_box.pipe_connections) or {}) do
+    if type(connection.connection_category) == "table" and #connection.connection_category > 1 then
+      error("Underground pipe connection has multiple categories: " .. entity_name)
+    end
+  end
+end

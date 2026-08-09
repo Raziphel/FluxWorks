@@ -83,6 +83,82 @@ remove_science("fw-flux-catalysis", "cryogenic-science-pack")
 local electricity = data.raw.technology and data.raw.technology.electricity
 if electricity and electricity.unit then electricity.unit.count = 10 end
 
+-- AAI raises Automation to 100 packs and later compatibility can route it
+-- through the electric drill. Preserve the familiar first automation step.
+local automation = data.raw.technology and data.raw.technology.automation
+if automation and automation.unit then
+  automation.unit.count = 10
+  automation.prerequisites = data.raw.technology.electricity and { "electricity" } or {}
+end
+
+-- The Crusher must establish silicon processing, never require the circuit
+-- whose silicon ingredient it exists to bootstrap.
+local crusher = data.raw.recipe and data.raw.recipe.crusher
+if crusher then
+  local ingredients = {
+    { type = "item", name = "iron-plate", amount = 10 },
+    { type = "item", name = "iron-gear-wheel", amount = 5 },
+    { type = "item", name = "stone-brick", amount = 5 },
+    { type = "item", name = "motor", amount = 2 },
+  }
+  crusher.ingredients = table.deepcopy(ingredients)
+  if crusher.normal then crusher.normal.ingredients = table.deepcopy(ingredients) end
+  if crusher.expensive then crusher.expensive.ingredients = table.deepcopy(ingredients) end
+end
+add_unlock("fw-comminution", "fw-silicon-beneficiation")
+remove_unlock("fw-mineral-beneficiation", "fw-silicon-beneficiation")
+
+-- Keep the furnace-style silicon recipe on its later electromechanical lane.
+-- Early research uses the distinct Crusher beneficiation recipe instead.
+for technology_name in pairs(data.raw.technology or {}) do
+  if technology_name ~= "fw-electromechanical-systems" then
+    remove_unlock(technology_name, "silicon")
+  end
+end
+add_unlock("fw-electromechanical-systems", "silicon")
+
+-- Primitive powder becomes relevant with the first ammunition technology;
+-- the chemically processed recipe remains on Propellant Synthesis.
+add_unlock("military", "fw-gunpowder-early")
+for technology_name in pairs(data.raw.technology or {}) do
+  if technology_name ~= "fw-propellant-synthesis" then
+    remove_unlock(technology_name, "fw-gunpowder")
+  end
+end
+add_unlock("fw-propellant-synthesis", "fw-gunpowder")
+local firearm_magazine = data.raw.recipe and data.raw.recipe["firearm-magazine"]
+if firearm_magazine then
+  firearm_magazine.enabled = false
+  local has_gunpowder = false
+  for _, ingredient in ipairs(firearm_magazine.ingredients or {}) do
+    if entry_name(ingredient) == "fw-gunpowder" then has_gunpowder = true end
+  end
+  if not has_gunpowder then
+    firearm_magazine.ingredients[#firearm_magazine.ingredients + 1] = {
+      type = "item", name = "fw-gunpowder", amount = 1,
+    }
+  end
+  add_unlock("military", "firearm-magazine")
+end
+
+local iron_pole = data.raw.recipe and data.raw.recipe["small-iron-electric-pole"]
+if iron_pole then
+  iron_pole.ingredients = {
+    { type = "item", name = "iron-stick", amount = 4 },
+    { type = "item", name = "copper-cable", amount = 4 },
+  }
+end
+local wooden_pole = data.raw.recipe and data.raw.recipe["small-electric-pole"]
+if wooden_pole then
+  local ingredients = {
+    { type = "item", name = "wood", amount = 1 },
+    { type = "item", name = "copper-cable", amount = 2 },
+  }
+  wooden_pole.ingredients = table.deepcopy(ingredients)
+  if wooden_pole.normal then wooden_pole.normal.ingredients = table.deepcopy(ingredients) end
+  if wooden_pole.expensive then wooden_pole.expensive.ingredients = table.deepcopy(ingredients) end
+end
+
 remove_ingredient("stone-wall", "fw-sensor-package")
 remove_unlock("fw-precision-alloys", "fw-bearing")
 remove_unlock("fw-precision-alloys", "fw-ceramic-insulator")
@@ -189,7 +265,7 @@ end
 -- weave this node into later chemistry, so restore its final bootstrap shape.
 local liquid_mining = data.raw.technology and data.raw.technology["fw-liquid-mining"]
 if liquid_mining then
-  liquid_mining.prerequisites = { "basic-fluid-handling" }
+  liquid_mining.prerequisites = { "electric-mining-drill" }
   liquid_mining.unit = liquid_mining.unit or {}
   liquid_mining.unit.count = 20
   liquid_mining.unit.time = 15
@@ -332,4 +408,219 @@ for _, recipe_name in ipairs({
 }) do
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if recipe then recipe.category = "advanced-crafting"; recipe.categories = nil end
+end
+
+-- Second Nauvis playtest pass: foundational alloys must work in ordinary
+-- furnaces, while regulated hardware belongs to the green-science assembler
+-- lane rather than late specialist machines.
+for _, recipe_name in ipairs({ "bronze-plate", "fw-solder-alloy" }) do
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if recipe then recipe.category = "smelting"; recipe.categories = nil end
+end
+for _, recipe_name in ipairs({ "fw-pressure-housing", "fw-flow-regulator" }) do
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if recipe then recipe.category = "advanced-crafting"; recipe.categories = nil end
+end
+
+local fluid_regulation = data.raw.technology and data.raw.technology["fw-fluid-regulation"]
+if fluid_regulation then
+  fluid_regulation.prerequisites = { "fw-metals-fabrication", "engine", "logistic-science-pack" }
+  fluid_regulation.unit = fluid_regulation.unit or {}
+  fluid_regulation.unit.ingredients = {
+    { "automation-science-pack", 1 },
+    { "logistic-science-pack", 1 },
+  }
+end
+for technology_name in pairs(data.raw.technology or {}) do
+  if technology_name ~= "fw-fluid-regulation" then
+    remove_unlock(technology_name, "fw-pressure-housing")
+    remove_unlock(technology_name, "fw-flow-regulator")
+  end
+end
+add_unlock("fw-fluid-regulation", "fw-pressure-housing")
+add_unlock("fw-fluid-regulation", "fw-flow-regulator")
+add_prerequisite("railway", "fw-fluid-regulation")
+
+-- Crushing is an actual processing upgrade: two raw ore become three crushed
+-- ore, and three crushed ore become three plates (or two aluminum plates).
+local crushed_plate_outputs = {
+  ["iron-plate-from-crushed"] = 3,
+  ["copper-plate-from-crushed"] = 3,
+  ["tin-plate-from-crushed"] = 3,
+  ["lead-plate-from-crushed"] = 3,
+  ["titanium-plate-from-crushed"] = 3,
+  ["aluminum-plate-from-crushed-bauxite"] = 2,
+}
+for recipe_name, amount in pairs(crushed_plate_outputs) do
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if recipe and recipe.results and recipe.results[1] then recipe.results[1].amount = amount end
+end
+
+-- Make each early component have one clear research owner.
+remove_unlock("fw-structural-fabrication", "fw-iron-beam")
+remove_unlock("fw-structural-fabrication", "fw-circuit-contact-leaded")
+remove_unlock("fw-structural-fabrication", "fw-inline-filter")
+add_unlock("fw-material-foundations", "fw-inline-filter")
+add_unlock("fw-conductive-assembly", "fw-circuit-contact-leaded")
+replace_ingredient("fw-inline-filter", "fw-rubber-sheet", {
+  type = "item", name = "stone-brick", amount = 1,
+})
+replace_ingredient("fw-pressure-housing", "fw-cermet", {
+  type = "item", name = "steel-plate", amount = 1,
+})
+
+for technology_name in pairs(data.raw.technology or {}) do
+  if technology_name ~= "fw-structural-fabrication" then
+    remove_unlock(technology_name, "fw-steel-beam")
+  end
+end
+add_unlock("fw-structural-fabrication", "fw-steel-beam")
+
+for _, recipe_name in ipairs({
+  "fw-tinned-cable", "fw-circuit-substrate", "fw-chip-carrier", "fw-silicon-wafer",
+}) do remove_unlock("logistics-2", recipe_name) end
+for technology_name in pairs(data.raw.technology or {}) do
+  if technology_name ~= "electronics" then remove_unlock(technology_name, "fw-tinned-cable") end
+end
+add_unlock("electronics", "fw-tinned-cable")
+for recipe_name, owner in pairs({
+  ["fw-solder-alloy"] = "electronics",
+  ["fw-solder-wire"] = "advanced-circuit",
+}) do
+  for technology_name in pairs(data.raw.technology or {}) do
+    if technology_name ~= owner then remove_unlock(technology_name, recipe_name) end
+  end
+  add_unlock(owner, recipe_name)
+end
+
+add_prerequisite("fw-mineral-beneficiation", "logistic-science-pack")
+for _, prerequisite in ipairs({ "chemical-science-pack", "fw-industrial-methods-science" }) do
+  add_prerequisite("fw-precision-ceramics-1", prerequisite)
+end
+
+-- Burner Mechanics is an automatic ten-plate compatibility trigger. Keep it
+-- functional without leaving an isolated completed node in established saves.
+local burner_mechanics = data.raw.technology and data.raw.technology["burner-mechanics"]
+if burner_mechanics then burner_mechanics.hidden = true end
+
+-- Aluminum beams are structural stock, not a glass composite.
+local aluminum_beam = data.raw.recipe and data.raw.recipe["fw-aluminum-beam"]
+if aluminum_beam then
+  aluminum_beam.ingredients = { { type = "item", name = "aluminum-plate", amount = 2 } }
+end
+
+-- Use a silicon-facing research sprite for the silicon beneficiation node.
+local mineral_beneficiation = data.raw.technology and data.raw.technology["fw-mineral-beneficiation"]
+local silicon = data.raw.item and data.raw.item.silicon
+if mineral_beneficiation and silicon then
+  mineral_beneficiation.icon = silicon.icon
+  mineral_beneficiation.icon_size = silicon.icon_size
+  mineral_beneficiation.icons = silicon.icons and table.deepcopy(silicon.icons) or nil
+end
+
+-- Present fuels and all vanilla/Space Age barrels with their chemical peers.
+local solid_fuel = data.raw.item and data.raw.item["solid-fuel"]
+if solid_fuel then solid_fuel.subgroup = "fw-chemistry-petrochem"; solid_fuel.order = "d[petrochem]-h[solid-fuel]" end
+for _, recipe_name in ipairs({
+  "solid-fuel-from-heavy-oil", "solid-fuel-from-light-oil",
+  "solid-fuel-from-petroleum-gas", "solid-fuel-from-ammonia", "solid-fuel-recycling",
+}) do
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if recipe then recipe.subgroup = "fw-chemistry-petrochem" end
+end
+for _, item_name in ipairs({
+  "water-barrel", "fluoroketone-hot-barrel", "fluoroketone-cold-barrel",
+}) do
+  local item = data.raw.item and data.raw.item[item_name]
+  if item then item.subgroup = "fw-chemistry-barrels" end
+end
+for _, recipe_name in ipairs({
+  "water-barrel", "empty-water-barrel",
+  "fluoroketone-hot-barrel", "empty-fluoroketone-hot-barrel",
+  "fluoroketone-cold-barrel", "empty-fluoroketone-cold-barrel",
+  "water-barrel-recycling", "fluoroketone-hot-barrel-recycling",
+  "fluoroketone-cold-barrel-recycling",
+}) do
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if recipe then recipe.subgroup = "fw-chemistry-barrels" end
+end
+
+-- Player-facing crafting times use quarter-second increments rather than
+-- belt-derived decimals that are difficult to read and plan around.
+for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+  if string.sub(recipe_name, 1, 3) == "fw-" and type(recipe.energy_required) == "number" then
+    recipe.energy_required = math.max(0.25, math.floor(recipe.energy_required * 4 + 0.5) / 4)
+  end
+end
+
+-- Refined silicon is useful well beyond the first Crusher. Give it a dedicated
+-- category shared by the Crusher, Industrial Furnace, and Arc Foundry without
+-- allowing basic stone furnaces to perform beneficiation.
+if not (data.raw["recipe-category"] and data.raw["recipe-category"]["fw-silicon-refining"]) then
+  data:extend({ { type = "recipe-category", name = "fw-silicon-refining" } })
+end
+local silicon_beneficiation = data.raw.recipe and data.raw.recipe["fw-silicon-beneficiation"]
+if silicon_beneficiation then
+  silicon_beneficiation.category = "fw-silicon-refining"
+  silicon_beneficiation.categories = nil
+end
+for _, spec in ipairs({
+  { "assembling-machine", "crusher" },
+  { "assembling-machine", "industrial-furnace" },
+  { "assembling-machine", "fw-arc-foundry" },
+}) do
+  local machine = data.raw[spec[1]] and data.raw[spec[1]][spec[2]]
+  if machine then
+    machine.crafting_categories = machine.crafting_categories or {}
+    local present = false
+    for _, category in ipairs(machine.crafting_categories) do
+      if category == "fw-silicon-refining" then present = true end
+    end
+    if not present then machine.crafting_categories[#machine.crafting_categories + 1] = "fw-silicon-refining" end
+  end
+end
+
+-- Other planets may add placement conditions to the vanilla lightning
+-- collector. Widen each numeric condition just enough to include the Shattered
+-- Planet instead of deleting the other mod's restriction wholesale.
+local shattered_planet = data.raw.planet and data.raw.planet["shattered-planet"]
+local lightning_collector = data.raw["lightning-attractor"]
+  and data.raw["lightning-attractor"]["lightning-collector"]
+for _, condition in ipairs((lightning_collector and lightning_collector.surface_conditions) or {}) do
+  local property = condition.property
+  local surface_property = data.raw["surface-property"] and data.raw["surface-property"][property]
+  local value = shattered_planet and shattered_planet.surface_properties
+    and shattered_planet.surface_properties[property]
+    or surface_property and surface_property.default_value
+  if type(value) == "number" then
+    if condition.min and value < condition.min then condition.min = value end
+    if condition.max and value > condition.max then condition.max = value end
+  end
+end
+
+-- Science Extra Trigger Techs 1.0.3 looks up a technology using each science
+-- pack's item name. FluxWorks' public research nodes omit the trailing '-pack',
+-- so provide compatibility aliases before that mod's final-fixes pass.
+if mods["science-extra-trigger-techs"] then
+  for _, pair in ipairs({
+    { "fw-industrial-methods-science-pack", "fw-industrial-methods-science" },
+    { "fw-systems-analysis-science-pack", "fw-systems-analysis-science" },
+  }) do
+    local alias_name, owner_name = pair[1], pair[2]
+    local owner = data.raw.technology and data.raw.technology[owner_name]
+    if owner and not data.raw.technology[alias_name] then
+      data:extend({ {
+        type = "technology",
+        name = alias_name,
+        icon = owner.icon,
+        icon_size = owner.icon_size,
+        icons = owner.icons and table.deepcopy(owner.icons) or nil,
+        prerequisites = { owner_name },
+        unit = table.deepcopy(owner.unit),
+        effects = {},
+        hidden = true,
+        order = owner.order .. "-compat-trigger",
+      } })
+    end
+  end
 end

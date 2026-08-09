@@ -192,8 +192,17 @@ local function producer_available_by(producer_recipe_name, consumer_technology_n
   return false
 end
 
--- Prefer an item's canonical same-name recipe. Recycling, scrap sorting, and
--- late alternate processes must not make an early dependency look obtainable.
+-- A few materials deliberately have a named bootstrap process before their
+-- later canonical process. Keep this explicit so recycling and late alternates
+-- cannot accidentally satisfy progression checks.
+local bootstrap_producers = {
+  silicon = { "fw-silicon-beneficiation" },
+  ["fw-gunpowder"] = { "fw-gunpowder-early" },
+}
+
+-- Prefer an item's canonical same-name recipe unless it has an explicit
+-- bootstrap process. Recycling, scrap sorting, and arbitrary late alternates
+-- must not make an early dependency look obtainable.
 local function progression_producers(item_name)
   local enabled = {}
   for _, recipe_name in ipairs(producers[item_name] or {}) do
@@ -203,6 +212,10 @@ local function progression_producers(item_name)
     end
   end
   if #enabled > 0 then return enabled end
+
+  if bootstrap_producers[item_name] then
+    return bootstrap_producers[item_name]
+  end
 
   if data.raw.recipe[item_name] then
     for _, result in pairs(data.raw.recipe[item_name].results or {}) do
@@ -225,16 +238,12 @@ local function has_canonical_producer(item_name)
 end
 
 local function is_progression_recipe(recipe_name, recipe)
-  if is_fluxworks(recipe_name) then return true end
-  for _, ingredient in pairs(recipe.ingredients or {}) do
-    if is_fluxworks(entry_name(ingredient)) then return true end
-  end
-  return false
+  return is_fluxworks(recipe_name)
 end
 
--- Check every recipe that consumes a FluxWorks intermediate, including base and
--- compatibility recipes rewritten by FluxWorks. Each individual unlock path must
--- be coherent; being craftable through some later alternate unlock is not enough.
+-- Enforce temporal ownership on FluxWorks recipes. External mods are allowed to
+-- use FluxWorks ingredients on their own progression schedule; treating every
+-- third-party consumer as ours caused false failures for early trains and boilers.
 local temporal_failures = {}
 for recipe_name, recipe in pairs(data.raw.recipe or {}) do
   if not recipe.hidden and is_progression_recipe(recipe_name, recipe) then

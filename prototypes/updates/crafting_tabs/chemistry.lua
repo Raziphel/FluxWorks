@@ -9,12 +9,13 @@ return function(Router)
     "coal",
     "carbon",
     "fw-carbon",
-    "fw-salt",
     "sulfur",
     "lithium",
   }) do
     set_subgroup("item", name, "fw-chemistry-feedstocks")
   end
+
+  set_subgroup("item", "fw-salt", "raw-resource")
 
   for _, name in pairs({
     "fw-resin",

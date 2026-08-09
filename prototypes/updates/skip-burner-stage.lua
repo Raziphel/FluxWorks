@@ -43,8 +43,8 @@ for _, technology in pairs(data.raw.technology or {}) do
 end
 
 local burner_names = {
-  "burner-assembling-machine", "burner-generator", "burner-inserter",
-  "burner-lab", "burner-mining-drill", "burner-turbine",
+  "burner-assembling-machine", "burner-generator",
+  "burner-lab", "burner-turbine",
 }
 for _, name in ipairs(burner_names) do
   if data.raw.item and data.raw.item[name] then data.raw.item[name].hidden = true end
@@ -58,6 +58,15 @@ for _, name in ipairs(burner_names) do
   end
   local recipe = data.raw.recipe and data.raw.recipe[name]
   if recipe then recipe.hidden = true; recipe.enabled = false end
+end
+
+-- Keep Factorio's two basic burner tools visible as optional hand-crafted
+-- fallbacks. Skipping AAI's burner machine tier must not delete vanilla items.
+for _, recipe_name in ipairs({ "burner-inserter", "burner-mining-drill" }) do
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if recipe then recipe.hidden = false; recipe.enabled = true end
+  local item = data.raw.item and data.raw.item[recipe_name]
+  if item then item.hidden = false end
 end
 
 -- Direct electric recipes replace AAI's burner-machine upgrade recipes.
@@ -107,6 +116,19 @@ local automation_science = data.raw.technology and data.raw.technology["automati
 if automation_science then
   automation_science.prerequisites = { "electricity" }
   automation_science.research_trigger = { type = "craft-item", item = "lab" }
+end
+
+local first_science_recipe = data.raw.recipe and data.raw.recipe["automation-science-pack"]
+if first_science_recipe then
+  first_science_recipe.categories = { "crafting" }
+  first_science_recipe.category = nil
+end
+
+-- Water must be available before the first generator can power anything.
+local offshore_pump = data.raw["offshore-pump"] and data.raw["offshore-pump"]["offshore-pump"]
+if offshore_pump then
+  offshore_pump.energy_source = { type = "void" }
+  offshore_pump.energy_usage = "1W"
 end
 
 for _, recipe_name in ipairs({

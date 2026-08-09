@@ -216,6 +216,8 @@ assert_recipe_unlocks("fw-fluid-control-architecture", {
 assert_recipe_unlocks("fw-material-foundations", {
   "fw-metal-mesh",
   "fw-alumina-refractory",
+  "fw-iron-beam",
+  "fw-inline-filter",
 })
 assert_recipe_unlocks("fw-ore-crushing", {
   "fw-crushed-iron-ore",
@@ -234,13 +236,10 @@ assert_recipe_unlocks("fw-ore-crushing", {
   "titanium-plate-from-crushed",
 })
 assert_recipe_unlocks("fw-structural-fabrication", {
-  "fw-iron-beam",
+  "fw-steel-beam",
 })
-assert_recipe_unlocks("fw-structural-fabrication", {
+assert_recipe_unlocks("fw-conductive-assembly", {
   "fw-circuit-contact-leaded",
-})
-assert_recipe_unlocks("fw-structural-fabrication", {
-  "fw-inline-filter",
 })
 assert_recipe_unlocks("fw-systems-integration", {
   "fw-sensor-package",

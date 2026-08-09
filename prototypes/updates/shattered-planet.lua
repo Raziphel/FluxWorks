@@ -7,15 +7,8 @@ local tile_trigger_effects = require("__space-age__/prototypes/tile/tile-trigger
 local Startup = require("prototypes.lib.startup-settings")
 local storm_profiles = require("prototypes.lib.ion-storm-profiles")
 
-local vent_profiles = {
-  sparse = { frequency = 0.62, richness = 0.72 },
-  standard = { frequency = 1.00, richness = 1.00 },
-  abundant = { frequency = 1.45, richness = 1.35 },
-}
-local vent_profile = vent_profiles[Startup.value("fw-worldgen-shattered-vent-profile", "standard")]
-  or vent_profiles.standard
-local vent_probability = 0.00085 * vent_profile.frequency
-local vent_richness = 125000 * vent_profile.richness
+local vent_probability = 0.00085
+local vent_richness = 125000
 
 local storm_profile = storm_profiles[Startup.difficulty_tier("fw-balance-ion-storm-intensity", "normal")]
 

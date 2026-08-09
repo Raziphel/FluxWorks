@@ -1,5 +1,8 @@
 -- Shared resources appear broadly; mixed deposits and specialty resources retain
 -- planet-specific placement so each surface keeps a distinct material identity.
+local Startup = require("prototypes.lib.startup-settings")
+local standalone_ores_enabled = Startup.enabled("fw-worldgen-enable-standalone-ores", false)
+
 local global_resource_names = {
   "fw-crystalised-flux",
 }
@@ -39,6 +42,9 @@ local preset_control_defaults = {
   ["fw-promethium-impact"] = { frequency = "very-low", size = "small", richness = "good" },
   ["fw-silica-vein"] = { frequency = "very-low", size = "small", richness = "normal" },
   ["fw-salt"] = { frequency = "very-low", size = "small", richness = "normal" },
+  ["fw-lead-ore"] = { frequency = "low", size = "small", richness = "normal" },
+  ["fw-bauxite-ore"] = { frequency = "very-low", size = "small", richness = "normal" },
+  ["fw-titanium-ore"] = { frequency = "very-low", size = "small", richness = "low" },
 }
 
 local standalone_ore_controls = {
@@ -112,7 +118,11 @@ end
 if data.raw.planet and data.raw.planet["nauvis"] then
   register_resources_on_planet(data.raw.planet["nauvis"], nauvis_resource_names)
   for _, resource_name in pairs(standalone_ore_controls) do
-    unregister_resource_on_planet(data.raw.planet["nauvis"], resource_name)
+    if standalone_ores_enabled then
+      register_resource_on_planet(data.raw.planet["nauvis"], resource_name)
+    else
+      unregister_resource_on_planet(data.raw.planet["nauvis"], resource_name)
+    end
   end
   for _, resource_name in pairs(vanilla_replaced_controls) do
     unregister_resource_on_planet(data.raw.planet["nauvis"], resource_name)
@@ -167,7 +177,12 @@ for _, preset_group in pairs(data.raw["map-gen-presets"] or {}) do
             end
           end
           for _, resource_name in pairs(standalone_ore_controls) do
-            controls[resource_name] = nil
+            if standalone_ores_enabled then
+              controls[resource_name] = controls[resource_name]
+                or table.deepcopy(preset_control_defaults[resource_name])
+            else
+              controls[resource_name] = nil
+            end
           end
           for _, resource_name in pairs(vanilla_replaced_controls) do
             controls[resource_name] = nil
@@ -208,7 +223,7 @@ end
 for _, resource_name in pairs(standalone_ore_controls) do
   local control = data.raw["autoplace-control"] and data.raw["autoplace-control"][resource_name]
   if control then
-    control.hidden = true
+    control.hidden = not standalone_ores_enabled
   end
 end
 

@@ -30,10 +30,6 @@ local function startup_choice(name, default_value, allowed_values, order)
   }
 end
 
-local function startup_worldgen_profile(name, order)
-  return startup_choice(name, "standard", { "sparse", "standard", "abundant" }, order)
-end
-
 data:extend({
   startup_difficulty("fw-balance-flux-core-difficulty", "aa[balance]-a[flux-core]"),
   startup_difficulty("fw-balance-harvesting-difficulty", "aa[balance]-b[harvesting]"),
@@ -65,19 +61,8 @@ data:extend({
   startup_difficulty("fw-balance-research-cost", "aa[balance]-w[research]"),
   startup_difficulty("fw-balance-rift-logistics", "aa[balance]-x[rift-logistics]"),
 
-  startup_worldgen_profile("fw-worldgen-metallic-deposit-profile", "ab[worldgen]-a[metallic]"),
-  startup_worldgen_profile("fw-worldgen-mineral-deposit-profile", "ab[worldgen]-b[mineral]"),
-  startup_worldgen_profile("fw-worldgen-carbonic-deposit-profile", "ab[worldgen]-c[carbonic]"),
-  startup_worldgen_profile("fw-worldgen-silica-vein-profile", "ab[worldgen]-d[silica]"),
-  startup_worldgen_profile("fw-worldgen-salt-profile", "ab[worldgen]-e[salt]"),
   startup_bool("fw-worldgen-enable-standalone-ores", false, "ab[worldgen]-f[standalone-ores]"),
-  startup_worldgen_profile("fw-worldgen-lead-ore-profile", "ab[worldgen]-g[lead]"),
-  startup_worldgen_profile("fw-worldgen-bauxite-ore-profile", "ab[worldgen]-h[bauxite]"),
-  startup_worldgen_profile("fw-worldgen-titanium-ore-profile", "ab[worldgen]-i[titanium]"),
   startup_bool("fw-worldgen-enable-promethium-impacts", true, "ab[worldgen]-j[promethium-enabled]"),
-  startup_worldgen_profile("fw-worldgen-promethium-impact-profile", "ab[worldgen]-k[promethium-profile]"),
-  startup_worldgen_profile("fw-worldgen-flux-rift-profile", "ab[worldgen]-l[flux-rift]"),
-  startup_worldgen_profile("fw-worldgen-shattered-vent-profile", "ab[worldgen]-m[shattered-vents]"),
 
   startup_bool("fw-enable-recipe-integration", true, "ba[overhaul]-a[recipe-integration]"),
   startup_bool("fw-enable-core-material-replacements", true, "ba[overhaul]-b[core-materials]"),

@@ -33,6 +33,27 @@ local CONFIDENCE_LABELS = {
   unknown = "Unknown",
 }
 
+local function localised_string_near_engine_limit(value)
+  if type(value) ~= "table" then return false end
+  if #value >= 180 then return true end
+  for _, child in pairs(value) do
+    if localised_string_near_engine_limit(child) then return true end
+  end
+  return false
+end
+
+local function append_tooltip(item, line)
+  -- Factorio caps a LocalisedString at 200 parameters. Some quality mods build
+  -- descriptions close to that ceiling, so nesting them inside another tooltip
+  -- makes an otherwise valid item fail prototype validation.
+  if localised_string_near_engine_limit(item.localised_description) then return end
+  if item.localised_description then
+    item.localised_description = { "", item.localised_description, line }
+  else
+    item.localised_description = line
+  end
+end
+
 local function add_flux_value_to_item_tooltip(item, value, breakdown, metadata)
   local confidence = metadata and metadata.confidence or FluxValuation.VALUE_CONFIDENCE.unknown
   local prefix = "\n[color=180,220,255]Recoverable Flux: [/color][color=210,210,210]"
@@ -61,11 +82,7 @@ local function add_flux_value_to_item_tooltip(item, value, breakdown, metadata)
       "\n[color=180,220,255]Quality recovery: [/color]" .. table.concat(quality_parts, "  ")
     )
   end
-  if item.localised_description then
-    item.localised_description = { "", item.localised_description, line }
-  else
-    item.localised_description = line
-  end
+  append_tooltip(item, line)
 end
 
 local function add_flux_status_to_item_tooltip(item, metadata)
@@ -95,11 +112,7 @@ local function add_flux_status_to_item_tooltip(item, metadata)
     }
   end
 
-  if item.localised_description then
-    item.localised_description = { "", item.localised_description, line }
-  else
-    item.localised_description = line
-  end
+  append_tooltip(item, line)
 end
 
 local valued_items = FluxValuation.collect_valued_items()
