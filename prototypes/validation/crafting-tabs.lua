@@ -199,33 +199,6 @@ for _, entry in ipairs({
   assert_order("recipe", entry[1], entry[2])
 end
 
-if mods["aai-containers"] then
-  local aai_storage_modes = {
-    { suffix = "", order = "a[passive-storage]" },
-    { suffix = "-passive-provider", order = "b[passive-provider]" },
-    { suffix = "-active-provider", order = "c[active-provider]" },
-    { suffix = "-storage", order = "d[storage]" },
-    { suffix = "-buffer", order = "e[buffer]" },
-    { suffix = "-requester", order = "f[requester]" },
-  }
-  local aai_storage_sizes = {
-    { name = "aai-strongbox", order = "a[strongbox]" },
-    { name = "aai-storehouse", order = "b[storehouse]" },
-    { name = "aai-warehouse", order = "c[warehouse]" },
-  }
-
-  for _, mode in ipairs(aai_storage_modes) do
-    for _, size in ipairs(aai_storage_sizes) do
-      local name = size.name .. mode.suffix
-      local expected_order = "b[large-storage]-z[aai-storage]-" .. mode.order .. "-" .. size.order
-      assert_subgroup("item", name, "fw-logistics-storage")
-      assert_subgroup("recipe", name, "fw-logistics-storage")
-      assert_order("item", name, expected_order)
-      assert_order("recipe", name, expected_order)
-    end
-  end
-end
-
 assert_many({ "item", "recipe" }, {
   "burner-mining-drill",
   "electric-mining-drill",

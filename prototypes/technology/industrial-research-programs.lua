@@ -40,12 +40,8 @@ local function tier_icons(stem, icon_size)
   }
 end
 
-local material_handling_prerequisite = data.raw.technology["aai-loader"]
-  and "aai-loader"
-  or "logistics-2"
-local autonomous_logistics_prerequisite = data.raw.technology["aai-express-loader"]
-  and "aai-express-loader"
-  or "logistics-3"
+local material_handling_prerequisite = "logistics-2"
+local autonomous_logistics_prerequisite = "logistics-3"
 
 local programs = {
   {

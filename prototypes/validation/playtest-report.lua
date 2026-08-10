@@ -1,4 +1,3 @@
-local Startup = require("prototypes.lib.startup-settings")
 
 local function entry_name(entry)
   return type(entry) == "table" and (entry.name or entry[1]) or nil
@@ -53,9 +52,6 @@ assert_report(not recipe_has("fw-microchip", "advanced-circuit"), "microchips re
 assert_report(not recipe_has("plastic-bar", "carbon"), "the first plastic recipe has redundant carbon")
 assert_report(not tech_uses("fw-propellant-synthesis", "cryogenic-science-pack"), "propellant waits for Aquilo")
 assert_report(not tech_uses("fw-flux-catalysis", "cryogenic-science-pack"), "Flux catalysis waits for Aquilo")
-if not Startup.enabled("fw-skip-burner-stage", false) then
-  assert_report(data.raw.technology.electricity.unit.count == 10, "Electricity is not a 10-pack bootstrap")
-end
 assert_report(not recipe_has("stone-wall", "fw-sensor-package"), "stone walls still require sensors")
 assert_report(not recipe_has("steam-engine", "bronze-plate"), "bootstrap steam engine still requires bronze")
 assert_report(not recipe_has("crusher", "electronic-circuit"), "crusher still requires its own silicon-gated circuit output")
@@ -115,7 +111,7 @@ end
 assert_report(enables_fluid_mining, "Fluid mining does not enable fluid-fed drills")
 assert_report(data.raw.recipe["fw-silicon-beneficiation"].categories[1] == "fw-silicon-refining",
   "Refined Silicon remains exclusive to the bootstrap crushing category")
-for _, machine_name in ipairs({ "crusher", "industrial-furnace", "fw-arc-foundry" }) do
+for _, machine_name in ipairs({ "crusher", "fw-arc-foundry" }) do
   local machine = data.raw["assembling-machine"] and data.raw["assembling-machine"][machine_name]
   local supports_silicon = false
   for _, category in ipairs((machine and machine.crafting_categories) or {}) do
@@ -169,14 +165,6 @@ for _, deposit_name in ipairs({ "fw-metallic-deposit", "fw-mineral-deposit", "fw
 end
 assert_report(recipe_has("pipe", "lead-plate") and not recipe_has("pipe", "iron-plate"),
   "the primary pipe family has not been restored to lead")
-if Startup.enabled("fw-skip-burner-stage", false) then
-  assert_report(data.raw.recipe["automation-science-pack"].categories[1] == "crafting",
-    "skip-burner automation science cannot be handcrafted")
-  for _, recipe_name in ipairs({ "burner-inserter", "burner-mining-drill" }) do
-    assert_report(data.raw.recipe[recipe_name].enabled ~= false and not data.raw.recipe[recipe_name].hidden,
-      recipe_name .. " is unobtainable in skip-burner mode")
-  end
-end
 for setting_name in pairs(data.raw["string-setting"] or {}) do
   assert_report(not string.match(setting_name, "^fw%-worldgen%-.+%-profile$"),
     "redundant resource profile setting remains: " .. setting_name)
@@ -222,7 +210,8 @@ for recipe_name, amount in pairs({
     recipe_name .. " lost its crushing yield advantage")
 end
 
-assert_report(data.raw.technology["burner-mechanics"].hidden == true,
+assert_report(not data.raw.technology["burner-mechanics"]
+    or data.raw.technology["burner-mechanics"].hidden == true,
   "automatic Burner Mechanics remains as an isolated visible technology")
 assert_report(tech_requires("fw-mineral-beneficiation", "logistic-science-pack"),
   "Mineral Beneficiation consumes green science without requiring its unlock")
@@ -265,8 +254,6 @@ end
 assert_report(not recipe_has("fw-aluminum-beam", "glass"), "Aluminum Beam still consumes glass")
 assert_report(data.raw.item["fw-elastomer-matrix"].icon ~= data.raw.item["fw-rubber-sheet"].icon,
   "Elastomer Matrix still shares the Rubber Sheet icon")
-assert_report(not data.raw.technology["fw-aai-bulk-storage"],
-  "FluxWorks still duplicates AAI's bulk-storage unlock technology")
 for recipe_name, recipe in pairs(data.raw.recipe or {}) do
   if string.sub(recipe_name, 1, 3) == "fw-" and type(recipe.energy_required) == "number" then
     assert_report(math.abs(recipe.energy_required * 4 - math.floor(recipe.energy_required * 4 + 0.5)) < 0.0001,

@@ -1,6 +1,13 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.3
 Date: 2026-08-09
+  Changes:
+    - Removed AAI Industry, AAI Loaders, and AAI Containers as dependencies and replaced their material, machine, logistics, technology, and validation seams with native FluxWorks and vanilla progression.
+    - Restored the ordinary Lead Pipe, Lead Underground Pipe, and Lead Pump presentation; network-isolation details no longer replace their names or tooltips.
+    - Removed the Skip burner stage startup setting and its alternate progression path.
+  Balance:
+    - Reworked the AAI-free electric drill, control assembly, transformer core, flow regulator, hydraulic calibration, and Flux Quarry recipes around circuits, bearings, windings, and electric engines instead of generic combustion engines.
+    - Changed broad production-machine integration from ordinary iron gears to FluxWorks Bearings and excluded the Captive Biter Spawner from that machinery tax.
   Bugfixes:
     - Corrected icon-size declarations for the Petrochemical Facility, Reactive Powders, Bauxite Slurry Clarification, and Tin Ore Beneficiation so their sprites load successfully.
 ---------------------------------------------------------------------------------------------------

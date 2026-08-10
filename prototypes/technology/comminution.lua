@@ -82,7 +82,7 @@ data:extend({
     name = "fw-dense-ore-smelting",
     icons = {
       {
-        icon = "__aai-industry__/graphics/technology/industrial-furnace.png",
+        icon = "__base__/graphics/technology/advanced-material-processing-2.png",
         icon_size = 256,
       },
       {

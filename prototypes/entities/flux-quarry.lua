@@ -173,7 +173,7 @@ data:extend({
       { type = "item", name = "fw-flow-regulator", amount = 4 },
       { type = "item", name = "fw-control-assembly", amount = 6 },
       { type = "item", name = "advanced-circuit", amount = 12 },
-      { type = "item", name = "electric-motor", amount = 10 },
+      { type = "item", name = "engine-unit", amount = 10 },
     },
     results = { { type = "item", name = "fw-flux-quarry", amount = 1 } },
   },

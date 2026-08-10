@@ -62,12 +62,12 @@ end
 -- Bearings arrive with the first electric drill, not after it.
 set_ingredients("fw-bearing", {
   { type = "item", name = "iron-plate", amount = 3 },
-  { type = "item", name = "motor", amount = 1 },
+  { type = "item", name = "iron-gear-wheel", amount = 1 },
 })
 set_ingredients("electric-mining-drill", {
   { type = "item", name = "burner-mining-drill", amount = 1 },
-  { type = "item", name = "electric-motor", amount = 4 },
-  { type = "item", name = "fw-bearing", amount = 1 },
+  { type = "item", name = "electronic-circuit", amount = 3 },
+  { type = "item", name = "fw-bearing", amount = 2 },
 })
 
 local drill_technology = data.raw.technology and data.raw.technology["electric-mining-drill"]

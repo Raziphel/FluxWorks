@@ -42,11 +42,8 @@ load_modules({
   "prototypes.updates.visual-identity",
   "prototypes.updates.recipe-decomposition",
   "prototypes.updates.ore-icons",
-  "prototypes.compat.aai-suite",
 })
 
--- Reapply the integration after broad recipe edits have landed.
-require("prototypes.updates.aai-industry")()
 require("prototypes.updates.dual-pipe-networks")
 
 -- Platform handling is a player-selected balance rule, so land it after every
@@ -54,8 +51,8 @@ require("prototypes.updates.dual-pipe-networks")
 require("prototypes.updates.space-platform-drag").apply()
 require("prototypes.updates.player-tuning").apply()
 
--- These checks operate on the completed cross-mod recipes. They deliberately
--- follow AAI's substitutions, which can replace an entire ingredient list.
+-- These checks operate on the completed cross-mod recipes.
+require("prototypes.updates.native-industry")
 require("prototypes.updates.recipe_tweaks.ingredient_boundaries")()
 
 -- Exact API promises land after broad rewrites and before recovery valuation.
@@ -63,7 +60,6 @@ require("prototypes.compat.api-finalization")
 require("prototypes.recipes.flux-condensing")
 require("prototypes.updates.progression-reconciliation")
 require("prototypes.updates.playtest-report-reconciliation")
-require("prototypes.updates.skip-burner-stage")
 require("prototypes.updates.item-recipe-cleanup")
 require("prototypes.updates.flux-tooltips")
 require("prototypes.updates.remove-obsolete-beneficiation")

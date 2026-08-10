@@ -11,8 +11,3 @@ require_many({
   "prototypes.updates.progression-gates",
   "prototypes.updates.powered-machines",
 })
-
--- Establish AAI substitutions before final-stage recipe classification. The
--- integration is deliberately callable again after other mods finish rewriting
--- recipes in data-final-fixes.
-require("prototypes.updates.aai-industry")()

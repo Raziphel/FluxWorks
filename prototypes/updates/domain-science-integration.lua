@@ -21,7 +21,7 @@ local domains = {
     },
     external_consumers = {
       "production-science-pack", "advanced-material-processing-2", "automation-3",
-      "logistics-3", "elevated-rail", "industrial-furnace", "area-mining-drill",
+      "logistics-3", "elevated-rail",
       "mining-productivity-2", "mining-productivity-3",
       "inserter-capacity-bonus-3", "inserter-capacity-bonus-4", "braking-force-3",
       "research-speed-5", "effect-transmission", "nuclear-fuel-reprocessing",
@@ -60,7 +60,7 @@ local domains = {
       "inserter-capacity-bonus-5", "inserter-capacity-bonus-6", "inserter-capacity-bonus-7",
       "braking-force-4", "braking-force-5", "braking-force-6", "braking-force-7",
       "research-speed-6", "power-armor-mk2", "personal-roboport-mk2-equipment",
-      "toolbelt-4", "toolbelt-5", "processing-unit-productivity",
+      "processing-unit-productivity",
     },
     supporting_consumers = {
       "fw-flux-field-theory",
@@ -170,27 +170,6 @@ local function require_domain(technology_name, domain, add_prerequisite)
   technology.unit.ingredients = technology.unit.ingredients or {}
   if not contains(technology.unit.ingredients, domain.pack) then
     technology.unit.ingredients[#technology.unit.ingredients + 1] = { domain.pack, 1 }
-  end
-end
-
-for _, technology_name in ipairs({
-  "aai-loader",
-  "aai-fast-loader",
-  "fw-aai-bulk-storage",
-}) do
-  if data.raw.technology and data.raw.technology[technology_name] then
-    domains[1].consumers[#domains[1].consumers + 1] = technology_name
-  end
-end
-
-for _, technology_name in ipairs({
-  "aai-express-loader",
-  "aai-turbo-loader",
-  "fw-aai-network-storage",
-  "fw-aai-controlled-storage",
-}) do
-  if data.raw.technology and data.raw.technology[technology_name] then
-    domains[2].consumers[#domains[2].consumers + 1] = technology_name
   end
 end
 

@@ -173,7 +173,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-pressure-housing", amount = 1 },
-      { type = "item", name = "electric-motor", amount = 1 },
+      { type = "item", name = "engine-unit", amount = 1 },
       { type = "item", name = "fw-bearing", amount = 1 },
       { type = "item", name = "bronze-plate", amount = 1 },
       { type = "item", name = "fw-inline-filter", amount = 1 },

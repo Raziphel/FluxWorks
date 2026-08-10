@@ -11,11 +11,10 @@
     "quality >= 2.1.0",
     "recycler >= 2.1.0",
     "FluxWorksAssets >= 1.0.0",
-    "aai-industry >= 0.7.3",
-    "aai-loaders >= 0.3.0",
-    "aai-containers >= 0.4.0",
     "finely-crafted-graphics >= 2.1.0",
-    "razi_lib >= 1.0.0"
+    "razi_lib >= 1.0.0",
+    "+ aai-loaders",
+    "aai-containers"
   ],
   "quality_required": true,
 	"rail_bridges_required": true,

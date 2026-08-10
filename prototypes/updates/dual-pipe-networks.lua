@@ -226,15 +226,18 @@ for _, spec in ipairs(copper_specs) do
   set_icon(recipe, spec.icon)
 end
 
-local basic_fluids = data.raw.technology and data.raw.technology["basic-fluid-handling"]
-if not basic_fluids then error("FluxWorks dual pipe networks require Basic Fluid Handling") end
-basic_fluids.effects = basic_fluids.effects or {}
+local fluid_handling = data.raw.technology and data.raw.technology["fluid-handling"]
+if not fluid_handling then error("FluxWorks dual pipe networks require Fluid Handling") end
+fluid_handling.effects = fluid_handling.effects or {}
 local unlocks = {}
-for _, effect in pairs(basic_fluids.effects) do
+for _, effect in pairs(fluid_handling.effects) do
   if effect.type == "unlock-recipe" then unlocks[effect.recipe] = true end
 end
-for _, recipe_name in ipairs({ "pump", "fw-copper-pipe", "fw-copper-pipe-to-ground", "fw-copper-pump" }) do
+for _, recipe_name in ipairs({
+  "pipe", "pipe-to-ground", "pump",
+  "fw-copper-pipe", "fw-copper-pipe-to-ground", "fw-copper-pump",
+}) do
   if not unlocks[recipe_name] then
-    table.insert(basic_fluids.effects, { type = "unlock-recipe", recipe = recipe_name })
+    table.insert(fluid_handling.effects, { type = "unlock-recipe", recipe = recipe_name })
   end
 end

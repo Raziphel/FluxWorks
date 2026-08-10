@@ -8,7 +8,6 @@ by Tirisabella.
 FluxWorks builds on these separately distributed dependencies:
 
 - Factorio, Space Age, and Quality — Wube Software
-- AAI Industry, AAI Loaders, and AAI Containers & Warehouses — Earendel
 - [Finely Crafted Graphics](https://mods.factorio.com/mod/finely-crafted-graphics)
   — graphics by hurricane, distributed by plexpt (CC BY)
 - RAZI Library (`razi_lib`) — Reusable Architecture & Zero-friction Infrastructure by Raziphel

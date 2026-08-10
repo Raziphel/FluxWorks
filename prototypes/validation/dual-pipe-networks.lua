@@ -23,8 +23,8 @@ for _, recipe_name in ipairs({
   "pipe", "pipe-to-ground", "pump",
   "fw-copper-pipe", "fw-copper-pipe-to-ground", "fw-copper-pump",
 }) do
-  if not has_unlock("basic-fluid-handling", recipe_name) then
-    error("Basic Fluid Handling must unlock both pipe families together: " .. recipe_name)
+  if not has_unlock("fluid-handling", recipe_name) then
+    error("Fluid Handling must unlock both pipe families together: " .. recipe_name)
   end
 end
 

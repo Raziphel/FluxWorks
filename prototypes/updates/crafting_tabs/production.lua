@@ -117,7 +117,7 @@ for _, entry in pairs({
   set_order("recipe", entry[1], entry[2])
 end
 
--- AAI/K2 machines otherwise retain late z-orders in the production group and
+-- Third-party machines otherwise retain late z-orders in the production group and
 -- form an orphaned block below modules. Keep them with their actual families.
 move_item_and_recipe("area-mining-drill", "extraction-machine")
 move_item_and_recipe("industrial-furnace", "smelting-machine")

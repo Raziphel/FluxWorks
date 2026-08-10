@@ -133,8 +133,7 @@ function StartingWreckage.on_init()
     return
   end
 
-  -- AAI Industry already supplies burner drills, a burner assembler, belts, and motors.
-  -- These additions complete a small powered starter base without replacing the early game.
+  -- Complete a small powered starter base without replacing the early game.
   add_items("ship", {
     boiler = 1,
     ["steam-engine"] = 1,

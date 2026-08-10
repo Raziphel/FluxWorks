@@ -83,8 +83,7 @@ remove_science("fw-flux-catalysis", "cryogenic-science-pack")
 local electricity = data.raw.technology and data.raw.technology.electricity
 if electricity and electricity.unit then electricity.unit.count = 10 end
 
--- AAI raises Automation to 100 packs and later compatibility can route it
--- through the electric drill. Preserve the familiar first automation step.
+-- Preserve the familiar first automation step.
 local automation = data.raw.technology and data.raw.technology.automation
 if automation and automation.unit then
   automation.unit.count = 10
@@ -99,7 +98,7 @@ if crusher then
     { type = "item", name = "iron-plate", amount = 10 },
     { type = "item", name = "iron-gear-wheel", amount = 5 },
     { type = "item", name = "stone-brick", amount = 5 },
-    { type = "item", name = "motor", amount = 2 },
+    { type = "item", name = "iron-gear-wheel", amount = 2 },
   }
   crusher.ingredients = table.deepcopy(ingredients)
   if crusher.normal then crusher.normal.ingredients = table.deepcopy(ingredients) end
@@ -245,8 +244,8 @@ remove_ingredient("fast-splitter", "fw-signal-conduit")
 add_unlock("fw-conductive-assembly", "fw-solder-alloy")
 add_unlock("fw-conductive-assembly", "fw-solder-wire")
 
--- AAI's basic pipe milestone is the bridge from the first electrical research
--- to conventional steam power, not a late multi-discipline checkpoint.
+-- Preserve compatible early-fluid tuning when another mod supplies the
+-- legacy Basic Fluid Handling milestone.
 local basic_fluids = data.raw.technology and data.raw.technology["basic-fluid-handling"]
 if basic_fluids then
   basic_fluids.prerequisites = { "electricity" }

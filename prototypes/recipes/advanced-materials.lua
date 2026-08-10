@@ -206,7 +206,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "glass", amount = 1 },
-      { type = "item", name = "stone-tablet", amount = 2 },
+      { type = "item", name = "stone-brick", amount = 2 },
       { type = "item", name = "silicon", amount = 1 },
       { type = "item", name = "aluminum-plate", amount = 1 },
       { type = "item", name = "fw-copper-tube", amount = 1 },
@@ -362,7 +362,7 @@ data:extend({
     allow_productivity = true,
     ingredients = {
       { type = "item", name = "fw-steel-beam", amount = 1 },
-      { type = "item", name = "electric-motor", amount = 1 },
+      { type = "item", name = "engine-unit", amount = 1 },
       { type = "item", name = "fw-control-assembly", amount = 1 },
       { type = "item", name = "copper-cable", amount = 4 },
       { type = "item", name = "fw-tinned-cable", amount = 1 },
@@ -398,7 +398,7 @@ data:extend({
     ingredients = {
       { type = "item", name = "steel-plate", amount = 1 },
       { type = "item", name = "iron-plate", amount = 2 },
-      { type = "item", name = "motor", amount = 1 },
+      { type = "item", name = "iron-gear-wheel", amount = 1 },
       { type = "item", name = "bronze-plate", amount = 1 },
       { type = "item", name = "fw-solder-alloy", amount = 1 },
     },
@@ -432,7 +432,7 @@ data:extend({
     energy_required = 2.0,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "stone-tablet", amount = 1 },
+      { type = "item", name = "stone-brick", amount = 1 },
       { type = "item", name = "glass", amount = 1 },
     },
     results = { { type = "item", name = "fw-ceramic-insulator", amount = 2 } },
@@ -528,7 +528,7 @@ data:extend({
     ingredients = {
       { type = "item", name = "fw-circuit-substrate", amount = 1 },
       { type = "item", name = "fw-circuit-contact", amount = 1 },
-      { type = "item", name = "stone-tablet", amount = 1 },
+      { type = "item", name = "stone-brick", amount = 1 },
       { type = "item", name = "tin-plate", amount = 1 },
       { type = "item", name = "fw-silicon-wafer", amount = 1 },
     },
@@ -544,11 +544,11 @@ data:extend({
     energy_required = 2.0,
     allow_productivity = true,
     ingredients = {
-      { type = "item", name = "electric-motor", amount = 1 },
+      { type = "item", name = "engine-unit", amount = 1 },
       { type = "item", name = "fw-circuit-substrate", amount = 1 },
       { type = "item", name = "fw-chip-carrier", amount = 1 },
       { type = "item", name = "fw-solder-wire", amount = 1 },
-      { type = "item", name = "stone-tablet", amount = 1 },
+      { type = "item", name = "stone-brick", amount = 1 },
       { type = "item", name = "glass", amount = 1 },
     },
     results = { { type = "item", name = "fw-control-assembly", amount = 2 } },

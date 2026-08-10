@@ -257,7 +257,7 @@ data:extend({
   }, 6, "fw-intermediate-structural"),
   hydraulic_recipe("fw-hydraulic-regulator-calibration", "fw-flow-regulator", 7, {
     { type = "item", name = "fw-pressure-housing", amount = 2 },
-    { type = "item", name = "electric-motor", amount = 1 },
+    { type = "item", name = "engine-unit", amount = 1 },
     { type = "item", name = "fw-bearing", amount = 2 },
     { type = "item", name = "bronze-plate", amount = 2 },
     { type = "item", name = "fw-inline-filter", amount = 1 },

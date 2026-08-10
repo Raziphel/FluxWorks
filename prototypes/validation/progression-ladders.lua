@@ -336,8 +336,8 @@ for _, salt_consumer in ipairs({ "battery" }) do
 end
 assert_recipe_has_ingredient(
   "fw-ceramic-insulator",
-  "stone-tablet",
-  "early insulators should use AAI's shaped ceramic body"
+  "stone-brick",
+  "early insulators should use a simple shaped ceramic body"
 )
 assert_recipe_has_ingredient(
   "fw-ceramic-insulator",
@@ -346,7 +346,7 @@ assert_recipe_has_ingredient(
 )
 assert_recipe_lacks_ingredients(
   "fw-ceramic-insulator",
-  { "stone-brick", "silicon", "lead-plate", "fw-alumina-refractory" },
+  { "silicon", "lead-plate", "fw-alumina-refractory" },
   "early electrical insulation should remain a compact ceramic recipe"
 )
 assert_recipe_has_ingredient(
@@ -376,11 +376,8 @@ local foundational_fluid_recipes = {
   "offshore-pump",
   "chemical-plant",
   "oil-refinery",
+  "pumpjack",
 }
-
-if not mods["aai-industry"] then
-  foundational_fluid_recipes[#foundational_fluid_recipes + 1] = "pumpjack"
-end
 
 for _, recipe_name in ipairs(foundational_fluid_recipes) do
   assert_recipe_lacks_ingredients(

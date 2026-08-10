@@ -12,7 +12,7 @@ return function(shared)
     { type = "item", name = "steel-plate", amount = 8 },
     { type = "item", name = "iron-gear-wheel", amount = 6 },
     { type = "item", name = "electronic-circuit", amount = 4 },
-    { type = "item", name = "motor", amount = 2 },
+    { type = "item", name = "iron-gear-wheel", amount = 2 },
     { type = "item", name = "stone-brick", amount = 10 },
   })
 
@@ -199,7 +199,7 @@ return function(shared)
       { type = "item", name = "fw-harvester-head", amount = 1 },
     })
     -- The Harvester Head already represents the collector's production
-    -- machinery. Do not let broad compatibility append another generic motor.
+    -- machinery. Do not let broad compatibility append another generic bearing.
     Compatibility.exclude_recipe("asteroid-collector")
 
     set_recipe_ingredients("thruster", {

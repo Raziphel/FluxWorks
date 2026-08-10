@@ -166,9 +166,9 @@ data:extend({
   {
     type = "technology",
     name = "fw-cable-looming",
-    icon = "__aai-industry__/graphics/technology/electric-engine.png",
+    icon = "__base__/graphics/technology/electric-engine.png",
     icon_size = 256,
-    prerequisites = { "fw-conductive-assembly", "fw-elastomer-processing", "electricity" },
+    prerequisites = { "fw-conductive-assembly", "fw-elastomer-processing", "automation" },
     unit = tech_unit(70, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -245,7 +245,7 @@ data:extend({
     name = "fw-signal-architecture",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-circuit-contact.png",
     icon_size = 64,
-    prerequisites = { "fw-chip-packaging", "fw-cable-looming", "fw-capacitive-systems", "battery", "electricity" },
+    prerequisites = { "fw-chip-packaging", "fw-cable-looming", "fw-capacitive-systems", "battery", "automation" },
     unit = tech_unit(95, {
       { "automation-science-pack", 1 },
       { "logistic-science-pack", 1 },
@@ -488,7 +488,7 @@ Tech:get("fw-cable-looming")
   :setCost(70)
   :setColors("RG")
   :setTime(24)
-  :setPrerequisites({ "fw-conductive-assembly", "fw-elastomer-processing", "electricity" })
+  :setPrerequisites({ "fw-conductive-assembly", "fw-elastomer-processing", "automation" })
 
 Tech:get("fw-wafer-etching")
   :setCost(80)
@@ -518,7 +518,7 @@ Tech:get("fw-signal-architecture")
   :setCost(95)
   :setColors("RGB")
   :setTime(24)
-  :setPrerequisites({ "fw-chip-packaging", "fw-cable-looming", "fw-capacitive-systems", "battery", "electricity" })
+  :setPrerequisites({ "fw-chip-packaging", "fw-cable-looming", "fw-capacitive-systems", "battery", "automation" })
 
 Tech:get("fw-microelectronics")
   :setCost(105)

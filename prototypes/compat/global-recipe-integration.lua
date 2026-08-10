@@ -69,7 +69,7 @@ local FAMILIES = {
     },
   },
   {
-    name = "production-system", part = "motor",
+    name = "production-system", part = "fw-bearing",
     types = {
       "assembling-machine", "asteroid-collector", "beacon", "furnace", "lab",
       "mining-drill", "rocket-silo",
