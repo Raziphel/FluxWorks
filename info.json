@@ -1,6 +1,6 @@
 {
   "name": "FluxWorks",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "title": "FluxWorks",
   "author": "Raziphel, FluidNatalie",
   "factorio_version": "2.1",
@@ -13,8 +13,8 @@
     "FluxWorksAssets >= 1.0.0",
     "finely-crafted-graphics >= 2.1.0",
     "razi_lib >= 1.0.0",
-    "+ aai-loaders",
-    "aai-containers"
+    "+ aai-loaders >= 0.3.0",
+    "+ aai-containers >= 0.4.0"
   ],
   "quality_required": true,
 	"rail_bridges_required": true,
