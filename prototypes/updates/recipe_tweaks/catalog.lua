@@ -305,7 +305,6 @@ return function(shared)
     { type = "item", name = "iron-gear-wheel", amount = 10 },
     { type = "item", name = "transport-belt", amount = 4 },
     { type = "item", name = "glass", amount = 4 },
-    { type = "item", name = "fw-glass-lens", amount = 2 },
   })
 
   set_recipe_ingredients("recycler", {

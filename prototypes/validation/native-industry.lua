@@ -61,6 +61,44 @@ end
 assert_unlock("sand-processing", "sand")
 assert_unlock("glass-processing", "glass")
 
+assert_ingredients("lab",
+  { "electronic-circuit", "iron-gear-wheel", "transport-belt", "glass" },
+  { "fw-glass-lens", "fw-ceramic-insulator" })
+
+local sand_recipe = data.raw.recipe.sand
+local sand_uses_crusher = sand_recipe.category == "basic-crushing"
+for _, category in ipairs(sand_recipe.categories or {}) do
+  if category == "basic-crushing" then sand_uses_crusher = true end
+end
+if not sand_uses_crusher then
+  error("Native industry validation: Sand must require the Crusher")
+end
+
+local comminution = data.raw.technology["fw-comminution"]
+if comminution.unit or not comminution.research_trigger
+  or comminution.research_trigger.type ~= "mine-entity"
+  or not comminution.research_trigger.entities
+  or comminution.research_trigger.entities[1] ~= "stone"
+then
+  error("Native industry validation: Comminution must unlock by mining stone")
+end
+
+local sand_processing = data.raw.technology["sand-processing"]
+if sand_processing.unit or not sand_processing.research_trigger
+  or sand_processing.research_trigger.type ~= "craft-item"
+  or sand_processing.research_trigger.item ~= "crusher"
+then
+  error("Native industry validation: Sand Processing must unlock by crafting a Crusher")
+end
+
+local glass_processing = data.raw.technology["glass-processing"]
+if glass_processing.unit or not glass_processing.research_trigger
+  or glass_processing.research_trigger.type ~= "craft-item"
+  or glass_processing.research_trigger.item ~= "sand"
+then
+  error("Native industry validation: Glass Processing must unlock by crafting sand")
+end
+
 assert_ingredients("electric-mining-drill",
   { "burner-mining-drill", "electronic-circuit", "fw-bearing" },
   { "engine-unit" })

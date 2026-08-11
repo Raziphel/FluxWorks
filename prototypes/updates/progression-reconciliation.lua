@@ -31,13 +31,19 @@ local function set_ingredients(recipe_name, ingredients)
   if recipe.expensive then recipe.expensive.ingredients = table.deepcopy(ingredients) end
 end
 
+local bootstrap_producers = {
+  silicon = "fw-silicon-beneficiation",
+  ["fw-gunpowder"] = "fw-gunpowder-early",
+}
+
 local function canonical_producer(item_name)
-  local recipe = data.raw.recipe and data.raw.recipe[item_name]
-  if not recipe then return nil end
+  local recipe_name = bootstrap_producers[item_name] or item_name
+  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  if not recipe then return nil, nil end
   for _, result in pairs(recipe.results or {}) do
-    if entry_name(result) == item_name then return recipe end
+    if entry_name(result) == item_name then return recipe, recipe_name end
   end
-  return nil
+  return nil, nil
 end
 
 local function has_enabled_producer(item_name)
@@ -156,11 +162,11 @@ for _ = 1, MAX_RECONCILIATION_PASSES do
         local consumer_technology = data.raw.technology[consumer_technology_name]
         for _, ingredient in pairs(consumer_recipe.ingredients or {}) do
           local ingredient_name = entry_name(ingredient)
-          local producer_recipe = canonical_producer(ingredient_name)
+          local producer_recipe, producer_recipe_name = canonical_producer(ingredient_name)
 
           if producer_recipe and producer_recipe.enabled == false then
             local available = false
-            local producer_unlockers = unlockers[ingredient_name] or {}
+            local producer_unlockers = unlockers[producer_recipe_name] or {}
             for _, producer_technology_name in ipairs(producer_unlockers) do
               if technology_reaches(consumer_technology_name, producer_technology_name) then
                 available = true

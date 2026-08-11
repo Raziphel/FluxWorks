@@ -70,10 +70,10 @@ if not (data.raw.technology and data.raw.technology["sand-processing"]) then
       icon = native_icon_path .. "sand.png",
       icon_size = 64,
       prerequisites = { "fw-comminution" },
-      unit = {
-        count = 20,
-        ingredients = { { "automation-science-pack", 1 } },
-        time = 15,
+      essential = true,
+      research_trigger = {
+        type = "craft-item",
+        item = "crusher",
       },
       effects = {
         { type = "unlock-recipe", recipe = "sand" },
@@ -92,10 +92,11 @@ if not (data.raw.technology and data.raw.technology["glass-processing"]) then
       icon = native_icon_path .. "glass.png",
       icon_size = 64,
       prerequisites = { "sand-processing" },
-      unit = {
-        count = 30,
-        ingredients = { { "automation-science-pack", 1 } },
-        time = 15,
+      essential = true,
+      research_trigger = {
+        type = "craft-item",
+        item = "sand",
+        count = 4,
       },
       effects = { { type = "unlock-recipe", recipe = "glass" } },
       order = "a-b-e[glass-processing]",

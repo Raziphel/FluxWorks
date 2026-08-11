@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.6
+Date: 2026-08-11
+  Changes:
+    - Changed Comminution into an early discovery unlocked by mining Stone; building its Crusher unlocks Sand Processing, and crushing Sand unlocks Glass Processing.
+  Bugfixes:
+    - Removed the Glass/Lab progression loop while retaining both Glass in the Lab recipe and the Crusher requirement for Sand production.
+    - Removed Glass Lenses and Ceramic Insulators from the bootstrap Lab recipe.
+    - Corrected progression reconciliation for alternate bootstrap recipes such as Silicon Beneficiation and Primitive Gunpowder Mixing.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.5
 Date: 2026-08-11
   Graphics:

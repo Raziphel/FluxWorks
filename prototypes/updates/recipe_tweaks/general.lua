@@ -30,7 +30,6 @@ return function(shared)
     { "uranium-rounds-magazine", "piercing-rounds-magazine", 1 },
     { "uranium-rounds-magazine", "fw-gunpowder", 1 },
     { "lab", "glass", 4 },
-    { "lab", "fw-ceramic-insulator", 2 },
     { "biolab", "glass", 20 },
     { "biolab", "fw-capacitor", 8 },
     { "fast-inserter", "fw-steel-beam", 1 },
@@ -72,7 +71,6 @@ return function(shared)
     { "beacon", "fw-transformer-core", 2 },
     { "beacon", "fw-sensor-package", 2 },
     { "roboport", "fw-ribbon-cable", 2 },
-    { "lab", "fw-glass-lens", 2 },
   })
 
   -- General machinery uses the structural and electrical assemblies appropriate to its role.
