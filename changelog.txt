@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.5
+Date: 2026-08-11
+  Graphics:
+    - Replaced the temporary stone and superconductor graphics for Sand and Glass with dedicated material icons supplied by FluxWorks Assets.
+    - Added three inventory variations for Sand and applied the new material graphics to Sand Processing and Glass Processing research.
+  Changes:
+    - Raised the FluxWorks Assets requirement to 1.0.4 so the native Sand and Glass prototypes always load with their packaged graphics.
+  Bugfixes:
+    - Expanded validation for FluxWorks-owned generic materials and guaranteed Sand and Glass recipes independently of which mod supplies their item prototypes.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.4
 Date: 2026-08-10
   Changes:

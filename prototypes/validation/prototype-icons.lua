@@ -2,6 +2,19 @@ local prototype_types = {
   "item", "tool", "fluid", "module", "ammo", "capsule", "armor",
 }
 
+-- These generic names are owned by FluxWorks when no earlier mod provides
+-- them. Keep them in the same visual audit as the fw-prefixed prototypes.
+local owned_unprefixed_items = {
+  ["lead-plate"] = true,
+  ["titanium-plate"] = true,
+  ["aluminum-plate"] = true,
+  ["tin-plate"] = true,
+  ["bronze-plate"] = true,
+  ["silicon"] = true,
+  ["sand"] = true,
+  ["glass"] = true,
+}
+
 local function layer_key(layer)
   local shift = layer.shift or {}
   local tint = layer.tint or {}
@@ -44,6 +57,7 @@ local shared_fallback_icons = {
 }
 local forbidden_icon_prefixes = {
   "__Krastorio2Assets__/",
+  "__aai-industry__/",
 }
 
 local function assert_fluxworks_art(prototype_type, name, prototype)
@@ -59,7 +73,9 @@ end
 
 for _, prototype_type in ipairs(prototype_types) do
   for name, prototype in pairs(data.raw[prototype_type] or {}) do
-    if string.sub(name, 1, 3) == "fw-" then
+    local owned = string.sub(name, 1, 3) == "fw-"
+      or (prototype_type == "item" and owned_unprefixed_items[name])
+    if owned then
       assert_fluxworks_art(prototype_type, name, prototype)
       local key = icon_key(prototype)
       if not key then

@@ -1,6 +1,6 @@
 {
   "name": "FluxWorks",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "title": "FluxWorks",
   "author": "Raziphel, FluidNatalie",
   "factorio_version": "2.1",
@@ -10,7 +10,7 @@
     "space-age >= 2.1.0",
     "quality >= 2.1.0",
     "recycler >= 2.1.0",
-    "FluxWorksAssets >= 1.0.0",
+    "FluxWorksAssets >= 1.0.4",
     "finely-crafted-graphics >= 2.1.0",
     "razi_lib >= 1.0.0",
     "+ aai-loaders >= 0.3.0",

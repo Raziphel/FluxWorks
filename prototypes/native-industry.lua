@@ -1,15 +1,27 @@
 -- FluxWorks-owned sand and glass processing for the core material progression.
+local native_icon_path = "__FluxWorksAssets__/graphics/icons/items/native-industry/"
+
 if not (data.raw.item and data.raw.item.sand) then
   data:extend({
     {
       type = "item",
       name = "sand",
-      icon = "__base__/graphics/icons/stone.png",
+      icon = native_icon_path .. "sand.png",
       icon_size = 64,
+      pictures = {
+        { size = 64, filename = native_icon_path .. "sand.png", scale = 0.5 },
+        { size = 64, filename = native_icon_path .. "sand-1.png", scale = 0.5 },
+        { size = 64, filename = native_icon_path .. "sand-2.png", scale = 0.5 },
+      },
       subgroup = "raw-material",
       order = "a[stone]-b[sand]",
       stack_size = 200,
     },
+  })
+end
+
+if not (data.raw.recipe and data.raw.recipe.sand) then
+  data:extend({
     {
       type = "recipe",
       name = "sand",
@@ -27,12 +39,17 @@ if not (data.raw.item and data.raw.item.glass) then
     {
       type = "item",
       name = "glass",
-      icon = "__space-age__/graphics/icons/superconductor.png",
+      icon = native_icon_path .. "glass.png",
       icon_size = 64,
       subgroup = "raw-material",
       order = "a[stone]-c[glass]",
       stack_size = 100,
     },
+  })
+end
+
+if not (data.raw.recipe and data.raw.recipe.glass) then
+  data:extend({
     {
       type = "recipe",
       name = "glass",
@@ -50,7 +67,7 @@ if not (data.raw.technology and data.raw.technology["sand-processing"]) then
     {
       type = "technology",
       name = "sand-processing",
-      icon = "__base__/graphics/icons/stone.png",
+      icon = native_icon_path .. "sand.png",
       icon_size = 64,
       prerequisites = { "fw-comminution" },
       unit = {
@@ -72,7 +89,7 @@ if not (data.raw.technology and data.raw.technology["glass-processing"]) then
     {
       type = "technology",
       name = "glass-processing",
-      icon = "__space-age__/graphics/icons/superconductor.png",
+      icon = native_icon_path .. "glass.png",
       icon_size = 64,
       prerequisites = { "sand-processing" },
       unit = {

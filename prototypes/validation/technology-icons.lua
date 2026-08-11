@@ -1,5 +1,6 @@
 local forbidden_icon_prefixes = {
   "__Krastorio2Assets__/",
+  "__aai-industry__/",
 }
 
 local seen_active_icons = {}
