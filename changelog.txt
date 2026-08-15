@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.7
+Date: 2026-08-15
+  Changes:
+    - Changed Comminution to unlock after mining five Big Rocks instead of mining Stone.
+  Bugfixes:
+    - Made Nauvis Mineral Deposits dry-mineable so their Silicon Ore can bootstrap Crusher-based Refined Silicon before fluid mining and electric drills.
+    - Added progression validation for both the five-rock Comminution discovery and the dry starting Silicon Ore route.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.6
 Date: 2026-08-11
   Changes:

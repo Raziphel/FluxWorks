@@ -15,7 +15,7 @@ local function set_icon(prototype, icon, icon_size)
 end
 
 local technology_icons = {
-  ["fw-comminution"] = { technology .. "fw-comminution.png", 256 },
+  ["fw-comminution"] = { "__space-age__/graphics/icons/crusher.png", 64 },
   ["fw-basic-separation"] = { items .. "fw-inline-filter.png", 256 },
   ["fw-structural-fabrication"] = { items .. "fw-iron-beam.png", 256 },
   ["fw-systems-integration"] = { items .. "fw-solder-wire.png", 256 },

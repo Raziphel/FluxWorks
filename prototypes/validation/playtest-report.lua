@@ -94,6 +94,15 @@ assert_report(not tech_unlocks("fw-precision-alloys", "fw-ceramic-insulator"), "
 assert_report(not recipe_has("solar-panel", "fw-power-regulator"), "solar panels still use power regulators")
 assert_report(not recipe_has("solar-panel", "fw-copper-tube"), "solar panels still use formed tubes")
 assert_report(not data.raw.resource.stone.minable.required_fluid, "stone mining still requires fluid")
+local mineral_deposit = data.raw.resource["fw-mineral-deposit"]
+assert_report(mineral_deposit and not mineral_deposit.minable.required_fluid,
+  "the starting silicon-bearing Mineral Deposit still requires fluid mining")
+local mineral_products = {}
+for _, result in ipairs((mineral_deposit and mineral_deposit.minable.results) or {}) do
+  mineral_products[result.name or result[1]] = true
+end
+assert_report(mineral_products["silicon-ore"],
+  "the dry-mineable Mineral Deposit does not provide bootstrap silicon ore")
 local liquid_mining = data.raw.technology["fw-liquid-mining"]
 assert_report(liquid_mining.unit.count == 20, "Fluid mining is not an early 20-pack milestone")
 local liquid_prerequisites = {}

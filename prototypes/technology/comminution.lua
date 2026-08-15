@@ -16,8 +16,8 @@ data:extend({
   {
     type = "technology",
     name = "fw-comminution",
-    icon = "__space-age__/graphics/technology/advanced-asteroid-processing.png",
-    icon_size = 256,
+    icon = "__space-age__/graphics/icons/crusher.png",
+    icon_size = 64,
     prerequisites = { "automation", "steel-processing" },
     unit = tech_unit(16, {
       { "automation-science-pack", 1 },

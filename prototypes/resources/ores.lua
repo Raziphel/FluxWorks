@@ -440,8 +440,6 @@ data:extend({
     map_color = { r = 0.66, g = 0.62, b = 0.58 },
     minable = {
       mining_time = 1.8,
-      required_fluid = "water",
-      fluid_amount = 10,
       results = {
         { type = "item", name = "bauxite-ore", amount = 1 },
         { type = "item", name = "titanium-ore", amount = 1, probability = 0.18 },

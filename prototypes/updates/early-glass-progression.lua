@@ -8,7 +8,7 @@ local comminution = data.raw.technology and data.raw.technology["fw-comminution"
 if comminution then
   comminution.prerequisites = nil
   comminution.unit = nil
-  comminution.research_trigger = { type = "mine-entity", entities = { "stone" } }
+  comminution.research_trigger = { type = "mine-entity", entities = { "big-rock" }, count = 5 }
   comminution.essential = true
 end
 

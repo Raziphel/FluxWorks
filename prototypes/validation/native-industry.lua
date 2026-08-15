@@ -78,9 +78,10 @@ local comminution = data.raw.technology["fw-comminution"]
 if comminution.unit or not comminution.research_trigger
   or comminution.research_trigger.type ~= "mine-entity"
   or not comminution.research_trigger.entities
-  or comminution.research_trigger.entities[1] ~= "stone"
+  or comminution.research_trigger.entities[1] ~= "big-rock"
+  or comminution.research_trigger.count ~= 5
 then
-  error("Native industry validation: Comminution must unlock by mining stone")
+  error("Native industry validation: Comminution must unlock by mining five big rocks")
 end
 
 local sand_processing = data.raw.technology["sand-processing"]

@@ -15,6 +15,9 @@ local borrowed_prefixes = {
 -- conversions, not new materials, so replacing familiar ore art with a custom
 -- crushed or processed variant makes the recipe misleading.
 local harvester_conversion_recipes = {}
+local familiar_vanilla_technology_icons = {
+  ["fw-comminution"] = true,
+}
 local harvester_chain = {
   "coal", "copper-ore", "iron-ore", "lead-ore", "tin-ore",
   "bauxite-ore", "silicon-ore", "titanium-ore", "uranium-ore",
@@ -41,6 +44,7 @@ for _, prototype_type in ipairs(checked_types) do
   for name, prototype in pairs(data.raw[prototype_type] or {}) do
     if string.sub(name, 1, 3) == "fw-" then
       local allow_borrowed = prototype_type == "recipe" and harvester_conversion_recipes[name]
+        or prototype_type == "technology" and familiar_vanilla_technology_icons[name]
       assert_owned(prototype_type .. "/" .. name, prototype.icon, allow_borrowed)
       for _, layer in ipairs(prototype.icons or {}) do
         assert_owned(prototype_type .. "/" .. name, layer.icon, allow_borrowed)

@@ -34,7 +34,7 @@ data:extend({
     type = "item",
     name = "fw-elastomer-matrix",
     icon = icon_path .. "fw-elastomer-matrix.png",
-    icon_size = 64,
+    icon_size = 256,
     subgroup = "fw-chemistry-materials",
     order = "q[fw-elastomer-matrix]",
     stack_size = 200,
