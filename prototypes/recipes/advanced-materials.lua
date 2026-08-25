@@ -574,6 +574,22 @@ data:extend({
   },
   {
     type = "recipe",
+    name = "fw-microchip-advanced",
+    icon = "__FluxWorksAssets__/graphics/icons/items/fw-microchip.png",
+    icon_size = 256,
+    category = "advanced-crafting",
+    enabled = false,
+    energy_required = 1.5,
+    allow_productivity = true,
+    ingredients = {
+      { type = "item", name = "fw-silicon-wafer", amount = 1 },
+      { type = "item", name = "fw-chip-carrier", amount = 1 },
+      { type = "item", name = "fw-solder-wire", amount = 1 },
+    },
+    results = { { type = "item", name = "fw-microchip", amount = 3 } },
+  },
+  {
+    type = "recipe",
     name = "fw-memory-die",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-memory-die.png",
     icon_size = 256,

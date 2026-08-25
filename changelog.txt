@@ -1,4 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.8
+Date: 2026-08-26
+  Changes:
+    - Restored iron as the bootstrap pipe material while retaining the separate copper pipe network.
+    - Made Circuit Foundry establish early Solder Wire and Microchip production, with Microelectronics unlocking a later higher-yield wafer process.
+    - Moved Iron Beam fabrication to Structural Fabrication and retired the empty Mineral Beneficiation research toll.
+  Bugfixes:
+    - Removed Reinforced Seals from Steam Engines and restored Offshore Pumps to unpowered operation.
+    - Removed the Burner Mining Drill ingredient from Electric Mining Drills and ensured Automation 2 follows the Bearing unlock.
+    - Added the missing Logistic Science prerequisite to Ceramic Engineering and the Chemical Science prerequisite to Industrial Operations.
+    - Removed unrelated FluxWorks prerequisites from Oil Processing and Advanced Material Processing.
+    - Removed Power Regulators from Medium and Big Electric Poles.
+    - Preserved ordinary-furnace Bronze Plate and Solder Alloy smelting and the beneficial crushed-ore yield ratios.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.7
 Date: 2026-08-15
   Changes:

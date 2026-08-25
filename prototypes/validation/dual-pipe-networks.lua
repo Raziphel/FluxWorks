@@ -28,12 +28,12 @@ for _, recipe_name in ipairs({
   end
 end
 
-if not has_ingredient("pipe", "lead-plate", 1)
+if not has_ingredient("pipe", "iron-plate", 1)
   or not has_ingredient("pipe-to-ground", "pipe", 10)
-  or not has_ingredient("pipe-to-ground", "lead-plate", 5)
+  or not has_ingredient("pipe-to-ground", "iron-plate", 5)
   or not has_ingredient("pump", "pipe", 1)
 then
-  error("Lead fluid logistics lost its lead material identity")
+  error("Bootstrap fluid logistics lost its iron material identity")
 end
 
 if not has_ingredient("fw-copper-pipe", "copper-plate", 1)
@@ -45,9 +45,9 @@ then
 end
 
 for _, spec in ipairs({
-  { "pipe", "pipe", "fw-lead-pipe" },
-  { "pipe-to-ground", "pipe-to-ground", "fw-lead-pipe" },
-  { "pump", "pump", "fw-lead-pipe" },
+  { "pipe", "pipe", "default" },
+  { "pipe-to-ground", "pipe-to-ground", "default" },
+  { "pump", "pump", "default" },
   { "pipe", "fw-copper-pipe", "fw-copper-pipe" },
   { "pipe-to-ground", "fw-copper-pipe-to-ground", "fw-copper-pipe" },
   { "pump", "fw-copper-pump", "fw-copper-pipe" },
@@ -61,7 +61,7 @@ local chemical_plant = data.raw["assembling-machine"] and data.raw["assembling-m
 local machine_categories = chemical_plant and chemical_plant.fluid_boxes
   and chemical_plant.fluid_boxes[1] and chemical_plant.fluid_boxes[1].pipe_connections
   and chemical_plant.fluid_boxes[1].pipe_connections[1].connection_category or {}
-if machine_categories[1] ~= "fw-lead-pipe" or machine_categories[2] ~= "fw-copper-pipe" then
+if machine_categories[1] ~= "default" or machine_categories[2] ~= "fw-copper-pipe" then
   error("Ordinary fluid machines must accept both FluxWorks pipe families")
 end
 

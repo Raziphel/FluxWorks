@@ -623,3 +623,92 @@ if mods["science-extra-trigger-techs"] then
     end
   end
 end
+
+-- Third Nauvis playtest pass: keep bootstrap infrastructure and the early
+-- electronics ladder aligned with the technologies that actually unlock them.
+remove_ingredient("steam-engine", "fw-reinforced-seal")
+remove_ingredient("medium-electric-pole", "fw-power-regulator")
+remove_ingredient("big-electric-pole", "fw-power-regulator")
+
+add_prerequisite("automation-2", "electric-mining-drill")
+add_prerequisite("fw-ceramic-engineering", "logistic-science-pack")
+add_prerequisite("fw-industrial-district-project", "chemical-science-pack")
+
+local electric_drill = data.raw.recipe and data.raw.recipe["electric-mining-drill"]
+if electric_drill then
+  local ingredients = {
+    { type = "item", name = "iron-plate", amount = 10 },
+    { type = "item", name = "electronic-circuit", amount = 3 },
+    { type = "item", name = "fw-bearing", amount = 2 },
+  }
+  electric_drill.ingredients = table.deepcopy(ingredients)
+  if electric_drill.normal then electric_drill.normal.ingredients = table.deepcopy(ingredients) end
+  if electric_drill.expensive then electric_drill.expensive.ingredients = table.deepcopy(ingredients) end
+end
+
+-- Structural Fabrication is the single owner of the first beam.
+for technology_name in pairs(data.raw.technology or {}) do
+  if technology_name ~= "fw-structural-fabrication" then
+    remove_unlock(technology_name, "fw-iron-beam")
+  end
+end
+add_unlock("fw-structural-fabrication", "fw-iron-beam")
+replace_ingredient("fw-metal-mesh", "fw-iron-beam", {
+  type = "item", name = "iron-plate", amount = 2,
+})
+
+-- Mineral Beneficiation lost its process family when the obsolete washing
+-- recipes were retired. Remove the empty toll and route its dependants through
+-- the useful crushing milestone instead.
+local mineral_beneficiation_technology = data.raw.technology
+  and data.raw.technology["fw-mineral-beneficiation"]
+if mineral_beneficiation_technology and #(mineral_beneficiation_technology.effects or {}) == 0 then
+  mineral_beneficiation_technology.prerequisites = {}
+  mineral_beneficiation_technology.hidden = true
+  mineral_beneficiation_technology.enabled = false
+  for _, technology in pairs(data.raw.technology or {}) do
+    for index = #(technology.prerequisites or {}), 1, -1 do
+      if technology.prerequisites[index] == "fw-mineral-beneficiation" then
+        technology.prerequisites[index] = "fw-ore-crushing"
+      end
+    end
+  end
+end
+
+-- Circuit Foundry now establishes the microchip used by red circuits.
+-- Microelectronics provides the later, higher-yield wafer process.
+local microchip = data.raw.recipe and data.raw.recipe["fw-microchip"]
+if microchip then
+  local ingredients = {
+    { type = "item", name = "electronic-circuit", amount = 2 },
+    { type = "item", name = "silicon", amount = 1 },
+    { type = "item", name = "fw-solder-wire", amount = 1 },
+  }
+  microchip.ingredients = table.deepcopy(ingredients)
+  if microchip.normal then microchip.normal.ingredients = table.deepcopy(ingredients) end
+  if microchip.expensive then microchip.expensive.ingredients = table.deepcopy(ingredients) end
+end
+for technology_name in pairs(data.raw.technology or {}) do
+  if technology_name ~= "fw-circuit-foundry" then
+    remove_unlock(technology_name, "fw-microchip")
+    remove_unlock(technology_name, "fw-solder-wire")
+  end
+end
+add_unlock("fw-circuit-foundry", "fw-solder-wire")
+add_unlock("fw-circuit-foundry", "fw-microchip")
+add_unlock("fw-microelectronics", "fw-microchip-advanced")
+remove_science("fw-circuit-foundry", "fw-industrial-methods-science-pack")
+remove_prerequisite("fw-circuit-foundry", "fw-industrial-methods-science")
+
+-- Vanilla processing technologies should depend on the machinery and science
+-- they expose, not unrelated FluxWorks intermediates.
+for _, technology_name in ipairs({
+  "oil-processing", "advanced-material-processing",
+}) do
+  local technology = data.raw.technology and data.raw.technology[technology_name]
+  for index = #((technology and technology.prerequisites) or {}), 1, -1 do
+    if string.sub(technology.prerequisites[index], 1, 3) == "fw-" then
+      table.remove(technology.prerequisites, index)
+    end
+  end
+end

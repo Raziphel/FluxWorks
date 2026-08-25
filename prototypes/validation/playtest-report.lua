@@ -172,8 +172,8 @@ for _, deposit_name in ipairs({ "fw-metallic-deposit", "fw-mineral-deposit", "fw
   assert_report(data.raw.resource[deposit_name].subgroup == "raw-resource",
     deposit_name .. " is left in the unsorted filter group")
 end
-assert_report(recipe_has("pipe", "lead-plate") and not recipe_has("pipe", "iron-plate"),
-  "the primary pipe family has not been restored to lead")
+assert_report(recipe_has("pipe", "iron-plate") and not recipe_has("pipe", "lead-plate"),
+  "the bootstrap pipe family still requires lead")
 for setting_name in pairs(data.raw["string-setting"] or {}) do
   assert_report(not string.match(setting_name, "^fw%-worldgen%-.+%-profile$"),
     "redundant resource profile setting remains: " .. setting_name)
@@ -222,10 +222,11 @@ end
 assert_report(not data.raw.technology["burner-mechanics"]
     or data.raw.technology["burner-mechanics"].hidden == true,
   "automatic Burner Mechanics remains as an isolated visible technology")
-assert_report(tech_requires("fw-mineral-beneficiation", "logistic-science-pack"),
-  "Mineral Beneficiation consumes green science without requiring its unlock")
-assert_report(tech_unlocks("fw-material-foundations", "fw-iron-beam") and unlock_count("fw-iron-beam") == 1,
-  "Iron Beam does not have Material Foundations as its single owner")
+assert_report(data.raw.technology["fw-mineral-beneficiation"].hidden
+    and data.raw.technology["fw-mineral-beneficiation"].enabled == false,
+  "empty Mineral Beneficiation research remains visible")
+assert_report(tech_unlocks("fw-structural-fabrication", "fw-iron-beam") and unlock_count("fw-iron-beam") == 1,
+  "Iron Beam does not have Structural Fabrication as its single owner")
 assert_report(tech_unlocks("fw-material-foundations", "fw-inline-filter") and unlock_count("fw-inline-filter") == 1,
   "Inline Filter does not have Material Foundations as its single owner")
 assert_report(tech_unlocks("fw-conductive-assembly", "fw-circuit-contact-leaded")
@@ -235,8 +236,8 @@ assert_report(tech_unlocks("fw-structural-fabrication", "fw-steel-beam") and unl
   "Steel Beam does not have Structural Fabrication as its single owner")
 assert_report(tech_unlocks("electronics", "fw-solder-alloy") and unlock_count("fw-solder-alloy") == 1,
   "Solder Alloy does not have Electronics as its single owner")
-assert_report(tech_unlocks("advanced-circuit", "fw-solder-wire") and unlock_count("fw-solder-wire") == 1,
-  "Solder Wire does not have Advanced Circuits as its single owner")
+assert_report(tech_unlocks("fw-circuit-foundry", "fw-solder-wire") and unlock_count("fw-solder-wire") == 1,
+  "Solder Wire does not have Circuit Foundry as its single owner")
 
 for _, recipe_name in ipairs({
   "fw-tinned-cable", "fw-circuit-substrate", "fw-chip-carrier", "fw-silicon-wafer",

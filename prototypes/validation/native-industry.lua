@@ -101,8 +101,8 @@ then
 end
 
 assert_ingredients("electric-mining-drill",
-  { "burner-mining-drill", "electronic-circuit", "fw-bearing" },
-  { "engine-unit" })
+  { "iron-plate", "electronic-circuit", "fw-bearing" },
+  { "burner-mining-drill", "engine-unit" })
 assert_ingredients("fw-control-assembly",
   { "fw-circuit-substrate", "fw-chip-carrier", "fw-solder-wire", "fw-circuit-contact" },
   { "engine-unit", "iron-gear-wheel" })

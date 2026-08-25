@@ -1,8 +1,7 @@
-local lead_tint = { r = 0.76, g = 0.68, b = 0.84, a = 1 }
 local copper_tint = { r = 1.00, g = 0.55, b = 0.28, a = 1 }
-local lead_category = "fw-lead-pipe"
+local base_category = "default"
 local copper_category = "fw-copper-pipe"
-local shared_categories = { lead_category, copper_category }
+local shared_categories = { base_category, copper_category }
 
 local function tint_sprites(value, tint)
   if type(value) ~= "table" then return end
@@ -76,31 +75,22 @@ local function tint_entity(entity, tint)
   tint_sprites(entity.fluid_box and entity.fluid_box.pipe_covers, tint)
 end
 
-local lead_specs = {
+local base_specs = {
   {
     type = "pipe",
     name = "pipe",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-lead-pipe.png",
-    localised_name = { "entity-name.fw-lead-pipe" },
-    localised_description = { "entity-description.fw-lead-pipe" },
   },
   {
     type = "pipe-to-ground",
     name = "pipe-to-ground",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-lead-pipe-to-ground.png",
-    localised_name = { "entity-name.fw-lead-pipe-to-ground" },
-    localised_description = { "entity-description.fw-lead-pipe-to-ground" },
   },
   {
     type = "pump",
     name = "pump",
-    icon = "__FluxWorksAssets__/graphics/icons/items/fw-lead-pump.png",
-    localised_name = { "entity-name.fw-lead-pump" },
-    localised_description = { "entity-description.fw-lead-pump" },
   },
 }
 
-for _, spec in ipairs(lead_specs) do
+for _, spec in ipairs(base_specs) do
   local entity = data.raw[spec.type] and data.raw[spec.type][spec.name]
   local item = data.raw.item and data.raw.item[spec.name]
   local recipe = data.raw.recipe and data.raw.recipe[spec.name]
@@ -108,25 +98,15 @@ for _, spec in ipairs(lead_specs) do
     error("FluxWorks dual pipe networks require the base " .. spec.name .. " family")
   end
 
-  entity.localised_name = spec.localised_name
-  item.localised_name = spec.localised_name
-  recipe.localised_name = spec.localised_name
-  entity.localised_description = spec.localised_description
-  item.localised_description = spec.localised_description
-  recipe.localised_description = spec.localised_description
-  set_icon(entity, spec.icon)
-  set_icon(item, spec.icon)
-  set_icon(recipe, spec.icon)
-  tint_entity(entity, lead_tint)
-  set_family_connections(entity, lead_category)
-  entity.fast_replaceable_group = "fw-lead-pipe"
+  set_family_connections(entity, base_category)
+  entity.fast_replaceable_group = "pipe"
 end
 
 data.raw.recipe.pipe.ingredients = {
-  { type = "item", name = "lead-plate", amount = 1 },
+  { type = "item", name = "iron-plate", amount = 1 },
 }
 data.raw.recipe["pipe-to-ground"].ingredients = {
-  { type = "item", name = "lead-plate", amount = 5 },
+  { type = "item", name = "iron-plate", amount = 5 },
   { type = "item", name = "pipe", amount = 10 },
 }
 data.raw.recipe.pump.ingredients = {

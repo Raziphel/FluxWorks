@@ -20,11 +20,8 @@ local function patch_offshore_pump_power()
     return
   end
 
-  offshore_pump.energy_source = {
-    type = "electric",
-    usage_priority = "secondary-input",
-  }
-  offshore_pump.energy_usage = "120kW"
+  offshore_pump.energy_source = { type = "void" }
+  offshore_pump.energy_usage = "60kW"
 end
 
 patch_gun_turret_power()
