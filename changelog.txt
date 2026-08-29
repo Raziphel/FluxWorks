@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.9
+Date: 2026-08-29
+  Bugfixes:
+    - Moved Bronze Plate and Solder Alloy to general crafting machines so their two-input recipes no longer deadlock ordinary furnaces after the first ingredient is inserted.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.8
 Date: 2026-08-26
   Changes:
