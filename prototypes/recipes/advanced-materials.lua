@@ -376,7 +376,7 @@ data:extend({
     name = "fw-solder-alloy",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-solder-alloy.png",
     icon_size = 64,
-    category = "smelting",
+    category = "crafting",
     enabled = false,
     energy_required = 2.0,
     allow_productivity = true,

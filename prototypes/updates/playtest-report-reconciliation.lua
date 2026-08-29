@@ -409,12 +409,13 @@ for _, recipe_name in ipairs({
   if recipe then recipe.category = "advanced-crafting"; recipe.categories = nil end
 end
 
--- Second Nauvis playtest pass: foundational alloys must work in ordinary
--- furnaces, while regulated hardware belongs to the green-science assembler
--- lane rather than late specialist machines.
+-- Multi-input alloys cannot be made in ordinary furnaces: inserting the first
+-- ingredient selects a recipe before the second can be supplied. Keep these
+-- foundational recipes in the general crafting lane so they cannot deadlock
+-- the technologies that later provide specialist alloy processing.
 for _, recipe_name in ipairs({ "bronze-plate", "fw-solder-alloy" }) do
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
-  if recipe then recipe.category = "smelting"; recipe.categories = nil end
+  if recipe then recipe.category = "crafting"; recipe.categories = nil end
 end
 for _, recipe_name in ipairs({ "fw-pressure-housing", "fw-flow-regulator" }) do
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]

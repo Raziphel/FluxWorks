@@ -193,8 +193,8 @@ for _, recipe_name in ipairs({
 end
 
 for _, recipe_name in ipairs({ "bronze-plate", "fw-solder-alloy" }) do
-  assert_report(data.raw.recipe[recipe_name].categories[1] == "smelting",
-    recipe_name .. " still requires a specialist furnace")
+  assert_report(data.raw.recipe[recipe_name].categories[1] == "crafting",
+    recipe_name .. " is not available through foundational crafting machines")
 end
 for _, recipe_name in ipairs({ "fw-pressure-housing", "fw-flow-regulator" }) do
   assert_report(data.raw.recipe[recipe_name].categories[1] == "advanced-crafting",
