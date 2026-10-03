@@ -1,9 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.10
+Date: 2026-10-03
+  Bugfixes:
+    - Moved Alumina Refractory to general crafting machines so its three-input recipe is available before the Arc Foundry.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.9
 Date: 2026-08-29
   Bugfixes:
     - Moved Bronze Plate and Solder Alloy to general crafting machines so their two-input recipes no longer deadlock ordinary furnaces after the first ingredient is inserted.
-    - Moved Alumina Refractory to general crafting machines so its three-input recipe is available before the Arc Foundry.
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.8
 Date: 2026-08-26
