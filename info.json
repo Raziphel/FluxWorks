@@ -2,7 +2,7 @@
   "name": "FluxWorks",
   "version": "0.2.10",
   "title": "FluxWorks",
-  "author": "Raziphel, FluidNatalie",
+  "author": "Raziphel",
   "factorio_version": "2.1",
   "description": "FluxWorks transforms Space Age into a complete industrial overhaul. Build more advanced factories with deeper production, powerful Flux systems, expanded progression, and a challenging new journey to the Shattered Planet.",
   "dependencies": [
@@ -17,10 +17,10 @@
     "+ aai-containers >= 0.4.0"
   ],
   "quality_required": true,
-	"rail_bridges_required": true,
-	"space_travel_required": true,
-	"spoiling_required": true,
-	"freezing_required": true,
-	"segmented_units_required": true,
-	"expansion_shaders_required": true
+  "rail_bridges_required": true,
+  "space_travel_required": true,
+  "spoiling_required": true,
+  "freezing_required": true,
+  "segmented_units_required": true,
+  "expansion_shaders_required": true
 }
