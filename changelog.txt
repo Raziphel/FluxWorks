@@ -1,8 +1,33 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.2.10
+Version: 0.3.0
 Date: 2026-10-03
+  Major Features:
+    - Rebuilt the early materials bootstrap around discovery milestones: mine five Big Rocks to discover Comminution, craft a Crusher to unlock Sand Processing, and produce four Sand to unlock Glass Processing.
+    - Added native Sand and Glass production with dedicated FluxWorks Assets artwork, including three Sand inventory variations and matching technology graphics.
+    - Added Advanced Microchip Assembly as the higher-yield Microelectronics process while Circuit Foundry now establishes basic Solder Wire and Microchip production.
+  Progression:
+    - Made starting Mineral Deposits dry-mineable so Silicon Ore can bootstrap Crusher-based Refined Silicon before fluid mining and electric drills.
+    - Kept Glass in the Lab recipe while removing Glass Lenses and Ceramic Insulators, closing the pre-Lab Glass progression loop.
+    - Moved Iron Beam fabrication to Structural Fabrication and retired the empty Mineral Beneficiation research toll, routing its dependants through Ore Crushing.
+    - Added the missing Logistic Science prerequisite to Ceramic Engineering and Chemical Science prerequisite to Industrial Operations.
+    - Made Automation 2 follow the Electric Mining Drill and removed unrelated FluxWorks prerequisites from vanilla Oil Processing and Advanced Material Processing.
+  Production:
+    - Restored iron as the bootstrap pipe material and vanilla pipe family while retaining the separate copper network; ordinary fluid machines accept both networks.
+    - Moved Bronze Plate, Solder Alloy, and Alumina Refractory to general crafting machines so multi-input recipes cannot deadlock ordinary furnaces.
+    - Reworked the Electric Mining Drill recipe around iron plates, electronic circuits, and Bearings instead of consuming a Burner Mining Drill.
+    - Removed Reinforced Seals from Steam Engines and Power Regulators from Medium and Big Electric Poles.
+    - Restored Offshore Pumps to unpowered operation.
+    - Changed Metal Mesh to use iron plates so it no longer requires Iron Beams before Structural Fabrication.
+    - Preserved the beneficial crushed-ore yield ratios and corrected alternate bootstrap producers for Silicon Beneficiation and Primitive Gunpowder Mixing.
+  Compatibility:
+    - Guaranteed FluxWorks Sand and Glass recipes even when another mod supplies only their item prototypes.
+    - Removed the remaining AAI and Krastorio asset dependencies from FluxWorks-owned icon validation.
+  Graphics:
+    - Corrected the Elastomer Matrix icon declaration and changed Comminution to use the Crusher icon.
+  Diagnostics:
+    - Expanded data-stage regression checks for discovery triggers, dry Silicon access, recipe ownership, machine categories, pipe isolation, icon integrity, and bootstrap dependencies.
   Bugfixes:
-    - Moved Alumina Refractory to general crafting machines so its three-input recipe is available before the Arc Foundry.
+    - Fixed early-game softlocks across the Glass, Refined Silicon, Circuit Foundry, structural materials, alloy smelting, and Alumina Refractory progression paths.
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.9
 Date: 2026-08-29
