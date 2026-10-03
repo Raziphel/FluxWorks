@@ -107,7 +107,7 @@ data:extend({
     name = "fw-alumina-refractory",
     icon = "__FluxWorksAssets__/graphics/icons/items/fw-alumina-refractory.png",
     icon_size = 256,
-    category = "smelting",
+    category = "crafting",
     enabled = false,
     energy_required = 2.2,
     allow_productivity = true,

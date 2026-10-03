@@ -413,7 +413,7 @@ end
 -- ingredient selects a recipe before the second can be supplied. Keep these
 -- foundational recipes in the general crafting lane so they cannot deadlock
 -- the technologies that later provide specialist alloy processing.
-for _, recipe_name in ipairs({ "bronze-plate", "fw-solder-alloy" }) do
+for _, recipe_name in ipairs({ "bronze-plate", "fw-solder-alloy", "fw-alumina-refractory" }) do
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if recipe then recipe.category = "crafting"; recipe.categories = nil end
 end

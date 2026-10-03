@@ -192,7 +192,7 @@ for _, recipe_name in ipairs({
     "fluid handling still unlocks unrelated recipe " .. recipe_name)
 end
 
-for _, recipe_name in ipairs({ "bronze-plate", "fw-solder-alloy" }) do
+for _, recipe_name in ipairs({ "bronze-plate", "fw-solder-alloy", "fw-alumina-refractory" }) do
   assert_report(data.raw.recipe[recipe_name].categories[1] == "crafting",
     recipe_name .. " is not available through foundational crafting machines")
 end
