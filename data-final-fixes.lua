@@ -65,6 +65,7 @@ require("prototypes.updates.item-recipe-cleanup")
 -- Read the finalized ingredient boundaries before weaving K2SO into FluxWorks.
 require("prototypes.compat.k2so")
 require("prototypes.compat.k2so-planetary")
+require("prototypes.compat.k2so-stone-processing")
 require("prototypes.updates.flux-tooltips")
 require("prototypes.updates.remove-obsolete-beneficiation")
 require("prototypes.updates.owned-iconography")
