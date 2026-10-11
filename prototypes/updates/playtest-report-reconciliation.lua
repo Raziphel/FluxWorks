@@ -1,3 +1,6 @@
+local legacy = require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false)
+local legacy_recipes = require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+
 -- Final, explicit repairs for the first Nauvis playtest report. Keep these
 -- after broad compatibility rewrites so dependency mods cannot restore them.
 local function entry_name(entry)
@@ -5,6 +8,7 @@ local function entry_name(entry)
 end
 
 local function remove_ingredient(recipe_name, ingredient_name)
+  if not legacy_recipes and recipe_name:sub(1, 3) ~= "fw-" then return end
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if not recipe then return end
   for _, ingredients in ipairs({ recipe.ingredients, recipe.normal and recipe.normal.ingredients,
@@ -16,6 +20,7 @@ local function remove_ingredient(recipe_name, ingredient_name)
 end
 
 local function replace_ingredient(recipe_name, old_name, replacement)
+  if not legacy_recipes and recipe_name:sub(1, 3) ~= "fw-" then return end
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if not recipe then return end
   for _, ingredients in ipairs({ recipe.ingredients, recipe.normal and recipe.normal.ingredients,
@@ -44,6 +49,7 @@ local function remove_science(technology_name, science_name)
 end
 
 local function remove_prerequisite(technology_name, prerequisite_name)
+  if not legacy and technology_name:sub(1, 3) ~= "fw-" then return end
   local technology = data.raw.technology and data.raw.technology[technology_name]
   for index = #((technology and technology.prerequisites) or {}), 1, -1 do
     if technology.prerequisites[index] == prerequisite_name then table.remove(technology.prerequisites, index) end
@@ -51,6 +57,7 @@ local function remove_prerequisite(technology_name, prerequisite_name)
 end
 
 local function add_prerequisite(technology_name, prerequisite_name)
+  if not legacy and technology_name:sub(1, 3) ~= "fw-" then return end
   local technology = data.raw.technology and data.raw.technology[technology_name]
   if not (technology and data.raw.technology[prerequisite_name]) then return end
   technology.prerequisites = technology.prerequisites or {}
@@ -81,11 +88,11 @@ remove_science("fw-propellant-synthesis", "cryogenic-science-pack")
 remove_science("fw-flux-catalysis", "cryogenic-science-pack")
 
 local electricity = data.raw.technology and data.raw.technology.electricity
-if electricity and electricity.unit then electricity.unit.count = 10 end
+if legacy and electricity and electricity.unit then electricity.unit.count = 10 end
 
 -- Preserve the familiar first automation step.
 local automation = data.raw.technology and data.raw.technology.automation
-if automation and automation.unit then
+if legacy and automation and automation.unit then
   automation.unit.count = 10
   automation.prerequisites = data.raw.technology.electricity and { "electricity" } or {}
 end
@@ -126,7 +133,7 @@ for technology_name in pairs(data.raw.technology or {}) do
 end
 add_unlock("fw-propellant-synthesis", "fw-gunpowder")
 local firearm_magazine = data.raw.recipe and data.raw.recipe["firearm-magazine"]
-if firearm_magazine then
+if legacy_recipes and firearm_magazine then
   firearm_magazine.enabled = false
   local has_gunpowder = false
   for _, ingredient in ipairs(firearm_magazine.ingredients or {}) do
@@ -141,14 +148,14 @@ if firearm_magazine then
 end
 
 local iron_pole = data.raw.recipe and data.raw.recipe["small-iron-electric-pole"]
-if iron_pole then
+if legacy_recipes and iron_pole then
   iron_pole.ingredients = {
     { type = "item", name = "iron-stick", amount = 4 },
     { type = "item", name = "copper-cable", amount = 4 },
   }
 end
 local wooden_pole = data.raw.recipe and data.raw.recipe["small-electric-pole"]
-if wooden_pole then
+if legacy_recipes and wooden_pole then
   local ingredients = {
     { type = "item", name = "wood", amount = 1 },
     { type = "item", name = "copper-cable", amount = 2 },
@@ -186,7 +193,7 @@ end
 -- therefore uses ordinary engines; electric-engine upgrades belong downstream.
 remove_ingredient("oil-refinery", "electric-engine-unit")
 local refinery = data.raw.recipe and data.raw.recipe["oil-refinery"]
-if refinery then
+if legacy_recipes and refinery then
   for _, ingredient in ipairs(refinery.ingredients or {}) do
     if entry_name(ingredient) == "engine-unit" then ingredient.amount = math.max(ingredient.amount or 1, 4) end
   end
@@ -247,7 +254,7 @@ add_unlock("fw-conductive-assembly", "fw-solder-wire")
 -- Preserve compatible early-fluid tuning when another mod supplies the
 -- legacy Basic Fluid Handling milestone.
 local basic_fluids = data.raw.technology and data.raw.technology["basic-fluid-handling"]
-if basic_fluids then
+if legacy and basic_fluids then
   basic_fluids.prerequisites = { "electricity" }
   if basic_fluids.unit then
     basic_fluids.unit.count = 10
@@ -255,7 +262,7 @@ if basic_fluids then
   end
 end
 local steam_power = data.raw.technology and data.raw.technology["steam-power"]
-if steam_power and steam_power.unit then
+if legacy and steam_power and steam_power.unit then
   steam_power.unit.count = 20
   steam_power.unit.ingredients = { { "automation-science-pack", 1 } }
 end
@@ -370,7 +377,7 @@ end
 
 -- Preserve the richer rail bill while restoring a useful infrastructure batch.
 local rail = data.raw.recipe and data.raw.recipe.rail
-if rail then
+if legacy_recipes and rail then
   for _, result in ipairs(rail.results or {}) do
     if entry_name(result) == "rail" then result.amount = math.max(result.amount or 1, 4) end
   end
@@ -396,9 +403,9 @@ remove_ingredient("storage-tank", "fw-thermal-buffer")
 
 -- Keep mineable fuels with the other raw resources in the player catalog.
 local coal = data.raw.item and data.raw.item.coal
-if coal then coal.subgroup = "raw-resource"; coal.order = "a[coal]" end
+if legacy_recipes and coal then coal.subgroup = "raw-resource"; coal.order = "a[coal]" end
 local coal_recycling = data.raw.recipe and data.raw.recipe["coal-recycling"]
-if coal_recycling then coal_recycling.subgroup = "raw-resource" end
+if legacy_recipes and coal_recycling then coal_recycling.subgroup = "raw-resource" end
 
 -- Like the vanilla chemical/production packs, factory-scale domain science is
 -- assembled in machines rather than by hand.
@@ -519,6 +526,7 @@ if mineral_beneficiation and silicon then
 end
 
 -- Present fuels and all vanilla/Space Age barrels with their chemical peers.
+if legacy_recipes then
 local solid_fuel = data.raw.item and data.raw.item["solid-fuel"]
 if solid_fuel then solid_fuel.subgroup = "fw-chemistry-petrochem"; solid_fuel.order = "d[petrochem]-h[solid-fuel]" end
 for _, recipe_name in ipairs({
@@ -543,6 +551,8 @@ for _, recipe_name in ipairs({
 }) do
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if recipe then recipe.subgroup = "fw-chemistry-barrels" end
+end
+
 end
 
 -- Player-facing crafting times use quarter-second increments rather than
@@ -636,7 +646,7 @@ add_prerequisite("fw-ceramic-engineering", "logistic-science-pack")
 add_prerequisite("fw-industrial-district-project", "chemical-science-pack")
 
 local electric_drill = data.raw.recipe and data.raw.recipe["electric-mining-drill"]
-if electric_drill then
+if legacy_recipes and electric_drill then
   local ingredients = {
     { type = "item", name = "iron-plate", amount = 10 },
     { type = "item", name = "electronic-circuit", amount = 3 },
