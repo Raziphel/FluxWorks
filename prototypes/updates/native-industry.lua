@@ -1,3 +1,5 @@
+local Startup = require("prototypes.lib.startup-settings")
+
 -- Keep the vanilla machine ladder connected to FluxWorks' mechanical and
 -- electrical component lanes using the vanilla engine progression.
 local function entry_name(entry)
@@ -61,6 +63,7 @@ local function remove_fluxworks_ingredients(recipe_name)
   end
 end
 
+if Startup.enabled("fw-enable-recipe-integration", false) then
 for _, ingredient in ipairs({
   { "fw-bearing", 2 },
   { "fw-circuit-contact", 2 },
@@ -77,6 +80,7 @@ end
 
 add_ingredient("pumpjack", "fw-bearing", 2)
 remove_ingredient("steam-engine", "bronze-plate")
+end
 
 set_ingredients("fw-control-assembly", {
   { type = "item", name = "fw-circuit-substrate", amount = 1 },
