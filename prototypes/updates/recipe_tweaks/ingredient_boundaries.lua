@@ -1,4 +1,6 @@
 return function()
+local Startup = require("prototypes.lib.startup-settings")
+local shared_overhaul = Startup.enabled("fw-enable-recipe-integration", false)
 -- These boundaries keep final recipes focused on representative assemblies
 -- instead of repeating every lower-level component in their production chain.
 
@@ -152,12 +154,14 @@ for recipe_name, keep_names in pairs(keep_ingredients) do
     error("Recipe complexity normalization references missing recipe " .. recipe_name)
   end
 
-  recipe.ingredients = filter_ingredients(recipe_name, recipe.ingredients, keep_names)
-  if recipe.normal then
-    recipe.normal.ingredients = filter_ingredients(recipe_name, recipe.normal.ingredients, keep_names)
-  end
-  if recipe.expensive then
-    recipe.expensive.ingredients = filter_ingredients(recipe_name, recipe.expensive.ingredients, keep_names)
+  if shared_overhaul or recipe_name:sub(1, 3) == "fw-" then
+    recipe.ingredients = filter_ingredients(recipe_name, recipe.ingredients, keep_names)
+    if recipe.normal then
+      recipe.normal.ingredients = filter_ingredients(recipe_name, recipe.normal.ingredients, keep_names)
+    end
+    if recipe.expensive then
+      recipe.expensive.ingredients = filter_ingredients(recipe_name, recipe.expensive.ingredients, keep_names)
+    end
   end
 end
 
