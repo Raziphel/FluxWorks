@@ -1,5 +1,6 @@
 local legacy = require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false)
 local legacy_recipes = require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+local legacy_early = require("prototypes.lib.startup-settings").enabled("fw-enable-early-industry-overhaul", false)
 
 -- Final, explicit repairs for the first Nauvis playtest report. Keep these
 -- after broad compatibility rewrites so dependency mods cannot restore them.
@@ -100,7 +101,7 @@ end
 -- The Crusher must establish silicon processing, never require the circuit
 -- whose silicon ingredient it exists to bootstrap.
 local crusher = data.raw.recipe and data.raw.recipe.crusher
-if crusher then
+if legacy_early and crusher then
   local ingredients = {
     { type = "item", name = "iron-plate", amount = 10 },
     { type = "item", name = "iron-gear-wheel", amount = 5 },
