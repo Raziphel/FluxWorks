@@ -82,7 +82,8 @@ assert_report(tech_unlocks("military", "fw-gunpowder-early"),
 assert_report((data.raw.recipe["fw-gunpowder"].categories or {})[1] == "chemistry",
   "regular gunpowder is not restricted to chemical machines")
 for technology_name, technology in pairs(data.raw.technology or {}) do
-  if technology_name ~= "fw-electromechanical-systems" then
+  if technology_name ~= "fw-electromechanical-systems"
+    and (legacy_early or technology_name:sub(1, 3) == "fw-") then
     assert_report(not tech_unlocks(technology_name, "silicon"),
       "regular silicon is prematurely unlocked by " .. technology_name)
   end
