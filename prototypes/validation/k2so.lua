@@ -21,7 +21,7 @@ local science = {
   { tech = "fw-shattered-expedition-planning", pack = "kr-singularity-tech-card" },
 }
 for _, entry in ipairs(science) do
-  if data.raw.item[entry.pack] then
+  if (data.raw.tool and data.raw.tool[entry.pack]) or (data.raw.item and data.raw.item[entry.pack]) then
     local tech = assert(data.raw.technology[entry.tech], "Missing FluxWorks K2SO science consumer " .. entry.tech)
     assert(contains(tech.unit and tech.unit.ingredients, entry.pack),
       entry.tech .. " must consume K2SO science " .. entry.pack)
