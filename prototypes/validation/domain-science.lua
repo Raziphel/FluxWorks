@@ -1,3 +1,5 @@
+local legacy_science = require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false)
+
 local domains = require("prototypes.updates.domain-science-integration")
 
 local function contains(entries, name)
@@ -90,6 +92,7 @@ for _, domain in ipairs(domains) do
   end
 
 
+  if legacy_science then
   for _, technology_name in ipairs(domain.external_consumers or {}) do
     if technology_name:sub(1, 3) == "fw-" then
       error("External domain-science consumer must not be a FluxWorks technology: " .. technology_name)
@@ -100,6 +103,8 @@ for _, domain in ipairs(domains) do
     end
   end
 
+
+  end
 
   for _, technology_name in ipairs(domain.ingredient_consumers or {}) do
     local technology = data.raw.technology[technology_name]
@@ -285,7 +290,7 @@ if not transmutation_unlock_found then
   error("Flux Theory Science must unlock the advertised transmutation ladder")
 end
 
-if #domains.all_science_consumers == 0 then
+if legacy_science and #domains.all_science_consumers == 0 then
   error("FluxWorks did not detect any complete-catalog research technologies")
 end
 
@@ -299,10 +304,13 @@ for _, technology_name in ipairs(domains.all_science_consumers) do
 end
 
 local research_productivity = data.raw.technology and data.raw.technology["research-productivity"]
+if legacy_science then
 for _, domain in ipairs(domains) do
   if not research_productivity
     or not contains(research_productivity.unit and research_productivity.unit.ingredients, domain.pack)
   then
     error("Research Productivity must consume every FluxWorks science pack: " .. domain.pack)
   end
+end
+
 end
