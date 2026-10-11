@@ -1,10 +1,10 @@
 {
   "name": "FluxWorks",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "title": "FluxWorks",
   "author": "Raziphel",
   "factorio_version": "2.1",
-  "description": "FluxWorks transforms Space Age into a complete industrial overhaul. Build more advanced factories with deeper production, powerful Flux systems, expanded progression, and a challenging new journey to the Shattered Planet.",
+  "description": "A major Space Age industrial expansion featuring Flux extraction, advanced manufacturing, planetary industries, and the Shattered Planet endgame. Optional Krastorio 2 Spaced Out integration connects both progression systems.",
   "dependencies": [
     "base >= 2.1.0",
     "space-age >= 2.1.0",
@@ -12,6 +12,7 @@
     "recycler >= 2.1.0",
     "FluxWorksAssets >= 1.0.4",
     "finely-crafted-graphics >= 2.1.0",
+    "? Krastorio2-spaced-out",
     "razi_lib >= 1.0.0",
     "+ aai-loaders >= 0.3.0",
     "+ aai-containers >= 0.4.0"
