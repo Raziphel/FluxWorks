@@ -11,7 +11,8 @@ end
 
 local function add_science(technology_name, science_name)
   local technology = data.raw.technology and data.raw.technology[technology_name]
-  if not technology or not item_exists(science_name) or not technology.unit then return end
+  if not technology or not ((data.raw.tool and data.raw.tool[science_name]) or item_exists(science_name))
+    or not technology.unit then return end
   technology.unit.ingredients = technology.unit.ingredients or {}
   for _, ingredient in ipairs(technology.unit.ingredients) do
     if (ingredient.name or ingredient[1]) == science_name then return end
