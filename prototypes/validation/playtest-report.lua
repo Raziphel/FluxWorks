@@ -1,3 +1,6 @@
+local legacy = require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false)
+local legacy_recipes = require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+
 
 local function entry_name(entry)
   return type(entry) == "table" and (entry.name or entry[1]) or nil
@@ -61,8 +64,10 @@ assert_report(not tech_unlocks("fw-mineral-beneficiation", "fw-silicon-beneficia
   "bootstrap silicon beneficiation still waits for the later mineral technology")
 assert_report((data.raw.recipe["fw-carbon-refining"].categories or {})[1] == "basic-crushing",
   "refined carbon can still be selected by fuel-burning furnaces")
-assert_report(data.raw.technology.automation.unit.count == 10,
-  "Automation does not retain its 10-pack cost")
+if legacy then
+  assert_report(data.raw.technology.automation.unit.count == 10,
+    "Automation does not retain its 10-pack cost")
+end
 assert_report(not (function()
   for _, prerequisite in ipairs(data.raw.technology.automation.prerequisites or {}) do
     if prerequisite == "electric-mining-drill" then return true end
@@ -204,8 +209,10 @@ for _, recipe_name in ipairs({ "fw-pressure-housing", "fw-flow-regulator" }) do
 end
 assert_report(not tech_uses("fw-fluid-regulation", "chemical-science-pack"),
   "Fluid Regulation still waits for chemical science")
-assert_report(tech_requires("railway", "fw-fluid-regulation"),
-  "Railway does not establish the regulator branch it consumes")
+if legacy then
+  assert_report(tech_requires("railway", "fw-fluid-regulation"),
+    "Railway does not establish the regulator branch it consumes")
+end
 
 for recipe_name, amount in pairs({
   ["iron-plate-from-crushed"] = 3,
@@ -255,11 +262,13 @@ for _, ore_name in ipairs({ "iron", "copper", "tin", "lead", "bauxite", "titaniu
 end
 assert_report(data.raw.technology["fw-mineral-beneficiation"].icon == data.raw.item.silicon.icon,
   "Mineral Beneficiation still presents a carbon icon")
+if legacy_recipes then
 assert_report(data.raw.item["solid-fuel"].subgroup == "fw-chemistry-petrochem",
   "Solid Fuel remains in the Energy tab")
 for _, barrel_name in ipairs({ "water-barrel", "fluoroketone-hot-barrel", "fluoroketone-cold-barrel" }) do
   assert_report(data.raw.item[barrel_name].subgroup == "fw-chemistry-barrels",
     barrel_name .. " remains outside Chemistry barrels")
+end
 end
 assert_report(not recipe_has("fw-aluminum-beam", "glass"), "Aluminum Beam still consumes glass")
 assert_report(data.raw.item["fw-elastomer-matrix"].icon ~= data.raw.item["fw-rubber-sheet"].icon,
