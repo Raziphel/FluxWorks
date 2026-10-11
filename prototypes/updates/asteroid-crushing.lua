@@ -1,3 +1,9 @@
+-- Replacing Space Age's asteroid yields is a legacy balance option, not the
+-- default behavior of an expansion.
+if not require("prototypes.lib.startup-settings").enabled("fw-enable-asteroid-recipe-overrides", false) then
+  return
+end
+
 -- Make orbital industry self-sufficient for FluxWorks ammunition and distribute
 -- the extended raw-resource catalog across the advanced asteroid recipes.
 
