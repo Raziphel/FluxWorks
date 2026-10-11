@@ -66,6 +66,8 @@ require("prototypes.updates.item-recipe-cleanup")
 require("prototypes.compat.k2so")
 require("prototypes.compat.k2so-planetary")
 require("prototypes.compat.k2so-stone-processing")
+-- Remove legacy early science tolls after all research reconciliation passes.
+require("prototypes.updates.optional-domain-science")
 require("prototypes.updates.flux-tooltips")
 require("prototypes.updates.remove-obsolete-beneficiation")
 require("prototypes.updates.owned-iconography")
