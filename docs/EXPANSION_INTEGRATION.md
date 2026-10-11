@@ -14,12 +14,15 @@ K2SO is an optional dependency: `Krastorio2-spaced-out`. Do **not** make it a re
 
 ## Changes in this first pass
 
-- Default **off**: global recipe integration, core material substitutions, military substitutions, orbital recipe substitutions, machine-part rehoming, broad recipe auto-compatibility, crafting-tab takeover, and incomplete rocket parts.
+- Default **off**: global recipe integration, core material substitutions, military substitutions, orbital recipe substitutions, machine-part rehoming, broad recipe auto-compatibility, crafting-tab takeover, incomplete rocket parts, and *early-industry Crusher relocation*.
 - New, default **off**: legacy technology weaving and replacement of Space Age asteroid-crushing results.
 - New, default **on**: dedicated K2SO integration, effective only if K2SO is installed.
 - Base research no longer consumes the four FluxWorks domain science packs by default. FluxWorks' own technologies still use them.
 - Standard space logistics, asteroid threat tuning, and spoiling behavior retain their existing *normal* presets.
 - K2SO canonical material aliases for sand, glass, silicon, chlorine, hydrogen, oxygen, lithium, and ammonia are respected by FluxWorks-owned recipes and research triggers.
+- **Pass two:** The Space Age Crusher, electric mining drill and steel recipes are no longer rehomed or rewritten by default. Standalone FluxWorks sand, glass, and basic mineral manufacturing use ordinary expansion technology rather than a new mandatory Nauvis Crusher.
+- **Pass two:** With K2SO installed, FluxWorks reuses the native `kr-stone-processing` milestone for sand and glass, hiding its duplicate science stops and recipes without deleting existing prototype IDs.
+- **Pass two:** Four optional K2SO-supported alternatives add local resource/Flux synergies on Vulcanus (imersium), Gleba (biomass), Fulgora (rare metals), and Aquilo (lithium).
 - K2SO advanced, matter, and singularity technology cards connect to increasingly late FluxWorks research.
 - Selected late FluxWorks components use K2SO AI cores, imersium, imersite, charged matter stabilizers, and matter cubes.
 - A new optional, six-ingredient imersite-assisted stabilized Flux crystal recipe is unlocked by Flux Synthesis. The original recipe remains.
@@ -28,7 +31,7 @@ K2SO is an optional dependency: `Krastorio2-spaced-out`. Do **not** make it a re
 
 These remain for a later compatibility refactor because cutting them prematurely risks inaccessible items and broken research:
 
-- The early Crusher, sand/glass, metals, and silicon manufacturing bridge.
+- The remaining FluxWorks-only materials and intermediate parts. Their recipes are no longer prerequisites for standard starting machinery.
 - The current four domain science packs and their many **FluxWorks-owned** consumers.
 - Certain legacy prototype fixes that also repair FluxWorks' internal recipe unlocks.
 - All existing Flux endgame machinery and Shattered Planet progression.
@@ -37,8 +40,8 @@ Any later removal should be accompanied by migration planning, rewritten unlock 
 
 ## Fresh-save test matrix
 
-1. **Space Age only:** initialize data stage, verify circuit/pipe/rocket silo ingredients, inspect Space Age science, unlock Flux extraction, reach the four base planets and Shattered Planet.
-2. **Space Age + K2SO:** initialize data stage, verify `kr-glass`, `kr-silicon`, K2SO matter tech cards, labs and Flux item aliases, advance into Flux quantum and Shattered technologies.
+1. **Space Age only:** initialize data stage, confirm Crusher stays in its original technology and electric mining drill/steel recipes remain native, craft FluxWorks sand and silicon without an early Crusher, verify circuit/pipe/rocket silo ingredients, inspect Space Age science, unlock Flux extraction, reach the four base planets and Shattered Planet.
+2. **Space Age + K2SO:** initialize data stage, confirm `kr-stone-processing` is the only active sand/glass unlock, verify `kr-glass`, `kr-silicon`, K2SO matter tech cards, labs and Flux item aliases, build each of the four K2SO planetary alternatives, then advance into Flux quantum and Shattered technologies.
 3. **Legacy switches:** verify tech weaving, global ingredient replacements, rocket-part overhaul and asteroid recipe overrides independently.
 4. **Mod compatibility:** inspect Factoripedia, K2SO recycling, cargo/platform conditions and any extended planetary mods before declaring full compatibility.
 
