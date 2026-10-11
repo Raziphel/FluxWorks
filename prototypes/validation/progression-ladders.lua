@@ -36,7 +36,9 @@ local function recipe_has_ingredient(recipe_name, expected_ingredient)
     recipe.expensive and recipe.expensive.ingredients or nil,
   }) do
     for _, ingredient in pairs(ingredient_set or {}) do
-      if ingredient_name(ingredient) == expected_ingredient then
+      local actual = ingredient_name(ingredient)
+      local alternative = mods["Krastorio2-spaced-out"] and ("kr-" .. expected_ingredient)
+      if actual == expected_ingredient or (alternative and actual == alternative) then
         return true
       end
     end
