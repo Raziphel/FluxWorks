@@ -29,6 +29,7 @@ local validators = {
   "prototypes.validation.recipe-decomposition",
   "prototypes.validation.prototype-icons",
   "prototypes.validation.technology-icons",
+  "prototypes.validation.k2so",
   "prototypes.validation.owned-iconography",
   "prototypes.validation.crafting-tabs",
 }
