@@ -1,3 +1,6 @@
+local Startup = require("prototypes.lib.startup-settings")
+local legacy_research = Startup.enabled("fw-enable-legacy-technology-overhaul", false)
+
 local domains = {
   {
     technology = "fw-industrial-methods-science",
@@ -187,8 +190,10 @@ for _, domain in ipairs(domains) do
   -- The science ingredient is itself the progression gate for established technologies.
   -- Avoid injecting redundant prerequisite edges into the base/mod technology graph:
   -- compatibility mods can rearrange those edges, while the pack requirement stays safe.
-  for _, technology_name in ipairs(domain.external_consumers or {}) do
-    require_domain(technology_name, domain, false)
+  if legacy_research then
+    for _, technology_name in ipairs(domain.external_consumers or {}) do
+      require_domain(technology_name, domain, false)
+    end
   end
 
   -- These technologies are already downstream of the domain unlock through
@@ -238,7 +243,7 @@ for technology_name, technology in pairs(data.raw.technology or {}) do
     end
   end
 
-  if consumes_complete_catalog then
+  if legacy_research and consumes_complete_catalog then
     for _, domain in ipairs(domains) do
       require_domain(technology_name, domain, false)
     end
