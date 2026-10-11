@@ -92,6 +92,9 @@ local function add_prerequisite(technology_name, prerequisite_name)
   technology.prerequisites[#technology.prerequisites + 1] = prerequisite_name
 end
 
+-- The FluxWorks planetary technologies are additive by default. Existing Space Age
+-- milestones are gated only when the legacy technology overhaul is enabled.
+if require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false) then
 -- These are the visible interlocks: major Space Age rewards now pass through the matching
 -- FluxWorks planetary discipline instead of living on a parallel, disconnected tree.
 add_prerequisite("advanced-material-processing-2", "fw-ceramic-engineering")
@@ -103,3 +106,5 @@ add_prerequisite("turbo-transport-belt", "fw-vulcanus-industrial-symbiosis")
 add_prerequisite("stack-inserter", "fw-gleba-regenerative-symbiosis")
 add_prerequisite("tesla-weapons", "fw-fulgora-electromagnetic-symbiosis")
 add_prerequisite("fusion-reactor", "fw-cross-planetary-industrial-convergence")
+
+end
