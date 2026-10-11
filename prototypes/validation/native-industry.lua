@@ -61,8 +61,22 @@ local function assert_unlock(technology_name, recipe_name)
   error(("Native industry validation: %s does not unlock %s"):format(technology_name, recipe_name))
 end
 
-assert_unlock("sand-processing", "sand")
-assert_unlock("glass-processing", "glass")
+if not (mods["Krastorio2-spaced-out"] and not legacy_early) then
+  assert_unlock("sand-processing", "sand")
+  assert_unlock("glass-processing", "glass")
+else
+  for _, name in ipairs({ "sand-processing", "glass-processing" }) do
+    local tech = data.raw.technology[name]
+    if not tech.hidden or tech.enabled ~= false then
+      error("K2SO should own Stone Processing instead of duplicated FluxWorks technology " .. name)
+    end
+  end
+  for _, name in ipairs({ "sand", "glass" }) do
+    if not data.raw.recipe[name].hidden then
+      error("K2SO must not be bypassed with duplicate FluxWorks " .. name .. " recipe")
+    end
+  end
+end
 
 if legacy_recipes then
 assert_ingredients("lab",
@@ -109,10 +123,17 @@ then
 end
 
 if not legacy_early then
-  for _, tech in ipairs({ comminution, sand_processing, glass_processing }) do
+  for _, tech in ipairs({ comminution }) do
+    if tech.research_trigger or not tech.unit then
+      error("Native industry validation: Expansion Comminution must use normal science")
+    end
+  end
+  if not mods["Krastorio2-spaced-out"] then
+  for _, tech in ipairs({ sand_processing, glass_processing }) do
     if tech.research_trigger or not tech.unit then
       error("Native industry validation: Expansion mineral research must use normal science")
     end
+  end
   end
   for _, effect in ipairs(comminution.effects or {}) do
     if effect.type == "unlock-recipe" and effect.recipe == "crusher" then
