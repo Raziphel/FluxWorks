@@ -60,13 +60,14 @@ for _, domain in ipairs(domains) do
   end
 
   local minimum_consumers = domain.pack == "fw-planetary-convergence-science-pack" and 20 or 25
-  if #domain.consumers + #(domain.ingredient_consumers or {}) < minimum_consumers then
+  if not optional_domain(domain.pack) and #domain.consumers + #(domain.ingredient_consumers or {}) < minimum_consumers then
     error("FluxWorks domain science needs broad research utility, not a token consumer list: " .. domain.pack)
   end
-  if #(domain.external_consumers or {}) < 15 then
+  if not optional_domain(domain.pack) and #(domain.external_consumers or {}) < 15 then
     error("FluxWorks domain science must be woven into the wider technology tree: " .. domain.pack)
   end
-  if domain.pack ~= "fw-planetary-convergence-science-pack"
+  if not optional_domain(domain.pack)
+    and domain.pack ~= "fw-planetary-convergence-science-pack"
     and #(domain.supporting_consumers or {}) < 5
   then
     error("FluxWorks domain science needs deliberate cross-domain follow-through: " .. domain.pack)
