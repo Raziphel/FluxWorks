@@ -1,4 +1,12 @@
 local legacy_science = require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false)
+local early_science_gates = require("prototypes.lib.startup-settings").enabled("fw-enable-early-domain-science-gates", false)
+local optional_early_packs = {
+  ["fw-industrial-methods-science-pack"] = true,
+  ["fw-systems-analysis-science-pack"] = true,
+}
+local function optional_domain(pack)
+  return not early_science_gates and optional_early_packs[pack] == true
+end
 
 local domains = require("prototypes.updates.domain-science-integration")
 
@@ -82,6 +90,13 @@ for _, domain in ipairs(domains) do
   end
 
   for _, technology_name in ipairs(domain.consumers) do
+    if not optional_domain(domain.pack) or (function()
+      for stem in pairs(domains.optional_programs[domain.pack] or {}) do
+        if technology_name == stem .. "-1" or technology_name == stem .. "-2"
+          or technology_name == stem .. "-3" then return true end
+      end
+      return false
+    end)() then
     local technology = data.raw.technology[technology_name]
     if not reaches(technology_name, domain.technology) then
       error(technology_name .. " is not gated by " .. domain.technology)
@@ -92,7 +107,10 @@ for _, domain in ipairs(domains) do
   end
 
 
-  if legacy_science then
+    end
+  end
+
+  if legacy_science and not optional_domain(domain.pack) then
   for _, technology_name in ipairs(domain.external_consumers or {}) do
     if technology_name:sub(1, 3) == "fw-" then
       error("External domain-science consumer must not be a FluxWorks technology: " .. technology_name)
@@ -106,6 +124,7 @@ for _, domain in ipairs(domains) do
 
   end
 
+  if not optional_domain(domain.pack) then
   for _, technology_name in ipairs(domain.ingredient_consumers or {}) do
     local technology = data.raw.technology[technology_name]
     if not technology or not contains(technology.unit and technology.unit.ingredients, domain.pack) then
@@ -113,6 +132,9 @@ for _, domain in ipairs(domains) do
     end
   end
 
+  end
+
+  if not optional_domain(domain.pack) then
   for _, technology_name in ipairs(domain.supporting_consumers or {}) do
     local technology = data.raw.technology[technology_name]
     if not technology
@@ -121,6 +143,7 @@ for _, domain in ipairs(domains) do
     then
       error(technology_name .. " does not preserve supporting discipline " .. domain.pack)
     end
+  end
   end
 end
 
@@ -147,7 +170,8 @@ local expected_profiles = {
 for technology_name, packs in pairs(expected_profiles) do
   local technology = data.raw.technology and data.raw.technology[technology_name]
   for _, pack in ipairs(packs) do
-    if not technology or not contains(technology.unit and technology.unit.ingredients, pack) then
+    if not optional_domain(pack)
+      and (not technology or not contains(technology.unit and technology.unit.ingredients, pack)) then
       error(technology_name .. " lost its cross-domain science profile: " .. pack)
     end
   end
@@ -190,7 +214,8 @@ local advertised_promises = {
 for pack_name, technology_names in pairs(advertised_promises) do
   for _, technology_name in ipairs(technology_names) do
     local technology = data.raw.technology and data.raw.technology[technology_name]
-    if not technology or not contains(technology.unit and technology.unit.ingredients, pack_name) then
+    if not optional_domain(pack_name)
+      and (not technology or not contains(technology.unit and technology.unit.ingredients, pack_name)) then
       error(technology_name .. " no longer fulfills the advertised promise of " .. pack_name)
     end
   end
@@ -202,16 +227,16 @@ if not flux_extraction
 then
   error("Flux Extraction must remain a midgame technology and must not consume Cryogenic Science")
 end
-if not contains(flux_extraction.unit and flux_extraction.unit.ingredients, "fw-industrial-methods-science-pack") then
+if early_science_gates and not contains(flux_extraction.unit and flux_extraction.unit.ingredients, "fw-industrial-methods-science-pack") then
   error("Flux Extraction must consume Industrial Methods Science")
 end
 
 local recipe_identities = {
   ["fw-industrial-methods-science-pack"] = {
-    "fw-metal-mesh", "fw-iron-beam", "glass", "fw-carbon",
+    "fw-metal-mesh", "fw-iron-beam", "steel-plate",
   },
   ["fw-systems-analysis-science-pack"] = {
-    "fw-sensor-package", "fw-signal-conduit", "fw-microchip", "battery",
+    "fw-sensor-package", "fw-microchip", "battery",
   },
   ["fw-flux-theory-science-pack"] = {
     "fw-stabilized-flux-crystal", "fw-flux-catalyst",
