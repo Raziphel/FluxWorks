@@ -1,5 +1,23 @@
 local Startup = require("prototypes.lib.startup-settings")
 local legacy_research = Startup.enabled("fw-enable-legacy-technology-overhaul", false)
+local legacy_early_science = Startup.enabled("fw-enable-early-domain-science-gates", false)
+local optional_programs = {
+  ["fw-industrial-methods-science-pack"] = {
+    ["fw-industrial-yield"] = true, ["fw-material-handling"] = true,
+  },
+  ["fw-systems-analysis-science-pack"] = {
+    ["fw-autonomous-logistics"] = true, ["fw-rail-network-control"] = true,
+    ["fw-research-methodology"] = true,
+  },
+}
+
+local function is_optional_program(domain, technology_name)
+  local stems = optional_programs[domain.pack] or {}
+  for stem in pairs(stems) do
+    if technology_name:match("^" .. stem .. "%-[123]$") then return true end
+  end
+  return false
+end
 
 local domains = {
   {
@@ -183,14 +201,20 @@ for _, domain in ipairs(domains) do
     error("FluxWorks domain science definition is incomplete for " .. domain.pack)
   end
 
+  local optional_only = not legacy_early_science and optional_programs[domain.pack] ~= nil
   for _, technology_name in ipairs(domain.consumers) do
-    require_domain(technology_name, domain, true)
+    if not optional_only or is_optional_program(domain, technology_name) then
+      -- Only the first research-program tier needs the direct science unlock
+      -- prerequisite. Later tiers already inherit it through their parent.
+      local tier_one = technology_name:match("%-1$") ~= nil
+      require_domain(technology_name, domain, not optional_only or tier_one)
+    end
   end
 
   -- The science ingredient is itself the progression gate for established technologies.
   -- Avoid injecting redundant prerequisite edges into the base/mod technology graph:
   -- compatibility mods can rearrange those edges, while the pack requirement stays safe.
-  if legacy_research then
+  if legacy_research and not optional_only then
     for _, technology_name in ipairs(domain.external_consumers or {}) do
       require_domain(technology_name, domain, false)
     end
@@ -199,16 +223,20 @@ for _, domain in ipairs(domains) do
   -- These technologies are already downstream of the domain unlock through
   -- their existing branches. The bottle is the visible pivotal requirement;
   -- a second direct prerequisite edge would be redundant and Factorio drops it.
-  for _, technology_name in ipairs(domain.ingredient_consumers or {}) do
-    require_domain(technology_name, domain, false)
+  if not optional_only then
+    for _, technology_name in ipairs(domain.ingredient_consumers or {}) do
+      require_domain(technology_name, domain, false)
+    end
   end
 
   -- A few technologies deliberately combine disciplines. These are supporting
   -- requirements, not a blanket rule that every late technology consumes every
   -- earlier pack. Requiring the domain unlock as well as the bottle keeps the
   -- resulting technology graph honest and the research available when shown.
-  for _, technology_name in ipairs(domain.supporting_consumers or {}) do
-    require_domain(technology_name, domain, true)
+  if not optional_only then
+    for _, technology_name in ipairs(domain.supporting_consumers or {}) do
+      require_domain(technology_name, domain, true)
+    end
   end
 end
 
@@ -245,7 +273,9 @@ for technology_name, technology in pairs(data.raw.technology or {}) do
 
   if legacy_research and consumes_complete_catalog then
     for _, domain in ipairs(domains) do
-      require_domain(technology_name, domain, false)
+      if legacy_early_science or not optional_programs[domain.pack] then
+        require_domain(technology_name, domain, false)
+      end
     end
     all_science_consumers[#all_science_consumers + 1] = technology_name
   end
@@ -254,5 +284,7 @@ end
 table.sort(all_science_consumers)
 domains.complete_science_catalog = complete_science_catalog
 domains.all_science_consumers = all_science_consumers
+domains.optional_programs = optional_programs
+domains.legacy_early_science = legacy_early_science
 
 return domains
