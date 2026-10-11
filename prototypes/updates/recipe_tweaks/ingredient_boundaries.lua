@@ -150,11 +150,11 @@ end
 
 for recipe_name, keep_names in pairs(keep_ingredients) do
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
-  if not recipe then
-    error("Recipe complexity normalization references missing recipe " .. recipe_name)
+  if not recipe and recipe_name:sub(1, 3) == "fw-" then
+    error("Recipe complexity normalization references missing owned recipe " .. recipe_name)
   end
 
-  if shared_overhaul or recipe_name:sub(1, 3) == "fw-" then
+  if recipe and (shared_overhaul or recipe_name:sub(1, 3) == "fw-") then
     recipe.ingredients = filter_ingredients(recipe_name, recipe.ingredients, keep_names)
     if recipe.normal then
       recipe.normal.ingredients = filter_ingredients(recipe_name, recipe.normal.ingredients, keep_names)
