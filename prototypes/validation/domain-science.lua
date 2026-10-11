@@ -5,7 +5,7 @@ local domains = require("prototypes.updates.domain-science-integration")
 local function contains(entries, name)
   for _, entry in ipairs(entries or {}) do
     local entry_name = type(entry) == "table" and (entry.name or entry[1]) or entry
-    if entry_name == name then
+    if entry_name == name or (mods["Krastorio2-spaced-out"] and entry_name == "kr-" .. name) then
       return true
     end
   end
