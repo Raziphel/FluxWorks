@@ -24,9 +24,15 @@ if mods["Krastorio2-spaced-out"] then
   end
   local glass_processing = data.raw.technology and data.raw.technology["glass-processing"]
   if glass_processing and data.raw.item["kr-sand"] then
-    assert(glass_processing.research_trigger
-      and glass_processing.research_trigger.item == "kr-sand",
-      "Glass research trigger still targets hidden pre-K2SO sand")
+    local legacy_early = Startup.enabled("fw-enable-early-industry-overhaul", false)
+    if legacy_early then
+      assert(glass_processing.research_trigger
+        and glass_processing.research_trigger.item == "kr-sand",
+        "Legacy Glass research trigger must target K2SO sand")
+    else
+      assert(not glass_processing.research_trigger and glass_processing.unit,
+        "Expansion Glass research must use ordinary science instead of a hidden K2SO trigger")
+    end
   end
 end
 local recipe = data.raw.recipe and data.raw.recipe["fw-k2so-imersite-resonance"]
