@@ -1,3 +1,6 @@
+local Startup = require("prototypes.lib.startup-settings")
+if not Startup.enabled("fw-enable-legacy-technology-overhaul", false) then return end
+
 local function technology(name)
   local prototype = data.raw.technology and data.raw.technology[name]
   if not prototype then
