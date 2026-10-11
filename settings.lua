@@ -65,6 +65,7 @@ data:extend({
   startup_bool("fw-worldgen-enable-promethium-impacts", true, "ab[worldgen]-j[promethium-enabled]"),
 
   startup_bool("fw-enable-k2so-integration", true, "ba[compat]-a[k2so]"),
+  startup_bool("fw-enable-early-industry-overhaul", false, "ba[overhaul]-a[early-industry]"),
   startup_bool("fw-enable-legacy-technology-overhaul", false, "ba[overhaul]-a[technology]"),
   startup_bool("fw-enable-asteroid-recipe-overrides", false, "ba[overhaul]-a[asteroids]"),
 
