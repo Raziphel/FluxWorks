@@ -15,6 +15,10 @@ if not (data.raw["recipe-category"] and data.raw["recipe-category"]["basic-crush
   })
 end
 
+-- Moving the base Crusher to Nauvis is a separate overhaul choice.
+-- Expansion mode leaves Space Age and K2SO placement/unlocks intact.
+if not require("prototypes.lib.startup-settings").enabled("fw-enable-early-industry-overhaul", false) then return end
+
 -- Open the crusher up so it can do the full job instead of the tiny vanilla version of it.
 local crusher_entity = data.raw["assembling-machine"] and data.raw["assembling-machine"]["crusher"]
 if crusher_entity then
