@@ -1,5 +1,6 @@
 local legacy = require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false)
 local legacy_recipes = require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+local legacy_early = require("prototypes.lib.startup-settings").enabled("fw-enable-early-industry-overhaul", false)
 
 
 local function entry_name(entry)
@@ -57,12 +58,14 @@ assert_report(not tech_uses("fw-propellant-synthesis", "cryogenic-science-pack")
 assert_report(not tech_uses("fw-flux-catalysis", "cryogenic-science-pack"), "Flux catalysis waits for Aquilo")
 assert_report(not recipe_has("stone-wall", "fw-sensor-package"), "stone walls still require sensors")
 assert_report(not recipe_has("steam-engine", "bronze-plate"), "bootstrap steam engine still requires bronze")
-assert_report(not recipe_has("crusher", "electronic-circuit"), "crusher still requires its own silicon-gated circuit output")
+if legacy_early then
+  assert_report(not recipe_has("crusher", "electronic-circuit"), "crusher still requires its own silicon-gated circuit output")
+end
 assert_report(tech_unlocks("fw-comminution", "fw-silicon-beneficiation"),
   "Crusher research does not unlock the bootstrap silicon route")
 assert_report(not tech_unlocks("fw-mineral-beneficiation", "fw-silicon-beneficiation"),
   "bootstrap silicon beneficiation still waits for the later mineral technology")
-assert_report((data.raw.recipe["fw-carbon-refining"].categories or {})[1] == "basic-crushing",
+assert_report((data.raw.recipe["fw-carbon-refining"].categories or {})[1] == (legacy_early and "basic-crushing" or "crafting"),
   "refined carbon can still be selected by fuel-burning furnaces")
 if legacy then
   assert_report(data.raw.technology.automation.unit.count == 10,
@@ -123,7 +126,7 @@ for _, effect in ipairs(liquid_mining.effects or {}) do
   if effect.type == "mining-with-fluid" and effect.modifier == true then enables_fluid_mining = true end
 end
 assert_report(enables_fluid_mining, "Fluid mining does not enable fluid-fed drills")
-assert_report(data.raw.recipe["fw-silicon-beneficiation"].categories[1] == "fw-silicon-refining",
+assert_report(data.raw.recipe["fw-silicon-beneficiation"].categories[1] == (legacy_early and "fw-silicon-refining" or "crafting"),
   "Refined Silicon remains exclusive to the bootstrap crushing category")
 for _, machine_name in ipairs({ "crusher", "fw-arc-foundry" }) do
   local machine = data.raw["assembling-machine"] and data.raw["assembling-machine"][machine_name]
