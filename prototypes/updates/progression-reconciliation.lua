@@ -1,3 +1,6 @@
+local Startup = require("prototypes.lib.startup-settings")
+local legacy_recipes = Startup.enabled("fw-enable-recipe-integration", false)
+
 -- Run this last. Earlier compatibility passes can move either side of an unlock.
 local MAX_RECONCILIATION_PASSES = 12
 
@@ -59,6 +62,7 @@ end
 
 local function is_progression_recipe(recipe_name, recipe)
   if is_fluxworks(recipe_name) then return true end
+  if not legacy_recipes then return false end
   for _, ingredient in pairs(recipe.ingredients or {}) do
     if is_fluxworks(entry_name(ingredient)) then return true end
   end
@@ -70,11 +74,13 @@ set_ingredients("fw-bearing", {
   { type = "item", name = "iron-plate", amount = 3 },
   { type = "item", name = "iron-gear-wheel", amount = 1 },
 })
+if legacy_recipes then
 set_ingredients("electric-mining-drill", {
   { type = "item", name = "burner-mining-drill", amount = 1 },
   { type = "item", name = "electronic-circuit", amount = 3 },
   { type = "item", name = "fw-bearing", amount = 2 },
 })
+end
 
 local drill_technology = data.raw.technology and data.raw.technology["electric-mining-drill"]
 if drill_technology then
@@ -82,8 +88,8 @@ if drill_technology then
 end
 
 -- Enabled recipes cannot depend on a part that still needs research.
-for _, recipe in pairs(data.raw.recipe or {}) do
-  if recipe.enabled ~= false and not recipe.hidden then
+for recipe_name, recipe in pairs(data.raw.recipe or {}) do
+  if (legacy_recipes or is_fluxworks(recipe_name)) and recipe.enabled ~= false and not recipe.hidden then
     local function strip_locked_fluxworks(ingredients)
       if not ingredients then return end
       for index = #ingredients, 1, -1 do
