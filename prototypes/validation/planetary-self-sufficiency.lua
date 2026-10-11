@@ -242,10 +242,13 @@ for _, raw_resource in ipairs(expected_products) do
     error("Native scrap recycling must not directly produce raw FluxWorks resource " .. raw_resource)
   end
 end
+if require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+  and require("prototypes.lib.startup-settings").enabled("fw-enable-fulgora-scrap-integration", true) then
 for _, component_name in ipairs(fulgora_scrap_components) do
   if not recipe_produces(scrap_recycling, component_name) then
     error("Native scrap recycling must recover manufactured FluxWorks component " .. component_name)
   end
+end
 end
 for _, recipe_name in ipairs(removed_fulgora_reclamation_recipes) do
   if data.raw.recipe and data.raw.recipe[recipe_name] then
