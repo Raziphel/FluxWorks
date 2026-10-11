@@ -9,7 +9,8 @@ local function has_fw_ingredient(recipe)
 end
 if not Startup.enabled("fw-enable-recipe-integration", false) then
   for _, recipe_name in ipairs({
-    "electronic-circuit", "iron-gear-wheel", "pipe", "transport-belt", "rocket-silo",
+    "electronic-circuit", "iron-gear-wheel", "pipe", "transport-belt",
+    "rocket-silo", "electric-mining-drill", "landing-pad-unloading-bay",
   }) do
     local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
     local ingredient_name = has_fw_ingredient(recipe)
@@ -27,6 +28,19 @@ if not Startup.enabled("fw-enable-legacy-technology-overhaul", false) then
         error("Expansion-first mode unexpectedly gates "
           .. technology_name .. " behind " .. prerequisite)
       end
+    end
+  end
+end
+
+if not Startup.enabled("fw-enable-early-industry-overhaul", false) then
+  local crusher = data.raw.recipe and data.raw.recipe.crusher
+  if has_fw_ingredient(crusher) then
+    error("Expansion-first mode cannot require FluxWorks parts to build Space Age Crusher")
+  end
+  local comminution = data.raw.technology and data.raw.technology["fw-comminution"]
+  for _, effect in ipairs((comminution and comminution.effects) or {}) do
+    if effect.type == "unlock-recipe" and effect.recipe == "crusher" then
+      error("Space Age Crusher must retain its original research owner in expansion mode")
     end
   end
 end
