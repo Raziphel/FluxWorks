@@ -14,6 +14,7 @@ local validators = {
   "prototypes.validation.flux-composition",
   "prototypes.validation.flux-recovery-safety",
   "prototypes.validation.domain-science",
+  "prototypes.validation.optional-domain-science",
   "prototypes.validation.progression-projects",
   "prototypes.validation.research-programs",
   "prototypes.validation.progression-programs",
