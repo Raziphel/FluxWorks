@@ -1,6 +1,11 @@
 return function()
 local Startup = require("prototypes.lib.startup-settings")
 local shared_overhaul = Startup.enabled("fw-enable-recipe-integration", false)
+local k2so_aliases = {
+  ["kr-sand"] = "sand", ["kr-glass"] = "glass", ["kr-silicon"] = "silicon",
+  ["kr-chlorine"] = "chlorine", ["kr-lithium"] = "lithium",
+  ["kr-ammonia"] = "ammonia", ["kr-oxygen"] = "oxygen", ["kr-hydrogen"] = "hydrogen",
+}
 -- These boundaries keep final recipes focused on representative assemblies
 -- instead of repeating every lower-level component in their production chain.
 
@@ -127,7 +132,9 @@ local function filter_ingredients(recipe_name, ingredients, keep_names)
     -- FluxWorks only limits its own component contribution; ingredients from
     -- base or other mods remain intact so alternate production chains do not
     -- need a per-mod compatibility exception.
-    if keep[name] or (not recipe_is_fluxworks_owned and not is_fluxworks_ingredient(name)) then
+    local shared_name = mods["Krastorio2-spaced-out"] and k2so_aliases[name]
+    if keep[name] or (shared_name and keep[shared_name])
+      or (not recipe_is_fluxworks_owned and not is_fluxworks_ingredient(name)) then
       filtered[#filtered + 1] = ingredient
     end
     if required_fluxworks[name] then found_fluxworks[name] = true end
