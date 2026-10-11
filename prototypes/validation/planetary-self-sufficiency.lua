@@ -90,7 +90,8 @@ end
 
 local function recipe_produces(recipe, item_name)
   for _, result in ipairs(recipe.results or {}) do
-    if (result.type or "item") == "item" and (result.name or result[1]) == item_name then
+    if (result.type or "item") == "item" and ((result.name or result[1]) == item_name
+      or (mods["Krastorio2-spaced-out"] and (result.name or result[1]) == "kr-" .. item_name)) then
       return true
     end
   end
@@ -99,7 +100,8 @@ end
 
 local function recipe_consumes(recipe, item_name)
   for _, ingredient in ipairs(recipe.ingredients or {}) do
-    if (ingredient.type or "item") == "item" and (ingredient.name or ingredient[1]) == item_name then
+    if (ingredient.type or "item") == "item" and ((ingredient.name or ingredient[1]) == item_name
+      or (mods["Krastorio2-spaced-out"] and (ingredient.name or ingredient[1]) == "kr-" .. item_name)) then
       return true
     end
   end
@@ -242,10 +244,13 @@ for _, raw_resource in ipairs(expected_products) do
     error("Native scrap recycling must not directly produce raw FluxWorks resource " .. raw_resource)
   end
 end
+if require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+  and require("prototypes.lib.startup-settings").enabled("fw-enable-fulgora-scrap-integration", true) then
 for _, component_name in ipairs(fulgora_scrap_components) do
   if not recipe_produces(scrap_recycling, component_name) then
     error("Native scrap recycling must recover manufactured FluxWorks component " .. component_name)
   end
+end
 end
 for _, recipe_name in ipairs(removed_fulgora_reclamation_recipes) do
   if data.raw.recipe and data.raw.recipe[recipe_name] then
@@ -253,6 +258,8 @@ for _, recipe_name in ipairs(removed_fulgora_reclamation_recipes) do
   end
 end
 
+if require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+  and require("prototypes.lib.startup-settings").enabled("fw-enable-fulgora-scrap-integration", true) then
 for _, material_name in ipairs(processed_materials) do
   local recovered
   for _, component_name in ipairs(fulgora_scrap_components) do
@@ -265,6 +272,8 @@ for _, material_name in ipairs(processed_materials) do
   if not recovered then
     error("Fulgora scrap components need a recycling path into " .. material_name)
   end
+end
+
 end
 
 local fulgora = data.raw.planet and data.raw.planet.fulgora

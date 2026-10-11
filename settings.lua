@@ -64,20 +64,26 @@ data:extend({
   startup_bool("fw-worldgen-enable-standalone-ores", false, "ab[worldgen]-f[standalone-ores]"),
   startup_bool("fw-worldgen-enable-promethium-impacts", true, "ab[worldgen]-j[promethium-enabled]"),
 
-  startup_bool("fw-enable-recipe-integration", true, "ba[overhaul]-a[recipe-integration]"),
-  startup_bool("fw-enable-core-material-replacements", true, "ba[overhaul]-b[core-materials]"),
-  startup_bool("fw-enable-combat-recipe-integration", true, "ba[overhaul]-c[combat-integration]"),
-  startup_bool("fw-enable-orbital-and-planetary-integration", true, "ba[overhaul]-d[orbital-planetary]"),
+  startup_bool("fw-enable-k2so-integration", true, "ba[compat]-a[k2so]"),
+  startup_bool("fw-enable-early-domain-science-gates", false, "ba[overhaul]-a[early-science]"),
+  startup_bool("fw-enable-early-industry-overhaul", false, "ba[overhaul]-a[early-industry]"),
+  startup_bool("fw-enable-legacy-technology-overhaul", false, "ba[overhaul]-a[technology]"),
+  startup_bool("fw-enable-asteroid-recipe-overrides", false, "ba[overhaul]-a[asteroids]"),
+
+  startup_bool("fw-enable-recipe-integration", false, "ba[overhaul]-a[recipe-integration]"),
+  startup_bool("fw-enable-core-material-replacements", false, "ba[overhaul]-b[core-materials]"),
+  startup_bool("fw-enable-combat-recipe-integration", false, "ba[overhaul]-c[combat-integration]"),
+  startup_bool("fw-enable-orbital-and-planetary-integration", false, "ba[overhaul]-d[orbital-planetary]"),
   startup_bool("fw-enable-fulgora-scrap-integration", true, "ba[overhaul]-e[fulgora-scrap]"),
-  startup_bool("fw-enable-machine-part-rehoming", true, "ba[overhaul]-f[machine-rehoming]"),
+  startup_bool("fw-enable-machine-part-rehoming", false, "ba[overhaul]-f[machine-rehoming]"),
   startup_choice(
     "fw-global-compatibility-mode",
-    "broad",
+    "off",
     { "off", "conservative", "broad" },
     "ba[overhaul]-h[global-compatibility]"
   ),
 
-  startup_bool("fw-enable-crafting-tab-reorganization", true, "ca[qol]-a[crafting-tabs]"),
+  startup_bool("fw-enable-crafting-tab-reorganization", false, "ca[qol]-a[crafting-tabs]"),
   startup_bool("fw-tab-logistics-organization", true, "ca[qol]-b[logistics-tab]"),
   startup_bool("fw-tab-production-organization", true, "ca[qol]-c[production-tab]"),
   startup_bool("fw-tab-science-organization", true, "ca[qol]-d[science-tab]"),
@@ -87,7 +93,7 @@ data:extend({
   startup_bool("fw-tab-flux-organization", true, "ca[qol]-i[flux-tab]"),
   startup_bool("fw-tab-fabrication-organization", true, "ca[qol]-j[fabrication-tab]"),
 
-  startup_bool("enable-incomplete-rocket-parts", true, "da[other]-a[incomplete-parts]"),
+  startup_bool("enable-incomplete-rocket-parts", false, "da[other]-a[incomplete-parts]"),
   startup_bool("enable-incomplete-rocket-parts-productivity", false, "da[other]-b[incomplete-productivity]"),
   startup_bool("fw-enable-unattended-shattered-asteroids", true, "ea[performance]-a[unattended-asteroids]"),
 

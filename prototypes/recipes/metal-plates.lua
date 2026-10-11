@@ -161,6 +161,7 @@ local steel_recipe = data.raw.recipe and data.raw.recipe["steel-plate"]
 if not steel_recipe then
   error("FluxWorks requires the base steel-plate recipe")
 end
+if require("prototypes.lib.startup-settings").enabled("fw-enable-early-industry-overhaul", false) then
 steel_recipe.categories = { "smelting" }
 steel_recipe.category = nil
 steel_recipe.enabled = false
@@ -170,3 +171,4 @@ steel_recipe.ingredients = {
 }
 steel_recipe.results = { { type = "item", name = "steel-plate", amount = 1 } }
 steel_recipe.allow_productivity = true
+end

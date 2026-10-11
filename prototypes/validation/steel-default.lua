@@ -16,12 +16,14 @@ if data.raw.item["fw-steel-bloom"] or data.raw.recipe["fw-steel-bloom"] then
   error("FluxWorks steel blooms should remain removed")
 end
 
-if ((steel.categories and steel.categories[1]) or steel.category) ~= "smelting"
+-- K2SO owns the shared steel recipe when installed. Enforce vanilla balance only
+-- in Space Age-alone games, while still rejecting obsolete FluxWorks blooms.
+if not mods["Krastorio2-spaced-out"] and (((steel.categories and steel.categories[1]) or steel.category) ~= "smelting"
     or steel.enabled ~= false
     or steel.energy_required ~= 16
     or #(steel.ingredients or {}) ~= 1
     or amount_of(steel.ingredients, "iron-plate") ~= 5
     or #(steel.results or {}) ~= 1
-    or amount_of(steel.results, "steel-plate") ~= 1 then
+    or amount_of(steel.results, "steel-plate") ~= 1) then
   error("FluxWorks steel must retain the default 5 iron plate to 1 steel plate smelting recipe")
 end

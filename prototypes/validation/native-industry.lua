@@ -1,3 +1,6 @@
+local legacy_recipes = require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+local legacy_early = require("prototypes.lib.startup-settings").enabled("fw-enable-early-industry-overhaul", false)
+
 local function ingredient_names(recipe_name)
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if not recipe then error("Native industry validation is missing recipe " .. recipe_name) end
@@ -43,7 +46,7 @@ assert_icon("technology", "sand-processing", native_icon_path .. "sand.png")
 assert_icon("technology", "glass-processing", native_icon_path .. "glass.png")
 
 assert_ingredients("sand", { "stone" }, {})
-assert_ingredients("glass", { "sand" }, {})
+assert_ingredients("glass", { mods["Krastorio2-spaced-out"] and "kr-sand" or "sand" }, {})
 
 local function assert_unlock(technology_name, recipe_name)
   local technology = data.raw.technology and data.raw.technology[technology_name]
@@ -58,51 +61,93 @@ local function assert_unlock(technology_name, recipe_name)
   error(("Native industry validation: %s does not unlock %s"):format(technology_name, recipe_name))
 end
 
-assert_unlock("sand-processing", "sand")
-assert_unlock("glass-processing", "glass")
+if not (mods["Krastorio2-spaced-out"] and not legacy_early) then
+  assert_unlock("sand-processing", "sand")
+  assert_unlock("glass-processing", "glass")
+else
+  for _, name in ipairs({ "sand-processing", "glass-processing" }) do
+    local tech = data.raw.technology[name]
+    if not tech.hidden or tech.enabled ~= false then
+      error("K2SO should own Stone Processing instead of duplicated FluxWorks technology " .. name)
+    end
+  end
+  for _, name in ipairs({ "sand", "glass" }) do
+    if not data.raw.recipe[name].hidden then
+      error("K2SO must not be bypassed with duplicate FluxWorks " .. name .. " recipe")
+    end
+  end
+end
 
+if legacy_recipes then
 assert_ingredients("lab",
-  { "electronic-circuit", "iron-gear-wheel", "transport-belt", "glass" },
+  { "electronic-circuit", "iron-gear-wheel", "transport-belt", mods["Krastorio2-spaced-out"] and "kr-glass" or "glass" },
   { "fw-glass-lens", "fw-ceramic-insulator" })
+
+end
 
 local sand_recipe = data.raw.recipe.sand
 local sand_uses_crusher = sand_recipe.category == "basic-crushing"
 for _, category in ipairs(sand_recipe.categories or {}) do
   if category == "basic-crushing" then sand_uses_crusher = true end
 end
-if not sand_uses_crusher then
-  error("Native industry validation: Sand must require the Crusher")
+if legacy_early and not sand_uses_crusher then
+  error("Native industry validation: Legacy Sand must require the Crusher")
+elseif not legacy_early and ((sand_recipe.categories and sand_recipe.categories[1]) or sand_recipe.category) ~= "crafting" then
+  error("Native industry validation: Expansion Sand must remain craftable without moving the Crusher")
 end
 
 local comminution = data.raw.technology["fw-comminution"]
-if comminution.unit or not comminution.research_trigger
+if legacy_early and (comminution.unit or not comminution.research_trigger
   or comminution.research_trigger.type ~= "mine-entity"
   or not comminution.research_trigger.entities
   or comminution.research_trigger.entities[1] ~= "big-rock"
-  or comminution.research_trigger.count ~= 5
+  or comminution.research_trigger.count ~= 5)
 then
   error("Native industry validation: Comminution must unlock by mining five big rocks")
 end
 
 local sand_processing = data.raw.technology["sand-processing"]
-if sand_processing.unit or not sand_processing.research_trigger
+if legacy_early and (sand_processing.unit or not sand_processing.research_trigger
   or sand_processing.research_trigger.type ~= "craft-item"
-  or sand_processing.research_trigger.item ~= "crusher"
+  or sand_processing.research_trigger.item ~= "crusher")
 then
   error("Native industry validation: Sand Processing must unlock by crafting a Crusher")
 end
 
 local glass_processing = data.raw.technology["glass-processing"]
-if glass_processing.unit or not glass_processing.research_trigger
+if legacy_early and (glass_processing.unit or not glass_processing.research_trigger
   or glass_processing.research_trigger.type ~= "craft-item"
-  or glass_processing.research_trigger.item ~= "sand"
+  or glass_processing.research_trigger.item ~= (mods["Krastorio2-spaced-out"] and "kr-sand" or "sand"))
 then
   error("Native industry validation: Glass Processing must unlock by crafting sand")
 end
 
+if not legacy_early then
+  for _, tech in ipairs({ comminution }) do
+    if tech.research_trigger or not tech.unit then
+      error("Native industry validation: Expansion Comminution must use normal science")
+    end
+  end
+  if not mods["Krastorio2-spaced-out"] then
+  for _, tech in ipairs({ sand_processing, glass_processing }) do
+    if tech.research_trigger or not tech.unit then
+      error("Native industry validation: Expansion mineral research must use normal science")
+    end
+  end
+  end
+  for _, effect in ipairs(comminution.effects or {}) do
+    if effect.type == "unlock-recipe" and effect.recipe == "crusher" then
+      error("Native industry validation: Comminution must not unlock the Space Age Crusher by default")
+    end
+  end
+end
+
+if legacy_recipes then
 assert_ingredients("electric-mining-drill",
   { "iron-plate", "electronic-circuit", "fw-bearing" },
   { "burner-mining-drill", "engine-unit" })
+end
+
 assert_ingredients("fw-control-assembly",
   { "fw-circuit-substrate", "fw-chip-carrier", "fw-solder-wire", "fw-circuit-contact" },
   { "engine-unit", "iron-gear-wheel" })

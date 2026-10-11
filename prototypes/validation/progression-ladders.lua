@@ -36,7 +36,9 @@ local function recipe_has_ingredient(recipe_name, expected_ingredient)
     recipe.expensive and recipe.expensive.ingredients or nil,
   }) do
     for _, ingredient in pairs(ingredient_set or {}) do
-      if ingredient_name(ingredient) == expected_ingredient then
+      local actual = ingredient_name(ingredient)
+      local alternative = mods["Krastorio2-spaced-out"] and ("kr-" .. expected_ingredient)
+      if actual == expected_ingredient or (alternative and actual == alternative) then
         return true
       end
     end
@@ -327,12 +329,14 @@ assert_recipe_has_ingredient(
   "fw-alumina-refractory",
   "bauxite should feed the ceramic branch so mineral deposits matter beyond flat aluminum smelting"
 )
+if Startup.enabled("fw-enable-recipe-integration", false) then
 for _, salt_consumer in ipairs({ "battery" }) do
   assert_recipe_has_ingredient(
     salt_consumer,
     "fw-salt",
     "salt should serve as an electrolyte and mineral-separation reagent beyond chlorine production"
   )
+end
 end
 assert_recipe_has_ingredient(
   "fw-ceramic-insulator",
@@ -731,6 +735,7 @@ for _, contract in ipairs(space_age_symbiosis_contracts) do
   assert_recipe_unlocks(contract.technology, { contract.recipe })
 end
 
+if Startup.enabled("fw-enable-legacy-technology-overhaul", false) then
 for technology_name, prerequisite_name in pairs({
   ["advanced-material-processing-2"] = "fw-ceramic-engineering",
   ["automation-3"] = "fw-systems-integration",
@@ -747,6 +752,8 @@ for technology_name, prerequisite_name in pairs({
     prerequisite_name,
     "major Space Age rewards should pass through their matching FluxWorks overhaul branch"
   )
+end
+
 end
 
 for _, prerequisite_name in ipairs({

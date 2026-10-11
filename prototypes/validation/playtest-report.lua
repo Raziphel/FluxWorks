@@ -1,3 +1,7 @@
+local legacy = require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false)
+local legacy_recipes = require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+local legacy_early = require("prototypes.lib.startup-settings").enabled("fw-enable-early-industry-overhaul", false)
+
 
 local function entry_name(entry)
   return type(entry) == "table" and (entry.name or entry[1]) or nil
@@ -54,15 +58,19 @@ assert_report(not tech_uses("fw-propellant-synthesis", "cryogenic-science-pack")
 assert_report(not tech_uses("fw-flux-catalysis", "cryogenic-science-pack"), "Flux catalysis waits for Aquilo")
 assert_report(not recipe_has("stone-wall", "fw-sensor-package"), "stone walls still require sensors")
 assert_report(not recipe_has("steam-engine", "bronze-plate"), "bootstrap steam engine still requires bronze")
-assert_report(not recipe_has("crusher", "electronic-circuit"), "crusher still requires its own silicon-gated circuit output")
+if legacy_early then
+  assert_report(not recipe_has("crusher", "electronic-circuit"), "crusher still requires its own silicon-gated circuit output")
+end
 assert_report(tech_unlocks("fw-comminution", "fw-silicon-beneficiation"),
   "Crusher research does not unlock the bootstrap silicon route")
 assert_report(not tech_unlocks("fw-mineral-beneficiation", "fw-silicon-beneficiation"),
   "bootstrap silicon beneficiation still waits for the later mineral technology")
-assert_report((data.raw.recipe["fw-carbon-refining"].categories or {})[1] == "basic-crushing",
+assert_report((data.raw.recipe["fw-carbon-refining"].categories or {})[1] == (legacy_early and "basic-crushing" or "crafting"),
   "refined carbon can still be selected by fuel-burning furnaces")
-assert_report(data.raw.technology.automation.unit.count == 10,
-  "Automation does not retain its 10-pack cost")
+if legacy then
+  assert_report(data.raw.technology.automation.unit.count == 10,
+    "Automation does not retain its 10-pack cost")
+end
 assert_report(not (function()
   for _, prerequisite in ipairs(data.raw.technology.automation.prerequisites or {}) do
     if prerequisite == "electric-mining-drill" then return true end
@@ -74,7 +82,8 @@ assert_report(tech_unlocks("military", "fw-gunpowder-early"),
 assert_report((data.raw.recipe["fw-gunpowder"].categories or {})[1] == "chemistry",
   "regular gunpowder is not restricted to chemical machines")
 for technology_name, technology in pairs(data.raw.technology or {}) do
-  if technology_name ~= "fw-electromechanical-systems" then
+  if technology_name ~= "fw-electromechanical-systems"
+    and (legacy_early or technology_name:sub(1, 3) == "fw-") then
     assert_report(not tech_unlocks(technology_name, "silicon"),
       "regular silicon is prematurely unlocked by " .. technology_name)
   end
@@ -118,7 +127,7 @@ for _, effect in ipairs(liquid_mining.effects or {}) do
   if effect.type == "mining-with-fluid" and effect.modifier == true then enables_fluid_mining = true end
 end
 assert_report(enables_fluid_mining, "Fluid mining does not enable fluid-fed drills")
-assert_report(data.raw.recipe["fw-silicon-beneficiation"].categories[1] == "fw-silicon-refining",
+assert_report(data.raw.recipe["fw-silicon-beneficiation"].categories[1] == (legacy_early and "fw-silicon-refining" or "crafting"),
   "Refined Silicon remains exclusive to the bootstrap crushing category")
 for _, machine_name in ipairs({ "crusher", "fw-arc-foundry" }) do
   local machine = data.raw["assembling-machine"] and data.raw["assembling-machine"][machine_name]
@@ -204,8 +213,10 @@ for _, recipe_name in ipairs({ "fw-pressure-housing", "fw-flow-regulator" }) do
 end
 assert_report(not tech_uses("fw-fluid-regulation", "chemical-science-pack"),
   "Fluid Regulation still waits for chemical science")
-assert_report(tech_requires("railway", "fw-fluid-regulation"),
-  "Railway does not establish the regulator branch it consumes")
+if legacy then
+  assert_report(tech_requires("railway", "fw-fluid-regulation"),
+    "Railway does not establish the regulator branch it consumes")
+end
 
 for recipe_name, amount in pairs({
   ["iron-plate-from-crushed"] = 3,
@@ -246,8 +257,9 @@ for _, recipe_name in ipairs({
     "Logistics 2 still unlocks unrelated recipe " .. recipe_name)
 end
 assert_report(tech_requires("fw-precision-ceramics-1", "chemical-science-pack")
-  and tech_requires("fw-precision-ceramics-1", "fw-industrial-methods-science"),
-  "Precision Ceramics 1 lacks its science-pack technology prerequisites")
+  and (not require("prototypes.lib.startup-settings").enabled("fw-enable-early-domain-science-gates", false)
+    or tech_requires("fw-precision-ceramics-1", "fw-industrial-methods-science")),
+  "Precision Ceramics 1 lost the prerequisites appropriate to its science mode")
 
 for _, ore_name in ipairs({ "iron", "copper", "tin", "lead", "bauxite", "titanium" }) do
   assert_report(data.raw.item["fw-crushed-" .. ore_name .. "-ore"].icon_size == 256,
@@ -255,11 +267,13 @@ for _, ore_name in ipairs({ "iron", "copper", "tin", "lead", "bauxite", "titaniu
 end
 assert_report(data.raw.technology["fw-mineral-beneficiation"].icon == data.raw.item.silicon.icon,
   "Mineral Beneficiation still presents a carbon icon")
+if legacy_recipes then
 assert_report(data.raw.item["solid-fuel"].subgroup == "fw-chemistry-petrochem",
   "Solid Fuel remains in the Energy tab")
 for _, barrel_name in ipairs({ "water-barrel", "fluoroketone-hot-barrel", "fluoroketone-cold-barrel" }) do
   assert_report(data.raw.item[barrel_name].subgroup == "fw-chemistry-barrels",
     barrel_name .. " remains outside Chemistry barrels")
+end
 end
 assert_report(not recipe_has("fw-aluminum-beam", "glass"), "Aluminum Beam still consumes glass")
 assert_report(data.raw.item["fw-elastomer-matrix"].icon ~= data.raw.item["fw-rubber-sheet"].icon,

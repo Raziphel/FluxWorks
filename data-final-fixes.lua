@@ -62,9 +62,19 @@ require("prototypes.updates.progression-reconciliation")
 require("prototypes.updates.playtest-report-reconciliation")
 require("prototypes.updates.early-glass-progression")
 require("prototypes.updates.item-recipe-cleanup")
+-- Read the finalized ingredient boundaries before weaving K2SO into FluxWorks.
+require("prototypes.compat.k2so")
+require("prototypes.compat.k2so-planetary")
+require("prototypes.compat.k2so-science")
+require("prototypes.compat.k2so-stone-processing")
+-- Remove legacy early science tolls after all research reconciliation passes.
+require("prototypes.updates.optional-domain-science")
 require("prototypes.updates.flux-tooltips")
 require("prototypes.updates.remove-obsolete-beneficiation")
 require("prototypes.updates.owned-iconography")
+-- K2SO replaces several stock item and fluid names; reconcile only owned
+-- recipes once all new FluxWorks recipes and compatibility edits exist.
+require("prototypes.compat.k2so-baseline")
 
 -- Factorio 2.1 replaced singular recipe categories and product probability
 -- fields. Normalize after every compatibility rewrite and before validation.

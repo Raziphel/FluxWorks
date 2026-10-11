@@ -14,6 +14,7 @@ local validators = {
   "prototypes.validation.flux-composition",
   "prototypes.validation.flux-recovery-safety",
   "prototypes.validation.domain-science",
+  "prototypes.validation.optional-domain-science",
   "prototypes.validation.progression-projects",
   "prototypes.validation.research-programs",
   "prototypes.validation.progression-programs",
@@ -29,6 +30,8 @@ local validators = {
   "prototypes.validation.recipe-decomposition",
   "prototypes.validation.prototype-icons",
   "prototypes.validation.technology-icons",
+  "prototypes.validation.expansion-preservation",
+  "prototypes.validation.k2so",
   "prototypes.validation.owned-iconography",
   "prototypes.validation.crafting-tabs",
 }
