@@ -30,8 +30,18 @@ if mods["Krastorio2-spaced-out"] then
         and glass_processing.research_trigger.item == "kr-sand",
         "Legacy Glass research trigger must target K2SO sand")
     else
-      assert(not glass_processing.research_trigger and glass_processing.unit,
-        "Expansion Glass research must use ordinary science instead of a hidden K2SO trigger")
+      assert(glass_processing.hidden and glass_processing.enabled == false,
+        "K2SO must replace the duplicate Glass Processing milestone")
+      assert(data.raw.technology["kr-stone-processing"],
+        "K2SO native Stone Processing must remain available")
+      assert(data.raw.recipe.sand.hidden and data.raw.recipe.glass.hidden,
+        "K2SO sand and glass must not have duplicate FluxWorks recipes")
+      for _, technology in pairs(data.raw.technology or {}) do
+        for _, prerequisite in ipairs(technology.prerequisites or {}) do
+          assert(prerequisite ~= "sand-processing" and prerequisite ~= "glass-processing",
+            "K2SO Stone Processing replacement left a hidden research prerequisite")
+        end
+      end
     end
   end
 end
