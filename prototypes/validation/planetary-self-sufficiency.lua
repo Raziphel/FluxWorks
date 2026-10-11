@@ -258,6 +258,8 @@ for _, recipe_name in ipairs(removed_fulgora_reclamation_recipes) do
   end
 end
 
+if require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+  and require("prototypes.lib.startup-settings").enabled("fw-enable-fulgora-scrap-integration", true) then
 for _, material_name in ipairs(processed_materials) do
   local recovered
   for _, component_name in ipairs(fulgora_scrap_components) do
@@ -270,6 +272,8 @@ for _, material_name in ipairs(processed_materials) do
   if not recovered then
     error("Fulgora scrap components need a recycling path into " .. material_name)
   end
+end
+
 end
 
 local fulgora = data.raw.planet and data.raw.planet.fulgora
