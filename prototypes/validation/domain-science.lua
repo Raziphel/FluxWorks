@@ -104,9 +104,6 @@ for _, domain in ipairs(domains) do
     if not contains(technology.unit and technology.unit.ingredients, domain.pack) then
       error(technology_name .. " does not consume " .. domain.pack)
     end
-  end
-
-
     end
   end
 
@@ -322,7 +319,8 @@ end
 for _, technology_name in ipairs(domains.all_science_consumers) do
   local technology = data.raw.technology[technology_name]
   for _, domain in ipairs(domains) do
-    if not contains(technology.unit and technology.unit.ingredients, domain.pack) then
+    if not optional_domain(domain.pack)
+      and not contains(technology.unit and technology.unit.ingredients, domain.pack) then
       error(technology_name .. " claims to use every science but omits " .. domain.pack)
     end
   end
@@ -331,8 +329,9 @@ end
 local research_productivity = data.raw.technology and data.raw.technology["research-productivity"]
 if legacy_science then
 for _, domain in ipairs(domains) do
-  if not research_productivity
-    or not contains(research_productivity.unit and research_productivity.unit.ingredients, domain.pack)
+  if not optional_domain(domain.pack)
+    and (not research_productivity
+      or not contains(research_productivity.unit and research_productivity.unit.ingredients, domain.pack))
   then
     error("Research Productivity must consume every FluxWorks science pack: " .. domain.pack)
   end
