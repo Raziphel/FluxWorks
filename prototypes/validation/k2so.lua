@@ -133,3 +133,32 @@ if recipe then
   end
   assert(unlocked, "K2SO alternate Flux synthesis has no research unlock")
 end
+
+-- Industrial and systems optimization packs also have K2SO-specific routes.
+-- They complement the normal recipes and never become mandatory to progress.
+for _, spec in ipairs(require("prototypes.compat.k2so-science")) do
+  local expected = data.raw.item and data.raw.item[spec.pack]
+    and data.raw.technology and data.raw.technology[spec.unlock]
+  for _, input in ipairs(spec.ingredients) do
+    if not (data.raw.item and data.raw.item[input.name]) then expected = false end
+  end
+  local alternative = data.raw.recipe and data.raw.recipe[spec.name]
+  if expected then
+    assert(alternative, "Available K2SO science alternative is missing: " .. spec.name)
+    assert(alternative.category == "advanced-crafting"
+      or (alternative.categories and alternative.categories[1] == "advanced-crafting"),
+      "K2SO optimization pack recipe is not machine-crafted: " .. spec.name)
+    assert(#(alternative.ingredients or {}) == 3,
+      "K2SO optimization pack recipe has excessive ingredients: " .. spec.name)
+    local result = alternative.results and alternative.results[1]
+    assert(result and (result.name or result[1]) == spec.pack and result.amount == spec.amount,
+      "K2SO optimization pack recipe has wrong yield: " .. spec.name)
+    local unlocked = false
+    for _, effect in ipairs(data.raw.technology[spec.unlock].effects or {}) do
+      if effect.type == "unlock-recipe" and effect.recipe == spec.name then unlocked = true end
+    end
+    assert(unlocked, "K2SO optimization pack recipe has no technology unlock: " .. spec.name)
+  else
+    assert(not alternative, "K2SO optimization pack recipe exists without its K2SO ingredients: " .. spec.name)
+  end
+end
