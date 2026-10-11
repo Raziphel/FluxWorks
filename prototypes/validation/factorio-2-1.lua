@@ -1,3 +1,5 @@
+local shared_overhaul = require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+
 local function entry_name(entry)
   return entry and (entry.name or entry[1])
 end
@@ -11,7 +13,7 @@ local function find_entry(entries, expected_name)
 end
 
 local unloading_bay = data.raw.recipe and data.raw.recipe["landing-pad-unloading-bay"]
-if unloading_bay then
+if unloading_bay and shared_overhaul then
   local expected_ingredients = {
     "cargo-bay",
     "bulk-inserter",
