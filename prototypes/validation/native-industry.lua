@@ -45,7 +45,7 @@ assert_icon("technology", "sand-processing", native_icon_path .. "sand.png")
 assert_icon("technology", "glass-processing", native_icon_path .. "glass.png")
 
 assert_ingredients("sand", { "stone" }, {})
-assert_ingredients("glass", { "sand" }, {})
+assert_ingredients("glass", { mods["Krastorio2-spaced-out"] and "kr-sand" or "sand" }, {})
 
 local function assert_unlock(technology_name, recipe_name)
   local technology = data.raw.technology and data.raw.technology[technology_name]
@@ -100,7 +100,7 @@ end
 local glass_processing = data.raw.technology["glass-processing"]
 if glass_processing.unit or not glass_processing.research_trigger
   or glass_processing.research_trigger.type ~= "craft-item"
-  or glass_processing.research_trigger.item ~= "sand"
+  or glass_processing.research_trigger.item ~= (mods["Krastorio2-spaced-out"] and "kr-sand" or "sand")
 then
   error("Native industry validation: Glass Processing must unlock by crafting sand")
 end
