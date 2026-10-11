@@ -76,6 +76,38 @@ if data.raw.technology["kr-matter-cube"] and data.raw.technology["fw-origin-infr
   end
   assert(linked, "K2SO Matter Cube must precede FluxWorks Origin Infrastructure")
 end
+-- Every available planetary alternative must stay behind its own FluxWorks
+-- planetary milestone. Standalone Space Age must never receive these recipes.
+for _, spec in ipairs(require("prototypes.compat.k2so-planetary")) do
+  local output = data.raw.item and data.raw.item[spec.product]
+  local tech = data.raw.technology and data.raw.technology[spec.technology]
+  local inputs_exist = true
+  for _, input in ipairs(spec.inputs) do
+    local prototypes = input.type == "fluid" and data.raw.fluid or data.raw.item
+    if not prototypes or not prototypes[input.name] then
+      inputs_exist = false
+      break
+    end
+  end
+  local expected = output and tech and inputs_exist
+  local candidate = data.raw.recipe and data.raw.recipe[spec.name]
+  if expected then
+    assert(candidate, "Missing available K2SO planetary alternative: " .. spec.name)
+    assert(candidate.category == spec.category or
+      (candidate.categories and candidate.categories[1] == spec.category),
+      "K2SO planetary alternative has the wrong machine lane: " .. spec.name)
+    assert(#(candidate.ingredients or {}) <= 6,
+      "K2SO planetary alternative is needlessly complex: " .. spec.name)
+    local found = false
+    for _, effect in ipairs(tech.effects or {}) do
+      if effect.type == "unlock-recipe" and effect.recipe == spec.name then found = true end
+    end
+    assert(found, "K2SO planetary alternative has no research owner: " .. spec.name)
+  else
+    assert(not candidate, "K2SO planetary alternative exists without its ingredients: " .. spec.name)
+  end
+end
+
 if recipe then
   assert(#(recipe.ingredients or {}) <= 6, "K2SO alternative Flux recipe is too complex")
   local tech = assert(data.raw.technology["fw-flux-synthesis"])
