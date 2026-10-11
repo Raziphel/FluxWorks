@@ -14,7 +14,9 @@ local optional_programs = {
 local function is_optional_program(domain, technology_name)
   local stems = optional_programs[domain.pack] or {}
   for stem in pairs(stems) do
-    if technology_name:match("^" .. stem .. "%-[123]$") then return true end
+    if technology_name == stem .. "-1"
+      or technology_name == stem .. "-2"
+      or technology_name == stem .. "-3" then return true end
   end
   return false
 end
