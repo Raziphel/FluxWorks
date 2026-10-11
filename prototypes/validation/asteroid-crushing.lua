@@ -1,3 +1,7 @@
+if not require("prototypes.lib.startup-settings").enabled("fw-enable-asteroid-recipe-overrides", false) then
+  return
+end
+
 local function result_amount(recipe_name, item_name)
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if not recipe then error("Asteroid crushing validation is missing recipe " .. recipe_name) end
