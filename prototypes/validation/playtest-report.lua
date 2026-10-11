@@ -257,8 +257,9 @@ for _, recipe_name in ipairs({
     "Logistics 2 still unlocks unrelated recipe " .. recipe_name)
 end
 assert_report(tech_requires("fw-precision-ceramics-1", "chemical-science-pack")
-  and tech_requires("fw-precision-ceramics-1", "fw-industrial-methods-science"),
-  "Precision Ceramics 1 lacks its science-pack technology prerequisites")
+  and (not require("prototypes.lib.startup-settings").enabled("fw-enable-early-domain-science-gates", false)
+    or tech_requires("fw-precision-ceramics-1", "fw-industrial-methods-science")),
+  "Precision Ceramics 1 lost the prerequisites appropriate to its science mode")
 
 for _, ore_name in ipairs({ "iron", "copper", "tin", "lead", "bauxite", "titanium" }) do
   assert_report(data.raw.item["fw-crushed-" .. ore_name .. "-ore"].icon_size == 256,
