@@ -90,7 +90,8 @@ end
 
 local function recipe_produces(recipe, item_name)
   for _, result in ipairs(recipe.results or {}) do
-    if (result.type or "item") == "item" and (result.name or result[1]) == item_name then
+    if (result.type or "item") == "item" and ((result.name or result[1]) == item_name
+      or (mods["Krastorio2-spaced-out"] and (result.name or result[1]) == "kr-" .. item_name)) then
       return true
     end
   end
@@ -99,7 +100,8 @@ end
 
 local function recipe_consumes(recipe, item_name)
   for _, ingredient in ipairs(recipe.ingredients or {}) do
-    if (ingredient.type or "item") == "item" and (ingredient.name or ingredient[1]) == item_name then
+    if (ingredient.type or "item") == "item" and ((ingredient.name or ingredient[1]) == item_name
+      or (mods["Krastorio2-spaced-out"] and (ingredient.name or ingredient[1]) == "kr-" .. item_name)) then
       return true
     end
   end
