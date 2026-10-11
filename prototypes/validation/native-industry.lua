@@ -1,3 +1,5 @@
+local legacy_recipes = require("prototypes.lib.startup-settings").enabled("fw-enable-recipe-integration", false)
+
 local function ingredient_names(recipe_name)
   local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
   if not recipe then error("Native industry validation is missing recipe " .. recipe_name) end
@@ -61,9 +63,12 @@ end
 assert_unlock("sand-processing", "sand")
 assert_unlock("glass-processing", "glass")
 
+if legacy_recipes then
 assert_ingredients("lab",
   { "electronic-circuit", "iron-gear-wheel", "transport-belt", "glass" },
   { "fw-glass-lens", "fw-ceramic-insulator" })
+
+end
 
 local sand_recipe = data.raw.recipe.sand
 local sand_uses_crusher = sand_recipe.category == "basic-crushing"
@@ -100,9 +105,12 @@ then
   error("Native industry validation: Glass Processing must unlock by crafting sand")
 end
 
+if legacy_recipes then
 assert_ingredients("electric-mining-drill",
   { "iron-plate", "electronic-circuit", "fw-bearing" },
   { "burner-mining-drill", "engine-unit" })
+end
+
 assert_ingredients("fw-control-assembly",
   { "fw-circuit-substrate", "fw-chip-carrier", "fw-solder-wire", "fw-circuit-contact" },
   { "engine-unit", "iron-gear-wheel" })
