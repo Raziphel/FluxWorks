@@ -118,7 +118,8 @@ remove_unlock("fw-mineral-beneficiation", "fw-silicon-beneficiation")
 -- Keep the furnace-style silicon recipe on its later electromechanical lane.
 -- Early research uses the distinct Crusher beneficiation recipe instead.
 for technology_name in pairs(data.raw.technology or {}) do
-  if technology_name ~= "fw-electromechanical-systems" then
+  if technology_name ~= "fw-electromechanical-systems"
+    and (legacy_early or technology_name:sub(1, 3) == "fw-") then
     remove_unlock(technology_name, "silicon")
   end
 end
