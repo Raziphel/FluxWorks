@@ -1,4 +1,16 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.11
+Date: 2026-10-11
+  Changes:
+    - Introduced expansion-first defaults that preserve native Space Age infrastructure, science, technology gates, asteroid yields, and the Vulcanus Crusher unless legacy overhaul settings are enabled.
+    - Added optional Krastorio 2 Spaced Out compatibility, using its material and technology-card systems within FluxWorks-owned recipes and milestones.
+    - Introduced K2SO production alternatives across Vulcanus, Gleba, Fulgora and Aquilo and an imersite-assisted Flux stabilization route.
+    - Turned Industrial Methods and Systems Analysis into optional factory-upgrade sciences by default. Both science recipes now use three ingredients and yield four packs; Flux Theory and Planetary Convergence remain full progression milestones.
+    - Added two optional K2SO research-pack recipes using its steel and electronic components.
+  Compatibility:
+    - Preserved early-science prototype names for existing save references and introduced opt-in legacy early-science gating.
+    - Improved native K2SO sand, glass, silicon and fluid material normalization and updated progress validators and Factoriopedia guidance.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.10
 Date: 2026-10-03
   Bugfixes:
