@@ -23,7 +23,7 @@ for tech_name in pairs(retired) do
     technology.effects = {}
     technology.prerequisites = {}
     technology.research_trigger = nil
-    technology.unit = nil
+    -- Keep its old research-unit prototype for save and data-stage compatibility.
   end
 end
 for _, recipe_name in ipairs({ "sand", "glass" }) do
