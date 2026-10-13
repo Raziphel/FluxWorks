@@ -1,10 +1,10 @@
 {
   "name": "FluxWorks",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "title": "FluxWorks",
   "author": "Raziphel",
   "factorio_version": "2.1",
-  "description": "An industrial Space Age expansion with four Flux spectra, specialist factories, fourteen Spectrum Industries processes, phase engineering, and optional Krastorio 2 Spaced Out and Razi Protocol integration.",
+  "description": "Space Age industrial expansion with four Flux spectra, fourteen manufacturing alternatives, four project-earned machine upgrades, phase engineering, and optional Krastorio 2 Spaced Out and Razi Protocol compatibility.",
   "dependencies": [
     "base >= 2.1.0",
     "space-age >= 2.1.0",
