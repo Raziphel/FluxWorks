@@ -75,6 +75,9 @@ require("prototypes.updates.owned-iconography")
 -- K2SO replaces several stock item and fluid names; reconcile only owned
 -- recipes once all new FluxWorks recipes and compatibility edits exist.
 require("prototypes.compat.k2so-baseline")
+-- Late, additive factory alternatives see K2SO's reconciled item identities
+-- and are validated with the rest of the finished prototype graph.
+require("prototypes.recipes.spectrum-industries")
 
 -- Factorio 2.1 replaced singular recipe categories and product probability
 -- fields. Normalize after every compatibility rewrite and before validation.
