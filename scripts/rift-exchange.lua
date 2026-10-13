@@ -49,6 +49,19 @@ local ACTIVATION_MODE_ITEMS = {
 
 local surface_label
 
+local function campaign_transfer_unlocked(force)
+  if not (script.active_mods and script.active_mods["razi-protocol"]) then
+    return true
+  end
+  local mastery = force and force.technologies and force.technologies["razi-outer-frontier-mastery"]
+  return mastery and mastery.researched or false
+end
+
+local function campaign_lock_message()
+  return { "", "Rift Exchange requires ", {"technology-name.razi-outer-frontier-mastery"}, "." }
+end
+
+
 local function completed_research_levels(force, name)
   local technology = force and force.technologies and force.technologies[name]
   if not technology then return 0 end
@@ -402,6 +415,11 @@ local function start_cycle(entry)
     return
   end
 
+  if not campaign_transfer_unlocked(entry.entity.force) then
+    entry.last_message = campaign_lock_message()
+    return
+  end
+
   local target = find_target(entry)
   if not target then
     entry.last_message = gate_text("fw-rift-message-no-valid-target")
@@ -420,7 +438,9 @@ end
 
 local function complete_cycle(entry)
   local target = entry.target_unit_number and storage.rift_exchange[entry.target_unit_number] or nil
-  if not (target and target.entity.valid and mode_matches(entry, target) and link_ids_match(entry, target) and quality_matches(entry, target)) then
+  if not campaign_transfer_unlocked(entry.entity.force) then
+    entry.last_message = campaign_lock_message()
+  elseif not (target and target.entity.valid and mode_matches(entry, target) and link_ids_match(entry, target) and quality_matches(entry, target)) then
     entry.last_message = gate_text("fw-rift-message-target-unavailable")
   else
     if entry.mode == "fluid" then
