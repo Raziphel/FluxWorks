@@ -1,3 +1,6 @@
+-- Shared gameplay tuning is deliberately untouched in Razi companion mode.
+if require('prototypes.lib.companion-mode').razi_protocol then return end
+
 local Tuning = require("prototypes.updates.player-tuning")
 
 if not Tuning.applied then
