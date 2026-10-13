@@ -40,7 +40,7 @@ local function add_machine(name, index)
     collision_box = {{-2, -2}, {2, 2}},
     selection_box = {{-2.5, -2.5}, {2.5, 2.5}},
     fast_replaceable_group = "fw-flux-processing",
-    allowed_effects = {"speed", "quality", "consumption"},
+    allowed_effects = {"speed", "consumption"},
     fluid_boxes = {
       {production_type = "input", pipe_connections = {}},
       {production_type = "input", pipe_connections = {}},
@@ -87,6 +87,15 @@ for _, spec in ipairs(upgraded) do
   local entity, recipe, item = raw["assembling-machine"][name], raw.recipe[name], raw.item[name]
   assert(entity and recipe and item, "Missing advanced machine: " .. name)
   assert(entity.crafting_speed == speed and entity.module_slots == slots)
+  if name == "fw-industrial-harvester" then
+    local has_quality = false
+    for _, effect in ipairs(entity.allowed_effects) do
+      if effect == "quality" then has_quality = true end
+    end
+    assert(has_quality, "Industrial harvester should accept quality modules")
+    assert(#raw["assembling-machine"][original].allowed_effects == 2,
+      "Basic harvester must retain its original effect restrictions")
+  end
   assert(recipe.ingredients[1].name == original, "Previous machine is not consumed")
   assert(raw["assembling-machine"][original].next_upgrade == name)
   assert(item.place_result == name and entity.minable.result == name)
