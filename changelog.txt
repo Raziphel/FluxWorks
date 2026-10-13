@@ -4,6 +4,7 @@ Date: 2026-10-13
   Features:
     - Added four project-earned machines: Industrial Flux Harvester, Precision Synthesis Plant, Chromatic Arc Foundry, and Convergence Synthesis Plant.
     - Added faster crafting speeds and additional module capacity balanced by significantly higher power consumption.
+    - Industrial Flux Harvester now accepts quality modules to improve recovered-material production; the original harvester remains unchanged.
     - Linked upgraded machines into the existing Industrial District, Autonomous Network, Spectrum Control, and Convergence Directive research rewards.
     - Added coloured icon markers, revised working-light colours, machine descriptions and normal upgrade-planner compatibility.
   Compatibility:
