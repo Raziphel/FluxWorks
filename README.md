@@ -15,6 +15,14 @@ FluxWorks is a Space Age industrial expansion built around specialized productio
 
 FluxWorks includes quarrying, purification, advanced industrial machines, synthesizers, phase reservoirs, and late logistics. Standalone FluxWorks still has its own extended Shattered Planet expedition and finale.
 
+## Spectrum Industries: fourteen factory alternatives
+
+Matter, Chemical, Fuel, and Biological Flux now each power three optional industrial processes, from superconductor alignment and sensor photolithography to renewable resin, bioflux, rocket propellant, and steel. Two late Chromatic processes consume **two different Flux spectra** and reward cross-system logistics.
+
+These recipes use the existing **Synthesis Plant** and **Arc Foundry**, unlock through technologies already in FluxWorks, and carry small coloured Flux emblems for easy recognition. No extra science packs or disposable intermediate items were added.
+
+See [Spectrum Industries](docs/SPECTRUM_INDUSTRIES.md) for the fourteen processes, machines, unlocks, and balancing rules.
+
 ## With Razi Protocol
 
 Razi Protocol owns the galaxy, research chapters, planetary entry, starmap, and overall victory. FluxWorks provides the industrial machinery.
