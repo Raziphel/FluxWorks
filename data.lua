@@ -68,11 +68,15 @@ load_modules({
   "prototypes.technology.space-age-symbiosis",
   "prototypes.technology.shattered-campaign",
   "prototypes.updates.starting-loadout",
-  "prototypes.updates.shattered-planet",
   "prototypes.updates.rocket-reusability",
   "prototypes.updates.flux-asteroids",
   "prototypes.menu-branding",
 })
+
+-- Preserve the original Shattered Planet space location when Razi Protocol is active.
+if not require('prototypes.lib.companion-mode').razi_protocol then
+  require('prototypes.updates.shattered-planet')
+end
 
 -- Flux has dedicated pipe and tank logistics; auto-generated barrels would add
 -- an unrelated vanilla item family to the crafting catalog.
