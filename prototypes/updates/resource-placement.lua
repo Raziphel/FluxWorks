@@ -111,6 +111,22 @@ local function register_resources_on_planet(planet, resources)
   end
 end
 
+-- Razi's planet resource identities are authoritative. Only add FluxWorks'
+-- early deposits on Nauvis; never replace native ores, overwrite planet
+-- resource maps, tune enemies, or change the player's worldgen presets.
+if require("prototypes.lib.companion-mode").razi_protocol then
+  local nauvis = data.raw.planet and data.raw.planet.nauvis
+  if nauvis then
+    register_resources_on_planet(nauvis, {
+      "fw-crystalised-flux",
+      "fw-metallic-deposit",
+      "fw-mineral-deposit",
+      "fw-carbonic-deposit",
+    })
+  end
+  return
+end
+
 for _, planet in pairs(data.raw.planet or {}) do
   register_resources_on_planet(planet, global_resource_names)
 end
