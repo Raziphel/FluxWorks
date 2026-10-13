@@ -19,7 +19,7 @@ FluxWorks includes quarrying, purification, advanced industrial machines, synthe
 
 The four existing Industrial Project researches now unlock buildable improvements to core FluxWorks machines: an **Industrial Flux Harvester**, **Precision Synthesis Plant**, **Chromatic Arc Foundry**, and the endgame **Convergence Synthesis Plant**.
 
-All four upgrades consume their predecessor machines, retain compatible footprints and fluid ports, and work with the regular Factorio upgrade planner. They demand more power in exchange for throughput and module capacity, without adding another science branch or any scripted runtime overhead.
+All four upgrades consume their predecessor machines, retain compatible footprints and fluid ports, and work with the regular Factorio upgrade planner. They demand more power in exchange for throughput and module capacity, without adding another science branch or any scripted runtime overhead. The upgraded Industrial Harvester also supports quality modules for premium material recovery.
 
 See [Industrial Machine Upgrades](docs/INDUSTRIAL_MACHINE_UPGRADES.md) for the complete upgrade ladder and safety checks.
 
