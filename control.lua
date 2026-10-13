@@ -1,14 +1,19 @@
 local modules = {
-  require("scripts.starting-wreckage"),
   require("scripts.rocket-remnants"),
   require("scripts.phase-vaults"),
   require("scripts.spectral-reservoirs"),
   require("scripts.flux-extractor"),
   require("scripts.rift-exchange"),
-  require("scripts.shattered-planet"),
-  require("scripts.shattered-asteroids"),
-  require("scripts.true-ending"),
 }
+
+-- Razi Protocol owns the starting scenario, remote frontier, and victory.
+-- Standalone FluxWorks continues to register its original campaign handlers.
+if not (script.active_mods and script.active_mods["razi-protocol"]) then
+  modules[#modules + 1] = require("scripts.starting-wreckage")
+  modules[#modules + 1] = require("scripts.shattered-planet")
+  modules[#modules + 1] = require("scripts.shattered-asteroids")
+  modules[#modules + 1] = require("scripts.true-ending")
+end
 
 local Events = require("__razi_lib__/runtime/events")
 local registry = Events.new()
