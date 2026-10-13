@@ -12,7 +12,6 @@ require("prototypes.lib.compatibility-api")
 load_modules({
   "prototypes.resources.flux-rift-resource",
   "prototypes.resources.ores",
-  "prototypes.resources.shattered-flux-vents",
   "prototypes.entities.flux-quarry",
   "prototypes.entities.flux-processing-machines",
   "prototypes.entities.flux-condenser",
@@ -75,6 +74,7 @@ load_modules({
 
 -- Preserve the original Shattered Planet space location when Razi Protocol is active.
 if not require('prototypes.lib.companion-mode').razi_protocol then
+  require('prototypes.resources.shattered-flux-vents')
   require('prototypes.updates.shattered-planet')
 end
 
