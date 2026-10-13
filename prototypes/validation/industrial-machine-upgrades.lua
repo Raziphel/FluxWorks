@@ -74,6 +74,16 @@ for _, spec in ipairs(upgrades) do
     error("FluxWorks industrial upgrade has no usable unlock: " .. upgrade_name)
   end
 
+  if upgrade_name == "fw-industrial-harvester" then
+    local quality_enabled = false
+    for _, effect in ipairs(upgrade.allowed_effects or {}) do
+      if effect == "quality" then quality_enabled = true end
+    end
+    if not quality_enabled then
+      error("Industrial Flux Harvester must support quality modules")
+    end
+  end
+
   if recipe.enabled ~= false or recipe.allow_productivity ~= false then
     error("FluxWorks industrial upgrade must be manually built: " .. upgrade_name)
   end
