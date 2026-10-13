@@ -11,7 +11,7 @@ FluxWorks' four optional **Industrial Project** research milestones now award pe
 | Spectrum Control Project | Chromatic Arc Foundry | Arc Foundry | 5.1 | 6 | 10.5 MW |
 | Convergence Directive Project | Convergence Synthesis Plant | Precision Synthesis Plant | 6.3 | 7 | 13 MW |
 
-A project researches its machine's recipe; the machine itself still needs to be built from its predecessor and several established industrial components. Every machine has higher throughput and power draw, so upgrades are a choice rather than a free efficiency multiplier.
+The Industrial Flux Harvester also gains **quality-module support**, a capability the original Harvester does not have. A project researches its machine's recipe; the machine itself still needs to be built from its predecessor and several established industrial components. Every machine has higher throughput and power draw, so upgrades are a choice rather than a free efficiency multiplier.
 
 The Convergence Synthesis Plant uses **two Flux-colour emblems** to signal its dual-spectrum identity. All four upgrade icons combine existing FluxWorks machinery and FluxWorksAssets art. Original world sprites are reused with recoloured working lights where available, so no duplicate graphics files or custom shaders are loaded.
 
