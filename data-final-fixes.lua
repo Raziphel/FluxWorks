@@ -84,7 +84,7 @@ require("prototypes.validation.init")
 
 -- FluxWorks owns its menu playlist now that authored stage saves are available.
 local utility_constants = data.raw["utility-constants"] and data.raw["utility-constants"].default
-if utility_constants then
+if utility_constants and not require('prototypes.lib.companion-mode').razi_protocol then
   utility_constants.main_menu_simulations = require("prototypes.menu-simulations")
   local menu_branding = require("prototypes.updates.menu-branding")
   menu_branding.apply(utility_constants.main_menu_simulations)
