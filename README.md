@@ -15,6 +15,14 @@ FluxWorks is a Space Age industrial expansion built around specialized productio
 
 FluxWorks includes quarrying, purification, advanced industrial machines, synthesizers, phase reservoirs, and late logistics. Standalone FluxWorks still has its own extended Shattered Planet expedition and finale.
 
+## Industrial Project machine upgrades
+
+The four existing Industrial Project researches now unlock buildable improvements to core FluxWorks machines: an **Industrial Flux Harvester**, **Precision Synthesis Plant**, **Chromatic Arc Foundry**, and the endgame **Convergence Synthesis Plant**.
+
+All four upgrades consume their predecessor machines, retain compatible footprints and fluid ports, and work with the regular Factorio upgrade planner. They demand more power in exchange for throughput and module capacity, without adding another science branch or any scripted runtime overhead.
+
+See [Industrial Machine Upgrades](docs/INDUSTRIAL_MACHINE_UPGRADES.md) for the complete upgrade ladder and safety checks.
+
 ## Spectrum Industries: fourteen factory alternatives
 
 Matter, Chemical, Fuel, and Biological Flux now each power three optional industrial processes, from superconductor alignment and sensor photolithography to renewable resin, bioflux, rocket propellant, and steel. Two late Chromatic processes consume **two different Flux spectra** and reward cross-system logistics.
