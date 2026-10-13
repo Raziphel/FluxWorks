@@ -12,6 +12,7 @@ local upgrades = {
     speed = 3.4,
     energy = "3.8MW",
     modules = 5,
+    quality = true,
     time = 18,
     ingredients = {
       {"fw-flux-harvester", 1},
@@ -170,6 +171,19 @@ for index, spec in ipairs(upgrades) do
       machine.crafting_speed = spec.speed
       machine.energy_usage = spec.energy
       machine.module_slots = spec.modules
+      -- Industrial harvesting earns a genuine new capability: quality-module
+      -- ore and recovered-material processing, while the basic Harvester is
+      -- left untouched for existing factories.
+      if spec.quality then
+        machine.allowed_effects = machine.allowed_effects or {}
+        local has_quality = false
+        for _, effect in ipairs(machine.allowed_effects) do
+          if effect == "quality" then has_quality = true end
+        end
+        if not has_quality then
+          machine.allowed_effects[#machine.allowed_effects + 1] = "quality"
+        end
+      end
       -- Recolour only existing working lights, not baked animation frames or
       -- shadows. The artwork remains compatible with the original footprint.
       local visuals = machine.graphics_set and machine.graphics_set.working_visualisations
