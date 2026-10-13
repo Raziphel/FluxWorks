@@ -1,4 +1,4 @@
--- Three optional, physically buildable rewards for FluxWorks' research projects.
+-- Four optional, physically buildable rewards for FluxWorks' research projects.
 -- These are new prototypes, not replacements: existing machines and saves keep
 -- working without a migration or a runtime upgrade event.
 local upgrades = {
@@ -59,6 +59,26 @@ local upgrades = {
       {"tungsten-carbide", 20},
     },
   },
+  {
+    name = "fw-convergence-synthesis-plant",
+    from = "fw-precision-synthesis-plant",
+    project = "fw-convergence-directive-project",
+    prerequisite = "fw-spectrum-control-project",
+    colour = "purple",
+    partner = "green",
+    glow = {r = 0.86, g = 0.70, b = 1.0},
+    speed = 6.3,
+    energy = "13MW",
+    modules = 7,
+    time = 35,
+    ingredients = {
+      {"fw-precision-synthesis-plant", 1},
+      {"fw-stabilized-flux-crystal", 10},
+      {"fw-condensed-flux-matrix", 8},
+      {"fw-resonance-substrate", 10},
+      {"fw-flux-lattice", 12},
+    },
+  },
 }
 
 local function find_item(name)
@@ -68,7 +88,7 @@ local function find_item(name)
   end
 end
 
-local function icon_layers(source, colour)
+local function icon_layers(source, colour, partner)
   local icons
   if source.icons then
     icons = table.deepcopy(source.icons)
@@ -81,8 +101,14 @@ local function icon_layers(source, colour)
     icon = "__FluxWorksAssets__/graphics/icons/fluids/flux-" .. colour .. ".png",
     icon_size = 256,
     scale = 0.07,
-    shift = {18, 18},
+    shift = {partner and -14 or 18, 18},
   }
+  if partner then
+    icons[#icons + 1] = {
+      icon = "__FluxWorksAssets__/graphics/icons/fluids/flux-" .. partner .. ".png",
+      icon_size = 256, scale = 0.07, shift = {14, 18},
+    }
+  end
   return icons
 end
 
@@ -127,7 +153,7 @@ for index, spec in ipairs(upgrades) do
   local item = find_item(spec.from)
   local project = data.raw.technology and data.raw.technology[spec.project]
   local ingredients = compatible_ingredients(spec.ingredients)
-  local icons = item and icon_layers(item, spec.colour)
+  local icons = item and icon_layers(item, spec.colour, spec.partner)
 
   if original and item and project and ingredients and icons
     and ensure_prerequisite(project, spec.prerequisite) then
