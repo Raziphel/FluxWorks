@@ -1,3 +1,6 @@
+-- Shared gameplay tuning is deliberately untouched in Razi companion mode.
+if require('prototypes.lib.companion-mode').razi_protocol then return end
+
 local Drag = require("prototypes.updates.space-platform-drag")
 
 local constants = data.raw["utility-constants"] and data.raw["utility-constants"].default
