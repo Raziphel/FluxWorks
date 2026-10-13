@@ -78,6 +78,8 @@ require("prototypes.compat.k2so-baseline")
 -- Late, additive factory alternatives see K2SO's reconciled item identities
 -- and are validated with the rest of the finished prototype graph.
 require("prototypes.recipes.spectrum-industries")
+-- Tangible rewards for optional research projects. Built after K2SO aliases.
+require("prototypes.updates.industrial-machine-upgrades")
 
 -- Factorio 2.1 replaced singular recipe categories and product probability
 -- fields. Normalize after every compatibility rewrite and before validation.
