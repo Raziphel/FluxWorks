@@ -82,7 +82,7 @@ local processes = {
   -- PURPLE: upgrade high-value components rather than conjure raw materials.
   {
     id = "circuit-annealing", spectrum = "purple",
-    technology = "fw-computational-arrays", category = "fw-flux-synthesis",
+    technology = "fw-flux-phase-engineering", category = "fw-flux-synthesis",
     time = 12, product = "processing-unit", yield = 4,
     inputs = {item("advanced-circuit", 8), item("fw-sensor-package", 3),
       item("electronic-circuit", 12), fluid(spectra.purple, 65)},
