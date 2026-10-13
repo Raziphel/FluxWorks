@@ -27,6 +27,8 @@ function M.expression(mode)
 end
 
 function M.apply()
+  -- Do not change shared spaceship physics inside Razi Protocol.
+  if require('prototypes.lib.companion-mode').razi_protocol then return end
   local constants = data.raw["utility-constants"] and data.raw["utility-constants"].default
   if not constants then
     error("FluxWorks space-platform drag setting requires the default utility constants prototype")
