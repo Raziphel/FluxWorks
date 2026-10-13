@@ -1,3 +1,6 @@
+-- Companion mode preserves the original space location, not the standalone surface.
+if require('prototypes.lib.companion-mode').razi_protocol then return end
+
 local Startup = require("prototypes.lib.startup-settings")
 local storm_profiles = require("prototypes.lib.ion-storm-profiles")
 local planet = data.raw.planet and data.raw.planet["shattered-planet"]
