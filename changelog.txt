@@ -1,4 +1,20 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.13
+Date: 2026-10-13
+  Features:
+    - Added fourteen optional Spectrum Industries processes using the existing Synthesis Plant and Arc Foundry, with three routes for each of the four Flux spectra and two chromatic dual-spectrum processes.
+    - Added coloured recipe icon overlays and localized process descriptions so players can recognize the spectrum and production benefit directly in crafting and technology views.
+    - Linked all new production methods to existing engineering technologies rather than creating another science ladder or intermediary item family.
+  Compatibility:
+    - Made recipe registration sensitive to missing ingredients and K2SO renamed materials, with no global planet, research, or victory edits.
+    - Preserved standalone and Razi companion gameplay, and added a runnable Lua mock regression harness and production balance documentation.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.12
+Date: 2026-10-13
+  Compatibility:
+    - Added automatic Razi Protocol companion mode, preserving native Shattered Planet space location, Razi victory and the host campaign's worldgen, starting inventory, global space physics, spoilage and asteroid balance.
+    - Restricted Rift Exchange transfers until Razi Outer Frontier Mastery, while retaining standalone behavior.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.11
 Date: 2026-10-11
   Changes:
