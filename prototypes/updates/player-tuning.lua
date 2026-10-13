@@ -89,6 +89,8 @@ local function tune_spoilage()
 end
 
 function M.apply()
+  -- Razi already owns route hazards, spoilage balance, and global logistics.
+  if require('prototypes.lib.companion-mode').razi_protocol then return end
   tune_asteroids()
   tune_space_logistics()
   tune_spoilage()
