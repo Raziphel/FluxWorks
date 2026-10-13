@@ -1,10 +1,10 @@
 {
   "name": "FluxWorks",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "title": "FluxWorks",
   "author": "Raziphel",
   "factorio_version": "2.1",
-  "description": "A major Space Age industrial expansion featuring Flux extraction, advanced manufacturing, planetary industries, and the Shattered Planet endgame. Optional Krastorio 2 Spaced Out integration connects both progression systems.",
+  "description": "An industrial Space Age expansion with four Flux spectra, specialist factories, fourteen Spectrum Industries processes, phase engineering, and optional Krastorio 2 Spaced Out and Razi Protocol integration.",
   "dependencies": [
     "base >= 2.1.0",
     "space-age >= 2.1.0",
