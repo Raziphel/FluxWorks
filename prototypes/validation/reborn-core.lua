@@ -50,7 +50,15 @@ for _,spec in ipairs(source.designs) do
   local recipe=recipes[spec.name]
   if recipe then
     local actual=recipe.ingredients or {}
-    local good=#actual==#spec.inputs
+    local expected_count=#spec.inputs
+    local k2=source.k2_fidelity[spec.name]
+    if k2 and mods and mods["Krastorio2-spaced-out"]
+      and data.raw.item and data.raw.item[k2.name]
+      and (not (settings.startup or {})["fw-enable-k2so-integration"]
+        or settings.startup["fw-enable-k2so-integration"].value~=false) then
+      expected_count=expected_count+1
+    end
+    local good=#actual==expected_count
     if good then
       for i,expected in ipairs(spec.inputs) do
         local item=actual[i]
@@ -62,6 +70,10 @@ for _,spec in ipairs(source.designs) do
           break
         end
       end
+    end
+    if good and expected_count>#spec.inputs then
+      local actual_k2=actual[#actual]
+      good=actual_k2 and actual_k2.name==k2.name and actual_k2.amount==k2.amount
     end
     if good then
       assert(#actual<=6,"Reborn old recipe stayed too broad "..spec.name)

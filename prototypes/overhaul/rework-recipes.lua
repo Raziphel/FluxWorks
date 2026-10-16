@@ -11,12 +11,22 @@ local function resolve(entry)
       if data.raw[category] and data.raw[category][key] then return true end
     end
   end
-  if exists(name) then return table.deepcopy(entry) end
   local alternate=replaceable[name]
+  -- K2SO can keep a hidden original prototype defined alongside its
+  -- canonical kr- replacement. Prefer that canonical identity first.
+  if alternate and mods and mods["Krastorio2-spaced-out"] and exists(alternate) then
+    local copy=table.deepcopy(entry);copy.name=alternate;return copy
+  end
+  if exists(name) then return table.deepcopy(entry) end
   if alternate and exists(alternate) then
     local copy=table.deepcopy(entry);copy.name=alternate;return copy
   end
 end
+local k2_fidelity={
+  ["fw-quantum-computer"]={name="kr-ai-core",amount=1},
+  ["fw-promethium-matrix"]={name="kr-imersite-crystal",amount=1},
+  ["fw-rift-coupler"]={name="kr-charged-matter-stabilizer",amount=1},
+}
 local function check_cycles(specs)
   local recipe_by_output={}
   for _,spec in ipairs(specs) do recipe_by_output[spec.name]=spec end
@@ -50,6 +60,17 @@ function M.apply()
         if not resolved then valid=false;break end
         ingredients[#ingredients+1]=resolved
       end
+      if valid and mods and mods["Krastorio2-spaced-out"]
+        and (not (settings.startup or {})["fw-enable-k2so-integration"]
+          or settings.startup["fw-enable-k2so-integration"].value~=false) then
+        local required=k2_fidelity[spec.name]
+        if required then
+          local ingredient={type="item",name=required.name,amount=required.amount}
+          if resolve(ingredient) then
+            ingredients[#ingredients+1]=ingredient
+          end
+        end
+      end
       if valid then
         assert(#ingredients<=6,"Reborn bill exceeds assembler ingredient capacity: "..spec.name)
         local fluids=0
@@ -75,4 +96,5 @@ function M.apply()
   return altered,missing
 end
 M.designs=designs
+M.k2_fidelity=k2_fidelity
 return M

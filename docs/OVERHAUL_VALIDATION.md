@@ -85,3 +85,7 @@ The Reborn factory replaces three especially problematic multi-fluid manufacturi
 ## Reborn validator migration
 
 The historical progression-ladder validator was written for the original recipes, including oversized bills of material. Reborn now redirects those checks to `prototypes/validation/reborn-core.lua`, while Legacy retains the original validator. The new validator asserts at least 35 original bills actually transformed, no more than 6 ingredients or 2 input fluids for redesigned recipes, all five signature outputs and research unlocks, real prototype sources, nine or more distinct machine roles, upgrade-chassis consumption and physical Forge processing. It checks technology graph cycles touching FluxWorks. It is still a data-stage check, not a full in-game test.
+
+## K2SO native components in Reborn
+
+Reborn retains three important K2SO ingredients within its simplified top-tier recipes: kr-ai-core in fw-quantum-computer; kr-imersite-crystal in fw-promethium-matrix; and kr-charged-matter-stabilizer in fw-rift-coupler. Hidden vanilla aliases are preferentially replaced with canonical kr- materials. These modifications affect only FluxWorks recipes.
