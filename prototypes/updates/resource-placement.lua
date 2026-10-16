@@ -1,267 +1,45 @@
--- Shared resources appear broadly; mixed deposits and specialty resources retain
--- planet-specific placement so each surface keeps a distinct material identity.
-local Startup = require("prototypes.lib.startup-settings")
-local standalone_ores_enabled = Startup.enabled("fw-worldgen-enable-standalone-ores", false)
-
-local global_resource_names = {
-  "fw-crystalised-flux",
+-- FluxWorks' independent world policy: opt-in additive ores only.
+-- NEVER mutate native ore controls, enemy presets or third-party map generation.
+local M={}
+local targets={
+  nauvis={"fw-crystalised-flux","fw-metallic-deposit","fw-mineral-deposit","fw-carbonic-deposit"},
+  gleba={"fw-silica-vein"},
+  aquilo={"fw-salt"},
 }
-
-if data.raw.resource and data.raw.resource["fw-promethium-impact"] then
-  table.insert(global_resource_names, "fw-promethium-impact")
+local function enabled(name,default)
+  local setting=settings and settings.startup and settings.startup[name]
+  return setting==nil and default or (setting and setting.value)
 end
-
-local nauvis_resource_names = {
-  "fw-metallic-deposit",
-  "fw-mineral-deposit",
-  "fw-carbonic-deposit",
-}
-
-local planet_specific_resource_names = {
-  aquilo = {
-    "fw-salt",
-    "fw-mineral-deposit",
-  },
-  gleba = {
-    "fw-silica-vein",
-  },
-}
-
-local shattered_planet_resource_names = {
-  "fw-shattered-yellow-flux-vent",
-  "fw-shattered-red-flux-vent",
-  "fw-shattered-green-flux-vent",
-  "fw-shattered-purple-flux-vent",
-}
-
-local preset_control_defaults = {
-  ["fw-metallic-deposit"] = { frequency = "good", size = "very-big", richness = "very-good" },
-  ["fw-mineral-deposit"] = { frequency = "good", size = "big", richness = "very-good" },
-  ["fw-carbonic-deposit"] = { frequency = "good", size = "big", richness = "very-good" },
-  ["fw-crystalised-flux"] = { frequency = "normal", size = "normal", richness = "normal" },
-  ["fw-promethium-impact"] = { frequency = "very-low", size = "small", richness = "good" },
-  ["fw-silica-vein"] = { frequency = "very-low", size = "small", richness = "normal" },
-  ["fw-salt"] = { frequency = "very-low", size = "small", richness = "normal" },
-  ["fw-lead-ore"] = { frequency = "low", size = "small", richness = "normal" },
-  ["fw-bauxite-ore"] = { frequency = "very-low", size = "small", richness = "normal" },
-  ["fw-titanium-ore"] = { frequency = "very-low", size = "small", richness = "low" },
-}
-
-local standalone_ore_controls = {
-  "fw-titanium-ore",
-  "fw-lead-ore",
-  "fw-bauxite-ore",
-}
-
-local vanilla_replaced_controls = {
-  "iron-ore",
-  "copper-ore",
-  "coal",
-  "stone",
-}
-
-local function ensure_map_gen_tables(planet)
-  if type(planet) ~= "table" then
-    return false
-  end
-
-  planet.map_gen_settings = planet.map_gen_settings or {}
-  planet.map_gen_settings.autoplace_controls = planet.map_gen_settings.autoplace_controls or {}
-  planet.map_gen_settings.autoplace_settings = planet.map_gen_settings.autoplace_settings or {}
-  planet.map_gen_settings.autoplace_settings.entity = planet.map_gen_settings.autoplace_settings.entity or {}
-  planet.map_gen_settings.autoplace_settings.entity.settings = planet.map_gen_settings.autoplace_settings.entity.settings or {}
-  return true
-end
-
-local function register_resource_on_planet(planet, resource_name)
-  local resource = data.raw.resource and data.raw.resource[resource_name]
-  local control_name = resource_name
-
-  if resource and resource.autoplace and resource.autoplace.control then
-    control_name = resource.autoplace.control
-  end
-
-  planet.map_gen_settings.autoplace_controls[control_name] = planet.map_gen_settings.autoplace_controls[control_name] or {}
-  planet.map_gen_settings.autoplace_settings.entity.settings[resource_name] = planet.map_gen_settings.autoplace_settings.entity.settings[resource_name] or {}
-end
-
-local function unregister_resource_on_planet(planet, resource_name)
-  if not ensure_map_gen_tables(planet) then
-    return
-  end
-
-  local resource = data.raw.resource and data.raw.resource[resource_name]
-  local control_name = resource_name
-
-  if resource and resource.autoplace and resource.autoplace.control then
-    control_name = resource.autoplace.control
-  end
-
-  planet.map_gen_settings.autoplace_controls[control_name] = nil
-  planet.map_gen_settings.autoplace_settings.entity.settings[resource_name] = nil
-end
-
-local function register_resources_on_planet(planet, resources)
-  if not ensure_map_gen_tables(planet) then
-    return
-  end
-
-  for _, resource_name in pairs(resources) do
-    register_resource_on_planet(planet, resource_name)
-  end
-end
-
--- Razi's planet resource identities are authoritative. Only add FluxWorks'
--- early deposits on Nauvis; never replace native ores, overwrite planet
--- resource maps, tune enemies, or change the player's worldgen presets.
-if require("prototypes.lib.companion-mode").razi_protocol then
-  local nauvis = data.raw.planet and data.raw.planet.nauvis
-  if nauvis then
-    register_resources_on_planet(nauvis, {
-      "fw-crystalised-flux",
-      "fw-metallic-deposit",
-      "fw-mineral-deposit",
-      "fw-carbonic-deposit",
-    })
-  end
-  return
-end
-
-for _, planet in pairs(data.raw.planet or {}) do
-  register_resources_on_planet(planet, global_resource_names)
-end
-
-if data.raw.planet and data.raw.planet["nauvis"] then
-  register_resources_on_planet(data.raw.planet["nauvis"], nauvis_resource_names)
-  for _, resource_name in pairs(standalone_ore_controls) do
-    if standalone_ores_enabled then
-      register_resource_on_planet(data.raw.planet["nauvis"], resource_name)
-    else
-      unregister_resource_on_planet(data.raw.planet["nauvis"], resource_name)
-    end
-  end
-  for _, resource_name in pairs(vanilla_replaced_controls) do
-    unregister_resource_on_planet(data.raw.planet["nauvis"], resource_name)
-  end
-end
-
-for planet_name, resource_names in pairs(planet_specific_resource_names) do
-  if data.raw.planet and data.raw.planet[planet_name] then
-    register_resources_on_planet(data.raw.planet[planet_name], resource_names)
-  end
-end
-
-if data.raw.planet and data.raw.planet["shattered-planet"] then
-  local shattered_planet = data.raw.planet["shattered-planet"]
-
-  for _, resource_name in pairs(global_resource_names) do
-    unregister_resource_on_planet(shattered_planet, resource_name)
-  end
-
-  for _, resource_name in pairs(nauvis_resource_names) do
-    unregister_resource_on_planet(shattered_planet, resource_name)
-  end
-
-  for _, resource_names in pairs(planet_specific_resource_names) do
-    for _, resource_name in pairs(resource_names) do
-      unregister_resource_on_planet(shattered_planet, resource_name)
-    end
-  end
-
-  register_resources_on_planet(shattered_planet, shattered_planet_resource_names)
-end
-
--- Keep the preset sliders filled out so the worldgen UI does not look busted.
-for _, preset_group in pairs(data.raw["map-gen-presets"] or {}) do
-  if type(preset_group) == "table" then
-    for _, preset in pairs(preset_group) do
-      if type(preset) == "table" and preset.basic_settings and preset.basic_settings.autoplace_controls then
-        local controls = preset.basic_settings.autoplace_controls
-        local has_ore_profile = controls["iron-ore"] or controls["copper-ore"] or controls["stone"]
-        if has_ore_profile then
-          preset.basic_settings.starting_area = "normal"
-
-          for _, resource_name in pairs(global_resource_names) do
-            controls[resource_name] = controls[resource_name] or table.deepcopy(preset_control_defaults[resource_name] or { frequency = "normal", size = "normal", richness = "normal" })
+function M.apply()
+  local policy=settings and settings.startup and settings.startup["fw-world-policy"]
+  if policy and policy.value=="off" then return 0 end
+  local changed=0
+  for planet_name,resources in pairs(targets) do
+    local planet=data.raw.planet and data.raw.planet[planet_name]
+    local map=planet and planet.map_gen_settings
+    if map then
+      map.autoplace_controls=map.autoplace_controls or {}
+      map.autoplace_settings=map.autoplace_settings or {}
+      map.autoplace_settings.entity=map.autoplace_settings.entity or {}
+      local entity=map.autoplace_settings.entity
+      entity.settings=entity.settings or {}
+      for _,name in ipairs(resources) do
+        local resource=data.raw.resource and data.raw.resource[name]
+        if resource and resource.autoplace then
+          local control=resource.autoplace.control or name
+          if not entity.settings[name] then
+            entity.settings[name]={}
+            changed=changed+1
           end
-          for _, resource_name in pairs(nauvis_resource_names) do
-            controls[resource_name] = controls[resource_name] or table.deepcopy(preset_control_defaults[resource_name] or { frequency = "normal", size = "normal", richness = "normal" })
-          end
-          for _, resource_names in pairs(planet_specific_resource_names) do
-            for _, resource_name in pairs(resource_names) do
-              controls[resource_name] = controls[resource_name] or table.deepcopy(preset_control_defaults[resource_name] or { frequency = "normal", size = "normal", richness = "normal" })
-            end
-          end
-          for _, resource_name in pairs(standalone_ore_controls) do
-            if standalone_ores_enabled then
-              controls[resource_name] = controls[resource_name]
-                or table.deepcopy(preset_control_defaults[resource_name])
-            else
-              controls[resource_name] = nil
-            end
-          end
-          for _, resource_name in pairs(vanilla_replaced_controls) do
-            controls[resource_name] = nil
-          end
-
-          if controls["enemy-base"] then
-            controls["enemy-base"].frequency = "very-low"
-            controls["enemy-base"].size = "very-low"
-            controls["enemy-base"].richness = "very-low"
-          end
+          if not map.autoplace_controls[control] then map.autoplace_controls[control]={} end
         end
       end
     end
   end
+  -- Keep existing vanilla ore, enemy and custom-map settings exactly as found.
+  log("FluxWorks independent industry: "..changed.." additive surface resource placements")
+  return changed
 end
-
-local default_preset_group = data.raw["map-gen-presets"] and data.raw["map-gen-presets"]["default"]
-if default_preset_group then
-  default_preset_group["fluxworks-default"] = {
-    order = "a0",
-    basic_settings = {
-      starting_area = "normal",
-      autoplace_controls = {
-        ["enemy-base"] = { frequency = "very-low", size = "very-low", richness = "very-low" },
-      },
-    },
-  }
-
-  for resource_name, defaults in pairs(preset_control_defaults) do
-    if data.raw.resource and data.raw.resource[resource_name] then
-      default_preset_group["fluxworks-default"].basic_settings.autoplace_controls[resource_name] = table.deepcopy(defaults)
-    end
-  end
-end
-
--- Hide the old standalone ore sliders.
--- If we are doing mixed deposits, the UI should commit to the bit.
-for _, resource_name in pairs(standalone_ore_controls) do
-  local control = data.raw["autoplace-control"] and data.raw["autoplace-control"][resource_name]
-  if control then
-    control.hidden = not standalone_ores_enabled
-  end
-end
-
-for _, resource_name in pairs(vanilla_replaced_controls) do
-  local control = data.raw["autoplace-control"] and data.raw["autoplace-control"][resource_name]
-  if control then
-    control.hidden = true
-  end
-end
-
--- Foundation is also the construction bridge into the Shattered Planet.
-local foundation = data.raw.item and data.raw.item["foundation"]
-local allowed_tiles = foundation and foundation.place_as_tile and foundation.place_as_tile.tile_condition
-if allowed_tiles then
-  local supports_shattered_space = false
-  for _, tile_name in ipairs(allowed_tiles) do
-    if tile_name == "fw-shattered-space" then
-      supports_shattered_space = true
-      break
-    end
-  end
-  if not supports_shattered_space then
-    allowed_tiles[#allowed_tiles + 1] = "fw-shattered-space"
-  end
-end
+M.targets=targets
+M.apply()
+return M

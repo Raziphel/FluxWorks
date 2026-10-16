@@ -151,58 +151,17 @@ for index, spec in ipairs(bacteria_specs) do
     show_amount_in_title = false,
   }
 
-  if not require("prototypes.lib.companion-mode").razi_protocol then
-    local rock = data.raw["simple-entity"] and data.raw["simple-entity"][spec.rock]
-    if rock and rock.minable and rock.minable.results then
-      rock.minable.results[#rock.minable.results + 1] = {
-        type = "item",
-        name = bacteria_name,
-        amount_min = spec.key == "titanium" and 1 or 2,
-        amount_max = spec.key == "titanium" and 2 or 4,
-        probability = spec.bacteria_probability,
-      }
-      rock.minable.results[#rock.minable.results + 1] = {
-        type = "item",
-        name = spec.product,
-        amount_min = 1,
-        amount_max = spec.key == "titanium" and 1 or 3,
-        probability = spec.ore_probability,
-      }
-    end
-  end
 end
 
-if not require("prototypes.lib.companion-mode").razi_protocol then
-  local native_stromatolite_drops = {
-    ["iron-stromatolite"] = {
-      stone = 0.80,
-      ["iron-ore"] = 0.85,
-      ["iron-bacteria"] = 0.65,
-    },
-    ["copper-stromatolite"] = {
-      stone = 0.80,
-      ["copper-ore"] = 0.85,
-      ["copper-bacteria"] = 0.65,
-    },
-  }
-  
-  for rock_name, probabilities in pairs(native_stromatolite_drops) do
-    local rock = data.raw["simple-entity"] and data.raw["simple-entity"][rock_name]
-    for _, result in ipairs((rock and rock.minable and rock.minable.results) or {}) do
-      local probability = probabilities[result.name or result[1]]
-      if probability then
-        result.probability = probability
-      end
-    end
-  end
-end
+-- Native stromatolite drops are intentionally never modified by FluxWorks.
 
 data:extend(bacteria_prototypes)
 data:extend(cultivation_recipes)
 
 -- Razi owns source-world entities. Seed specialist bacteria from native
 -- cultures instead of modifying native stromatolite loot tables.
-if require("prototypes.lib.companion-mode").razi_protocol then
+if not (settings.startup and settings.startup["fw-native-cultures"] and
+    settings.startup["fw-native-cultures"].value == false) then
   local seeded = {}
   for _, spec in ipairs(bacteria_specs) do
     local parent = spec.rock == "iron-stromatolite" and "iron-bacteria" or "copper-bacteria"
@@ -455,7 +414,8 @@ unlock_with("biochamber", {
   "fw-gleba-titanium-bioleaching",
   "fw-gleba-salt-biomineralization",
 })
-if require("prototypes.lib.companion-mode").razi_protocol then
+if not (settings.startup and settings.startup["fw-native-cultures"] and
+    settings.startup["fw-native-cultures"].value == false) then
   unlock_with("bacteria-cultivation", {
     "fw-lead-bacteria-seeding", "fw-bauxite-bacteria-seeding",
     "fw-tin-bacteria-seeding", "fw-silicon-bacteria-seeding",
