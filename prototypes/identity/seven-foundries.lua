@@ -180,39 +180,84 @@ function M.register()
     and machine("fw-origin-forging",0)
     and not techs["fw-foundry-atlas"] and not recipes["fw-foundry-atlas-convergence"] then
     local icon="__FluxWorksAssets__/graphics/icons/system-badges/fw-deep-space-industry.png"
-    local ingredients={{type="item",name="fw-convergence-chassis",amount=2}}
-    local prerequisites={}
-    for _,foundry in ipairs(M.registrations) do
-      ingredients[#ingredients+1]={type="item",name=foundry.record,amount=1}
-      prerequisites[#prerequisites+1]=foundry.technology
+    local inner_records,outer_records={},{}
+    local technologies={}
+    local split=math.ceil(#M.registrations/2)
+    for i,foundry in ipairs(M.registrations) do
+      if i<=split then inner_records[#inner_records+1]=foundry.record
+      else outer_records[#outer_records+1]=foundry.record end
+      technologies[#technologies+1]=foundry.technology
     end
     if techs["fw-origin-infrastructure"] then
-      prerequisites[#prerequisites+1]="fw-origin-infrastructure"
+      technologies[#technologies+1]="fw-origin-infrastructure"
     end
-    -- The Origin Forge has a finite item-input count. Never exceed it.
-    if #ingredients<=10 then
-      data:extend({
-        {type="recipe",name="fw-foundry-atlas-convergence",icon=icon,icon_size=128,
-          localised_name={"recipe-name.fw-foundry-atlas-convergence"},
-          localised_description={"recipe-description.fw-foundry-atlas-convergence"},
-          category="fw-origin-forging",subgroup="fw-flux-systems",
-          order="zz[seven-foundries]-atlas",enabled=false,
-          auto_recycle=false,allow_productivity=false,energy_required=90,
-          ingredients=ingredients,
-          results={{type="item",name="fw-condensed-flux-matrix",amount=10},
-            {type="item",name="fw-quantum-computer",amount=4}},
-          main_product="fw-condensed-flux-matrix"},
-        {type="technology",name="fw-foundry-atlas",icon=icon,icon_size=128,
-          localised_name={"technology-name.fw-foundry-atlas"},
-          localised_description={"technology-description.fw-foundry-atlas"},
-          prerequisites=prerequisites,
-          unit={count=2600,time=50,ingredients=table.deepcopy(science)},
-          effects={{type="unlock-recipe",recipe="fw-foundry-atlas-convergence"}},
-          order="zz[seven-foundries]-atlas"}
-      })
-      M.atlas=true
+    local folios={
+      {name="fw-foundry-folio-inner",records=inner_records,system="calidus"},
+      {name="fw-foundry-folio-outer",records=outer_records,system="umbra"},
+    }
+    local prototypes={}
+    for _,folio in ipairs(folios) do
+      local icon_path="__FluxWorksAssets__/graphics/icons/system-badges/fw-"..folio.system.."-industry.png"
+      local inputs={}
+      for _,record in ipairs(folio.records) do
+        inputs[#inputs+1]={type="item",name=record,amount=1}
+      end
+      assert(#inputs>0 and #inputs<=4,
+        "Foundry Atlas folios must fit actual manufacturing capacity")
+      prototypes[#prototypes+1]={
+        type="item",name=folio.name,icon=icon_path,icon_size=128,
+        localised_name={"item-name."..folio.name},
+        localised_description={"item-description.fw-foundry-folio"},
+        subgroup="fw-flux-systems",order="zz[seven-foundries]-"..folio.name,
+        stack_size=20,weight=2000
+      }
+      prototypes[#prototypes+1]={
+        type="recipe",name=folio.name,icon=icon_path,icon_size=128,
+        category="crafting",subgroup="fw-flux-systems",
+        localised_name={"recipe-name."..folio.name},
+        localised_description={"recipe-description.fw-foundry-folio"},
+        order="zz[seven-foundries]-"..folio.name,
+        enabled=false,auto_recycle=false,allow_productivity=false,
+        energy_required=15,ingredients=inputs,
+        results={{type="item",name=folio.name,amount=1}},
+        main_product=folio.name
+      }
     end
+    local icon_path="__FluxWorksAssets__/graphics/icons/system-badges/fw-deep-space-industry.png"
+    prototypes[#prototypes+1]={
+      type="recipe",name="fw-foundry-atlas-convergence",
+      icon=icon_path,icon_size=128,
+      localised_name={"recipe-name.fw-foundry-atlas-convergence"},
+      localised_description={"recipe-description.fw-foundry-atlas-convergence"},
+      category="fw-origin-forging",subgroup="fw-flux-systems",
+      order="zz[seven-foundries]-atlas",enabled=false,
+      auto_recycle=false,allow_productivity=false,energy_required=90,
+      ingredients={
+        {type="item",name="fw-foundry-folio-inner",amount=1},
+        {type="item",name="fw-foundry-folio-outer",amount=1},
+        {type="item",name="fw-convergence-chassis",amount=2}
+      },
+      results={{type="item",name="fw-condensed-flux-matrix",amount=10},
+        {type="item",name="fw-quantum-computer",amount=4}},
+      main_product="fw-condensed-flux-matrix"
+    }
+    prototypes[#prototypes+1]={
+      type="technology",name="fw-foundry-atlas",icon=icon_path,icon_size=128,
+      localised_name={"technology-name.fw-foundry-atlas"},
+      localised_description={"technology-description.fw-foundry-atlas"},
+      prerequisites=technologies,
+      unit={count=2600,time=50,ingredients=table.deepcopy(science)},
+      effects={
+        {type="unlock-recipe",recipe="fw-foundry-folio-inner"},
+        {type="unlock-recipe",recipe="fw-foundry-folio-outer"},
+        {type="unlock-recipe",recipe="fw-foundry-atlas-convergence"}
+      },
+      order="zz[seven-foundries]-atlas"
+    }
+    data:extend(prototypes)
+    M.atlas=true
   end
+end
   log("FluxWorks Seven Foundries: "..built..
     " Razi field operations and atlas="..tostring(M.atlas or false))
   return built
