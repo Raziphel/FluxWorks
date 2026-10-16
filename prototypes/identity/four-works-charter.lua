@@ -23,6 +23,7 @@ local spec={
 }
 local Item=require("__razi_lib__/lib/item")
 local Technology=require("__razi_lib__/lib/technology")
+local Icons=require("__razi_lib__/lib/icons")
 local function item(name) return Item.optional(name)~=nil end
 local function exists(input)
   local name=input[1]
@@ -92,10 +93,13 @@ function M.register()
     end
     local name="fw-charter-"..process.id
     if (data.raw.recipe or {})[name] then return 0 end
+    local art=Icons.from_prototype(Item.get(process.result):raw())
+    art[#art+1]=Icons.badge(
+      "__FluxWorksAssets__/graphics/icons/identity/fw-four-works-charter.png",
+      128,"bottom-right",0.14,{shift={15,15}})
     recipes[#recipes+1]={
       type="recipe",name=name,enabled=false,
-      icon="__FluxWorksAssets__/graphics/icons/identity/fw-four-works-charter.png",
-      icon_size=128,
+      icons=art,
       localised_name={"recipe-name."..name},
       localised_description={"recipe-description."..name},
       category=process.category,subgroup="fw-flux-systems",

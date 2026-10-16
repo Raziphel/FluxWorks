@@ -7,7 +7,7 @@ local sw=(settings.startup or {})["fw-razi-seven-foundries"]
 if sw and sw.value==false then return M end
 
 local Item=require("__razi_lib__/lib/item")
-local Tech=require("__razi_lib__/lib/technology")
+local Icons=require("prototypes.lib.industrial-icons")
 local specs={
   {system="calidus",worlds={{"nauvis",{"iron-plate"}}},
     feed="fw-chemical-membrane",product="fw-metal-mesh",yield=8,
@@ -140,6 +140,9 @@ function M.register()
   for _,foundry in ipairs(ready) do
     local s=foundry.spec
     local badge="__FluxWorksAssets__/graphics/icons/system-badges/fw-"..s.system.."-industry.png"
+    local spectrum=s.fluid:match("^fw%-(%a+)%-flux$")
+    local artwork=Icons.galaxy(Item.get(s.product):raw(),spectrum,nil,s.system)
+    assert(artwork,"Seven Foundries result art unavailable: "..s.product)
     local prerequisites={foundry.arrival}
     if foundry.arrival~=s.base then prerequisites[#prerequisites+1]=s.base end
     data:extend({
@@ -148,7 +151,7 @@ function M.register()
         localised_description={"item-description.fw-foundry-record"},
         subgroup="fw-flux-systems",order="zy[seven-foundries]-"..s.system,
         stack_size=30,weight=1000},
-      {type="recipe",name=foundry.recipe,icon=badge,icon_size=128,
+      {type="recipe",name=foundry.recipe,icons=artwork,
         localised_name={"recipe-name."..foundry.recipe},
         localised_description={"recipe-description."..foundry.recipe},
         subgroup="fw-flux-systems",order="zy[seven-foundries]-"..s.system,
@@ -165,9 +168,28 @@ function M.register()
         localised_description={"technology-description."..foundry.technology},
         prerequisites=prerequisites,
         unit={count=s.cost,time=35,ingredients=table.deepcopy(science)},
-        effects={{type="unlock-recipe",recipe=foundry.recipe}},
+        effects={
+          {type="unlock-recipe",recipe=foundry.recipe},
+          {type="unlock-recipe",recipe="fw-foundry-reconcile-"..s.system}
+        },
         order="zy[seven-foundries]-"..s.system}
     })
+    -- Field reports are deliberately reusable goods, not accumulating junk.
+    -- Reconcile six surplus records into a modest amount of useful material.
+    -- The Atlas can still consume individual records for its folios.
+    data:extend({{
+      type="recipe",name="fw-foundry-reconcile-"..s.system,
+      icons=table.deepcopy(artwork),
+      localised_name={"recipe-name.fw-foundry-reconcile-"..s.system},
+      localised_description={"recipe-description.fw-foundry-reconciliation"},
+      category="crafting",subgroup="fw-flux-systems",
+      order="zy[seven-foundries]-reconcile-"..s.system,
+      enabled=false,energy_required=12,
+      allow_productivity=false,auto_recycle=false,
+      ingredients={{type="item",name=foundry.record,amount=6}},
+      results={{type="item",name=s.product,amount=2}},
+      main_product=s.product
+    }})
     M.registrations[#M.registrations+1]=foundry
     M.reports[#M.reports+1]=foundry.record
     built=built+1
