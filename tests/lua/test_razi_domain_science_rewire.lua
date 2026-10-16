@@ -1,19 +1,17 @@
--- Run in Lua 5.2+ from FluxWorks root.
-local module=dofile("prototypes/updates/razi-domain-science-rewire.lua")
+-- Razi research and native worlds must not acquire mandatory Flux bottles.
 _G.log=function() end
-local techs={
- ["fw-compressed-foundry"]={prerequisites={"fw-flux-theory-science","fw-flux-extraction"}},
- ["fw-flux-extraction"]={prerequisites={"fw-industrial-methods-science"}},
- ["fw-convergence-directive-project"]={prerequisites={"fw-planetary-convergence-science","fw-spectrum-control-project"}},
- ["fw-flux-theory-science"]={prerequisites={"fw-industrial-methods-science"}},
- ["razi-vibrant-discovery"]={prerequisites={"fw-flux-theory-science"}},
-}
-_G.data={raw={technology=techs}}
-assert(module.apply()==2,"Only normal FluxWorks research should lose mandatory pack gates")
-assert(#techs["fw-compressed-foundry"].prerequisites==1)
-assert(#techs["fw-flux-extraction"].prerequisites==0)
-assert(#techs["fw-convergence-directive-project"].prerequisites==2)
-assert(#techs["fw-flux-theory-science"].prerequisites==1)
-assert(#techs["razi-vibrant-discovery"].prerequisites==1)
-assert(module.apply()==0,"Second reconciliation pass should be idempotent")
-print("Flux science rewire: host ownership, opt-in projects and idempotency pass")
+_G.data={raw={tool={["automation-science-pack"]={}},technology={
+  ["fw-flux-theory-science"]={unit={ingredients={{"automation-science-pack",1}}}},
+  ["fw-industrial-district-project"]={unit={ingredients={{"fw-industrial-methods-science-pack",1}}}},
+  ["fw-industrial-methods-science"]={unit={ingredients={{"automation-science-pack",1}}}},
+  ["fw-other-machine"]={prerequisites={"fw-industrial-methods-science"},unit={ingredients={{"fw-flux-theory-science-pack",1},{"automation-science-pack",1}}}},
+  ["razi-nauvis-chapter"]={unit={ingredients={{"fw-flux-theory-science-pack",1}}}},
+}}}
+local module=dofile("prototypes/updates/razi-domain-science-rewire.lua")
+assert(module.apply()==3)
+assert(#data.raw.technology["fw-other-machine"].prerequisites==0)
+assert(#data.raw.technology["fw-other-machine"].unit.ingredients==1)
+assert(data.raw.technology["razi-nauvis-chapter"].unit.ingredients[1][1]=="automation-science-pack")
+assert(data.raw.technology["fw-industrial-district-project"].unit.ingredients[1][1]=="fw-industrial-methods-science-pack")
+assert(module.apply()==0)
+print("Flux science campaign ownership and idempotence pass")
