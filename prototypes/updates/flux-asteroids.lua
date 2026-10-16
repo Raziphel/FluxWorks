@@ -139,14 +139,27 @@ local flux_chunk_refining = {
 
 data:extend({ flux_chunk_item, flux_chunk, flux_asteroid, flux_chunk_refining })
 
--- Razi owns shared asteroid processing; preserve its native yields.
-if not require("prototypes.lib.companion-mode").razi_protocol then
-local rocket_chunk_processing = data.raw.recipe and data.raw.recipe["rocket-chunk-processing"]
-if rocket_chunk_processing then
-  rocket_chunk_processing.results = rocket_chunk_processing.results or {}
-  table.insert(rocket_chunk_processing.results, { type = "item", name = "fw-flux-asteroid-chunk", amount = 1, probability = 0.2 })
-end
-
+-- Standalone orbital reclamation. Reuse native chunks as *ingredients*
+-- without changing other mods' rocket-chunk or asteroid mining results.
+local reclaim_name="fw-flux-asteroid-reclamation"
+local reclaim=nil
+if data.raw.item and data.raw.item["metallic-asteroid-chunk"]
+  and data.raw.item["fw-crystalised-flux"] then
+  reclaim={
+    type="recipe",name=reclaim_name,
+    icon="__FluxWorksAssets__/graphics/icons/items/fw-flux-asteroid-chunk.png",
+    icon_size=128,category="crushing",subgroup="space-crushing",
+    order="b-a-e[fw-flux-asteroid-reclamation]",enabled=false,
+    auto_recycle=false,allow_productivity=false,allow_decomposition=false,
+    energy_required=8,
+    ingredients={
+      {type="item",name="metallic-asteroid-chunk",amount=3},
+      {type="item",name="fw-crystalised-flux",amount=1},
+    },
+    results={{type="item",name="fw-flux-asteroid-chunk",amount=1}},
+    main_product="fw-flux-asteroid-chunk",
+  }
+  data:extend({reclaim})
 end
 
 local flux_asteroid_tech = data.raw.technology and data.raw.technology["fw-flux-asteroid-harvesting"]
@@ -154,5 +167,8 @@ if flux_asteroid_tech then
   flux_asteroid_tech.effects = flux_asteroid_tech.effects or {}
   if not has_unlock_effect(flux_asteroid_tech.effects, "fw-flux-asteroid-refining") then
     table.insert(flux_asteroid_tech.effects, { type = "unlock-recipe", recipe = "fw-flux-asteroid-refining" })
+  end
+  if reclaim and not has_unlock_effect(flux_asteroid_tech.effects,reclaim_name) then
+    table.insert(flux_asteroid_tech.effects,{type="unlock-recipe",recipe=reclaim_name})
   end
 end
