@@ -151,50 +151,85 @@ for index, spec in ipairs(bacteria_specs) do
     show_amount_in_title = false,
   }
 
-  local rock = data.raw["simple-entity"] and data.raw["simple-entity"][spec.rock]
-  if rock and rock.minable and rock.minable.results then
-    rock.minable.results[#rock.minable.results + 1] = {
-      type = "item",
-      name = bacteria_name,
-      amount_min = spec.key == "titanium" and 1 or 2,
-      amount_max = spec.key == "titanium" and 2 or 4,
-      probability = spec.bacteria_probability,
-    }
-    rock.minable.results[#rock.minable.results + 1] = {
-      type = "item",
-      name = spec.product,
-      amount_min = 1,
-      amount_max = spec.key == "titanium" and 1 or 3,
-      probability = spec.ore_probability,
-    }
-  end
-end
-
-local native_stromatolite_drops = {
-  ["iron-stromatolite"] = {
-    stone = 0.80,
-    ["iron-ore"] = 0.85,
-    ["iron-bacteria"] = 0.65,
-  },
-  ["copper-stromatolite"] = {
-    stone = 0.80,
-    ["copper-ore"] = 0.85,
-    ["copper-bacteria"] = 0.65,
-  },
-}
-
-for rock_name, probabilities in pairs(native_stromatolite_drops) do
-  local rock = data.raw["simple-entity"] and data.raw["simple-entity"][rock_name]
-  for _, result in ipairs((rock and rock.minable and rock.minable.results) or {}) do
-    local probability = probabilities[result.name or result[1]]
-    if probability then
-      result.probability = probability
+  if not require("prototypes.lib.companion-mode").razi_protocol then
+    local rock = data.raw["simple-entity"] and data.raw["simple-entity"][spec.rock]
+    if rock and rock.minable and rock.minable.results then
+      rock.minable.results[#rock.minable.results + 1] = {
+        type = "item",
+        name = bacteria_name,
+        amount_min = spec.key == "titanium" and 1 or 2,
+        amount_max = spec.key == "titanium" and 2 or 4,
+        probability = spec.bacteria_probability,
+      }
+      rock.minable.results[#rock.minable.results + 1] = {
+        type = "item",
+        name = spec.product,
+        amount_min = 1,
+        amount_max = spec.key == "titanium" and 1 or 3,
+        probability = spec.ore_probability,
+      }
     end
   end
-end
+  
+  local native_stromatolite_drops = {
+    ["iron-stromatolite"] = {
+      stone = 0.80,
+      ["iron-ore"] = 0.85,
+      ["iron-bacteria"] = 0.65,
+    },
+    ["copper-stromatolite"] = {
+      stone = 0.80,
+      ["copper-ore"] = 0.85,
+      ["copper-bacteria"] = 0.65,
+    },
+  }
+  
+  for rock_name, probabilities in pairs(native_stromatolite_drops) do
+    local rock = data.raw["simple-entity"] and data.raw["simple-entity"][rock_name]
+    for _, result in ipairs((rock and rock.minable and rock.minable.results) or {}) do
+      local probability = probabilities[result.name or result[1]]
+      if probability then
+        result.probability = probability
+      end
+    end
+  end
+  
+    end
 
 data:extend(bacteria_prototypes)
 data:extend(cultivation_recipes)
+
+-- Razi owns source-world entities. Seed specialist bacteria from native
+-- cultures instead of modifying native stromatolite loot tables.
+if require("prototypes.lib.companion-mode").razi_protocol then
+  local seeded = {}
+  for _, spec in ipairs(bacteria_specs) do
+    local parent = spec.rock == "iron-stromatolite" and "iron-bacteria" or "copper-bacteria"
+    local name = "fw-" .. spec.key .. "-bacteria-seeding"
+    seeded[#seeded + 1] = {
+      type="recipe", name=name, category="organic", enabled=false,
+      auto_recycle=false, allow_productivity=false,
+      energy_required=spec.key == "titanium" and 12 or 7,
+      subgroup="fw-bioprocessing-processes",
+      order="d[cultures]-a[" .. spec.key .. "]",
+      localised_name={"recipe-name." .. name},
+      localised_description={"recipe-description." .. name},
+      icon="__FluxWorksAssets__/graphics/icons/items/fw-" .. spec.key .. "-bacteria-cultivation.png",
+      icon_size=64,
+      surface_conditions={{property="pressure",min=2000,max=2000}},
+      ingredients={
+        {type="item",name=parent,amount=3},
+        {type="item",name="bioflux",amount=spec.key == "titanium" and 3 or 1},
+        {type="item",name="nutrients",amount=5},
+      },
+      results={{type="item",name="fw-"..spec.key.."-bacteria",amount=2}},
+      main_product="fw-" .. spec.key .. "-bacteria",
+    }
+  end
+  data:extend(seeded)
+end
+
+
 
 local function recipe(definition)
   definition.type = "recipe"
@@ -419,6 +454,13 @@ unlock_with("biochamber", {
   "fw-gleba-titanium-bioleaching",
   "fw-gleba-salt-biomineralization",
 })
+if require("prototypes.lib.companion-mode").razi_protocol then
+  unlock_with("bacteria-cultivation", {
+    "fw-lead-bacteria-seeding", "fw-bauxite-bacteria-seeding",
+    "fw-tin-bacteria-seeding", "fw-silicon-bacteria-seeding",
+    "fw-titanium-bacteria-seeding", "fw-salt-bacteria-seeding",
+  })
+end
 unlock_with("bacteria-cultivation", {
   "fw-lead-bacteria-cultivation",
   "fw-bauxite-bacteria-cultivation",

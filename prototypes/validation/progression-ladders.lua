@@ -769,6 +769,8 @@ for _, prerequisite_name in ipairs({
   )
 end
 
+-- The standalone expedition is not the Razi campaign.
+if not require("prototypes.lib.companion-mode").razi_protocol then
 local shattered_campaign_contracts = {
   { technology = "fw-shattered-vulcanus-bridgehead", recipe = "fw-shattered-red-bridgehead-forging" },
   { technology = "fw-shattered-gleba-bridgehead", recipe = "fw-shattered-green-bridgehead-cultivation" },
@@ -868,3 +870,5 @@ assert_true(
   expedition_technology and has_space_location_unlock(expedition_technology.effects, "shattered-planet"),
   "Progression ladder failure: the Shattered expedition must unlock the Shattered Planet"
 )
+
+end -- standalone-only Shattered campaign checks

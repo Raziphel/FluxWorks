@@ -139,10 +139,14 @@ local flux_chunk_refining = {
 
 data:extend({ flux_chunk_item, flux_chunk, flux_asteroid, flux_chunk_refining })
 
+-- Razi owns shared asteroid processing; preserve its native yields.
+if not require("prototypes.lib.companion-mode").razi_protocol then
 local rocket_chunk_processing = data.raw.recipe and data.raw.recipe["rocket-chunk-processing"]
 if rocket_chunk_processing then
   rocket_chunk_processing.results = rocket_chunk_processing.results or {}
   table.insert(rocket_chunk_processing.results, { type = "item", name = "fw-flux-asteroid-chunk", amount = 1, probability = 0.2 })
+end
+
 end
 
 local flux_asteroid_tech = data.raw.technology and data.raw.technology["fw-flux-asteroid-harvesting"]

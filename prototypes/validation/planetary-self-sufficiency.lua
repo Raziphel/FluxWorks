@@ -1,3 +1,9 @@
+-- Razi-hosted mode preserves native stromatolite drops and worldgen.
+if require("prototypes.lib.companion-mode").razi_protocol then
+  require("prototypes.validation.razi-bacteria-seeding")
+  return
+end
+
 local branches = {
   vulcanus = {
     technology = "foundry",
