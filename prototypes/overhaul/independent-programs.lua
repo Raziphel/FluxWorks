@@ -63,7 +63,7 @@ local function apply()
     end
     if #science==#group.science and lab_accepts(science) and has_category(category)
       and techs[group.prerequisite] and not techs[tech_name] then
-      local tech_icon=Icon.spectrum(Item.get(group.processes[1].out):raw(),group.spectrum,nil,"catalog")
+      local tech_icon={{icon="__FluxWorksAssets__/graphics/icons/industrial-programs/fw-program-"..group.key..".png",icon_size=128}}
       if tech_icon then
         data:extend({{
           type="technology",name=tech_name,icons=tech_icon,

@@ -10,6 +10,7 @@ local validators = {
   "prototypes.validation.razi-industrial-extension",
   "prototypes.validation.galactic-factories",
   "prototypes.validation.reborn-core",
+  "prototypes.validation.independent-programs",
   "prototypes.validation.native-industry",
   "prototypes.validation.item-uses",
   "prototypes.validation.steel-default",
