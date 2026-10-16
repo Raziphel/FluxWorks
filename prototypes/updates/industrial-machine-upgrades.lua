@@ -4,6 +4,7 @@
 local upgrades = {
   {
     name = "fw-industrial-harvester",
+    badge = "industrial-harvester",
     from = "fw-flux-harvester",
     project = "fw-industrial-district-project",
     prerequisite = "fw-harvester-systems",
@@ -24,6 +25,7 @@ local upgrades = {
   },
   {
     name = "fw-precision-synthesis-plant",
+    badge = "precision-synthesis",
     from = "fw-synthesis-plant",
     project = "fw-autonomous-network-project",
     prerequisite = "fw-flux-stabilization",
@@ -43,6 +45,7 @@ local upgrades = {
   },
   {
     name = "fw-chromatic-arc-foundry",
+    badge = "chromatic-foundry",
     from = "fw-arc-foundry",
     project = "fw-spectrum-control-project",
     prerequisite = "fw-flux-metallurgy",
@@ -62,6 +65,7 @@ local upgrades = {
   },
   {
     name = "fw-convergence-synthesis-plant",
+    badge = "convergence",
     from = "fw-precision-synthesis-plant",
     project = "fw-convergence-directive-project",
     prerequisite = "fw-spectrum-control-project",
@@ -89,27 +93,23 @@ local function find_item(name)
   end
 end
 
-local function icon_layers(source, colour, partner)
+local function icon_layers(source, badge)
   local icons
-  if source.icons then
-    icons = table.deepcopy(source.icons)
-  elseif source.icon then
-    icons = {{icon = source.icon, icon_size = source.icon_size or 64}}
-  else
-    return nil
+  if source.icons then icons = table.deepcopy(source.icons)
+  elseif source.icon then icons = {{icon = source.icon, icon_size = source.icon_size or 64}}
+  else return nil end
+  -- Convergence upgrades a Precision plant: replace its project badge rather
+  -- than stacking two different machine identities in one tiny icon.
+  for index = #icons, 1, -1 do
+    local path = icons[index].icon or ""
+    if string.find(path, "__FluxWorksAssets__/graphics/icons/upgrade-badges/", 1, true) then
+      table.remove(icons, index)
+    end
   end
   icons[#icons + 1] = {
-    icon = "__FluxWorksAssets__/graphics/icons/fluids/flux-" .. colour .. ".png",
-    icon_size = 256,
-    scale = 0.07,
-    shift = {partner and -14 or 18, 18},
+    icon = "__FluxWorksAssets__/graphics/icons/upgrade-badges/fw-" .. badge .. ".png",
+    icon_size = 128, scale = 0.16, shift = {17, 17},
   }
-  if partner then
-    icons[#icons + 1] = {
-      icon = "__FluxWorksAssets__/graphics/icons/fluids/flux-" .. partner .. ".png",
-      icon_size = 256, scale = 0.07, shift = {14, 18},
-    }
-  end
   return icons
 end
 
@@ -154,7 +154,7 @@ for index, spec in ipairs(upgrades) do
   local item = find_item(spec.from)
   local project = data.raw.technology and data.raw.technology[spec.project]
   local ingredients = compatible_ingredients(spec.ingredients)
-  local icons = item and icon_layers(item, spec.colour, spec.partner)
+  local icons = item and icon_layers(item, spec.badge)
 
   if original and item and project and ingredients and icons
     and ensure_prerequisite(project, spec.prerequisite) then
@@ -171,6 +171,19 @@ for index, spec in ipairs(upgrades) do
       machine.crafting_speed = spec.speed
       machine.energy_usage = spec.energy
       machine.module_slots = spec.modules
+      -- The capstone combines synthesis, condensing, and arc manufacture in a
+      -- single researched machine. Both families use at most two fluid inputs.
+      local universal = settings and settings.startup
+        and settings.startup["fw-rp-convergence-universal"]
+      if spec.name == "fw-convergence-synthesis-plant"
+        and (not universal or universal.value ~= false) then
+        machine.crafting_categories = table.deepcopy(original.crafting_categories)
+        local present = false
+        for _, category in ipairs(machine.crafting_categories) do
+          if category == "fw-arc-smelting" then present = true end
+        end
+        if not present then machine.crafting_categories[#machine.crafting_categories + 1] = "fw-arc-smelting" end
+      end
       -- Industrial harvesting earns a genuine new capability: quality-module
       -- ore and recovered-material processing, while the basic Harvester is
       -- left untouched for existing factories.

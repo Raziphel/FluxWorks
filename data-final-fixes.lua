@@ -84,11 +84,13 @@ require("prototypes.updates.industrial-machine-upgrades")
 -- Optional throughput paths: additional Razi-era industrial manufacturing,
 -- with stable prototype IDs and no scripted processing or planet mutations.
 require("prototypes.recipes.razi-industrial-extension")
-require("prototypes.updates.razi-industrial-balance").apply()
+-- Razi-owned research reconciliation runs before per-player-selected
+-- industrial pacing so none of our settings alter world or chapter gates.
 
 -- The required dependency loads Razi before FluxWorks. Run Razi-owned
 -- industry reconciliations here, after all FluxWorks factory prototypes exist.
 require("prototypes.compat.razi-extension-bridge").apply()
+require("prototypes.updates.razi-industrial-balance").apply()
 
 -- Factorio 2.1 replaced singular recipe categories and product probability
 -- fields. Normalize after every compatibility rewrite and before validation.

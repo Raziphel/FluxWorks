@@ -62,6 +62,9 @@ for _, spec in ipairs(upgrades) do
 
   if upgrade.crafting_speed ~= speed or upgrade.module_slots ~= slots
     or #upgrade.crafting_categories ~= #original.crafting_categories
+      + ((upgrade_name == "fw-convergence-synthesis-plant"
+         and ((not settings.startup["fw-rp-convergence-universal"])
+              or settings.startup["fw-rp-convergence-universal"].value)) and 1 or 0)
     or fluid_inputs(upgrade) ~= fluid_inputs(original)
   then
     error("FluxWorks industrial upgrade lost recipe capability: " .. upgrade_name)
@@ -74,6 +77,17 @@ for _, spec in ipairs(upgrades) do
     error("FluxWorks industrial upgrade has no usable unlock: " .. upgrade_name)
   end
 
+  if upgrade_name == "fw-convergence-synthesis-plant" then
+    local switch = settings.startup["fw-rp-convergence-universal"]
+    local wanted = not switch or switch.value
+    if wanted ~= present(upgrade.crafting_categories, "fw-arc-smelting") then
+      error("Convergence Plant cross-discipline setting was not respected")
+    end
+    local inputs = fluid_inputs(upgrade)
+    if wanted and inputs < 2 then
+      error("Convergence Plant requires two fluid inputs for chromatic metallurgy")
+    end
+  end
   if upgrade_name == "fw-industrial-harvester" then
     local quality_enabled = false
     for _, effect in ipairs(upgrade.allowed_effects or {}) do

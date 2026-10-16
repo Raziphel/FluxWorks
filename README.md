@@ -39,3 +39,9 @@ See [Razi ownership and migration](docs/RAZI_PROTOCOL.md), [new industrial proce
 ## Release policy
 
 This is a development branch, **not a published compatibility guarantee**. Run source tests, then start a full Factorio 2.1 + Razi Dev + FluxWorks 0.3 + Assets + K2SO pack. Validate recipes, tech graph, Shattered Planet space-location identity, regional Codex previews, Rift Exchange gating, sprite references, and disposable copies of important saves before release.
+
+## Industrial Projects 0.3.1
+
+The four upgrade-planner-compatible machines now have **four distinct new emblems** shipped in Assets 1.0.5: drill head, reaction network, furnace crucible, and four-way convergence. They replace stacked spectrum color spots without modifying any placed machine's sprite sheet, footprint, or fluid ports. The final Convergence Synthesis Plant can craft both synthesis and Arc Foundry recipes by default (opt-out). Project research, existing manufacturing process tempo, and upgrade electricity usage have separate user-selectable settings. No global campaign progression, hazard or science costs are modified by these controls.
+
+Gleba specialist bacteria now have six native-bacteria seeding recipes and no longer change natural stromatolite drops in Razi-hosted mode. This preserves the source planet's loot curves while retaining FluxWorks cultivation. See [World ownership](docs/RAZI_PROTOCOL.md).

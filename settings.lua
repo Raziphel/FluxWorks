@@ -35,6 +35,9 @@ end
 data:extend({
   startup_choice("fw-rp-industrial-depth", "expanded", {"core", "expanded"}, "aa[expansion]-a[depth]"),
   startup_choice("fw-rp-industrial-power", "standard", {"efficient", "standard", "demanding"}, "aa[expansion]-b[power]"),
+  startup_bool("fw-rp-convergence-universal", true, "aa[expansion]-c[convergence]"),
+  startup_choice("fw-rp-process-tempo", "standard", {"rapid", "standard", "deliberate"}, "aa[expansion]-d[tempo]"),
+  startup_choice("fw-rp-project-research", "standard", {"accelerated", "standard", "monumental"}, "aa[expansion]-e[projects]"),
   startup_difficulty("fw-balance-flux-core-difficulty", "aa[balance]-a[flux-core]"),
   startup_difficulty("fw-balance-harvesting-difficulty", "aa[balance]-b[harvesting]"),
   startup_difficulty("fw-balance-synthesis-difficulty", "aa[balance]-c[synthesis]"),
@@ -110,3 +113,18 @@ data:extend({
     order = "ea[performance]-b[memory-power-usage]",
   },
 })
+
+-- Legacy controls were kept for old settings files, but do not belong in a
+-- Razi-hosted extension's visible settings page. Never force old save values.
+local delegated = {
+  "fw-starting-crash-loadout", "fw-balance-space-platform-drag",
+  "fw-balance-asteroid-pressure", "fw-balance-space-logistics",
+  "fw-balance-spoilage-pressure", "fw-balance-origin-singularity-difficulty",
+  "fw-balance-shattered-asteroid-pressure", "fw-balance-ion-storm-intensity",
+  "fw-worldgen-enable-standalone-ores", "fw-worldgen-enable-promethium-impacts",
+  "fw-enable-unattended-shattered-asteroids",
+}
+for _, name in ipairs(delegated) do
+  local setting = (data.raw["string-setting"] or {})[name] or (data.raw["bool-setting"] or {})[name]
+  if setting then setting.hidden = true end
+end

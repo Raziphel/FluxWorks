@@ -1,6 +1,6 @@
 {
   "name": "FluxWorks",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "title": "FluxWorks",
   "author": "Raziphel",
   "factorio_version": "2.1",
@@ -10,7 +10,7 @@
     "space-age >= 2.1.0",
     "quality >= 2.1.0",
     "recycler >= 2.1.0",
-    "FluxWorksAssets >= 1.0.4",
+    "FluxWorksAssets >= 1.0.5",
     "finely-crafted-graphics >= 2.1.0",
     "? Krastorio2-spaced-out",
     "razi_lib >= 1.2.0",
