@@ -14,6 +14,7 @@ end
 -- Factory-only settings. The older fw-* identifiers remain registered for
 -- existing saves, but none of the host campaign settings are changed.
 data:extend({
+  startup_choice("fw-rp-factory-design","reborn",{"reborn","legacy"},"aa[expansion]-0[factory-design]"),
   startup_choice("fw-rp-industrial-depth", "expanded", {"core", "expanded"}, "aa[expansion]-a[depth]"),
   startup_choice("fw-rp-industrial-power", "standard", {"efficient", "standard", "demanding"}, "aa[expansion]-b[power]"),
   startup_bool("fw-rp-convergence-universal", true, "aa[expansion]-c[convergence]"),

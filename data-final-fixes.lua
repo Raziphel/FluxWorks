@@ -82,12 +82,14 @@ require("prototypes.recipes.razi-industrial-extension")
 
 -- The required dependency loads Razi before FluxWorks. Run Razi-owned
 -- industry reconciliations here, after all FluxWorks factory prototypes exist.
+require("prototypes.overhaul.spectrum-materials")
 require("prototypes.compat.razi-extension-bridge").apply()
 -- Native planet content is registered after Razi's existing seven-system
 -- specialty and paired-freight bridges. All three new catalogs are optional.
 require("prototypes.compat.galaxy-planet-factories")
 require("prototypes.compat.galaxy-k2so-factories")
 require("prototypes.compat.galaxy-freight-factories")
+require("prototypes.overhaul.rework-recipes").apply()
 require("prototypes.updates.razi-domain-science-rewire").apply()
 require("prototypes.updates.razi-industrial-balance").apply()
 require("prototypes.updates.razi-industry-tech-clarity").apply()
