@@ -96,10 +96,4 @@ require("__razi_lib__/lib/recipe").normalize_all_2_1()
 
 require("prototypes.validation.init")
 
--- FluxWorks owns its menu playlist now that authored stage saves are available.
-local utility_constants = data.raw["utility-constants"] and data.raw["utility-constants"].default
-if false and utility_constants then
-  utility_constants.main_menu_simulations = require("prototypes.menu-simulations")
-  local menu_branding = require("prototypes.updates.menu-branding")
-  menu_branding.apply(utility_constants.main_menu_simulations)
-end
+-- Razi Protocol owns menu simulations; FluxWorks does not replace them.

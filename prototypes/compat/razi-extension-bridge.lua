@@ -2,11 +2,11 @@
 -- Factorio's required dependency puts Razi before FluxWorks, not vice versa.
 local M = {}
 local modules = {
-  "__razi-protocol__/prototypes/compat/fluxworks",
-  "__razi-protocol__/prototypes/compat/fluxworks_specializations",
-  "__razi-protocol__/prototypes/compat/fluxworks_industry_exchanges",
-  "__razi-protocol__/prototypes/compat/fluxworks_research_clarity",
-  "__razi-protocol__/prototypes/compat/fluxworks_machine_pacing",
+  "__razi-protocol__.prototypes.compat.fluxworks",
+  "__razi-protocol__.prototypes.compat.fluxworks_specializations",
+  "__razi-protocol__.prototypes.compat.fluxworks_industry_exchanges",
+  "__razi-protocol__.prototypes.compat.fluxworks_research_clarity",
+  "__razi-protocol__.prototypes.compat.fluxworks_machine_pacing",
 }
 function M.apply()
   if not (mods and mods["razi-protocol"]) then

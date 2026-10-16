@@ -55,7 +55,7 @@ local function add_unlock(tech, recipe_name)
 end
 local made = 0
 for index, spec in ipairs(processes) do
-  local id, colour, partner, tech_name, category, result, amount, time, inputs = table.unpack(spec)
+  local id, colour, partner, tech_name, category, result, amount, time, inputs = table.unpack(spec, 1, 9)
   local recipe_name = "fw-industry-" .. id
   local tech = data.raw.technology and data.raw.technology[tech_name]
   local output = product(result)
