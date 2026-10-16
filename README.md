@@ -1,52 +1,25 @@
-# FluxWorks 0.6.1
+# FluxWorks 0.7.0: Focused Industry
 
-**Independent industrial expansion for Factorio 2.1 / Space Age.**
+FluxWorks is a **small, independent manufacturing extension** for Factorio 2.1 / Space Age. Its four Flux disciplines improve real factories without creating a competing mining game. **No FluxWorks ore patches generate in Focused mode.** Razi Protocol and K2SO remain optional.
 
-FluxWorks is an independent, separately installable industrial mod built around four physical Flux disciplines, specialized machines, manufacturing chains, and its own research. **Razi Protocol is not required.** Installing Razi can enrich the experience with additional worlds and story, but the base factory game belongs to FluxWorks.
+## What you actually build
 
-## The four disciplines
+- Four fluids: Yellow chemical, Red thermal, Green biological, Purple phase.
+- Crystalline Flux recovery using existing **stone, sulfur and water**, followed by catalysts and engineered signature materials.
+- **26 curated manufacturing recipes**, including two Flux Harvester recovery processes and three solid-input Convergence Forge processes.
+- **Seven core Flux engineering research tiers** using normal Space Age science.
+- Flux Condenser, Flux Harvester, Synthesis Plant, Arc Foundry, Convergence Synthesis Plant, and Convergence Forge.
+- An optional Charter of the Four Works with four combined-discipline manufacturing rewards.
+- With Razi: optional Seven Foundries commissions producing only retained core materials plus physical records and two compact Atlas folios.
 
-| Spectrum | Industrial specialty | Signature component |
-| --- | --- | --- |
-| Purple · Matter | Phase alignment, quantum manufacturing and resonance | Phase Alignment Wafer |
-| Yellow · Chemistry | Catalysis, filtration and electronic materials | Catalytic Separation Membrane |
-| Red · Thermal | Refractory metallurgy, thermal processing and power | Chromatic Thermal Core |
-| Green · Biological | Regenerative cultures, bioengineering and recycling | Cultured Living Fiber |
+The older lead, tin, aluminum, titanium, bronze, crushed-ore, bacteria-mining, separate science-bottle and Shattered Planet lines are **not part of the default progression**. Neither are its old vault/teleport/rocket-remnant side systems. The speculative 44 planet + 16 K2SO + 12 freight recipe catalogues are disabled by default.
 
-All four build toward the **Convergence Chassis**, advanced machinery and the high-power Convergence Forge.
+**Save compatibility:** old prototype IDs remain registered internally but their old crafting and research are hidden. The Legacy startup profile restores previous behavior for existing worlds. Back up existing saves: changing to Focused may deactivate old assemblers. Existing ore patches already in explored chunks are not erased.
 
-## What you can build
+## Learn and customize
 
-The Reborn factory profile authors 73 replacements for original FluxWorks manufacturing recipes, with simpler production bills and physically limited fluid ports. Eleven machine profiles, four tangible project upgrades, specialist research science, and a wide industrial materials roster form the mod's primary gameplay.
+Use /fw-guide for the field manual, /fw-guide status for each Flux discipline's research and /fw-guide atlas for optional Razi commissions. Change the Design setting to Focused (default) or Legacy.
 
-Four standalone industrial research programs offer **up to sixteen** additional high-throughput processes, guarded by real installed items, machines, labs and science packs. Each technology has its own visual identity in FluxWorksAssets. They are independent of Razi's chapters and research.
+See [Focused Industry Design](docs/FOCUSED_INDUSTRY.md), [Four Works and Seven Foundries](docs/FOUR_WORKS_AND_SEVEN_FOUNDRIES.md) and [Validation](docs/OVERHAUL_VALIDATION.md).
 
-## Install
-
-FluxWorks needs **Factorio 2.1 + Space Age** and its declared dependencies in [info.json](info.json), including **FluxWorksAssets >= 1.1.0** and **RaziLib >= 1.2.0**.
-
-**Razi Protocol is optional and not listed as an ordering dependency.** K2SO is optional, too. Their respective integrations only activate where the required source prototypes actually exist.
-
-## Vanilla and world ownership
-
-The default world policy adds FluxWorks material deposits without deleting vanilla ores, suppressing enemies, or replacing map presets. Its Gleba culture process uses native iron and copper bacteria rather than editing stromatolite drops. Both policies have their own settings. World-generation settings generally affect newly generated terrain, not chunks already explored.
-
-FluxWorks owns industrial manufacturing, specialized machinery, industrial research and factory runtime tools. Razi owns its galaxy, story, routes, chapters and victory. RaziLib supplies shared APIs. K2SO retains its own research and recipes.
-
-Read [Standalone Architecture](docs/STANDALONE_ARCHITECTURE.md), [Galaxy Integration](docs/GALAXY_FACTORIES.md), and [Overhaul Validation](docs/OVERHAUL_VALIDATION.md) for the details.
-
-**Development status:** Published to GitHub `main`, but not yet verified by a full Factorio load or old-save migration test. Treat 0.5.0 as an experimental build until those checks succeed.
-
-## Two distinct goals, one industrial identity
-
-**Independent:** Research the four engineering disciplines and unite them in the **Charter of the Four Works**, unlocking four mastery manufacturing operations. Its own emblem represents the central factory identity.
-
-**With Razi:** Establish up to seven real source-world commissions through the **Seven Foundries**. Each makes valuable factory parts and a physical industrial record. Assemble available records into regional folios, then calibrate the **Atlas of the Seven Foundries** in the Convergence Forge. There is no parallel quest line, no new galaxy, and no Razi dependency for the base industrial game.
-
-See [Four Works and Seven Foundries](docs/FOUR_WORKS_AND_SEVEN_FOUNDRIES.md) for the fully documented design.
-
-## In-game Field Manual
-
-Use **`/fw-guide`** to learn the four industrial disciplines, **`/fw-guide status`** to check your force's four specializations and Charter research, and **`/fw-guide atlas`** to understand the optional Razi Seven Foundries. Commands run **only when requested**; there are no background GUI updates or event scans.
-
-Razi field operations now make useful factory materials and a physical industrial record. Reserve records for Atlas folios and **reconcile six surplus records** into additional components instead of allowing chests to fill indefinitely. Charter and Foundry manufacturing icons combine the actual product with their own insignia, so recipes are recognizable in the crafting menu.
+**Status:** experimental GitHub main build. Full Factorio 2.1 startup, progression, K2SO/Razi and old-save migration tests have not yet passed.

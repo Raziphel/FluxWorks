@@ -1,4 +1,20 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.7.0
+Date: 2026-10-16
+  Focused redesign:
+    - Disabled all FluxWorks-added ore, mixed-mineral, salt and Flux rift world generation by default.
+    - Retired the old metal plate, six mineral bacteria, crushed-ore and legacy science economies.
+    - Replaced broad factory manufacturing with 26 core recipes and seven native-science research tiers.
+    - Gave the Harvester two real recovery processes and the Forge three solid-input capstone processes.
+    - Disabled 72 optional world, hybrid and freight recipe slots by default.
+    - Removed legacy rocket-remnant, storage vault, reservoir and Rift Exchange scripts from the Focused runtime.
+    - Hid retired technologies, recipes and items while keeping save-facing prototype identities in place.
+    - Added the explicit Focused / Legacy profile choice and updated the field manual.
+  Verification:
+    - Added a focused source contract and data-stage validation.
+    - Real Factorio startup, progression and save migration tests remain necessary.
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Version: 0.6.1
 Date: 2026-10-16
   Improvements:

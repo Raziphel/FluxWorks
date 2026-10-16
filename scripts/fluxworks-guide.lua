@@ -3,10 +3,10 @@
 local M={}
 local commands_table={"help","status","atlas"}
 local disciplines={
-  {"chemical","fw-industrial-program-chemical"},
-  {"thermal","fw-industrial-program-thermal"},
-  {"biological","fw-industrial-program-biological"},
-  {"phase","fw-industrial-program-phase"},
+  {"chemical","fw-flux-chemical-synthesis"},
+  {"thermal","fw-flux-metallurgy"},
+  {"biological","fw-flux-green-cultivation"},
+  {"phase","fw-flux-resonance"},
 }
 local systems={
   "calidus","solaris","nyxaris","vibrant","vespera","beetlejuice","umbra"

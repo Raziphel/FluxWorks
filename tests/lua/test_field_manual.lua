@@ -3,10 +3,10 @@ local emitted={}
 local player={
   valid=true,
   force={technologies={
-    ["fw-industrial-program-chemical"]={researched=true},
-    ["fw-industrial-program-thermal"]={researched=false},
-    ["fw-industrial-program-biological"]={researched=true},
-    ["fw-industrial-program-phase"]={researched=false},
+    ["fw-flux-chemical-synthesis"]={researched=true},
+    ["fw-flux-metallurgy"]={researched=false},
+    ["fw-flux-green-cultivation"]={researched=true},
+    ["fw-flux-resonance"]={researched=false},
     ["fw-four-works-charter"]={researched=false},
   }}
 }

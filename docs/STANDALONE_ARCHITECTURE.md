@@ -41,3 +41,7 @@ For save compatibility some setting prototype identifiers still begin with `fw-r
 ## Identity phase · 0.6.0
 
 FluxWorks now has a **Charter of the Four Works** research and four manufacturing applications all its own. When Razi is installed, up to seven physical **Seven Foundries** field operations and a two-folio Atlas manufacturing capstone become available, strictly guarded by real worlds and ingredients. The independent Charter never depends on those field records. Read [the identity design](FOUR_WORKS_AND_SEVEN_FOUNDRIES.md).
+
+## Current default: Focused Industry (0.7)
+
+Earlier expanded architecture descriptions in this file now apply to Legacy. The current default retires the separate ore, metal, bacteria, research-bottle and advanced utility economies and keeps 26 manufacturing recipes using native materials. See [Focused Industry](FOCUSED_INDUSTRY.md) for the current contract and save cautions.

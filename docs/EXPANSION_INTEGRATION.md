@@ -1,3 +1,5 @@
+> Historical design notes for the expanded and Legacy profiles. The current 0.7 Focused design is in [FOCUSED_INDUSTRY.md](FOCUSED_INDUSTRY.md).
+
 # Expansion-first FluxWorks: integration notes
 
 This development branch changes FluxWorks' default role from a full Space Age recipe/technology overhaul to a substantial **additive industrial and endgame expansion**. Existing Flux machinery, its four spectra, planetary systems, and the Shattered Planet campaign remain enabled.
