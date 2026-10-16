@@ -107,6 +107,7 @@ require("prototypes.updates.razi-industry-tech-clarity").apply()
 
 -- Factorio 2.1 replaced singular recipe categories and product probability
 -- fields. Normalize after every compatibility rewrite and before validation.
+require("prototypes.focused.prune").apply()
 require("prototypes.overhaul.late-recipe-boundaries").apply()
 require("__razi_lib__/lib/recipe").normalize_all_2_1()
 

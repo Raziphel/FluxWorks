@@ -1,10 +1,10 @@
 {
   "name": "FluxWorks",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "title": "FluxWorks",
   "author": "Raziphel",
   "factorio_version": "2.1",
-  "description": "Independent Four Works industrial expansion with on-demand field manual, useful mastery processes and optional Razi Seven Foundries Atlas.",
+  "description": "Focused four-spectrum manufacturing. Uses Space Age resources and science; old ore chains are retired by default. Optional Razi industrial fieldwork.",
   "dependencies": [
     "base >= 2.1.0",
     "space-age >= 2.1.0",
