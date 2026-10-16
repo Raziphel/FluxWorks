@@ -1,5 +1,0 @@
-local Events=require("__razi_lib__/runtime/events")
-local registry=Events.new()
-registry:include(require("scripts.flux-extractor"))
-registry:install()
-require("scripts.fluxworks-guide").register()

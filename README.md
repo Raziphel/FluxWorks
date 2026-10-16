@@ -1,25 +1,17 @@
-# FluxWorks 0.7.0: Focused Industry
+# FluxWorks
 
-FluxWorks is a **small, independent manufacturing extension** for Factorio 2.1 / Space Age. Its four Flux disciplines improve real factories without creating a competing mining game. **No FluxWorks ore patches generate in Focused mode.** Razi Protocol and K2SO remain optional.
+**A completely fresh start.** This is version **0.1.0**, a clean Factorio 2.1 mod foundation with **zero gameplay content**.
 
-## What you actually build
+Nothing from the former FluxWorks is inherited: no ore or metal economy, Flux spectra, industry, technology trees, custom science, Razi integration, utilities, settings, artwork, or runtime systems. Even the previous four-spectrum concept is **not** presumed to survive.
 
-- Four fluids: Yellow chemical, Red thermal, Green biological, Purple phase.
-- Crystalline Flux recovery using existing **stone, sulfur and water**, followed by catalysts and engineered signature materials.
-- **26 curated manufacturing recipes**, including two Flux Harvester recovery processes and three solid-input Convergence Forge processes.
-- **Seven core Flux engineering research tiers** using normal Space Age science.
-- Flux Condenser, Flux Harvester, Synthesis Plant, Arc Foundry, Convergence Synthesis Plant, and Convergence Forge.
-- An optional Charter of the Four Works with four combined-discipline manufacturing rewards.
-- With Razi: optional Seven Foundries commissions producing only retained core materials plus physical records and two compact Atlas folios.
+This mod currently depends only on Factorio `base`. It does not depend on Space Age, Razi Protocol, RaziLib, K2SO, or FluxWorksAssets. We can choose any of those later if the new design warrants them.
 
-The older lead, tin, aluminum, titanium, bronze, crushed-ore, bacteria-mining, separate science-bottle and Shattered Planet lines are **not part of the default progression**. Neither are its old vault/teleport/rocket-remnant side systems. The speculative 44 planet + 16 K2SO + 12 freight recipe catalogues are disabled by default.
+## What comes next?
 
-**Save compatibility:** old prototype IDs remain registered internally but their old crafting and research are hidden. The Legacy startup profile restores previous behavior for existing worlds. Back up existing saves: changing to Focused may deactivate old assemblers. Existing ore patches already in explored chunks are not erased.
+**Design first, implement second.** Define the player fantasy, one compelling mechanic, a small playable loop, and what adds real value to Factorio. Only after we agree on that direction should new prototypes be created. Read [Start from Zero](docs/START_FROM_ZERO.md).
 
-## Learn and customize
+## Previous mod
 
-Use /fw-guide for the field manual, /fw-guide status for each Flux discipline's research and /fw-guide atlas for optional Razi commissions. Change the Design setting to Focused (default) or Legacy.
+The old mod has been archived intact at [`archive/pre-zero-restart-2026-10-16`](../../tree/archive/pre-zero-restart-2026-10-16). The old mod's recipes, research, items, fluids and entities are not loaded by this clean foundation. **Existing saves depending on them are incompatible.** Use the archived revision if continuing an old world.
 
-See [Focused Industry Design](docs/FOCUSED_INDUSTRY.md), [Four Works and Seven Foundries](docs/FOUR_WORKS_AND_SEVEN_FOUNDRIES.md) and [Validation](docs/OVERHAUL_VALIDATION.md).
-
-**Status:** experimental GitHub main build. Full Factorio 2.1 startup, progression, K2SO/Razi and old-save migration tests have not yet passed.
+**Status:** Reset scaffold only. No gameplay release and no claim that any past feature still exists.

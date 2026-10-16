@@ -1,27 +1,11 @@
 {
   "name": "FluxWorks",
-  "version": "0.7.0",
+  "version": "0.1.0",
   "title": "FluxWorks",
   "author": "Raziphel",
   "factorio_version": "2.1",
-  "description": "Focused four-spectrum manufacturing. Uses Space Age resources and science; old ore chains are retired by default. Optional Razi industrial fieldwork.",
+  "description": "A completely fresh Factorio mod foundation. No gameplay systems are implemented yet.",
   "dependencies": [
-    "base >= 2.1.0",
-    "space-age >= 2.1.0",
-    "quality >= 2.1.0",
-    "recycler >= 2.1.0",
-    "FluxWorksAssets >= 1.1.0",
-    "finely-crafted-graphics >= 2.1.0",
-    "? Krastorio2-spaced-out",
-    "razi_lib >= 1.2.0",
-    "+ aai-loaders >= 0.3.0",
-    "+ aai-containers >= 0.4.0"
-  ],
-  "quality_required": true,
-  "rail_bridges_required": true,
-  "space_travel_required": true,
-  "spoiling_required": true,
-  "freezing_required": true,
-  "segmented_units_required": true,
-  "expansion_shaders_required": true
+    "base >= 2.1.0"
+  ]
 }
