@@ -1,33 +1,14 @@
+local RaziSettings=require("__razi_lib__/lib/settings")
+-- Use RaziLib for prototype construction while retaining every setting ID,
+-- allowed value and startup/default behaviour from previous FluxWorks saves.
 local function startup_bool(name, default_value, order)
-  return {
-    type = "bool-setting",
-    name = name,
-    setting_type = "startup",
-    default_value = default_value,
-    order = order,
-  }
+  return RaziSettings.bool(name,"startup",default_value,order)
 end
-
-local function startup_difficulty(name, order)
-  return {
-    type = "string-setting",
-    name = name,
-    setting_type = "startup",
-    default_value = "normal",
-    allowed_values = { "easy", "normal", "hard" },
-    order = order,
-  }
+local function startup_choice(name, default_value, values, order)
+  return RaziSettings.string(name,"startup",default_value,values,order)
 end
-
-local function startup_choice(name, default_value, allowed_values, order)
-  return {
-    type = "string-setting",
-    name = name,
-    setting_type = "startup",
-    default_value = default_value,
-    allowed_values = allowed_values,
-    order = order,
-  }
+local function startup_difficulty(name,order)
+  return startup_choice(name,"normal",{"easy","normal","hard"},order)
 end
 
 -- Factory-only settings. The older fw-* identifiers remain registered for

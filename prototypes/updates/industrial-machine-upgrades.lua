@@ -1,3 +1,6 @@
+local Item=require("__razi_lib__/lib/item")
+local Technology=require("__razi_lib__/lib/technology")
+local IndustrialIcons=require("prototypes.lib.industrial-icons")
 -- Four optional, physically buildable rewards for FluxWorks' research projects.
 -- These are new prototypes, not replacements: existing machines and saves keep
 -- working without a migration or a runtime upgrade event.
@@ -87,46 +90,12 @@ local upgrades = {
 }
 
 local function find_item(name)
-  for _, kind in ipairs({"item", "tool"}) do
-    local prototype = data.raw[kind] and data.raw[kind][name]
-    if prototype then return prototype end
-  end
+  local found=Item.optional(name)
+  return found and found:raw() or nil
 end
-
-local function icon_layers(source, badge)
-  local icons
-  if source.icons then icons = table.deepcopy(source.icons)
-  elseif source.icon then icons = {{icon = source.icon, icon_size = source.icon_size or 64}}
-  else return nil end
-  -- Convergence upgrades a Precision plant: replace its project badge rather
-  -- than stacking two different machine identities in one tiny icon.
-  for index = #icons, 1, -1 do
-    local path = icons[index].icon or ""
-    if string.find(path, "__FluxWorksAssets__/graphics/icons/upgrade-badges/", 1, true) then
-      table.remove(icons, index)
-    end
-  end
-  icons[#icons + 1] = {
-    icon = "__FluxWorksAssets__/graphics/icons/upgrade-badges/fw-" .. badge .. ".png",
-    icon_size = 128, scale = 0.16, shift = {17, 17},
-  }
-  return icons
-end
-
-local function has_effect(technology, recipe)
-  for _, effect in ipairs(technology.effects or {}) do
-    if effect.type == "unlock-recipe" and effect.recipe == recipe then return true end
-  end
-  return false
-end
-
-local function ensure_prerequisite(technology, prerequisite)
+local function ensure_prerequisite(technology_name, prerequisite)
   if not (data.raw.technology and data.raw.technology[prerequisite]) then return false end
-  technology.prerequisites = technology.prerequisites or {}
-  for _, current in ipairs(technology.prerequisites) do
-    if current == prerequisite then return true end
-  end
-  technology.prerequisites[#technology.prerequisites + 1] = prerequisite
+  Technology.get(technology_name):add_prerequisite(prerequisite)
   return true
 end
 
@@ -154,10 +123,10 @@ for index, spec in ipairs(upgrades) do
   local item = find_item(spec.from)
   local project = data.raw.technology and data.raw.technology[spec.project]
   local ingredients = compatible_ingredients(spec.ingredients)
-  local icons = item and icon_layers(item, spec.badge)
+  local icons = item and IndustrialIcons.project(item, spec.badge)
 
   if original and item and project and ingredients and icons
-    and ensure_prerequisite(project, spec.prerequisite) then
+    and ensure_prerequisite(spec.project, spec.prerequisite) then
     if not machines[spec.name] then
       local machine = table.deepcopy(original)
       machine.name = spec.name
@@ -234,10 +203,7 @@ for index, spec in ipairs(upgrades) do
       data:extend({upgraded_item, recipe, machine})
     end
 
-    if not has_effect(project, spec.name) then
-      project.effects = project.effects or {}
-      project.effects[#project.effects + 1] = {type = "unlock-recipe", recipe = spec.name}
-    end
+    Technology.get(spec.project):unlock(spec.name)
 
     -- Matching-sized upgrades are eligible for normal upgrade-planner actions.
     -- Do not change collision boxes, fluid ports, or crafting categories.

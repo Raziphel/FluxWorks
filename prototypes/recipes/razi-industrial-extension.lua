@@ -1,8 +1,11 @@
+local RaziSettings=require("__razi_lib__/lib/settings")
+local Item=require("__razi_lib__/lib/item")
+local Technology=require("__razi_lib__/lib/technology")
+local IndustrialIcons=require("prototypes.lib.industrial-icons")
 -- Razi-era industrial alternatives. These deliberately reuse established
 -- outputs and machines; no extra science ladder or mandatory intermediates.
 -- Skip missing source prototypes rather than rewriting external recipes.
-local selected = settings and settings.startup and settings.startup["fw-rp-industrial-depth"]
-if selected and selected.value == "core" then return end
+if RaziSettings.value("fw-rp-industrial-depth","expanded")=="core" then return end
 
 local function item(name, amount)
   return {type = "item", name = name, amount = amount}
@@ -29,29 +32,8 @@ local processes = {
    {item("fw-circuit-substrate", 8), item("fw-capacitor", 4), item("fw-inline-filter", 4), fluid("fw-yellow-flux", 55), fluid("fw-green-flux", 30)}},
 }
 local function product(name)
-  for _, kind in ipairs({"item", "tool", "capsule", "module"}) do
-    if data.raw[kind] and data.raw[kind][name] then return data.raw[kind][name] end
-  end
-end
-local function icons(target, colour, partner)
-  local image
-  if target.icons then image = table.deepcopy(target.icons)
-  elseif target.icon then image = {{icon = target.icon, icon_size = target.icon_size or 64}}
-  else return end
-  local function overlay(c, x)
-    image[#image + 1] = {icon = "__FluxWorksAssets__/graphics/icons/fluids/flux-" .. c .. ".png",
-      icon_size = 256, scale = 0.07, shift = {x, 14}}
-  end
-  overlay(colour, partner and -12 or 15)
-  if partner then overlay(partner, 12) end
-  return image
-end
-local function add_unlock(tech, recipe_name)
-  tech.effects = tech.effects or {}
-  for _, effect in ipairs(tech.effects) do
-    if effect.type == "unlock-recipe" and effect.recipe == recipe_name then return end
-  end
-  tech.effects[#tech.effects + 1] = {type = "unlock-recipe", recipe = recipe_name}
+  local found=Item.optional(name)
+  return found and found:raw() or nil
 end
 local made = 0
 for index, spec in ipairs(processes) do
@@ -69,7 +51,7 @@ for index, spec in ipairs(processes) do
   if tech and output and valid and liquid_count <= 2
     and data.raw["recipe-category"] and data.raw["recipe-category"][category] then
     if not data.raw.recipe[recipe_name] then
-      local image = icons(output, colour, partner)
+      local image = IndustrialIcons.spectrum(output, colour, partner, "extension")
       if image then
         local subgroup = data.raw["item-subgroup"] and data.raw["item-subgroup"]["fw-flux-" .. colour]
           and "fw-flux-" .. colour or output.subgroup or "intermediate-product"
@@ -86,7 +68,7 @@ for index, spec in ipairs(processes) do
       end
     end
     if data.raw.recipe[recipe_name] then
-      add_unlock(tech, recipe_name)
+      Technology.get(tech_name):unlock(recipe_name)
       made = made + 1
     end
   else

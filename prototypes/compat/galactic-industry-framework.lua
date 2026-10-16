@@ -1,3 +1,8 @@
+local RaziSettings=require("__razi_lib__/lib/settings")
+local Science=require("__razi_lib__/lib/science")
+local Technology=require("__razi_lib__/lib/technology")
+local Item=require("__razi_lib__/lib/item")
+local IndustrialIcons=require("prototypes.lib.industrial-icons")
 -- Optional industrial production from native, *installed* planet resources.
 -- This is a data-stage-only factory catalogue, never a world/route patch.
 local M = {}
@@ -7,12 +12,9 @@ local spectra = {
   red={fluid="fw-red-flux",base="fw-flux-metallurgy"},
   green={fluid="fw-green-flux",base="fw-flux-green-cultivation"},
 }
-local item_types={"item","tool","module","capsule","ammo"}
 local function item(name)
-  for _,kind in ipairs(item_types) do
-    local obj=data.raw[kind] and data.raw[kind][name]
-    if obj and obj.hidden~=true then return obj end
-  end
+  local found=name and Item.optional(name)
+  if found and found.hidden~=true then return found:raw() end
 end
 local function world(name)
   return data.raw.planet and data.raw.planet[name]
@@ -77,10 +79,6 @@ local function pick(candidates,producer)
     if item(name) and producer[name] then return name end
   end
 end
-local system_badges={
-  calidus=true,solaris=true,nyxaris=true,vibrant=true,
-  vespera=true,beetlejuice=true,umbra=true,["deep-space"]=true
-}
 -- Source mods often rename intermediates between versions. Respect the
 -- engine's explicit default_import_location metadata before giving up.
 -- Avoid science/tool packs and universal vanilla resources as fallbacks.
@@ -130,47 +128,21 @@ local function choose_native(candidates,producer,world_name,indexed)
   end
 end
 
-local function layers(product,colour,partner,system)
-  local icons
-  if product.icons then icons=table.deepcopy(product.icons)
-  elseif product.icon then icons={{icon=product.icon,icon_size=product.icon_size or 64}}
-  else return end
-  local function badge(c,x)
-    icons[#icons+1]={icon="__FluxWorksAssets__/graphics/icons/fluids/flux-"..c..".png",
-      icon_size=256,scale=0.065,shift={x,16}}
-  end
-  badge(colour,partner and -13 or 14)
-  if partner then badge(partner,13) end
-  -- Distinct star system navigation mark without replacing the native
-  -- product silhouette or its two recognizable spectrum markers.
-  if system_badges[system] then
-    icons[#icons+1]={
-      icon="__FluxWorksAssets__/graphics/icons/system-badges/fw-"..system.."-industry.png",
-      icon_size=128,scale=0.12,shift={-17,-16},
-    }
-  end
-  return icons
-end
-local function has_unlock(tech,recipe)
-  for _,effect in ipairs(tech.effects or {}) do
-    if effect.type=="unlock-recipe" and effect.recipe==recipe then return true end
-  end
-end
 local function accepted_science()
   local candidates={"automation-science-pack","logistic-science-pack","chemical-science-pack"}
-  local known={}
-  for _,lab in pairs(data.raw.lab or {}) do
-    local set={}
-    for _,entry in ipairs(lab.inputs or {}) do set[entry]=true end
-    if #candidates>0 and set[candidates[1]] and set[candidates[2]] and set[candidates[3]] then
-      for _,name in ipairs(candidates) do
-        if item(name) then known[#known+1]={name,1} end
-      end
-      if #known==3 then return known end
-    end
+  local ready={}
+  for _,pack in ipairs(candidates) do
+    if not Science.exists(pack) then return nil end
+    ready[#ready+1]={pack,1}
   end
-  -- Strictly skip if a common lab cannot accept all packs. Never create
-  -- silently unresearchable technologies in an unusually modified modpack.
+  for _,lab in pairs(data.raw.lab or {}) do
+    local accepts=true
+    for _,pack in ipairs(candidates) do
+      if not Science.lab_has_input(lab,pack) then accepts=false;break end
+    end
+    if accepts then return ready end
+  end
+  -- A lab must accept all three packs; never register orphaned research.
 end
 local function available_categories()
   local found={}
@@ -193,8 +165,7 @@ local function normalize_name(spec)
   return "fw-"..spec.family.."-"..spec.id
 end
 function M.register(specs,setting_name)
-  local setting=settings and settings.startup and settings.startup[setting_name]
-  if setting and setting.value==false then return 0,0 end
+  if not RaziSettings.enabled(setting_name,true) then return 0,0 end
   local recipes=data.raw.recipe or {}
   local techs=data.raw.technology or {}
   local products=produced_index()
@@ -235,7 +206,7 @@ function M.register(specs,setting_name)
       and (not spec.science_unlock or techs[spec.science_unlock])
       and spec.product~=native and spec.product~=spec.feed
     if valid then
-      local picture=layers(output,spec.spectrum,partner,spec.system)
+      local picture=IndustrialIcons.galaxy(output,spec.spectrum,partner,spec.system)
       if picture and not recipes[recipe_name] and not techs[tech_name] then
         local ingredients={
           {type="item",name=native,amount=spec.native_count or 4},
@@ -278,11 +249,7 @@ function M.register(specs,setting_name)
           built=built+1
         else skipped=skipped+1 end
       elseif recipes[recipe_name] and techs[tech_name] then
-        if not has_unlock(techs[tech_name],recipe_name) then
-          techs[tech_name].effects=techs[tech_name].effects or {}
-          techs[tech_name].effects[#techs[tech_name].effects+1]={
-            type="unlock-recipe",recipe=recipe_name}
-        end
+        Technology.get(tech_name):unlock(recipe_name)
       else skipped=skipped+1 end
     else skipped=skipped+1 end
   end
