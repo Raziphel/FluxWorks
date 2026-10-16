@@ -7,6 +7,7 @@ local validators = {
   "prototypes.validation.factorio-2-1",
   "prototypes.validation.machine-quality",
   "prototypes.validation.industrial-machine-upgrades",
+  "prototypes.validation.razi-industrial-extension",
   "prototypes.validation.native-industry",
   "prototypes.validation.menu-simulations",
   "prototypes.validation.item-uses",
