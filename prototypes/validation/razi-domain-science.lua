@@ -57,3 +57,18 @@ for name,tech in pairs(data.raw.technology or {}) do
     end
   end
 end
+
+local optional_unlocks = {
+  ["fw-industrial-methods-science"]=true,
+  ["fw-systems-analysis-science"]=true,
+  ["fw-flux-theory-science"]=true,
+  ["fw-planetary-convergence-science"]=true,
+}
+for name,tech in pairs(data.raw.technology or {}) do
+  if name:sub(1,3)=="fw-" and not projects[name] and not optional_unlocks[name] then
+    for _,parent in ipairs(tech.prerequisites or {}) do
+      assert(not optional_unlocks[parent],
+        "FluxWorks tech should not be gated by separate specialist science: "..name)
+    end
+  end
+end

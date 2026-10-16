@@ -7,7 +7,7 @@ local mapping={
   {"fw-planetary-convergence-science-pack","fw-planetary-convergence-science","fw-convergence-directive-project"},
 }
 for _,entries in ipairs(mapping) do
-  local pack,owner,project=unpack(entries)
+  local pack,owner,project=table.unpack(entries)
   data.raw.item[pack]={}
   data.raw.recipe[pack]={}
   data.raw.technology[owner]={effects={{type="unlock-recipe",recipe=pack}}}

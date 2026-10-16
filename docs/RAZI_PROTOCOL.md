@@ -38,3 +38,7 @@ Gleba now acquires the six resource-specific cultures using physical organic rec
 ## Science validation ownership
 
 In companion mode the original standalone science validators are replaced by a strict extension contract: preserve four science-pack items and recipes, preserve their owning unlock technologies, retain four project-specific science consumers, reject any normal or planetary research requiring those FluxWorks packs, and reject any FluxWorks unlock-space-location effect on Shattered Planet. The standalone tests remain in source for legacy documentation, but cannot veto Razi's campaign rules.
+
+## Standalone research milestone migration
+
+After the Razi-owned industrial bridge, `razi-domain-science-rewire.lua` removes direct prerequisites to `fw-industrial-methods-science`, `fw-systems-analysis-science`, `fw-flux-theory-science` and `fw-planetary-convergence-science` from ordinary `fw-` technologies. Four Industrial Project technologies retain their matching science technology and bottles. This rewire does not touch any non-FluxWorks technology, including Razi's chapter gates or K2SO research. Legacy global technology-weave operations are inert in companion mode even if an older startup settings file enabled them.

@@ -1,4 +1,6 @@
 local Startup = require("prototypes.lib.startup-settings")
+-- Host-owned campaign research may never inherit an opt-in legacy weave.
+if require("prototypes.lib.companion-mode").razi_protocol then return end
 if not Startup.enabled("fw-enable-legacy-technology-overhaul", false) then return end
 
 local function technology(name)

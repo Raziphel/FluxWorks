@@ -53,3 +53,7 @@ The old opt-in asteroid crushing and Fulgora scrap patches are disabled when Raz
 ### Research ownership, verified
 
 FluxWorks science packs are **specialist project bottles** under Razi Protocol, not another required ladder in the normal campaign. Startup validation now checks that the four dedicated Industrial Project technologies still consume their matching science packs, that no other Razi/base/FluxWorks research acquires one, and that no FluxWorks technology can unlock Razi's Shattered Planet location.
+
+### A genuinely optional science ladder
+
+Companion mode now strips obsolete direct research prerequisites pointing to FluxWorks' four standalone science unlock technologies from ordinary FluxWorks research, **without editing Razi or external technologies**. The Industrial District, Autonomous Network, Spectrum Control and Convergence Directive projects keep their own specialist science milestones. The original legacy technology IDs are retained, and a validator prevents the old science taxes from returning.

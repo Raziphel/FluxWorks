@@ -1,5 +1,6 @@
 local Startup = require("prototypes.lib.startup-settings")
 local legacy_research = Startup.enabled("fw-enable-legacy-technology-overhaul", false)
+  and not require("prototypes.lib.companion-mode").razi_protocol
 local legacy_early_science = Startup.enabled("fw-enable-early-domain-science-gates", false)
 local optional_programs = {
   ["fw-industrial-methods-science-pack"] = {

@@ -90,6 +90,7 @@ require("prototypes.recipes.razi-industrial-extension")
 -- The required dependency loads Razi before FluxWorks. Run Razi-owned
 -- industry reconciliations here, after all FluxWorks factory prototypes exist.
 require("prototypes.compat.razi-extension-bridge").apply()
+require("prototypes.updates.razi-domain-science-rewire").apply()
 require("prototypes.updates.razi-industrial-balance").apply()
 require("prototypes.updates.razi-industry-tech-clarity").apply()
 
