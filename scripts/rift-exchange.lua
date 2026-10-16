@@ -1,3 +1,5 @@
+local Storage=require("__razi_lib__/runtime/storage")
+local Exchanges=Storage.namespace("rift_exchange",{})
 local Shared = require("scripts.memory-shared")
 local Startup = require("prototypes.lib.startup-settings")
 
@@ -82,7 +84,7 @@ local function gate_text(key, ...)
 end
 
 local function ensure_state()
-  storage.rift_exchange = storage.rift_exchange or {}
+  Exchanges:ensure()
 end
 
 local function destroy_render_text(entry)

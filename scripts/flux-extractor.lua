@@ -1,3 +1,5 @@
+local Storage=require("__razi_lib__/runtime/storage")
+local Extractors=Storage.namespace("flux_extractors",{})
 local M = {}
 
 local EXTRACTOR = "fw-flux-condenser"
@@ -35,7 +37,7 @@ end
 
 local function register(entity)
   if not (valid(entity) and entity.name == EXTRACTOR and entity.unit_number) then return end
-  storage.flux_extractors = storage.flux_extractors or {}
+  Extractors:ensure()
   cleanup(entity.unit_number)
   local entry = { entity = entity, outputs = {} }
   for color, definition in pairs(outputs) do
@@ -118,13 +120,13 @@ end
 
 function M.register_events(registrar)
   registrar:on_init(function()
-    storage.flux_extractors = {}
+    Extractors:reset()
     for _, surface in pairs(game.surfaces) do
       for _, entity in pairs(surface.find_entities_filtered({ name = EXTRACTOR })) do register(entity) end
     end
   end)
   registrar:on_configuration_changed(function()
-    storage.flux_extractors = storage.flux_extractors or {}
+    Extractors:ensure()
     for _, surface in pairs(game.surfaces) do
       for _, entity in pairs(surface.find_entities_filtered({ name = EXTRACTOR })) do
         local entry = storage.flux_extractors[entity.unit_number]

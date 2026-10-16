@@ -1,3 +1,5 @@
+local Storage=require("__razi_lib__/runtime/storage")
+local Reservoirs=Storage.namespace("spectral_reservoir_units",{})
 local Shared = require("scripts.memory-shared")
 
 local M = {}
@@ -24,7 +26,7 @@ local function reservoir_capacity(unit_data)
 end
 
 local function ensure_state()
-  storage.spectral_reservoir_units = storage.spectral_reservoir_units or {}
+  Reservoirs:ensure()
 end
 
 local function destroy_render_text(entry)

@@ -1,12 +1,15 @@
+local Remote=require("__razi_lib__/runtime/remote")
+local Storage=require("__razi_lib__/runtime/storage")
+local Whitelist=Storage.namespace("platform_type_whitelist",{player={}})
 local M = {}
 
 local function verify_whitelist()
-  storage.platform_type_whitelist = storage.platform_type_whitelist or { player = {} }
-  storage.platform_type_whitelist["player"]["space-platform-starter-pack"] = true
+  local current=Whitelist:ensure()
+  current.player=current.player or {}
+  current.player["space-platform-starter-pack"]=true
 end
 
-if not remote.interfaces["rocket-reusability"] then
-  remote.add_interface("rocket-reusability", {
+Remote.add_interface("rocket-reusability", {
     add_whitelist = function(starter_pack_name, force_name)
       verify_whitelist()
       local resolved_force = force_name or "player"
@@ -28,11 +31,11 @@ if not remote.interfaces["rocket-reusability"] then
         or false
     end,
   })
-end
 
 if not commands.commands["reset-whitelist"] then
   commands.add_command("reset-whitelist", "Resets the whitelist for space platform starter packs. Can cause unpredictable behavior with other mods, but useful for removing mods.", function()
-    storage.platform_type_whitelist = { player = { ["space-platform-starter-pack"] = true } }
+    Whitelist:reset()
+    verify_whitelist()
   end)
 end
 

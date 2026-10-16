@@ -1,3 +1,5 @@
+local Storage=require("__razi_lib__/runtime/storage")
+local Vaults=Storage.namespace("phase_vault_units",{})
 local Shared = require("scripts.memory-shared")
 
 local M = {}
@@ -12,7 +14,7 @@ local COMBINATOR_SHIFT_Y = 1.75
 local CONTAMINATION_INTERVAL = 60 * 20
 
 local function ensure_state()
-  storage.phase_vault_units = storage.phase_vault_units or {}
+  Vaults:ensure()
 end
 
 local function destroy_render_text(entry)
