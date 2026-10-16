@@ -1,4 +1,4 @@
-# The Four Works and the Seven Foundries · FluxWorks 0.6.0
+# The Four Works and the Seven Foundries · FluxWorks 0.6.1
 
 FluxWorks remains a **standalone industrial expansion**. The Razi integration is a special additional factory experience, not the reason FluxWorks exists.
 
@@ -48,3 +48,11 @@ FluxWorks remains responsible for its factory economy. Razi owns its routes, cha
 `prototypes/validation/industrial-identity.lua` checks Charter recipes, per-system Razi commissions, optional Atlas folios, physical input limits and the standalone isolation boundary. Source tests and asset checks are necessary but insufficient to claim real Factorio compatibility.
 
 Before publishing to the mod portal, test Factorio 2.1 + Space Age with FluxWorks alone, then with Razi, and also both configurations with K2SO; verify an existing 0.5.x save and a Razi-hosted save. No release workflow or GitHub Actions job has been added.
+
+## Field manual and production hygiene (0.6.1)
+
+The **`/fw-guide`** command is an on-demand orientation guide. **`/fw-guide status`** shows which of the four specialty research programs your force has finished and whether the Charter is researched. **`/fw-guide atlas`** explains Razi-exclusive field commissions and recognizes an unavailable Atlas without inventing systems. The runtime command uses Factorio 2.1's `script.active_mods`, does not create GUI state, and registers no events or timers.
+
+Each available planetary calibration operation creates useful production **plus one physical record**. Once enough records have been reserved for the Atlas, the matching **field reconciliation recipe** converts six surplus records into two useful components. It is unlocked alongside the source commission, uses a regular crafting machine, and requires no fluid pipes. This prevents indefinite record accumulation and gives players a reason to keep regional operations running.
+
+Crafting menu icons now show the **actual product** together with a Charter or system badge; technology and calibration-item emblems remain distinct. The former Origin Forge is displayed as the **Convergence Forge** for new players, while its `fw-origin-forge` prototype ID stays unchanged for save migration. Old Shattered Planet victory descriptions are replaced by accurate standalone industrial language; Razi owns planetary location descriptions.

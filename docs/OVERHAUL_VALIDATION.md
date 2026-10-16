@@ -89,3 +89,7 @@ The historical progression-ladder validator was written for the original recipes
 ## K2SO native components in Reborn
 
 Reborn retains three important K2SO ingredients within its simplified top-tier recipes: kr-ai-core in fw-quantum-computer; kr-imersite-crystal in fw-promethium-matrix; and kr-charged-matter-stabilizer in fw-rift-coupler. Hidden vanilla aliases are preferentially replaced with canonical kr- materials. These modifications affect only FluxWorks recipes.
+
+## 0.6.1 polish smoke tests
+
+From a FluxWorks checkout, run `lua tests/lua/test_field_manual.lua` and `lua tests/lua/test_industrial_identity_source.lua`. The former mocks the Factorio command registry, player force, standalone mode, and an optional Razi installation; the latter checks source contracts, report sinks, identity icons, stage ordering and stale locale ownership. These tests are source/runtime-interface checks only and do not substitute for Factorio 2.1 data-stage testing. Pairing remains FluxWorks 0.6.1 with FluxWorksAssets >= 1.1.0.

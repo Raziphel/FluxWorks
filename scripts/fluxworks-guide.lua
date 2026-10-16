@@ -49,6 +49,14 @@ local function on_command(command)
       if researched(force,record[2]) then mastered=mastered+1 end
     end
     emit(player,"fw-guide.progress",mastered,#disciplines)
+    for _,record in ipairs(disciplines) do
+      local current=force.technologies[record[2]]
+      local result=current and
+        (current.researched and "fw-guide.complete" or "fw-guide.pending") or
+        "fw-guide.unavailable"
+      emit(player,"fw-guide.work-status",
+        {"fw-guide.work-"..record[1]}, {result})
+    end
     local charter=force.technologies["fw-four-works-charter"]
     if charter then
       emit(player,charter.researched and "fw-guide.charter-complete" or

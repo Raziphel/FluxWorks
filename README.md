@@ -1,4 +1,4 @@
-# FluxWorks 0.6.0
+# FluxWorks 0.6.1
 
 **Independent industrial expansion for Factorio 2.1 / Space Age.**
 
@@ -44,3 +44,9 @@ Read [Standalone Architecture](docs/STANDALONE_ARCHITECTURE.md), [Galaxy Integra
 **With Razi:** Establish up to seven real source-world commissions through the **Seven Foundries**. Each makes valuable factory parts and a physical industrial record. Assemble available records into regional folios, then calibrate the **Atlas of the Seven Foundries** in the Convergence Forge. There is no parallel quest line, no new galaxy, and no Razi dependency for the base industrial game.
 
 See [Four Works and Seven Foundries](docs/FOUR_WORKS_AND_SEVEN_FOUNDRIES.md) for the fully documented design.
+
+## In-game Field Manual
+
+Use **`/fw-guide`** to learn the four industrial disciplines, **`/fw-guide status`** to check your force's four specializations and Charter research, and **`/fw-guide atlas`** to understand the optional Razi Seven Foundries. Commands run **only when requested**; there are no background GUI updates or event scans.
+
+Razi field operations now make useful factory materials and a physical industrial record. Reserve records for Atlas folios and **reconcile six surplus records** into additional components instead of allowing chests to fill indefinitely. Charter and Foundry manufacturing icons combine the actual product with their own insignia, so recipes are recognizable in the crafting menu.

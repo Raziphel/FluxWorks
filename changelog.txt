@@ -1,4 +1,19 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.6.1
+Date: 2026-10-16
+  Improvements:
+    - Added on-demand /fw-guide, /fw-guide status and /fw-guide atlas without any recurring event handlers.
+    - Made the four Industrial Programs individually visible in field manual progress.
+    - Gave Seven Foundries seven source-specific record reconciliation processes to prevent endless surplus byproduct accumulation.
+    - Added product-first layered recipe icons for the Four Works Charter and Razi system field operations.
+    - Retired false standalone Shattered Planet victory claims and native stromatolite origin lore from English locale.
+    - Renamed the former Origin Forge's player-facing identity to Convergence Forge without renaming saved prototype IDs.
+    - Kept Razi optional, K2SO integration guarded and existing world, machine and inventory identifiers unchanged.
+  Validation:
+    - Added offline field manual and industrial identity source checks.
+    - Full Factorio 2.1 startup, progression, save migration and multiplayer checks remain required.
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Version: 0.6.0
 Date: 2026-10-16
   Major changes:
