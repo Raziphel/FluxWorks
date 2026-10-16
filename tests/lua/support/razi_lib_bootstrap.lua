@@ -22,6 +22,15 @@ function M.install()
       return load()
     end
   end
+  for _,module in ipairs({"storage","remote","events"}) do
+    local path=root.."/runtime/"..module..".lua"
+    local readable=io.open(path,"rb")
+    assert(readable,"Required RaziLib runtime module is absent: "..path)
+    readable:close()
+    package.preload["__razi_lib__/runtime/"..module]=function()
+      return assert(loadfile(path))()
+    end
+  end
   -- In a consumer mod, require(.../lib/core) must never resolve a fake shim.
   local core=require("__razi_lib__/lib/core")
   local technology=require("__razi_lib__/lib/technology")

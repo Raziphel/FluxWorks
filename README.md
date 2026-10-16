@@ -71,3 +71,7 @@ Eight distinctive system overlays, now supplied by **FluxWorksAssets 1.0.6**, id
 ## RaziLib integration · 0.3.3
 
 The industrial extension now uses **RaziLib 1.2.0** directly for typed item/prototype lookup, science-pack compatibility and lab checks, safe technology unlocks and pack insertion, Factorio settings prototype factories, icon layering and project badge replacement, multi-variant recipe edits, stable prerequisite collections, graph cycle detection and validation assertions. A small FluxWorks-only graphic policy module controls exact existing sprite layout on top of RaziLib's passive `lib/icons`. Runtime orchestration already uses RaziLib's event registry. This is a source-level dependency cleanup with unchanged recipe, item, planet and machine IDs; it adds **no per-tick scans** or host-campaign edits. See [RaziLib validation matrix](docs/OVERHAUL_VALIDATION.md#razilib-12-integration-regression-suite).
+
+### RaziLib runtime consolidation
+
+In addition to the existing per-mod event registry, RaziLib 1.2 now owns namespaced initialization of FluxWorks' original saved state tables and duplicate-safe registration of the rocket-reusability remote interface. Existing vault, reservoir, extractor and Rift Exchange state keys, script intervals and user commands are preserved. `tests/lua/test_razi_lib_runtime.lua` covers the shared runtime contracts against real RaziLib source.

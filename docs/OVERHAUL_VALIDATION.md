@@ -61,3 +61,7 @@ lua tests/lua/test_industrial_machine_upgrades.lua
 If RaziLib is checked out elsewhere, set `RAZILIB_PATH=/path/to/RaziLib` for each command. The bootstrap fails clearly if the real shared library is absent. Test both K2SO installed and missing using actual Factorio; no CI workflow was added.
 
 **K2SO shared-library regression:** the new Lua test verifies normal/expensive recipe replacement through RaziLib, duplicate-safe science and technology unlocks, planetary alternative icon cloning, and both default-on and opted-out K2SO states.
+
+## Runtime RaziLib 1.2 checks
+
+The event registry was already in use. FluxWorks now also uses RaziLib's `runtime/storage.namespace` for **existing save keys** (`platform_type_whitelist`, `flux_extractors`, `phase_vault_units`, `spectral_reservoir_units`, `rift_exchange`) and `runtime/remote.add_interface` for the rocket-reusability remote API. These keep the same stored tables, interface name and command; they do **not** rename data or introduce global state migration. Run `lua tests/lua/test_razi_lib_runtime.lua` with the real sibling library to test persistence and interface idempotence. Confirm actual save migration in-game before publishing.
