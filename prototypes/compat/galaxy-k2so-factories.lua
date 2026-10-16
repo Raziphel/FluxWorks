@@ -19,4 +19,13 @@ local specs={
   {id="fulgora-imersite-crystal-14",family="k2-galaxy",world="fulgora",system="vibrant",native={"holmium-plate"},k2={"kr-imersite-crystal"},product="fw-flux-theory-science-pack",spectrum="purple",feed="fw-stabilized-flux-crystal",yield=3,cost=1200,duration=24},
   {id="aquilo-matter-cube-15",family="k2-galaxy",world="aquilo",system="vespera",native={"ice"},k2={"kr-matter-cube"},product="fw-planetary-convergence-science-pack",spectrum="purple",feed="fw-condensed-flux-matrix",yield=3,cost=1200,duration=24},
 }
+-- Alternative K2SO science-pack manufacture must not leapfrog the native
+-- FluxWorks specialist-science research unlock.
+for _,spec in ipairs(specs) do
+  if spec.product=="fw-flux-theory-science-pack" then
+    spec.science_unlock="fw-flux-theory-science"
+  elseif spec.product=="fw-planetary-convergence-science-pack" then
+    spec.science_unlock="fw-planetary-convergence-science"
+  end
+end
 return register(specs,"fw-rp-k2so-galaxy-industry")

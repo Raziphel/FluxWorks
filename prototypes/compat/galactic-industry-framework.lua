@@ -182,6 +182,7 @@ function M.register(specs,setting_name)
       and (not partner or spectra[partner] and data.raw.fluid[spectra[partner].fluid])
       and (not spec.secondworld or second and second_arrival and other)
       and (not spec.k2 or mods and mods["Krastorio2-spaced-out"] and kr_part)
+      and (not spec.science_unlock or techs[spec.science_unlock])
       and spec.product~=native and spec.product~=spec.feed
     if valid then
       local picture=layers(output,spec.spectrum,partner,spec.system)
@@ -196,6 +197,10 @@ function M.register(specs,setting_name)
         if partner then ingredients[#ingredients+1]={type="fluid",name=spectra[partner].fluid,amount=20} end
         if #ingredients<=6 then
           local prerequisites={arrival,discipline.base}
+          if spec.science_unlock and spec.science_unlock~=arrival
+            and spec.science_unlock~=discipline.base then
+            prerequisites[#prerequisites+1]=spec.science_unlock
+          end
           if second_arrival and second_arrival~=arrival then
             prerequisites[#prerequisites+1]=second_arrival
           end

@@ -29,3 +29,7 @@ The existing seven Razi-owned regional specialties and five paired exchanges rem
 ## Validation and caveats
 
 Run the offline Lua mock tests and then a Factorio 2.1 data-raw dump with every installed planet/K2SO. Count the recipes actually added, inspect each guarded skip in the Factorio log, confirm each native ingredient producer and physical machine, check all research prerequisites and complete at least one full batch for every enabled planet. Balancing is provisional until real factory metrics are measured.
+
+## K2SO science unlock safety
+
+Two late K2SO native-material hybrid recipes offer optional manufacturing of Flux Theory and Planetary Convergence specialist packs. They additionally require the corresponding **original FluxWorks science unlock technology**. Their technology nodes never appear as Razi chapter prerequisites, and no recipe overwrites a native K2SO science-card definition.
