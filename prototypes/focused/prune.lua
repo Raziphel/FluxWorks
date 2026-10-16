@@ -174,7 +174,7 @@ local function replace_recipe(spec)
   local recipe=raw("recipe",name)
   if not recipe then
     recipe={type="recipe",name=name,enabled=false,
-      icon="__FluxWorksAssets__/graphics/icons/items/fw-crystalised-flux.png",
+      icon="__FluxWorksAssets__/graphics/icons/items/crystallized-flux.png",
       icon_size=64,
       subgroup="fw-flux-systems",order="a[focused]-"..name}
     data:extend({recipe})
@@ -338,6 +338,9 @@ local function apply()
     return {legacy=true}
   end
   local removedResources=no_custom_patches()
+  -- The legacy compatibility pass may have registered six decorative mineral
+  -- bacteria and recipes earlier. The reduced factory must not require them.
+
   local techMap={}
   for _,record in ipairs(techs) do
     local tech=assert(raw("technology",record.id),

@@ -1,3 +1,8 @@
+local mode=(settings.startup or {})["fw-design-profile"]
+if not mode or mode.value~="legacy" then
+  return require("prototypes.validation.focused-core")
+end
+
 -- The final data stage is our test suite. Keep every contract in one list.
 local validators = {
   "prototypes.validation.playtest-report",

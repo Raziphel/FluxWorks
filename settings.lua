@@ -16,7 +16,7 @@ end
 data:extend({
   startup_choice("fw-design-profile","focused",{"focused","legacy"},"aa[industry]-0[design]"),
   startup_choice("fw-world-policy","off",{"additive","off"},"aa[industry]-a[world]"),
-  startup_bool("fw-native-cultures",true,"aa[industry]-b[cultures]"),
+  startup_bool("fw-native-cultures",false,"aa[industry]-b[cultures]"),
   startup_bool("fw-razi-seven-foundries",true,"aa[industry]-e[seven-foundries]"),
   startup_bool("fw-four-works-charter",true,"aa[industry]-d[charter]"),
   startup_bool("fw-industrial-programs",true,"aa[industry]-c[programs]"),
@@ -26,9 +26,9 @@ data:extend({
   startup_bool("fw-rp-convergence-universal", true, "aa[expansion]-c[convergence]"),
   startup_choice("fw-rp-process-tempo", "standard", {"rapid", "standard", "deliberate"}, "aa[expansion]-d[tempo]"),
   startup_choice("fw-rp-project-research", "standard", {"accelerated", "standard", "monumental"}, "aa[expansion]-e[projects]"),
-  startup_bool("fw-rp-galactic-industry", true, "aa[expansion]-f[worlds]"),
-  startup_bool("fw-rp-k2so-galaxy-industry", true, "aa[expansion]-g[k2so-worlds]"),
-  startup_bool("fw-rp-interplanetary-factories", true, "aa[expansion]-h[freight]"),
+  startup_bool("fw-rp-galactic-industry", false, "aa[expansion]-f[worlds]"),
+  startup_bool("fw-rp-k2so-galaxy-industry", false, "aa[expansion]-g[k2so-worlds]"),
+  startup_bool("fw-rp-interplanetary-factories", false, "aa[expansion]-h[freight]"),
   startup_difficulty("fw-balance-flux-core-difficulty", "aa[balance]-a[flux-core]"),
   startup_difficulty("fw-balance-harvesting-difficulty", "aa[balance]-b[harvesting]"),
   startup_difficulty("fw-balance-synthesis-difficulty", "aa[balance]-c[synthesis]"),
@@ -117,6 +117,21 @@ local delegated = {
   "fw-enable-asteroid-recipe-overrides", "fw-enable-fulgora-scrap-integration",
   "fw-enable-legacy-technology-overhaul",
 }
+-- Retain historical setting IDs so users can return to an old save, but
+-- don't expose 50 retired overhaul knobs beside the new independent profile.
+for name in pairs(data.raw["bool-setting"] or {}) do
+  if name:match("^fw%-balance%-") or name:match("^fw%-worldgen%-")
+    or name:match("^fw%-enable%-") and name~="fw-enable-k2so-integration"
+    or name:match("^fw%-tab%-") then
+    data.raw["bool-setting"][name].hidden=true
+  end
+end
+for name in pairs(data.raw["string-setting"] or {}) do
+  if name:match("^fw%-balance%-") or name:match("^fw%-global%-")
+    or name:match("^fw%-rp%-") and name~="fw-rp-factory-design" then
+    data.raw["string-setting"][name].hidden=true
+  end
+end
 for _, name in ipairs(delegated) do
   local setting = (data.raw["string-setting"] or {})[name] or (data.raw["bool-setting"] or {})[name]
   if setting then setting.hidden = true end
