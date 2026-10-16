@@ -45,3 +45,7 @@ This is a development branch, **not a published compatibility guarantee**. Run s
 The four upgrade-planner-compatible machines now have **four distinct new emblems** shipped in Assets 1.0.5: drill head, reaction network, furnace crucible, and four-way convergence. They replace stacked spectrum color spots without modifying any placed machine's sprite sheet, footprint, or fluid ports. The final Convergence Synthesis Plant can craft both synthesis and Arc Foundry recipes by default (opt-out). Project research, existing manufacturing process tempo, and upgrade electricity usage have separate user-selectable settings. No global campaign progression, hazard or science costs are modified by these controls.
 
 Gleba specialist bacteria now have six native-bacteria seeding recipes and no longer change natural stromatolite drops in Razi-hosted mode. This preserves the source planet's loot curves while retaining FluxWorks cultivation. See [World ownership](docs/RAZI_PROTOCOL.md).
+
+### No surprise global edits
+
+The old opt-in asteroid crushing and Fulgora scrap patches are disabled when Razi Protocol is present, even if legacy settings were stored as enabled. Obsolete standalone Shattered expedition research is quietly hidden only when the finished technology graph proves it isn't an active prerequisite. No research IDs are deleted.

@@ -1,3 +1,7 @@
+-- Razi Protocol owns shared asteroid/scrap transformations. Do not
+-- permit old FluxWorks setting values to override the curated host.
+if require("prototypes.lib.companion-mode").razi_protocol then return end
+
 local Startup = require("prototypes.lib.startup-settings")
 
 if not Startup.enabled("fw-enable-recipe-integration", true) then

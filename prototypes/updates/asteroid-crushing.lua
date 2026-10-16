@@ -1,3 +1,7 @@
+-- Razi Protocol owns shared asteroid/scrap transformations. Do not
+-- permit old FluxWorks setting values to override the curated host.
+if require("prototypes.lib.companion-mode").razi_protocol then return end
+
 -- Replacing Space Age's asteroid yields is a legacy balance option, not the
 -- default behavior of an expansion.
 if not require("prototypes.lib.startup-settings").enabled("fw-enable-asteroid-recipe-overrides", false) then

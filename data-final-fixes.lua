@@ -91,6 +91,7 @@ require("prototypes.recipes.razi-industrial-extension")
 -- industry reconciliations here, after all FluxWorks factory prototypes exist.
 require("prototypes.compat.razi-extension-bridge").apply()
 require("prototypes.updates.razi-industrial-balance").apply()
+require("prototypes.updates.razi-industry-tech-clarity").apply()
 
 -- Factorio 2.1 replaced singular recipe categories and product probability
 -- fields. Normalize after every compatibility rewrite and before validation.

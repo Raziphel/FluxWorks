@@ -28,3 +28,9 @@ Keep existing `fw-` items, machines, fluids, technologies and recipe names. Lega
 7. Compare early factory setup and late throughput in a fresh save and disposable old-save copies; validate graphical rendering in the real Factorio client.
 
 The sources and mock tests alone do not prove that a full Factorio modpack loads.
+
+## Host authority safety, 0.3.1
+
+Even when previously saved legacy startup settings remain active, Razi-hosted FluxWorks does not patch Razi's native asteroid-crushing recipes or Fulgora scrap-recycling outputs. Its bespoke Flux asteroid prototypes stay defined for existing item references, but global production is host-owned. Old landable-Shattered expedition research IDs remain registered; obsolete branches are hidden only when no visible technology requires them. Normal Razi travel, research and achievement unlocks are untouched.
+
+Gleba now acquires the six resource-specific cultures using physical organic recipes seeded from normal iron/copper bacteria. Native stromatolite drops are never edited. Optional host-owned workshops are still imported from Razi's five existing source modules, not copied into FluxWorks.
