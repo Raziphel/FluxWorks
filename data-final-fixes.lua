@@ -97,6 +97,7 @@ require("prototypes.overhaul.machine-specialization").apply()
 require("prototypes.overhaul.planetary-research").apply()
 require("prototypes.overhaul.origin-forge-processes")
 require("prototypes.overhaul.independent-programs")
+require("prototypes.identity.four-works-charter")
 if require("prototypes.lib.companion-mode").razi_protocol then
   require("prototypes.updates.razi-domain-science-rewire").apply()
 end
