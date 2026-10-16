@@ -1,4 +1,5 @@
 -- Offline prototype mock for the extra factory recipes and settings.
+dofile("tests/lua/support/razi_lib_bootstrap.lua").install()
 local function copy(x)
   if type(x) ~= "table" then return x end
   local result = {}

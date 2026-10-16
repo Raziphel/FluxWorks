@@ -1,6 +1,7 @@
 -- Run from the FluxWorks repository root with Lua 5.2+:
 -- lua tests/lua/test_industrial_machine_upgrades.lua
 -- Small data-stage mock; an actual Factorio 2.1 load is still essential.
+dofile("tests/lua/support/razi_lib_bootstrap.lua").install()
 local function copy(value)
   if type(value) ~= "table" then return value end
   local result = {}
@@ -71,6 +72,7 @@ function data:extend(prototypes)
 end
 _G.log = function() end
 
+_G.settings={startup={["fw-rp-convergence-universal"]={value=true}}}
 local source = "prototypes/updates/industrial-machine-upgrades.lua"
 dofile(source)
 
@@ -117,8 +119,10 @@ for name in pairs(raw.recipe) do
   if name:sub(1, 3) == "fw-" then count = count + 1 end
 end
 assert(count == 4)
-assert(#raw.item["fw-convergence-synthesis-plant"].icons == 3,
-  "Convergence should show both purple and green Flux icons")
+assert(#raw.item["fw-convergence-synthesis-plant"].icons == 2,
+  "Convergence should replace, not stack, the prior Precision badge")
+assert(raw.item["fw-convergence-synthesis-plant"].icons[2].icon
+  == "__FluxWorksAssets__/graphics/icons/upgrade-badges/fw-convergence.png")
 
 -- The same structural checks used in the actual Factorio data stage.
 dofile("prototypes/validation/industrial-machine-upgrades.lua")

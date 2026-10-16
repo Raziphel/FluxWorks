@@ -1,10 +1,10 @@
 {
   "name": "FluxWorks",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "title": "FluxWorks",
   "author": "Raziphel",
   "factorio_version": "2.1",
-  "description": "Galaxy-wide industrial extension to Razi Protocol with guarded native-planet, K2SO and cross-system manufacturing, four Flux spectra and optional factory projects.",
+  "description": "RaziLib-powered industrial extension for Razi Protocol with four Flux spectra, 72 guarded galactic factory slots, K2SO hybrids and specialist machines.",
   "dependencies": [
     "base >= 2.1.0",
     "space-age >= 2.1.0",

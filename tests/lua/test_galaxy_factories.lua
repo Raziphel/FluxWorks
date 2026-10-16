@@ -1,4 +1,5 @@
 -- Run with lua tests/lua/test_galaxy_factories.lua in the FluxWorks root.
+dofile("tests/lua/support/razi_lib_bootstrap.lua").install()
 local function copy(x)
   if type(x)~="table" then return x end
   local out={}

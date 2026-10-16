@@ -1,6 +1,7 @@
 -- Run from the FluxWorks repository root with Lua 5.2+:
 --   lua tests/lua/test_spectrum_industries.lua
 -- Does not require Factorio. The game engine must still validate prototypes.
+dofile("tests/lua/support/razi_lib_bootstrap.lua").install()
 local function deepcopy(value)
   if type(value) ~= "table" then return value end
   local copied = {}

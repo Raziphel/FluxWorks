@@ -43,3 +43,18 @@ Dedicated full in-world machine sprite sheets and animations have **not** been r
 Run `lua tests/lua/test_galaxy_factories.lua` to test the source-native registry's guards and `python3 scripts/validate_extension_assets.py` from the FluxWorksAssets root for eight system emblems and four machine badges. These tests are designed for manual execution with no GitHub Actions workload.
 
 The 72 catalogue slots should be inspected individually against the actual merged game prototypes. Count successful `fw-planet-*`, `fw-k2-galaxy-*` and `fw-freight-*` registrations in the Factorio log. A skipped optional world is not automatically a bug, but unexpectedly missing important installed worlds should prompt native prototype and producer-unlock inspection rather than guessing resource IDs.
+
+## RaziLib 1.2 integration regression suite
+
+FluxWorks now delegates recipe/technology lookups, idempotent unlocks, icon copying and badge composition, science/lab checks, settings definitions, and graph-cycle protection to genuine RaziLib 1.2.0 APIs. The offline suite **must load the actual installed RaziLib sources**, not test-only helper lookalikes. With both repositories checked out side-by-side:
+
+```sh
+lua tests/lua/test_razi_lib_integration.lua
+lua tests/lua/test_razi_lib_settings.lua
+lua tests/lua/test_spectrum_industries.lua
+lua tests/lua/test_razi_industrial_extension.lua
+lua tests/lua/test_galaxy_factories.lua
+lua tests/lua/test_industrial_machine_upgrades.lua
+```
+
+If RaziLib is checked out elsewhere, set `RAZILIB_PATH=/path/to/RaziLib` for each command. The bootstrap fails clearly if the real shared library is absent. Test both K2SO installed and missing using actual Factorio; no CI workflow was added.
