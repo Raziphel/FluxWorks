@@ -10,3 +10,5 @@ for _,module in ipairs({
   "scripts.rift-exchange",
 }) do registry:include(require(module)) end
 registry:install()
+-- On-demand progress help; does not register tick handlers or UI polling.
+require("scripts.fluxworks-guide").register()

@@ -55,6 +55,17 @@ for _,record in ipairs(razi.registrations or {}) do
   seen[record.spec.system]=true
   assert(items[record.record],"No physical industrial calibration record "..record.record)
   inputs(record.recipe,3)
+  local operation=assert(recipes[record.recipe],"Field commission recipe missing")
+  assert(operation.icons and #operation.icons>1,
+    "Field operation must show both product and system badge")
+  local reclaim="fw-foundry-reconcile-"..record.spec.system
+  inputs(reclaim,1)
+  local sink=assert(recipes[reclaim])
+  assert(sink.ingredients[1].name==record.record
+    and sink.ingredients[1].amount==6,
+    "Surplus foundry records have no usable recycling path")
+  assert(unlock(techs[record.technology],reclaim),
+    "Foundry commission forgot its surplus-record recycling unlock")
   assert(unlock(techs[record.technology],record.recipe),
     "Razi field report tech has no corresponding operation")
 end
