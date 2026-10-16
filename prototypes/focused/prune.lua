@@ -61,6 +61,33 @@ local recipes={
   {id="fw-quantum-computer",inputs={item("processing-unit",4),
     item("fw-phase-wafer",2),fluid(F.p,40)},time=30,
     category="fw-flux-synthesis",tech="fw-flux-convergence"},
+  -- Harvesters condition and reclaim physical Flux materials, without
+  -- becoming a back door for dozens of custom ores.
+  {id="fw-focused-harvest-catalyst",out="fw-flux-catalyst",yield=3,
+    category="fw-flux-harvesting",
+    inputs={item("fw-crystalised-flux",5),item("copper-plate",2)},
+    time=12,tech="fw-flux-stabilization"},
+  {id="fw-focused-harvest-lattice",out="fw-flux-lattice",yield=3,
+    category="fw-flux-harvesting",
+    inputs={item("fw-stabilized-flux-crystal",2),item("steel-plate",2)},
+    time=16,tech="fw-flux-resonance"},
+  -- The Convergence Forge is not a ceremonial machine. It gets only three
+  -- solid-feedstock applications with no mystery resources.
+  {id="fw-focused-forge-electronics",out="fw-quantum-computer",yield=4,
+    category="fw-origin-forging",
+    inputs={item("fw-phase-wafer",2),item("fw-condensed-flux-matrix",1),
+      item("processing-unit",2)},
+    time=36,tech="fw-origin-infrastructure"},
+  {id="fw-focused-forge-refractory",out="fw-annealed-cermet",yield=7,
+    category="fw-origin-forging",
+    inputs={item("fw-thermal-core",2),item("fw-convergence-chassis",1),
+      item("steel-plate",4)},
+    time=38,tech="fw-origin-infrastructure"},
+  {id="fw-focused-forge-stabilization",out="fw-stabilized-flux-crystal",yield=10,
+    category="fw-origin-forging",
+    inputs={item("fw-condensed-flux-matrix",2),item("fw-flux-catalyst",2),
+      item("processing-unit",3)},
+    time=38,tech="fw-origin-infrastructure"},
   -- Three machinery families, one extractor, one capstone and useful logistics.
   {id="fw-flux-condenser",inputs={item("steel-plate",20),
     item("advanced-circuit",10),item("stone-brick",12)},time=12,
