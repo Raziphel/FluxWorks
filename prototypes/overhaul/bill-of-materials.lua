@@ -2,6 +2,9 @@
 -- alternatives: they replace existing owned recipes with a directed factory DAG.
 -- Each entry retains its original prototype ID and output definitions.
 return {
+  {name="fw-stabilized-flux-crystal",time=8,inputs={{type="item",name="fw-crystalised-flux",amount=3},{type="item",name="fw-flux-catalyst",amount=1},{type="fluid",name="fw-purple-flux",amount=35},{type="fluid",name="fw-yellow-flux",amount=20}}},
+  {name="fw-condensed-flux-matrix",time=17,inputs={{type="item",name="fw-stabilized-flux-crystal",amount=2},{type="item",name="fw-flux-lattice",amount=2},{type="fluid",name="fw-purple-flux",amount=70},{type="fluid",name="fw-red-flux",amount=40}}},
+  {name="fw-rift-seed-crystallization",time=30,inputs={{type="item",name="fw-stabilized-flux-crystal",amount=2},{type="item",name="fw-phase-wafer",amount=1},{type="fluid",name="fw-purple-flux",amount=45},{type="fluid",name="fw-yellow-flux",amount=40}}},
   {name="fw-iron-beam",time=1.6,inputs={{type="item",name="iron-plate",amount=3}}},
   {name="fw-steel-beam",time=2.4,inputs={{type="item",name="steel-plate",amount=2},{type="item",name="fw-iron-beam",amount=1}}},
   {name="fw-aluminum-beam",time=2.1,inputs={{type="item",name="aluminum-plate",amount=2},{type="item",name="fw-iron-beam",amount=1}}},

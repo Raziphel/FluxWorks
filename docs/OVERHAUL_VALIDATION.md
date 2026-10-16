@@ -77,3 +77,7 @@ The full standalone Shattered Planet world scripts, ending handlers and custom m
 Validate that old saves retain all `fw-` machine IDs, research milestones and stored state. Check Razi's sole Shattered Planet unlock and sole victory handler, that main research still unlocks `fw-model-lattice` and `fw-harmonic-lattice-core`, and that the new assets package no longer contains the abandoned menu logo. This must be confirmed inside Factorio; source inspection alone cannot certify saves.
 
 Run `lua tests/lua/test_lean_extension_cleanup.lua` from FluxWorks to assert the deleted source files have not returned and that the historical Shattered research cannot claim Razi's space location or strip ordinary FluxWorks unlocks. It is an offline structural regression test, not a substitute for a Factorio save load.
+
+## 0.4.0 fluid-port reconstruction
+
+The Reborn factory replaces three especially problematic multi-fluid manufacturing recipes: stabilized Flux crystal (formerly four spectra plus chlorine), condensed Flux matrix (four fluids), and rift seed crystallization. The redesigned versions need no more than two input fluids and are made on the existing synthesis hardware. The Reborn validator updates the historical pure-composition exception for exactly those two recipes; legacy/standalone composition behavior is preserved. This is a physical manufacturing change, not just a display adjustment.

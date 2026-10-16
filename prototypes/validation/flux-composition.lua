@@ -1,4 +1,15 @@
 local doctrine = require("prototypes.updates.flux-composition-doctrine")
+-- In the Reborn industrial profile, condensed matrices and rift seeds are
+-- physical two-port synthesis recipes instead of inaccessible four-fluid
+-- composition experiments. All standalone/Legacy rules remain unchanged.
+local reborn = require("prototypes.lib.companion-mode").razi_protocol
+  and (not (settings.startup or {})["fw-rp-factory-design"]
+    or settings.startup["fw-rp-factory-design"].value ~= "legacy")
+if reborn then
+  doctrine.pure_recipes["fw-condensed-flux-matrix"] = nil
+  doctrine.pure_recipes["fw-rift-seed-crystallization"] = nil
+end
+
 
 local function ingredient_name(ingredient)
   return ingredient.name or ingredient[1]
