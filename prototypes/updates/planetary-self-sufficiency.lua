@@ -170,7 +170,9 @@ for index, spec in ipairs(bacteria_specs) do
       }
     end
   end
-  
+end
+
+if not require("prototypes.lib.companion-mode").razi_protocol then
   local native_stromatolite_drops = {
     ["iron-stromatolite"] = {
       stone = 0.80,
@@ -193,8 +195,7 @@ for index, spec in ipairs(bacteria_specs) do
       end
     end
   end
-  
-    end
+end
 
 data:extend(bacteria_prototypes)
 data:extend(cultivation_recipes)
