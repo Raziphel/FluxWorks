@@ -51,6 +51,7 @@ FluxWorks now delegates recipe/technology lookups, idempotent unlocks, icon copy
 ```sh
 lua tests/lua/test_razi_lib_integration.lua
 lua tests/lua/test_razi_lib_settings.lua
+lua tests/lua/test_razi_lib_k2so.lua
 lua tests/lua/test_spectrum_industries.lua
 lua tests/lua/test_razi_industrial_extension.lua
 lua tests/lua/test_galaxy_factories.lua
@@ -58,3 +59,5 @@ lua tests/lua/test_industrial_machine_upgrades.lua
 ```
 
 If RaziLib is checked out elsewhere, set `RAZILIB_PATH=/path/to/RaziLib` for each command. The bootstrap fails clearly if the real shared library is absent. Test both K2SO installed and missing using actual Factorio; no CI workflow was added.
+
+**K2SO shared-library regression:** the new Lua test verifies normal/expensive recipe replacement through RaziLib, duplicate-safe science and technology unlocks, planetary alternative icon cloning, and both default-on and opted-out K2SO states.
