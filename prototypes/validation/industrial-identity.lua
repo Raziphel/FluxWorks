@@ -34,7 +34,7 @@ local function inputs(name,limit)
 end
 local charter=techs["fw-four-works-charter"]
 if charter then
-  assert(charter.icons and charter.icons[1].icon:find("fw-four-works-charter.png",1,true),
+  assert(charter.icon and charter.icon:find("fw-four-works-charter.png",1,true),
     "Standalone industrial Charter lost its unique emblem")
   for _,spec in ipairs(standalone.spec.processes) do
     local name="fw-charter-"..spec.id
