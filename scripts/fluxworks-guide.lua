@@ -36,7 +36,7 @@ local function on_command(command)
     emit(player,"fw-guide.intro")
     emit(player,"fw-guide.four")
     emit(player,"fw-guide.next")
-    if game.active_mods and game.active_mods["razi-protocol"] then
+    if script.active_mods and script.active_mods["razi-protocol"] then
       emit(player,"fw-guide.razi")
     end
   elseif action=="status" then
@@ -56,7 +56,7 @@ local function on_command(command)
     else
       emit(player,"fw-guide.charter-inactive")
     end
-    if game.active_mods and game.active_mods["razi-protocol"] then
+    if script.active_mods and script.active_mods["razi-protocol"] then
       local commissions,completed=0,0
       for _,system in ipairs(systems) do
         local tech=force.technologies["fw-foundry-commission-"..system]
@@ -68,7 +68,7 @@ local function on_command(command)
       emit(player,"fw-guide.foundries",completed,commissions)
     end
   elseif action=="atlas" then
-    if not (game.active_mods and game.active_mods["razi-protocol"]) then
+    if not (script.active_mods and script.active_mods["razi-protocol"]) then
       emit(player,"fw-guide.no-razi")
       return
     end
