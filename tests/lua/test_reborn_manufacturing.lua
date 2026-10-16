@@ -20,7 +20,7 @@ for _,spec in ipairs(designs) do
     raws[input.type][input.name]={}
   end
 end
-assert(#designs>=53)
+assert(#designs>=73)
 local transform=dofile("prototypes/overhaul/rework-recipes.lua")
 local applied=transform.apply()
 assert(applied==#designs)
@@ -41,4 +41,4 @@ settings.startup["fw-rp-factory-design"].value="legacy"
 raws.recipe[designs[1].name].ingredients={{type="item",name="legacy-bill",amount=8}}
 assert(transform.apply()==0)
 assert(raws.recipe[designs[1].name].ingredients[1].name=="legacy-bill")
-print("FluxWorks Reborn: 53 canonical recipes, 2 physical ports, legacy switch and output preservation OK")
+print("FluxWorks Reborn: 73 canonical recipes, 2 physical ports, legacy switch and output preservation OK")
