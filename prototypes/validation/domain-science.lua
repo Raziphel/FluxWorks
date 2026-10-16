@@ -1,3 +1,10 @@
+-- Razi extension science is optional specialist mastery, not a parallel
+-- campaign. Validate the correct host contract rather than standalone rules.
+if require("prototypes.lib.companion-mode").razi_protocol then
+  require("prototypes.validation.razi-domain-science")
+  return
+end
+
 local legacy_science = require("prototypes.lib.startup-settings").enabled("fw-enable-legacy-technology-overhaul", false)
 local early_science_gates = require("prototypes.lib.startup-settings").enabled("fw-enable-early-domain-science-gates", false)
 local optional_early_packs = {

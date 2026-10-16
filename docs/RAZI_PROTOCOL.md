@@ -34,3 +34,7 @@ The sources and mock tests alone do not prove that a full Factorio modpack loads
 Even when previously saved legacy startup settings remain active, Razi-hosted FluxWorks does not patch Razi's native asteroid-crushing recipes or Fulgora scrap-recycling outputs. Its bespoke Flux asteroid prototypes stay defined for existing item references, but global production is host-owned. Old landable-Shattered expedition research IDs remain registered; obsolete branches are hidden only when no visible technology requires them. Normal Razi travel, research and achievement unlocks are untouched.
 
 Gleba now acquires the six resource-specific cultures using physical organic recipes seeded from normal iron/copper bacteria. Native stromatolite drops are never edited. Optional host-owned workshops are still imported from Razi's five existing source modules, not copied into FluxWorks.
+
+## Science validation ownership
+
+In companion mode the original standalone science validators are replaced by a strict extension contract: preserve four science-pack items and recipes, preserve their owning unlock technologies, retain four project-specific science consumers, reject any normal or planetary research requiring those FluxWorks packs, and reject any FluxWorks unlock-space-location effect on Shattered Planet. The standalone tests remain in source for legacy documentation, but cannot veto Razi's campaign rules.

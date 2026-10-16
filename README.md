@@ -49,3 +49,7 @@ Gleba specialist bacteria now have six native-bacteria seeding recipes and no lo
 ### No surprise global edits
 
 The old opt-in asteroid crushing and Fulgora scrap patches are disabled when Razi Protocol is present, even if legacy settings were stored as enabled. Obsolete standalone Shattered expedition research is quietly hidden only when the finished technology graph proves it isn't an active prerequisite. No research IDs are deleted.
+
+### Research ownership, verified
+
+FluxWorks science packs are **specialist project bottles** under Razi Protocol, not another required ladder in the normal campaign. Startup validation now checks that the four dedicated Industrial Project technologies still consume their matching science packs, that no other Razi/base/FluxWorks research acquires one, and that no FluxWorks technology can unlock Razi's Shattered Planet location.

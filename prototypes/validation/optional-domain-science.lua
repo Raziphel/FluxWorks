@@ -1,3 +1,9 @@
+-- Razi-hosted science rules are verified by razi-domain-science.lua.
+if require("prototypes.lib.companion-mode").razi_protocol then
+  require("prototypes.validation.razi-domain-science")
+  return
+end
+
 -- Production research must no longer require the two early optional
 -- discipline packs. They belong exclusively to opt-in factory upgrade programs.
 local Startup = require("prototypes.lib.startup-settings")
