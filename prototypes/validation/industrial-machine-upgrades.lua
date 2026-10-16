@@ -1,10 +1,10 @@
 -- Catch broken reward wiring and model-footprint regressions at load time.
 -- These checks deliberately leave other mods' machines and recipes alone.
 local upgrades = {
-  {"fw-flux-harvester", "fw-industrial-harvester", "fw-industrial-district-project", 3.4, 5},
-  {"fw-synthesis-plant", "fw-precision-synthesis-plant", "fw-autonomous-network-project", 4.6, 6},
-  {"fw-arc-foundry", "fw-chromatic-arc-foundry", "fw-spectrum-control-project", 5.1, 6},
-  {"fw-precision-synthesis-plant", "fw-convergence-synthesis-plant", "fw-convergence-directive-project", 6.3, 7},
+  {"fw-flux-harvester", "fw-industrial-harvester", "fw-industrial-district-project", 4.15, 5},
+  {"fw-synthesis-plant", "fw-precision-synthesis-plant", "fw-autonomous-network-project", 5.4, 6},
+  {"fw-arc-foundry", "fw-chromatic-arc-foundry", "fw-spectrum-control-project", 5.85, 6},
+  {"fw-precision-synthesis-plant", "fw-convergence-synthesis-plant", "fw-convergence-directive-project", 6.8, 7},
 }
 
 local function present(entries, name, effect_type)
