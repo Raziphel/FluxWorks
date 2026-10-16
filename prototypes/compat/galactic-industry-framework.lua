@@ -3,6 +3,7 @@ local Science=require("__razi_lib__/lib/science")
 local Technology=require("__razi_lib__/lib/technology")
 local Item=require("__razi_lib__/lib/item")
 local IndustrialIcons=require("prototypes.lib.industrial-icons")
+local Collections=require("__razi_lib__/lib/collections")
 -- Optional industrial production from native, *installed* planet resources.
 -- This is a data-stage-only factory catalogue, never a world/route patch.
 local M = {}
@@ -218,12 +219,11 @@ function M.register(specs,setting_name)
         if partner then ingredients[#ingredients+1]={type="fluid",name=spectra[partner].fluid,amount=20} end
         if #ingredients<=6 then
           local prerequisites={arrival,discipline.base}
-          if spec.science_unlock and spec.science_unlock~=arrival
-            and spec.science_unlock~=discipline.base then
-            prerequisites[#prerequisites+1]=spec.science_unlock
+          if spec.science_unlock then
+            Collections.append_unique(prerequisites,spec.science_unlock)
           end
-          if second_arrival and second_arrival~=arrival then
-            prerequisites[#prerequisites+1]=second_arrival
+          if second_arrival then
+            Collections.append_unique(prerequisites,second_arrival)
           end
           local target=table.deepcopy(picture)
           data:extend({{

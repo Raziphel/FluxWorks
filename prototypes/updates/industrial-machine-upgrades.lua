@@ -1,5 +1,6 @@
 local Item=require("__razi_lib__/lib/item")
 local Technology=require("__razi_lib__/lib/technology")
+local Graph=require("__razi_lib__/lib/technology_graph")
 local IndustrialIcons=require("prototypes.lib.industrial-icons")
 -- Four optional, physically buildable rewards for FluxWorks' research projects.
 -- These are new prototypes, not replacements: existing machines and saves keep
@@ -94,7 +95,10 @@ local function find_item(name)
   return found and found:raw() or nil
 end
 local function ensure_prerequisite(technology_name, prerequisite)
-  if not (data.raw.technology and data.raw.technology[prerequisite]) then return false end
+  local technologies=data.raw.technology or {}
+  if not technologies[prerequisite] or not technologies[technology_name] then return false end
+  -- Adding a machine milestone must never close an accidental research cycle.
+  if Graph.reaches(technologies,prerequisite,technology_name) then return false end
   Technology.get(technology_name):add_prerequisite(prerequisite)
   return true
 end

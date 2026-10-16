@@ -2,6 +2,7 @@
 -- recipes or science tree; reuse its late materials in FluxWorks-owned content.
 local RaziSettings=require("__razi_lib__/lib/settings")
 local Technology=require("__razi_lib__/lib/technology")
+local Graph=require("__razi_lib__/lib/technology_graph")
 local Recipe=require("__razi_lib__/lib/recipe")
 local Icons=require("__razi_lib__/lib/icons")
 if not mods["Krastorio2-spaced-out"] or not RaziSettings.enabled("fw-enable-k2so-integration", true) then
@@ -20,9 +21,10 @@ local function add_science(tech_name,science_name)
   end
 end
 local function add_prerequisite(tech_name,parent)
-  if data.raw.technology and data.raw.technology[parent] then
-    local tech=Technology.optional(tech_name)
-    if tech then tech:add_prerequisite(parent) end
+  local technologies=data.raw.technology or {}
+  if technologies[parent] and technologies[tech_name]
+    and not Graph.reaches(technologies,parent,tech_name) then
+    Technology.get(tech_name):add_prerequisite(parent)
   end
 end
 
