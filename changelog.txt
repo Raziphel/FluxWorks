@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.3.5
+Version: 0.5.0
 Date: 2026-10-16
   Major changes:
     - Repositioned FluxWorks as a Razi Protocol industrial extension with required host dependency.
@@ -20,7 +20,12 @@ Date: 2026-10-16
     - Deleted dormant standalone Shattered Planet, own-ending and custom menu-simulation code and archived scene files.
     - Retired no-op global world tuning, asteroid-crushing and Fulgora scrap patch modules and corresponding validators.
     - Prevented an old Shattered tech from overriding Razi destination unlock or stealing standard FluxWorks recipe unlocks.
-    - Raised the asset dependency to FluxWorksAssets 1.0.7, which removes five orphaned visuals.
+    - Decoupled from Razi Protocol and added a self-contained industrial progression.
+    - Added four FluxWorks-owned engineering programs and up to 16 guarded production alternatives.
+    - Introduced four original program emblems through Assets 1.0.9.
+    - Made resource placement additive and stopped editing native stromatolite drops.
+    - Kept old technology, machine and storage IDs for save compatibility.
+    - Left Razi routes, story, planet discovery and victory with the Razi mod.
     - Kept Razi planetary progression, space location, worldgen, asteroid balance and victory authoritative.
   Validation:
     - Requires Factorio 2.1/K2SO/Razi Dev/Assets full-pack engine and save migration tests before release.
