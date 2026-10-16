@@ -37,3 +37,5 @@ Two late K2SO native-material hybrid recipes offer optional manufacturing of Flu
 ## Source-native fallback
 
 When a curated item ID is absent, FluxWorks may choose a producible visible intermediate that the source item prototype explicitly declares as `default_import_location = <planet>`. This is a one-time data-stage lookup, sorted deterministically with a material-oriented preference. It excludes generic iron/copper/stone/coal and science/tech-card items. It does **not** mine, scan the game surface or create new resource patches. If neither exact material nor declared source-native item exists, the recipe is omitted. The Factorio log records any such substitution for a mod maintainer to review.
+
+If `fw-enable-k2so-integration` is disabled, no new K2SO galaxy hybrids register even if the galaxy-specific switch remains on. This preserves the older K2SO opt-out contract.

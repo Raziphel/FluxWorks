@@ -1,5 +1,10 @@
 -- K2SO + actual native planet resources combine into advanced factory alternatives.
 -- Conditional recipes never change planets, source items, native crafting, or Razi tech.
+-- Honor both the legacy K2SO integration switch and the new planet-factory
+-- switch; opting out of K2SO must disable every new K2SO hybrid as well.
+if not (mods and mods["Krastorio2-spaced-out"]) then return 0,0 end
+local legacy=settings and settings.startup and settings.startup["fw-enable-k2so-integration"]
+if legacy and legacy.value==false then return 0,0 end
 local register=require("prototypes.compat.galactic-industry-framework").register
 local specs={
   {id="nauvis-electronic-components-0",family="k2-galaxy",world="nauvis",system="calidus",native={"iron-plate"},k2={"kr-electronic-components"},product="fw-sensor-package",spectrum="yellow",feed="fw-circuit-substrate",yield=3,cost=420,duration=18},
