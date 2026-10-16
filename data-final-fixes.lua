@@ -80,10 +80,13 @@ require("prototypes.recipes.razi-industrial-extension")
 -- Razi-owned research reconciliation runs before per-player-selected
 -- industrial pacing so none of our settings alter world or chapter gates.
 
--- The required dependency loads Razi before FluxWorks. Run Razi-owned
--- industry reconciliations here, after all FluxWorks factory prototypes exist.
+-- Standalone mod first, optional galaxy adapters second.
 require("prototypes.overhaul.spectrum-materials")
-require("prototypes.compat.razi-extension-bridge").apply()
+-- FluxWorks owns its industrial graph in every installation. Razi's
+-- adapters belong to Razi and run after FluxWorks when that mod is present.
+-- Deliberately do NOT require Razi modules from FluxWorks: that recreates an
+-- unwanted reverse dependency and can execute Razi before its own data stage.
+
 -- Native planet content is registered after Razi's existing seven-system
 -- specialty and paired-freight bridges. All three new catalogs are optional.
 require("prototypes.compat.galaxy-planet-factories")
@@ -93,7 +96,9 @@ require("prototypes.overhaul.rework-recipes").apply()
 require("prototypes.overhaul.machine-specialization").apply()
 require("prototypes.overhaul.planetary-research").apply()
 require("prototypes.overhaul.origin-forge-processes")
-require("prototypes.updates.razi-domain-science-rewire").apply()
+if require("prototypes.lib.companion-mode").razi_protocol then
+  require("prototypes.updates.razi-domain-science-rewire").apply()
+end
 require("prototypes.updates.razi-industrial-balance").apply()
 require("prototypes.updates.razi-industry-tech-clarity").apply()
 
@@ -104,4 +109,4 @@ require("__razi_lib__/lib/recipe").normalize_all_2_1()
 
 require("prototypes.validation.init")
 
--- Razi Protocol owns menu simulations; FluxWorks does not replace them.
+-- Neither FluxWorks nor optional integrations replace the Factorio main menu.

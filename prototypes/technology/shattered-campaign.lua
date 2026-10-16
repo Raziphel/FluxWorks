@@ -23,18 +23,8 @@ local function productivity(recipe, change)
   return { type = "change-recipe-productivity", recipe = recipe, change = change }
 end
 
--- Promethium science opens the route to the edge, not the planet itself. FluxWorks owns the
--- actual expedition gate so every planetary discipline and the mature rift branch matter.
-local promethium_technology = data.raw.technology and data.raw.technology["promethium-science-pack"]
-if promethium_technology and not require("prototypes.lib.companion-mode").razi_protocol then
-  local effects = {}
-  for _, effect in ipairs(promethium_technology.effects or {}) do
-    if not (effect.type == "unlock-space-location" and effect.space_location == "shattered-planet") then
-      effects[#effects + 1] = effect
-    end
-  end
-  promethium_technology.effects = effects
-end
+-- Preserve the native Promethium Science destination unlock. Legacy Shattered
+-- technology prototypes exist for save IDs only, never as a rival campaign.
 
 data:extend({
   {

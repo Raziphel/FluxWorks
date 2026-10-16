@@ -1,10 +1,10 @@
 {
   "name": "FluxWorks",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "title": "FluxWorks",
   "author": "Raziphel",
   "factorio_version": "2.1",
-  "description": "RaziLib-powered industrial extension for Razi Protocol with four Flux spectra, 72 guarded galactic factory slots, K2SO hybrids and specialist machines.",
+  "description": "Independent Space Age industrial expansion: four Flux spectra, specialized machinery, deep manufacturing and optional K2SO/Razi Protocol compatibility.",
   "dependencies": [
     "base >= 2.1.0",
     "space-age >= 2.1.0",
@@ -15,8 +15,7 @@
     "? Krastorio2-spaced-out",
     "razi_lib >= 1.2.0",
     "+ aai-loaders >= 0.3.0",
-    "+ aai-containers >= 0.4.0",
-    "razi-protocol >= 2.1.118"
+    "+ aai-containers >= 0.4.0"
   ],
   "quality_required": true,
   "rail_bridges_required": true,
