@@ -26,7 +26,7 @@ end
 -- Promethium science opens the route to the edge, not the planet itself. FluxWorks owns the
 -- actual expedition gate so every planetary discipline and the mature rift branch matter.
 local promethium_technology = data.raw.technology and data.raw.technology["promethium-science-pack"]
-if promethium_technology then
+if promethium_technology and not require("prototypes.lib.companion-mode").razi_protocol then
   local effects = {}
   for _, effect in ipairs(promethium_technology.effects or {}) do
     if not (effect.type == "unlock-space-location" and effect.space_location == "shattered-planet") then
@@ -189,5 +189,9 @@ end
 
 remove_unlock("fw-rift-harmonics", "fw-model-lattice")
 remove_unlock("fw-origin-infrastructure", "fw-harmonic-lattice-core")
-add_prerequisite("fw-origin-infrastructure", "fw-shattered-origin-survey")
-add_prerequisite("fw-storm-megastructures", "fw-ion-storm-capture")
+if not require("prototypes.lib.companion-mode").razi_protocol then
+  add_prerequisite("fw-origin-infrastructure", "fw-shattered-origin-survey")
+end
+if not require("prototypes.lib.companion-mode").razi_protocol then
+  add_prerequisite("fw-storm-megastructures", "fw-ion-storm-capture")
+end

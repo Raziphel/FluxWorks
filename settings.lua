@@ -30,7 +30,11 @@ local function startup_choice(name, default_value, allowed_values, order)
   }
 end
 
+-- Factory-only settings. The older fw-* identifiers remain registered for
+-- existing saves, but none of the host campaign settings are changed.
 data:extend({
+  startup_choice("fw-rp-industrial-depth", "expanded", {"core", "expanded"}, "aa[expansion]-a[depth]"),
+  startup_choice("fw-rp-industrial-power", "standard", {"efficient", "standard", "demanding"}, "aa[expansion]-b[power]"),
   startup_difficulty("fw-balance-flux-core-difficulty", "aa[balance]-a[flux-core]"),
   startup_difficulty("fw-balance-harvesting-difficulty", "aa[balance]-b[harvesting]"),
   startup_difficulty("fw-balance-synthesis-difficulty", "aa[balance]-c[synthesis]"),

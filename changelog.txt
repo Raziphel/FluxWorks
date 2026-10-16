@@ -1,4 +1,17 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.3.0
+Date: 2026-10-16
+  Major changes:
+    - Repositioned FluxWorks as a Razi Protocol industrial extension with required host dependency.
+    - Moved the late Razi industry bridge to FluxWorks' final stage for correct prototype ordering.
+    - Removed standalone campaign runtime handlers and host scenario/menu artwork registration.
+    - Preserved legacy prototype names and FluxWorks' four original Flux spectra.
+    - Added eight guarded factory alternative recipes and configurable project machine power draw.
+    - Kept Razi planetary progression, space location, worldgen, asteroid balance and victory authoritative.
+  Validation:
+    - Requires Factorio 2.1/K2SO/Razi Dev/Assets full-pack engine and save migration tests before release.
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Version: 0.2.14
 Date: 2026-10-13
   Features:

@@ -81,6 +81,15 @@ require("prototypes.recipes.spectrum-industries")
 -- Tangible rewards for optional research projects. Built after K2SO aliases.
 require("prototypes.updates.industrial-machine-upgrades")
 
+-- Optional throughput paths: additional Razi-era industrial manufacturing,
+-- with stable prototype IDs and no scripted processing or planet mutations.
+require("prototypes.recipes.razi-industrial-extension")
+require("prototypes.updates.razi-industrial-balance").apply()
+
+-- The required dependency loads Razi before FluxWorks. Run Razi-owned
+-- industry reconciliations here, after all FluxWorks factory prototypes exist.
+require("prototypes.compat.razi-extension-bridge").apply()
+
 -- Factorio 2.1 replaced singular recipe categories and product probability
 -- fields. Normalize after every compatibility rewrite and before validation.
 require("__razi_lib__/lib/recipe").normalize_all_2_1()
@@ -89,7 +98,7 @@ require("prototypes.validation.init")
 
 -- FluxWorks owns its menu playlist now that authored stage saves are available.
 local utility_constants = data.raw["utility-constants"] and data.raw["utility-constants"].default
-if utility_constants and not require('prototypes.lib.companion-mode').razi_protocol then
+if false and utility_constants then
   utility_constants.main_menu_simulations = require("prototypes.menu-simulations")
   local menu_branding = require("prototypes.updates.menu-branding")
   menu_branding.apply(utility_constants.main_menu_simulations)

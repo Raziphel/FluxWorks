@@ -1,45 +1,30 @@
-# FluxWorks companion mode for Razi Protocol
+# FluxWorks extension ownership for Razi Protocol (0.3)
 
-## Ownership
+Razi Protocol is a **required dependency**, not an optional detected companion. Factorio mod ID: `razi-protocol`; minimum Razi Dev build for this branch: **2.1.118**. Never add `FluxWorks` as a Razi dependency, even optional, because the reverse direction creates a dependency cycle.
 
-Razi Protocol is the campaign and star-map authority. FluxWorks is the industrial systems provider. Companion mode is detected through the Factorio mod ID `razi-protocol` at data stage and through `script.active_mods` at runtime.
+## Authority
 
-Razi lists `? FluxWorks >= 0.2.12` in its dependencies. **Do not add the reverse optional dependency to FluxWorks**: that would create a circular dependency and break loading.
+| Razi Protocol controls | FluxWorks controls |
+| --- | --- |
+| star systems, travel, discovery, chapter cards, story, Codex quests and victory | four Flux spectra, factories, material valuation and recipes |
+| planetary identities and surface resource maps | only its own optional extraction and manufacturing |
+| Shattered Planet as original Space Age **space location** | advanced industrial projects, not a new landable Shattered Planet |
+| shared asteroid curves, platform physics, spoilage and starting scenario | recipe-local production rewards and late power-hungry factory upgrades |
 
-## What changes
+Razi's five integration modules now run from `FluxWorks/data-final-fixes.lua` **after** FluxWorks' generated prototypes. They remain authored in Razi, including seven regional workshops, five paired exchanges, research-graph clarification and machine pacing. This changes load order without copying Razi's route and research algorithms into the extension.
 
-| Feature | FluxWorks standalone | Installed with Razi |
-| --- | --- | --- |
-| Shattered Planet | Landable four-spectrum world | Preserves the original Space Age space location |
-| Final victory | Origin Singularity | Razi's campaign victory |
-| Starting wreckage | FluxWorks loadouts | Native/Razi scenario |
-| Nauvis deposits | Mixed FluxWorks resource layout | Original ores plus Flux and mixed deposits |
-| Planet-wide Flux placement | Standalone distribution | Razi-defined planet identities |
-| Platform drag, global spoilage and asteroid balance | FluxWorks settings | Razi/source-mod authority |
-| Main menu | FluxWorks simulations | Host modpack simulations |
-| Rift Exchange | Normal FluxWorks research | Requires Razi Outer Frontier Mastery |
-| Domain science | FluxWorks-owned industrial research | Optional specialist mastery; Razi removes extra domain-pack tolls from ordinary Flux research |
+## Identity and save migration
 
-The purple, yellow, red and green Flux systems, machine prototypes, source items, recipes, K2SO alternatives, valuation engine, and specialist machinery remain intact.
+Keep existing `fw-` items, machines, fluids, technologies and recipe names. Legacy Shattered Planet technologies may continue existing but must not revoke native Space Age location unlocks, replace the space location, trigger a standalone victory, or gate Razi core research. Razi unlock and mastery rules take precedence. Do not assume migration of a previous standalone save featuring a landable Shattered Planet into this required-host configuration. Test with copied saves.
 
-The native resource placement pass avoids modifying Razi's star systems. FluxWorks' existing planet-specific extraction and bioprocessing recipes remain available.
+## Test matrix
 
-## Implementation boundaries
+1. Razi alone must load with the same route and victory graph, no FluxWorks dependencies.
+2. Razi + FluxWorks + Assets must load with one Shattered Planet space location and one victory.
+3. Seven optional research workshops and five dual-region exchanges must register where all dependencies are present.
+4. Core/Expanded industrial depth and three machine power tiers must keep native recipes available and change no third-party machine.
+5. All `fw-` recipes must have valid inputs, icon paths, and research unlocks; both fluid-box limits and K2SO item aliases matter.
+6. Rift Exchange must remain locked behind Razi Outer Frontier Mastery.
+7. Compare early factory setup and late throughput in a fresh save and disposable old-save copies; validate graphical rendering in the real Factorio client.
 
-- FluxWorks does not import or rewrite Razi Protocol's tech cards or starmap.
-- The Razi-side integration lives in `prototypes/compat/fluxworks.lua` in the Razi repo and runs late in `data-final-fixes.lua`.
-- The Razi-side pass keeps FluxWorks item and recipe prototype names stable. It only changes research costs/unlocks and contributes additive recipes.
-- Existing FluxWorks technology IDs are not removed.
-- Rift Exchange access is checked both when starting a transfer and immediately before swapping inventories/fluids, so an in-flight transfer cannot bypass a changed research state.
-
-## Test matrix before release
-
-1. **Standalone FluxWorks:** fresh game, early research, multi-spectrum processing, landable Shattered Planet, and its own victory.
-2. **Razi only:** vanilla Shattered Planet space location, route gates, no new FluxWorks requirements.
-3. **Razi + FluxWorks:** both mods load, standard Nauvis ores remain present, no duplicate planet ID, no duplicate victory.
-4. **Progression:** first visit to each of Solaris/Nyxaris/Vibrant/Vespera requires only Razi/source research. FluxWorks' optional production recipes unlock afterward.
-5. **Logistics:** Rift Exchange does not transfer anything before Outer Frontier Mastery, and does afterward, with the normal power cost.
-6. **Old saves:** use disposable copies, particularly saves created with standalone FluxWorks' landable Shattered Planet.
-7. **Performance:** compare prototype-building time and `/time-usage` runtime on the same installed mod set.
-
-Note: FluxWorks' standalone Shattered Planet research branch remains defined in companion mode for save/prototype stability, but cannot override Razi's location unlock. A future pass can replace the obsolete chapter with optional Deep Space engineering projects after engine tests.
+The sources and mock tests alone do not prove that a full Factorio modpack loads.
