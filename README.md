@@ -1,8 +1,8 @@
-# FluxWorks 0.5.0
+# FluxWorks 0.6.0
 
 **Independent industrial expansion for Factorio 2.1 / Space Age.**
 
-FluxWorks is a complete, separately installable industrial mod built around four physical Flux disciplines, specialized machines, manufacturing chains, and its own research. **Razi Protocol is not required.** Installing Razi can enrich the experience with additional worlds and story, but the base factory game belongs to FluxWorks.
+FluxWorks is an independent, separately installable industrial mod built around four physical Flux disciplines, specialized machines, manufacturing chains, and its own research. **Razi Protocol is not required.** Installing Razi can enrich the experience with additional worlds and story, but the base factory game belongs to FluxWorks.
 
 ## The four disciplines
 
@@ -23,7 +23,7 @@ Four standalone industrial research programs offer **up to sixteen** additional 
 
 ## Install
 
-FluxWorks needs **Factorio 2.1 + Space Age** and its declared dependencies in [info.json](info.json), including **FluxWorksAssets >= 1.0.9** and **RaziLib >= 1.2.0**.
+FluxWorks needs **Factorio 2.1 + Space Age** and its declared dependencies in [info.json](info.json), including **FluxWorksAssets >= 1.1.0** and **RaziLib >= 1.2.0**.
 
 **Razi Protocol is optional and not listed as an ordering dependency.** K2SO is optional, too. Their respective integrations only activate where the required source prototypes actually exist.
 
@@ -36,3 +36,11 @@ FluxWorks owns industrial manufacturing, specialized machinery, industrial resea
 Read [Standalone Architecture](docs/STANDALONE_ARCHITECTURE.md), [Galaxy Integration](docs/GALAXY_FACTORIES.md), and [Overhaul Validation](docs/OVERHAUL_VALIDATION.md) for the details.
 
 **Development status:** Published to GitHub `main`, but not yet verified by a full Factorio load or old-save migration test. Treat 0.5.0 as an experimental build until those checks succeed.
+
+## Two distinct goals, one industrial identity
+
+**Independent:** Research the four engineering disciplines and unite them in the **Charter of the Four Works**, unlocking four mastery manufacturing operations. Its own emblem represents the central factory identity.
+
+**With Razi:** Establish up to seven real source-world commissions through the **Seven Foundries**. Each makes valuable factory parts and a physical industrial record. Assemble available records into regional folios, then calibrate the **Atlas of the Seven Foundries** in the Convergence Forge. There is no parallel quest line, no new galaxy, and no Razi dependency for the base industrial game.
+
+See [Four Works and Seven Foundries](docs/FOUR_WORKS_AND_SEVEN_FOUNDRIES.md) for the fully documented design.

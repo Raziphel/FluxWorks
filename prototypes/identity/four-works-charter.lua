@@ -94,7 +94,7 @@ function M.register()
     if (data.raw.recipe or {})[name] then return 0 end
     recipes[#recipes+1]={
       type="recipe",name=name,enabled=false,
-      icon="__FluxWorksAssets__/graphics/icons/upgrade-badges/fw-convergence.png",
+      icon="__FluxWorksAssets__/graphics/icons/identity/fw-four-works-charter.png",
       icon_size=128,
       localised_name={"recipe-name."..name},
       localised_description={"recipe-description."..name},
@@ -110,7 +110,7 @@ function M.register()
   for _,name in ipairs(sciences) do ingredients[#ingredients+1]={name,1} end
   data:extend({{
     type="technology",name=spec.tech,
-    icon="__FluxWorksAssets__/graphics/icons/upgrade-badges/fw-convergence.png",
+    icon="__FluxWorksAssets__/graphics/icons/identity/fw-four-works-charter.png",
     icon_size=128,
     localised_name={"technology-name."..spec.tech},
     localised_description={"technology-description."..spec.tech},

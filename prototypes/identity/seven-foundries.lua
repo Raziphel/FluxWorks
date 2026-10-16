@@ -179,7 +179,7 @@ function M.register()
     and item("fw-condensed-flux-matrix") and item("fw-quantum-computer")
     and machine("fw-origin-forging",0)
     and not techs["fw-foundry-atlas"] and not recipes["fw-foundry-atlas-convergence"] then
-    local icon="__FluxWorksAssets__/graphics/icons/system-badges/fw-deep-space-industry.png"
+    local icon="__FluxWorksAssets__/graphics/icons/identity/fw-seven-foundries-atlas.png"
     local inner_records,outer_records={},{}
     local technologies={}
     local split=math.ceil(#M.registrations/2)
@@ -223,7 +223,7 @@ function M.register()
         main_product=folio.name
       }
     end
-    local icon_path="__FluxWorksAssets__/graphics/icons/system-badges/fw-deep-space-industry.png"
+    local icon_path="__FluxWorksAssets__/graphics/icons/identity/fw-seven-foundries-atlas.png"
     prototypes[#prototypes+1]={
       type="recipe",name="fw-foundry-atlas-convergence",
       icon=icon_path,icon_size=128,

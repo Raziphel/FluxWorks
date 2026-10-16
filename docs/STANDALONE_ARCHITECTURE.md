@@ -37,3 +37,7 @@ No GitHub Actions workflow is introduced in this version.
 ## Separate industrial overlays and standalone labels
 
 For save compatibility some setting prototype identifiers still begin with `fw-rp-`. This is historical internal naming, not a dependency or load-order relationship; their displayed names are now simply `FluxWorks` settings. The optional Razi galaxy catalog is supplemental to the default independent factory progression.
+
+## Identity phase · 0.6.0
+
+FluxWorks now has a **Charter of the Four Works** research and four manufacturing applications all its own. When Razi is installed, up to seven physical **Seven Foundries** field operations and a two-folio Atlas manufacturing capstone become available, strictly guarded by real worlds and ingredients. The independent Charter never depends on those field records. Read [the identity design](FOUR_WORKS_AND_SEVEN_FOUNDRIES.md).

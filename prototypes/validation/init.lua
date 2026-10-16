@@ -11,6 +11,7 @@ local validators = {
   "prototypes.validation.galactic-factories",
   "prototypes.validation.reborn-core",
   "prototypes.validation.independent-programs",
+  "prototypes.validation.industrial-identity",
   "prototypes.validation.native-industry",
   "prototypes.validation.item-uses",
   "prototypes.validation.steel-default",

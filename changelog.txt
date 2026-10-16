@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.5.0
+Version: 0.6.0
 Date: 2026-10-16
   Major changes:
     - Repositioned FluxWorks as a Razi Protocol industrial extension with required host dependency.
@@ -26,6 +26,11 @@ Date: 2026-10-16
     - Made resource placement additive and stopped editing native stromatolite drops.
     - Kept old technology, machine and storage IDs for save compatibility.
     - Left Razi routes, story, planet discovery and victory with the Razi mod.
+    - Introduced the independent Charter of the Four Works and four rewarding factory processes.
+    - Added seven guarded Razi source-world foundry commissions producing industrial materials and physical records.
+    - Added two regional Atlas folio recipes and a three-input Convergence Forge capstone, only when four or more real regions qualify.
+    - Commission and Charter technologies now use unique original icon art from FluxWorksAssets 1.1.0.
+    - Added explicit industrial identity contracts without additional per-tick systems.
     - Kept Razi planetary progression, space location, worldgen, asteroid balance and victory authoritative.
   Validation:
     - Requires Factorio 2.1/K2SO/Razi Dev/Assets full-pack engine and save migration tests before release.
