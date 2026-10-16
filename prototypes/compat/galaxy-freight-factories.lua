@@ -15,4 +15,12 @@ local specs={
   {id="cubium-secretas-freight",family="freight",world="cubium",secondworld="secretas",native={"cube","cubium-cube"},second_native={"gold-plate"},product="fw-logic-matrix",spectrum="purple",feed="fw-sensor-package",yield=3,cost=980,duration=22},
   {id="moshine-paracelsin-freight",family="freight",world="moshine",secondworld="paracelsin",native={"optical-cable"},second_native={"zinc-plate"},product="fw-circuit-substrate",spectrum="yellow",feed="fw-metal-mesh",yield=3,cost=980,duration=22},
 }
+-- Freight workshops inherit their manufacturer world's star-system symbol.
+local system_by_world={
+  vulcanus="solaris",fulgora="vibrant",paracelsin="vibrant",
+  aquilo="vespera",secretas="beetlejuice",tenebris="umbra",
+  vesta="umbra",rubia="vespera",ferrum="beetlejuice",
+  maraxsis="vespera",cubium="beetlejuice",moshine="nyxaris",
+}
+for _,spec in ipairs(specs) do spec.system=system_by_world[spec.world] end
 return register(specs,"fw-rp-interplanetary-factories")

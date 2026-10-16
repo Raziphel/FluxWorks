@@ -57,3 +57,13 @@ FluxWorks science packs are **specialist project bottles** under Razi Protocol, 
 ### A genuinely optional science ladder
 
 Companion mode now strips obsolete direct research prerequisites pointing to FluxWorks' four standalone science unlock technologies from ordinary FluxWorks research, **without editing Razi or external technologies**. The Industrial District, Autonomous Network, Spectrum Control and Convergence Directive projects keep their own specialist science milestones. The original legacy technology IDs are retained, and a validator prevents the old science taxes from returning.
+
+## Galaxy-wide industrial catalog · 0.3.2
+
+**44 authored planet slots**, **16 K2SO hybrid slots**, and **12 interplanetary freight slots** supplement the earlier 22 Spectrum Industries and Razi foundry alternatives. These are **not 72 unconditional recipes**: each registers only when the installed planet's real ingredient source, producer, corresponding discovery technology, Flux equipment, research laboratory and other prerequisites exist. Any unsupported planet integration is skipped and logged without disabling the native planet mod.
+
+Each successful process unlocks via an optional FluxWorks-owned technology and produces an existing item. The research never gates Razi's star map or victory, and no K2SO techs, native source recipes, resources, surfaces or recipes are overwritten. Defaults enable all three catalog families; three independent settings can opt out.
+
+Eight distinctive system overlays, now supplied by **FluxWorksAssets 1.0.6**, identify Calidus, Solaris, Nyxaris, Vibrant, Vespera, Beetlejuice, Umbra and Deep Space while retaining product and spectrum iconography.
+
+[Read the complete registry, provenance rules and testing limitations](docs/GALAXY_FACTORIES.md).

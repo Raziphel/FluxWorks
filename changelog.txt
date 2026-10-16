@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.3.1
+Version: 0.3.2
 Date: 2026-10-16
   Major changes:
     - Repositioned FluxWorks as a Razi Protocol industrial extension with required host dependency.
@@ -11,6 +11,9 @@ Date: 2026-10-16
     - Disabled Razi-hosted shared asteroid and scrap rewrites and hid orphaned legacy Shattered research.
     - Reworked source science in Razi mode: only four industrial project researches need four Flux science packs; ordinary FluxWorks research no longer inherits standalone science-unlock prerequisites.
     - Preserved Razi worldgen, recipe ownership and chapter graph; added host-specific startup safety validators.
+    - Added 44 optional planet factories, 16 K2SO hybrid factories and 12 physical two-world freight recipes, all guarded by native prototypes and research gates.
+    - Introduced eight star-system visual markers from FluxWorksAssets 1.0.6 and source-preserving registration tests.
+    - Added three factory toggles, no new runtime polling or data-driven world modifications.
     - Kept Razi planetary progression, space location, worldgen, asteroid balance and victory authoritative.
   Validation:
     - Requires Factorio 2.1/K2SO/Razi Dev/Assets full-pack engine and save migration tests before release.

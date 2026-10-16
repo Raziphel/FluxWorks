@@ -37,3 +37,9 @@ Make disposable save copies. Check both a fresh Razi save with the extension add
 ## Known remaining work
 
 Dedicated full in-world machine sprite sheets and animations have **not** been repainted, only four new project icon badges have been shipped. Actual throughput economics and long-running K2SO + full seven-system performance still need Factorio gameplay measurements.
+
+## 0.3.2 galaxy regression
+
+Run `lua tests/lua/test_galaxy_factories.lua` to test the source-native registry's guards and `python3 scripts/validate_extension_assets.py` from the FluxWorksAssets root for eight system emblems and four machine badges. These tests are designed for manual execution with no GitHub Actions workload.
+
+The 72 catalogue slots should be inspected individually against the actual merged game prototypes. Count successful `fw-planet-*`, `fw-k2-galaxy-*` and `fw-freight-*` registrations in the Factorio log. A skipped optional world is not automatically a bug, but unexpectedly missing important installed worlds should prompt native prototype and producer-unlock inspection rather than guessing resource IDs.

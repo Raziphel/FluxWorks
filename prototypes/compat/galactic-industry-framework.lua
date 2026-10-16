@@ -77,7 +77,11 @@ local function pick(candidates,producer)
     if item(name) and producer[name] then return name end
   end
 end
-local function layers(product,colour,partner)
+local system_badges={
+  calidus=true,solaris=true,nyxaris=true,vibrant=true,
+  vespera=true,beetlejuice=true,umbra=true,["deep-space"]=true
+}
+local function layers(product,colour,partner,system)
   local icons
   if product.icons then icons=table.deepcopy(product.icons)
   elseif product.icon then icons={{icon=product.icon,icon_size=product.icon_size or 64}}
@@ -88,6 +92,14 @@ local function layers(product,colour,partner)
   end
   badge(colour,partner and -13 or 14)
   if partner then badge(partner,13) end
+  -- Distinct star system navigation mark without replacing the native
+  -- product silhouette or its two recognizable spectrum markers.
+  if system_badges[system] then
+    icons[#icons+1]={
+      icon="__FluxWorksAssets__/graphics/icons/system-badges/fw-"..system.."-industry.png",
+      icon_size=128,scale=0.12,shift={-17,-16},
+    }
+  end
   return icons
 end
 local function has_unlock(tech,recipe)
@@ -172,7 +184,7 @@ function M.register(specs,setting_name)
       and (not spec.k2 or mods and mods["Krastorio2-spaced-out"] and kr_part)
       and spec.product~=native and spec.product~=spec.feed
     if valid then
-      local picture=layers(output,spec.spectrum,partner)
+      local picture=layers(output,spec.spectrum,partner,spec.system)
       if picture and not recipes[recipe_name] and not techs[tech_name] then
         local ingredients={
           {type="item",name=native,amount=spec.native_count or 4},
