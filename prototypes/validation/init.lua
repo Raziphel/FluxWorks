@@ -8,6 +8,7 @@ local validators = {
   "prototypes.validation.machine-quality",
   "prototypes.validation.industrial-machine-upgrades",
   "prototypes.validation.razi-industrial-extension",
+  "prototypes.validation.galactic-factories",
   "prototypes.validation.native-industry",
   "prototypes.validation.menu-simulations",
   "prototypes.validation.item-uses",

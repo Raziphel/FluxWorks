@@ -63,6 +63,10 @@ local function discovery_index()
 end
 local function actual_arrival(name,index)
   local techs=data.raw.technology or {}
+  -- Nauvis is the starting world; it has no planet-discovery-nauvis tech.
+  if name=="nauvis" and techs["fw-flux-stabilization"] then
+    return "fw-flux-stabilization"
+  end
   local gate=index[name]
   if gate and techs[gate] and techs[gate].enabled~=false then return gate end
   local conventional="planet-discovery-"..name
