@@ -12,7 +12,9 @@ local function enabled(name,default)
 end
 function M.apply()
   local policy=settings and settings.startup and settings.startup["fw-world-policy"]
-  if policy and policy.value=="off" then return 0 end
+  local profile=settings and settings.startup and settings.startup["fw-design-profile"]
+  local legacy=profile and profile.value=="legacy"
+  if policy and policy.value=="off" and not legacy then return 0 end
   local changed=0
   for planet_name,resources in pairs(targets) do
     local planet=data.raw.planet and data.raw.planet[planet_name]

@@ -4,6 +4,28 @@ local function load_modules(modules)
   end
 end
 
+-- Focused is a separate mod architecture, not a flag on top of forty
+-- legacy global rewrites. Retain historical prototype definitions from data.lua
+-- for old saves, but register only the small playable industrial core here.
+local profile=(settings.startup or {})["fw-design-profile"]
+if profile and profile.value=="focused" then
+  require("prototypes.updates.resource-placement")
+  require("prototypes.technology.domain-science")
+  require("prototypes.technology.progression-projects")
+  require("prototypes.compat.api-finalization")
+  require("prototypes.updates.industrial-machine-upgrades")
+  require("prototypes.recipes.flux-condensing")
+  require("prototypes.overhaul.spectrum-materials")
+  require("prototypes.overhaul.independent-programs")
+  require("prototypes.identity.four-works-charter")
+  require("prototypes.identity.seven-foundries")
+  require("prototypes.focused.prune").apply()
+  require("prototypes.overhaul.late-recipe-boundaries").apply()
+  require("__razi_lib__/lib/recipe").normalize_all_2_1()
+  require("prototypes.validation.init")
+  return
+end
+
 -- Prototypes that depend on the complete base and compatibility prototype set.
 load_modules({
   "prototypes.updates.resource-placement",
