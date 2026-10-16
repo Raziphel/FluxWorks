@@ -10,6 +10,7 @@ for _ in code:gmatch('{id="fw%-') do recipe_count=recipe_count+1 end
 assert(recipe_count==33,recipe_count)
 assert(code:find("no_custom_patches()",1,true))
 assert(code:find("proto.autoplace=nil",1,true))
+assert(code:find("control.hidden=true",1,true))
 assert(code:find("proto.hidden=true",1,true))
 assert(code:find("tech.hidden=true",1,true))
 assert(code:find('"fw-salvaged-flux"',1,true))

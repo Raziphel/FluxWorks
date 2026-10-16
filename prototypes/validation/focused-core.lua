@@ -46,6 +46,9 @@ for name,proto in pairs(raw.resource or {}) do
   if name:sub(1,3)=="fw-" then
     assert(not proto.autoplace,
       "Focused mode generated a retired FluxWorks ore deposit: "..name)
+    local control=(raw["autoplace-control"] or {})[name]
+    assert(not control or control.hidden,
+      "Focused mode still shows a retired ore slider: "..name)
     retired=retired+1
   end
 end

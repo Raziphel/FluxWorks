@@ -225,11 +225,17 @@ local function no_custom_patches()
   for name,proto in pairs(data.raw.resource or {}) do
     if belongs_to_mod(name) then
       lost[name]=true
+      local control=(data.raw["autoplace-control"] or {})[name]
+      if control then control.hidden=true end
       if proto.autoplace then
         proto.autoplace=nil
         removed=removed+1
       end
     end
+  end
+  -- Legacy ore selectors must not occupy map-creation sliders either.
+  for name,control in pairs(data.raw["autoplace-control"] or {}) do
+    if belongs_to_mod(name) and lost[name] then control.hidden=true end
   end
   for _,planet in pairs(data.raw.planet or {}) do
     local map=planet.map_gen_settings or {}
