@@ -37,3 +37,11 @@ With both FluxWorks 0.2.14+ and Razi Protocol Dev installed, check:
 6. Converted machines keep expected category access, module slots and oil/Flux connections.
 
 The game engine remains the authoritative source for fully loaded integration. Do not promote to a stable modpack without a real Factorio 2.1 playtest.
+
+## 0.3.1 industrial identity
+
+All four upgrades ship with distinct **authored PNG icons** in FluxWorksAssets 1.0.5 (and editable SVG masters), rather than reusing the same generic Flux orb as a project badge. The Industrial Harvester's quality capability is retained. Precision Synthesis stays focused on controlled synthesis throughput, and Chromatic Arc Foundry keeps metallurgy at a high power cost.
+
+The final **Convergence Synthesis Plant** now additionally accepts the `fw-arc-smelting` recipe category by default, while preserving the predecessor's collision footprint, fluid ports, module count, and upgrade-planner path. Players can turn off this cross-category capability using `fw-rp-convergence-universal`. Machines already placed on an existing save keep their prototype identity through the change.
+
+Machine power draw and optional project research cost can be independently adjusted using the new FluxWorks extension settings. No new tick-based scripts, entity scans, effects spawners or costly rendering loops are required.

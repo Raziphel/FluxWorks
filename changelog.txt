@@ -9,6 +9,8 @@ Date: 2026-10-16
     - Added eight guarded factory alternative recipes and configurable project machine power draw.
     - Added six physically seeded bacterial cultures, four authored project-machine badge icons, adjustable project pacing and a universal Convergence Plant.
     - Disabled Razi-hosted shared asteroid and scrap rewrites and hid orphaned legacy Shattered research.
+    - Reworked source science in Razi mode: only four industrial project researches need four Flux science packs; ordinary FluxWorks research no longer inherits standalone science-unlock prerequisites.
+    - Preserved Razi worldgen, recipe ownership and chapter graph; added host-specific startup safety validators.
     - Kept Razi planetary progression, space location, worldgen, asteroid balance and victory authoritative.
   Validation:
     - Requires Factorio 2.1/K2SO/Razi Dev/Assets full-pack engine and save migration tests before release.
