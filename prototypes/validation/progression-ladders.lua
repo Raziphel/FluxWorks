@@ -1,3 +1,10 @@
+-- Reborn changes the actual bills of materials, so the standalone
+-- hard-coded source recipe expectations are no longer authoritative.
+local _fw_profile=(settings.startup or {})["fw-rp-factory-design"]
+if not _fw_profile or _fw_profile.value~="legacy" then
+  return require("prototypes.validation.reborn-core")
+end
+
 local Startup = require("prototypes.lib.startup-settings")
 
 local function has_unlock_effect(effects, recipe_name)

@@ -81,3 +81,7 @@ Run `lua tests/lua/test_lean_extension_cleanup.lua` from FluxWorks to assert the
 ## 0.4.0 fluid-port reconstruction
 
 The Reborn factory replaces three especially problematic multi-fluid manufacturing recipes: stabilized Flux crystal (formerly four spectra plus chlorine), condensed Flux matrix (four fluids), and rift seed crystallization. The redesigned versions need no more than two input fluids and are made on the existing synthesis hardware. The Reborn validator updates the historical pure-composition exception for exactly those two recipes; legacy/standalone composition behavior is preserved. This is a physical manufacturing change, not just a display adjustment.
+
+## Reborn validator migration
+
+The historical progression-ladder validator was written for the original recipes, including oversized bills of material. Reborn now redirects those checks to `prototypes/validation/reborn-core.lua`, while Legacy retains the original validator. The new validator asserts at least 35 original bills actually transformed, no more than 6 ingredients or 2 input fluids for redesigned recipes, all five signature outputs and research unlocks, real prototype sources, nine or more distinct machine roles, upgrade-chassis consumption and physical Forge processing. It checks technology graph cycles touching FluxWorks. It is still a data-stage check, not a full in-game test.
