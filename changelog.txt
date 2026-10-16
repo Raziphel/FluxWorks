@@ -20,6 +20,7 @@ Date: 2026-10-16
     - Deleted dormant standalone Shattered Planet, own-ending and custom menu-simulation code and archived scene files.
     - Retired no-op global world tuning, asteroid-crushing and Fulgora scrap patch modules and corresponding validators.
     - Prevented an old Shattered tech from overriding Razi destination unlock or stealing standard FluxWorks recipe unlocks.
+    - Raised the asset dependency to FluxWorksAssets 1.0.7, which removes five orphaned visuals.
     - Kept Razi planetary progression, space location, worldgen, asteroid balance and victory authoritative.
   Validation:
     - Requires Factorio 2.1/K2SO/Razi Dev/Assets full-pack engine and save migration tests before release.

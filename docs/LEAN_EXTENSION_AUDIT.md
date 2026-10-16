@@ -58,3 +58,5 @@ Old startup configuration IDs remain registered but hidden when they no longer h
 3. Verify the Assets package still contains all active icon and machine sprite references.
 4. Test Factorio 2.1 + Razi + K2SO data startup, a fresh save, an existing save, and Factoriopedia.
 5. No added GitHub Actions and no modifications to Razi Protocol or RaziLib.
+
+**Paired Assets build:** `FluxWorksAssets >= 1.0.7`, with exactly five retired logo/terrain sprite paths and its offline retired-path guard. The main FluxWorks manifest now pins that minimum explicitly.

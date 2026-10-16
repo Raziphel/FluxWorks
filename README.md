@@ -64,7 +64,7 @@ Companion mode now strips obsolete direct research prerequisites pointing to Flu
 
 Each successful process unlocks via an optional FluxWorks-owned technology and produces an existing item. The research never gates Razi's star map or victory, and no K2SO techs, native source recipes, resources, surfaces or recipes are overwritten. Defaults enable all three catalog families; three independent settings can opt out.
 
-Eight distinctive system overlays, now supplied by **FluxWorksAssets 1.0.6**, identify Calidus, Solaris, Nyxaris, Vibrant, Vespera, Beetlejuice, Umbra and Deep Space while retaining product and spectrum iconography.
+Eight distinctive system overlays, now supplied by **FluxWorksAssets 1.0.7**, identify Calidus, Solaris, Nyxaris, Vibrant, Vespera, Beetlejuice, Umbra and Deep Space while retaining product and spectrum iconography.
 
 [Read the complete registry, provenance rules and testing limitations](docs/GALAXY_FACTORIES.md).
 
@@ -79,3 +79,5 @@ In addition to the existing per-mod event registry, RaziLib 1.2 now owns namespa
 ## Lean Razi extension: retired standalone modules
 
 FluxWorks no longer ships executable standalone Shattered Planet terrain, weather, old campaign-ending, or custom menu-simulation code. Source-owned global asteroid crushing, Fulgora scrap, platform drag, world hazard tuning and legacy technology weaving are also removed, rather than retained as dead conditional modules. Historical `fw-` machines, research IDs, recipes, icons, and stored runtime keys are preserved where still part of the industrial graph or required for existing saves. A few obsolete startup settings remain **hidden** to read old settings files without reviving abandoned gameplay rules. See [cleanup manifest](docs/LEAN_EXTENSION_AUDIT.md) for precise removals and migration constraints.
+
+**Asset pairing:** the 0.3.5 lean build expects `FluxWorksAssets >= 1.0.7`. This removes only retired standalone-only art; it keeps the four project emblems, eight star-system marks, original Flux spectra and manufacturing sprites.
