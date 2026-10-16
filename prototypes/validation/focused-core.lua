@@ -52,6 +52,7 @@ end
 assert(retired>=5,"Old ore and rift prototypes unexpectedly missing; migration review needed")
 for _,name in ipairs({"fw-crushed-lead-ore","fw-crushed-tin-ore",
   "fw-crushed-bauxite-ore","fw-crushed-titanium-ore",
+  "lead-ore","tin-ore","titanium-ore","aluminum-plate","bronze-plate",
   "fw-industrial-district-project"}) do
   local old=(raw.item or {})[name] or (raw.technology or {})[name]
   if old then assert(old.hidden,"Legacy production should not be visible: "..name) end

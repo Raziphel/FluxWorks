@@ -229,6 +229,18 @@ local function no_custom_patches()
   end
   return removed,lost
 end
+local legacyRawMaterials={
+  "lead-ore","bauxite-ore","tin-ore","titanium-ore","silicon-ore",
+  "lead-plate","tin-plate","titanium-plate","aluminum-plate",
+  "bronze-plate","silicon","sand","glass"
+}
+local legacyRawRecipes={
+  "lead-plate","tin-plate","titanium-plate","aluminum-plate",
+  "bronze-plate","silicon","sand","glass",
+  "iron-plate-from-crushed","copper-plate-from-crushed",
+  "tin-plate-from-crushed","lead-plate-from-crushed",
+  "titanium-plate-from-crushed","aluminum-plate-from-crushed"
+}
 local function prune_old_graph(activeRecipes)
   local removedItems,removedRecipes,removedTech=0,0,0
   -- Retain all old IDs in data.raw for save compatibility; hide them, and
@@ -242,12 +254,37 @@ local function prune_old_graph(activeRecipes)
       removedRecipes=removedRecipes+1
     end
   end
+  -- FluxWorks' old unprefixed metals and mineral intermediates are kept only
+  -- for old saves. Their prototypes are no longer offered to new players.
+  for _,name in ipairs(legacyRawMaterials) do
+    local proto=(data.raw.item or {})[name]
+    if proto then
+      proto.hidden=true
+      removedItems=removedItems+1
+    end
+  end
+  for _,name in ipairs(legacyRawRecipes) do
+    local recipe=(data.raw.recipe or {})[name]
+    if recipe then
+      recipe.hidden=true
+      recipe.enabled=false
+      removedRecipes=removedRecipes+1
+    end
+  end
   for name,proto in pairs(data.raw.item or {}) do
     if belongs_to_mod(name) and not keep[name]
       and not name:match("^fw%-foundry%-record%-")
       and not name:match("^fw%-foundry%-folio%-") then
       proto.hidden=true
       removedItems=removedItems+1
+    end
+  end
+  -- Retire the old unprefixed sand/glass research only when these are
+  -- FluxWorks' own early-industry progression, never an external K2SO node.
+  if not (mods and mods["Krastorio2-spaced-out"]) then
+    for _,name in ipairs({"sand-processing","glass-processing"}) do
+      local tech=(data.raw.technology or {})[name]
+      if tech then tech.hidden=true end
     end
   end
   local activeTech={}
@@ -277,6 +314,8 @@ local function prune_old_graph(activeRecipes)
       end
     end
   end
+  -- In the focused mode all native and other-mod factory inputs are vanilla
+  -- or are provided by their actual mod. We never rewrite their recipe bills.
   -- No external tech may be made unresearchable by an old hidden FluxWorks
   -- prerequisite left by legacy compatibility passes.
   for name,tech in pairs(data.raw.technology or {}) do
