@@ -16,6 +16,7 @@ end
 data:extend({
   startup_choice("fw-world-policy","additive",{"additive","off"},"aa[industry]-a[world]"),
   startup_bool("fw-native-cultures",true,"aa[industry]-b[cultures]"),
+  startup_bool("fw-razi-seven-foundries",true,"aa[industry]-e[seven-foundries]"),
   startup_bool("fw-four-works-charter",true,"aa[industry]-d[charter]"),
   startup_bool("fw-industrial-programs",true,"aa[industry]-c[programs]"),
   startup_choice("fw-rp-factory-design","reborn",{"reborn","legacy"},"aa[expansion]-0[factory-design]"),
