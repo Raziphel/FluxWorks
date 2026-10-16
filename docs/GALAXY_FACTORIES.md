@@ -1,8 +1,8 @@
-# Galaxy-wide FluxWorks workshop registry
+# FluxWorks planetary workshop registry (optional worlds)
 
 This is the authored catalog of **44 planet slots**, **16 K2SO hybrid slots**, and **12 paired freight slots**. A slot only materializes if the exact installed planet, a genuine native item producer, a non-hidden output and feedstock, the discovery technology, its Flux machine and a lab accepting the research packs all exist. The registry logs guarded skips. No count here is a claim of confirmed in-game availability.
 
-The existing seven Razi-owned regional specialties and five paired exchanges remain independent and unchanged. These are additional optional FluxWorks recipes and their own research. No worldgen, route, loot, map, science-card, native recipe, K2SO machine or victory is edited.
+When Razi is installed, its seven regional specialties and five paired exchanges remain Razi-owned and unchanged. Without Razi, installed vanilla and third-party planets can still qualify for the guarded FluxWorks recipes. These are additional optional FluxWorks recipes and their own research. No worldgen, route, loot, map, science-card, native recipe, K2SO machine or victory is edited.
 
 **Installation:** FluxWorks requires Razi Protocol; K2SO hybrid slots activate only when Krastorio2-spaced-out is installed and the new toggle is enabled. Original K2SO planetary and science alternatives remain in FluxWorks. Unknown/renamed native item prototypes are skipped rather than replaced with fabricated materials.
 

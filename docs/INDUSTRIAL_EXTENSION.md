@@ -1,6 +1,6 @@
-# Razi Industrial Foundries · eight optional manufacturing alternatives
+# FluxWorks Industrial Foundries · eight optional manufacturing alternatives
 
-FluxWorks 0.3 adds **eight new recipes** to its existing fourteen Spectrum Industries recipes. No new mandatory science packs, technology branches, entities, fluids, destinations or generated space connections are involved. All eight run in existing Synthesis Plants or Arc Foundries; they unlock from existing FluxWorks technologies and never alter Razi campaign research.
+FluxWorks 0.3 adds **eight new recipes** to its existing fourteen Spectrum Industries recipes. No new mandatory science packs, foreign-technology requirements, destinations or generated space connections are involved. These recipes are part of standalone FluxWorks, not a Razi-only DLC. All eight run in existing Synthesis Plants or Arc Foundries; they unlock from existing FluxWorks technologies and never alter Razi campaign research.
 
 | Process | Spectrum | Output | Research owner |
 | --- | --- | --- | --- |

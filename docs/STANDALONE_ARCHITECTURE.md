@@ -33,3 +33,7 @@ Test a fresh Factorio 2.1 save in **four configurations**: FluxWorks + Space Age
 Then test an **existing FluxWorks 0.4.x save** with the new version. Preserve all save-facing entity IDs and persistent storage identifiers. Research, recipe and worldgen migration remains the largest unresolved risk until an actual playtest.
 
 No GitHub Actions workflow is introduced in this version.
+
+## Separate industrial overlays and standalone labels
+
+For save compatibility some setting prototype identifiers still begin with `fw-rp-`. This is historical internal naming, not a dependency or load-order relationship; their displayed names are now simply `FluxWorks` settings. The optional Razi galaxy catalog is supplemental to the default independent factory progression.
