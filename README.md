@@ -1,4 +1,4 @@
-# FluxWorks 0.3 · Industrial Extension for Razi Protocol
+# FluxWorks 0.3.5 · Industrial Extension for Razi Protocol
 
 **Razi Protocol owns the galaxy. FluxWorks builds the factories that make it worth exploring.**
 
@@ -75,3 +75,7 @@ The industrial extension now uses **RaziLib 1.2.0** directly for typed item/prot
 ### RaziLib runtime consolidation
 
 In addition to the existing per-mod event registry, RaziLib 1.2 now owns namespaced initialization of FluxWorks' original saved state tables and duplicate-safe registration of the rocket-reusability remote interface. Existing vault, reservoir, extractor and Rift Exchange state keys, script intervals and user commands are preserved. `tests/lua/test_razi_lib_runtime.lua` covers the shared runtime contracts against real RaziLib source.
+
+## Lean Razi extension: retired standalone modules
+
+FluxWorks no longer ships executable standalone Shattered Planet terrain, weather, old campaign-ending, or custom menu-simulation code. Source-owned global asteroid crushing, Fulgora scrap, platform drag, world hazard tuning and legacy technology weaving are also removed, rather than retained as dead conditional modules. Historical `fw-` machines, research IDs, recipes, icons, and stored runtime keys are preserved where still part of the industrial graph or required for existing saves. A few obsolete startup settings remain **hidden** to read old settings files without reviving abandoned gameplay rules. See [cleanup manifest](docs/LEAN_EXTENSION_AUDIT.md) for precise removals and migration constraints.

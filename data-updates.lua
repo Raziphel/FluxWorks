@@ -6,7 +6,6 @@ end
 
 require_many({
   "prototypes.updates.crusher-integration",
-  "prototypes.updates.fulgora-scrap",
   "prototypes.updates.planetary-self-sufficiency",
   "prototypes.updates.progression-gates",
   "prototypes.updates.powered-machines",

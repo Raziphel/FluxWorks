@@ -46,7 +46,8 @@ data:extend({
     },
     unit = unit(2400, 75),
     effects = {
-      { type = "unlock-space-location", space_location = "shattered-planet" },
+      -- Shattered Planet is Razi's destination. Historical research IDs remain
+      -- for save compatibility without registering a competing space unlock.
       productivity("space-platform-foundation", 0.10),
     },
     order = "f-a[shattered-expedition]",
@@ -187,11 +188,12 @@ local function add_prerequisite(technology_name, prerequisite_name)
   technology.prerequisites[#technology.prerequisites + 1] = prerequisite_name
 end
 
-remove_unlock("fw-rift-harmonics", "fw-model-lattice")
-remove_unlock("fw-origin-infrastructure", "fw-harmonic-lattice-core")
+-- These unlock migrations belonged to the old standalone ending. In Razi
+-- hosted games, they must NOT strip recipes from their regular FluxWorks techs.
+-- Keep the helpers local to preserve easy porting of historical save repairs.
 if not require("prototypes.lib.companion-mode").razi_protocol then
+  remove_unlock("fw-rift-harmonics", "fw-model-lattice")
+  remove_unlock("fw-origin-infrastructure", "fw-harmonic-lattice-core")
   add_prerequisite("fw-origin-infrastructure", "fw-shattered-origin-survey")
-end
-if not require("prototypes.lib.companion-mode").razi_protocol then
   add_prerequisite("fw-storm-megastructures", "fw-ion-storm-capture")
 end

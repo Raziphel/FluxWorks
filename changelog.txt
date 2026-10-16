@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.3.4
+Version: 0.3.5
 Date: 2026-10-16
   Major changes:
     - Repositioned FluxWorks as a Razi Protocol industrial extension with required host dependency.
@@ -17,6 +17,9 @@ Date: 2026-10-16
     - Reused RaziLib 1.2's settings, icons, typed item/recipe helpers, technology unlocks, collections, graph and validations.
     - Migrated the five original runtime state tables to RaziLib namespaces without renaming save keys, and adopted duplicate-safe remote interface registration.
     - Added consumer tests against actual RaziLib source modules; full-game validation remains required.
+    - Deleted dormant standalone Shattered Planet, own-ending and custom menu-simulation code and archived scene files.
+    - Retired no-op global world tuning, asteroid-crushing and Fulgora scrap patch modules and corresponding validators.
+    - Prevented an old Shattered tech from overriding Razi destination unlock or stealing standard FluxWorks recipe unlocks.
     - Kept Razi planetary progression, space location, worldgen, asteroid balance and victory authoritative.
   Validation:
     - Requires Factorio 2.1/K2SO/Razi Dev/Assets full-pack engine and save migration tests before release.

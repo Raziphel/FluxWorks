@@ -107,6 +107,8 @@ local delegated = {
   "fw-balance-shattered-asteroid-pressure", "fw-balance-ion-storm-intensity",
   "fw-worldgen-enable-standalone-ores", "fw-worldgen-enable-promethium-impacts",
   "fw-enable-unattended-shattered-asteroids",
+  "fw-enable-asteroid-recipe-overrides", "fw-enable-fulgora-scrap-integration",
+  "fw-enable-legacy-technology-overhaul",
 }
 for _, name in ipairs(delegated) do
   local setting = (data.raw["string-setting"] or {})[name] or (data.raw["bool-setting"] or {})[name]

@@ -7,7 +7,6 @@ end
 -- Prototypes that depend on the complete base and compatibility prototype set.
 load_modules({
   "prototypes.updates.resource-placement",
-  "prototypes.updates.asteroid-crushing",
   "prototypes.updates.rocket-reusability-late",
   "prototypes.technology.domain-science",
   "prototypes.technology.progression-projects",
@@ -33,7 +32,6 @@ load_modules({
   "prototypes.compat.global-recipe-integration",
   "prototypes.updates.difficulty-overrides",
   "prototypes.updates.research-difficulty",
-  "prototypes.updates.technology-weave",
   "prototypes.updates.domain-science-integration",
   "prototypes.updates.progression-compression",
   "prototypes.updates.crafting-tabs",
@@ -46,12 +44,7 @@ load_modules({
 
 require("prototypes.updates.dual-pipe-networks")
 
--- Platform handling is a player-selected balance rule, so land it after every
--- dependency has had a chance to adjust the shared acceleration expression.
-require("prototypes.updates.space-platform-drag").apply()
-require("prototypes.updates.player-tuning").apply()
-
--- These checks operate on the completed cross-mod recipes.
+-- Cross-mod recipe checks operate on the completed recipe graph.
 require("prototypes.updates.native-industry")
 require("prototypes.updates.recipe_tweaks.ingredient_boundaries")()
 
