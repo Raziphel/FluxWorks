@@ -108,18 +108,7 @@ local recipes={
   {id="fw-origin-forge",inputs={item("fw-convergence-synthesis-plant",1),
     item("fw-convergence-chassis",3),item("low-density-structure",20)},
     time=65,tech="fw-origin-infrastructure"},
-  {id="fw-phase-vault",inputs={item("steel-chest",8),
-    item("processing-unit",8),item("fw-phase-wafer",2)},
-    time=18,tech="fw-flux-convergence"},
-  {id="fw-spectral-reservoir",inputs={item("storage-tank",4),
-    item("processing-unit",6),item("fw-chemical-membrane",3)},
-    time=20,tech="fw-flux-convergence"},
-  {id="fw-rift-exchange-gate",inputs={item("fw-phase-vault",1),
-    item("fw-flux-phase-manifold",2),item("processing-unit",10)},
-    time=45,tech="fw-origin-infrastructure"},
-  {id="fw-rift-exchange-fluid-gate",inputs={item("fw-spectral-reservoir",1),
-    item("fw-flux-phase-manifold",2),item("processing-unit",10)},
-    time=45,tech="fw-origin-infrastructure"},
+
 }
 local techs={
   {id="fw-flux-stabilization",requires={"chemical-science-pack"},
@@ -155,8 +144,6 @@ local keepItems={
   "fw-living-fiber","fw-phase-wafer","fw-convergence-chassis",
   "fw-flux-condenser","fw-flux-harvester","fw-synthesis-plant",
   "fw-arc-foundry","fw-convergence-synthesis-plant","fw-origin-forge",
-  "fw-phase-vault","fw-spectral-reservoir","fw-rift-exchange-gate",
-  "fw-rift-exchange-fluid-gate",
   -- Preserve invisible packed state/scripting tokens used by saved equipment.
   "fw-phase-vault-packed","fw-spectral-reservoir-packed","fw-memory-gui-item"
 }

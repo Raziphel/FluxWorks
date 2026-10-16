@@ -19,8 +19,15 @@ load_modules({
   "prototypes.recipes.green-flux-mechanics",
   "prototypes.technology.mastery-research",
   "prototypes.technology.progression-programs",
-  "prototypes.updates.factoriopedia",
+  -- "prototypes.updates.factoriopedia" is restricted to the Legacy profile.
 })
+
+-- The 60+ old item guides describe retired ores and Shattered Planet
+-- mechanics. Do not register them for a focused new save.
+if (settings.startup or {})["fw-design-profile"]
+  and settings.startup["fw-design-profile"].value=="legacy" then
+  require("prototypes.updates.factoriopedia")
+end
 
 -- Cross-mod recipe and technology integration. Ordering is intentional: broad
 -- recipe changes land before presentation and final progression reconciliation.

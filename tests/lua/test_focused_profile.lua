@@ -7,7 +7,7 @@ local code=read("prototypes/focused/prune.lua")
 local recipe_count=0
 for _ in code:gmatch('{id="fw%-') do recipe_count=recipe_count+1 end
 -- Includes exactly 25 manufacturing profiles and seven tech definitions.
-assert(recipe_count==37,recipe_count)
+assert(recipe_count==33,recipe_count)
 assert(code:find("no_custom_patches()",1,true))
 assert(code:find("proto.autoplace=nil",1,true))
 assert(code:find("proto.hidden=true",1,true))
@@ -26,4 +26,4 @@ assert(setting:find('"fw-world-policy","off"',1,true))
 assert(setting:find('"fw-rp-galactic-industry", false',1,true))
 assert(setting:find('"fw-rp-k2so-galaxy-industry", false',1,true))
 assert(setting:find('"fw-rp-interplanetary-factories", false',1,true))
-print("Focused FluxWorks: 30 core recipes, seven research tiers and no default ore patches")
+print("Focused FluxWorks: 26 core recipes, seven research tiers and no default ore patches")

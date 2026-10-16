@@ -40,7 +40,7 @@ for _,spec in ipairs(designs) do
   end
   assert(has_unlock,"Focused recipe cannot be researched: "..spec.id)
 end
-assert(#designs==30,"Focused production catalogue unexpectedly expanded")
+assert(#designs==26,"Focused production catalogue unexpectedly expanded")
 local retired=0
 for name,proto in pairs(raw.resource or {}) do
   if name:sub(1,3)=="fw-" then
@@ -84,5 +84,5 @@ if charter then
       "Four Works Charter relies on retired technology: "..parent)
   end
 end
-log("FluxWorks focused-mode: 30 curated recipes, seven engineering tiers, zero new resource veins")
+log("FluxWorks focused-mode: 26 curated recipes, seven engineering tiers, zero new resource veins")
 return true
