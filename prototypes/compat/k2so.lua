@@ -1,7 +1,10 @@
 -- Additive Krastorio 2 Spaced Out integration. Do not replace Krastorio 2's
 -- recipes or science tree; reuse its late materials in FluxWorks-owned content.
-local Startup = require("prototypes.lib.startup-settings")
-if not mods["Krastorio2-spaced-out"] or not Startup.enabled("fw-enable-k2so-integration", true) then
+local RaziSettings=require("__razi_lib__/lib/settings")
+local Technology=require("__razi_lib__/lib/technology")
+local Recipe=require("__razi_lib__/lib/recipe")
+local Icons=require("__razi_lib__/lib/icons")
+if not mods["Krastorio2-spaced-out"] or not RaziSettings.enabled("fw-enable-k2so-integration", true) then
   return
 end
 
@@ -9,25 +12,18 @@ local function item_exists(name)
   return data.raw.item and data.raw.item[name]
 end
 
-local function add_science(technology_name, science_name)
-  local technology = data.raw.technology and data.raw.technology[technology_name]
-  if not technology or not ((data.raw.tool and data.raw.tool[science_name]) or item_exists(science_name))
-    or not technology.unit then return end
-  technology.unit.ingredients = technology.unit.ingredients or {}
-  for _, ingredient in ipairs(technology.unit.ingredients) do
-    if (ingredient.name or ingredient[1]) == science_name then return end
+local function add_science(tech_name,science_name)
+  local tech=Technology.optional(tech_name)
+  if tech and tech.unit
+    and ((data.raw.tool and data.raw.tool[science_name]) or item_exists(science_name)) then
+    tech:add_pack(science_name,1)
   end
-  technology.unit.ingredients[#technology.unit.ingredients + 1] = { science_name, 1 }
 end
-
-local function add_prerequisite(technology_name, prerequisite_name)
-  local technology = data.raw.technology and data.raw.technology[technology_name]
-  if not technology or not data.raw.technology[prerequisite_name] then return end
-  technology.prerequisites = technology.prerequisites or {}
-  for _, prerequisite in ipairs(technology.prerequisites) do
-    if prerequisite == prerequisite_name then return end
+local function add_prerequisite(tech_name,parent)
+  if data.raw.technology and data.raw.technology[parent] then
+    local tech=Technology.optional(tech_name)
+    if tech then tech:add_prerequisite(parent) end
   end
-  technology.prerequisites[#technology.prerequisites + 1] = prerequisite_name
 end
 
 -- Maintain the production era of each discipline. All science requirements are
@@ -39,25 +35,24 @@ add_prerequisite("fw-origin-infrastructure", "kr-matter-cube")
 
 -- Replace individual components in the completed six-ingredient FluxWorks
 -- recipes. Do not append onto the global factory recipe catalog.
-local function replace_part(recipe_name, original_name, new_name, amount)
+local function replace_part(recipe_name,original_name,new_name,amount)
   if not item_exists(new_name) then return end
-  local recipe = data.raw.recipe and data.raw.recipe[recipe_name]
+  local recipe=Recipe.optional(recipe_name)
   if not recipe then return end
-  local function replace(ingredients)
-    for _, ingredient in ipairs(ingredients or {}) do
-      if (ingredient.type or "item") == "item"
-        and (ingredient.name or ingredient[1]) == original_name then
-        ingredient.name = new_name
-        ingredient[1] = nil
-        ingredient.amount = amount or ingredient.amount or ingredient[2] or 1
-        ingredient[2] = nil
-        ingredient.type = "item"
+  -- Preserve original ingredient position and legacy variants. RaziLib's
+  -- each_variant walks all three without a home-grown variant loop.
+  recipe:each_variant(function(variant)
+    for _,ingredient in ipairs(variant.ingredients or {}) do
+      if (ingredient.type or "item")=="item"
+        and (ingredient.name or ingredient[1])==original_name then
+        ingredient.name=new_name
+        ingredient[1]=nil
+        ingredient.amount=amount or ingredient.amount or ingredient[2] or 1
+        ingredient[2]=nil
+        ingredient.type="item"
       end
     end
-  end
-  replace(recipe.ingredients)
-  if recipe.normal then replace(recipe.normal.ingredients) end
-  if recipe.expensive then replace(recipe.expensive.ingredients) end
+  end)
 end
 
 replace_part("fw-quantum-computer", "fw-memory-die", "kr-ai-core", 1)
@@ -76,7 +71,7 @@ if item_exists("kr-imersite-crystal") and data.raw.item["fw-stabilized-flux-crys
     data:extend({ {
       type = "recipe",
       name = name,
-      icons = table.deepcopy(data.raw.item["fw-stabilized-flux-crystal"].icons),
+      icons = Icons.from_prototype(data.raw.item["fw-stabilized-flux-crystal"]),
       category = "fw-flux-synthesis",
       subgroup = "fw-flux-systems",
       order = "b[systems]-a[stabilized-flux-crystal]-z[imersite]",
@@ -97,11 +92,5 @@ if item_exists("kr-imersite-crystal") and data.raw.item["fw-stabilized-flux-crys
       main_product = "fw-stabilized-flux-crystal",
     } })
   end
-  local effects = data.raw.technology["fw-flux-synthesis"].effects or {}
-  data.raw.technology["fw-flux-synthesis"].effects = effects
-  local found = false
-  for _, effect in ipairs(effects) do
-    if effect.type == "unlock-recipe" and effect.recipe == name then found = true end
-  end
-  if not found then effects[#effects + 1] = { type = "unlock-recipe", recipe = name } end
+  Technology.get("fw-flux-synthesis"):unlock(name)
 end

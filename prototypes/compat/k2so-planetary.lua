@@ -1,9 +1,11 @@
+local RaziSettings=require("__razi_lib__/lib/settings")
+local Technology=require("__razi_lib__/lib/technology")
+local Icons=require("__razi_lib__/lib/icons")
 -- Four deliberately additive K2SO + FluxWorks planetary recipes. These
 -- consume a K2SO resource *alongside* the corresponding Flux discipline,
 -- rather than placing a new toll on native planet technologies or science.
-local Startup = require("prototypes.lib.startup-settings")
 if not mods["Krastorio2-spaced-out"]
-  or not Startup.enabled("fw-enable-k2so-integration", true) then return end
+  or not RaziSettings.enabled("fw-enable-k2so-integration",true) then return end
 
 local alternatives = {
   {
@@ -97,24 +99,9 @@ for index, spec in ipairs(alternatives) do
       results = { { type = "item", name = spec.product, amount = spec.amount } },
       main_product = spec.product,
     }
-    if product.icons then
-      result.icons = table.deepcopy(product.icons)
-    else
-      result.icon = product.icon
-      result.icon_size = product.icon_size
-    end
+    result.icons=Icons.from_prototype(product)
     if not data.raw.recipe[spec.name] then data:extend({ result }) end
-    tech.effects = tech.effects or {}
-    local found = false
-    for _, effect in ipairs(tech.effects) do
-      if effect.type == "unlock-recipe" and effect.recipe == spec.name then
-        found = true
-        break
-      end
-    end
-    if not found then
-      tech.effects[#tech.effects + 1] = { type = "unlock-recipe", recipe = spec.name }
-    end
+    Technology.get(spec.technology):unlock(spec.name)
   end
 end
 return alternatives

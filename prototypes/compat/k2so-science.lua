@@ -1,8 +1,10 @@
+local RaziSettings=require("__razi_lib__/lib/settings")
+local Technology=require("__razi_lib__/lib/technology")
+local Icons=require("__razi_lib__/lib/icons")
 -- K2SO manufacturing alternatives for the optional early research disciplines.
 -- The Space Age-only recipes stay intact, and no K2SO tech card is rewritten.
-local Startup = require("prototypes.lib.startup-settings")
 if not mods["Krastorio2-spaced-out"]
-  or not Startup.enabled("fw-enable-k2so-integration", true) then return end
+  or not RaziSettings.enabled("fw-enable-k2so-integration",true) then return end
 
 local alternatives = {
   {
@@ -46,8 +48,7 @@ for index, spec in ipairs(alternatives) do
       data:extend({ {
         type = "recipe",
         name = spec.name,
-        icon = pack.icon,
-        icon_size = pack.icon_size,
+        icons = Icons.from_prototype(pack),
         category = "advanced-crafting",
         subgroup = "fw-science-packs",
         order = ("d[domain]-z[k2so]-%02d"):format(index),
@@ -59,19 +60,7 @@ for index, spec in ipairs(alternatives) do
         main_product = spec.pack,
       } })
     end
-    technology.effects = technology.effects or {}
-    local found = false
-    for _, effect in ipairs(technology.effects) do
-      if effect.type == "unlock-recipe" and effect.recipe == spec.name then
-        found = true
-        break
-      end
-    end
-    if not found then
-      technology.effects[#technology.effects + 1] = {
-        type = "unlock-recipe", recipe = spec.name,
-      }
-    end
+    Technology.get(spec.unlock):unlock(spec.name)
   end
 end
 

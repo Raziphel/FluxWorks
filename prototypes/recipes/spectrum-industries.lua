@@ -1,3 +1,6 @@
+local Item=require("__razi_lib__/lib/item")
+local Technology=require("__razi_lib__/lib/technology")
+local IndustrialIcons=require("prototypes.lib.industrial-icons")
 -- Spectrum Industries: alternative production routes, not another science ladder.
 -- Each process is unlocked by an existing engineering technology and runs in
 -- existing FluxWorks machinery. No new mandatory intermediates or global edits.
@@ -11,15 +14,11 @@ local spectra = {
 }
 
 local function find_item(name)
-  for _, prototype_type in ipairs({"item", "tool", "capsule", "ammo", "module"}) do
-    if data.raw[prototype_type] and data.raw[prototype_type][name] then
-      return data.raw[prototype_type][name], name
-    end
-  end
-  -- K2SO replaces a few base items with the prefixed equivalent. Existing
-  -- FluxWorks materials are never guessed or renamed.
-  if name:sub(1, 3) ~= "fw-" and name:sub(1, 3) ~= "kr-" then
-    return find_item("kr-" .. name)
+  local found=Item.optional(name)
+  if found then return found:raw(),name end
+  -- Preserve the original K2SO alias fallback for non-FluxWorks outputs.
+  if name:sub(1,3)~="fw-" and name:sub(1,3)~="kr-" then
+    return find_item("kr-"..name)
   end
 end
 
@@ -42,32 +41,6 @@ local function resolve_ingredients(entries)
   -- Our synthesis plant and arc foundry each have two input fluid boxes.
   if liquid_count > 2 then return end
   return ingredients
-end
-
-local function icon_layers(product, spectrum, partner)
-  local icons
-  if product.icons then
-    icons = table.deepcopy(product.icons)
-  elseif product.icon then
-    icons = {{icon = product.icon, icon_size = product.icon_size or 64}}
-  else
-    return
-  end
-  local function overlay(colour, shift)
-    icons[#icons + 1] = {
-      icon = "__FluxWorksAssets__/graphics/icons/fluids/flux-" .. colour .. ".png",
-      icon_size = 256,
-      scale = partner and 0.068 or 0.09,
-      shift = shift,
-    }
-  end
-  if partner then
-    overlay(spectrum, {-10, 10})
-    overlay(partner, {10, 10})
-  else
-    overlay(spectrum, {10, 10})
-  end
-  return icons
 end
 
 local function item(name, amount)
@@ -192,18 +165,6 @@ local processes = {
   },
 }
 
-local function unlock(technology, recipe_name)
-  technology.effects = technology.effects or {}
-  for _, effect in ipairs(technology.effects) do
-    if effect.type == "unlock-recipe" and effect.recipe == recipe_name then
-      return
-    end
-  end
-  technology.effects[#technology.effects + 1] = {
-    type = "unlock-recipe", recipe = recipe_name,
-  }
-end
-
 local added = 0
 for index, spec in ipairs(processes) do
   local recipe_name = "fw-spectrum-" .. spec.id
@@ -211,7 +172,7 @@ for index, spec in ipairs(processes) do
   local product, product_name = find_item(spec.product)
   local ingredients = resolve_ingredients(spec.inputs)
   local category = data.raw["recipe-category"] and data.raw["recipe-category"][spec.category]
-  local icons = product and icon_layers(product, spec.spectrum, spec.partner)
+  local icons = product and IndustrialIcons.spectrum(product,spec.spectrum,spec.partner,"catalog")
 
   if technology and product and category and ingredients and icons then
     if not (data.raw.recipe and data.raw.recipe[recipe_name]) then
@@ -231,7 +192,7 @@ for index, spec in ipairs(processes) do
         main_product = product_name,
       }})
     end
-    unlock(technology, recipe_name)
+    Technology.get(spec.technology):unlock(recipe_name)
     added = added + 1
   else
     log("FluxWorks Spectrum Industries: skipping " .. recipe_name .. " (missing optional prototype)")

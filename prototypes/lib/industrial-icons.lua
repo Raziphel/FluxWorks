@@ -19,10 +19,13 @@ function M.spectrum(product, colour, partner, layout)
   if not layers then return nil end
   layout=layout or "galaxy"
   local galaxy=layout=="galaxy"
-  local y=galaxy and 16 or 14
-  local x=galaxy and (partner and -13 or 14) or (partner and -12 or 15)
-  local other_x=galaxy and 13 or 12
-  local scale=galaxy and 0.065 or 0.07
+  local catalog=layout=="catalog"
+  local y=catalog and 10 or (galaxy and 16 or 14)
+  local x=catalog and (partner and -10 or 10)
+    or (galaxy and (partner and -13 or 14) or (partner and -12 or 15))
+  local other_x=catalog and 10 or (galaxy and 13 or 12)
+  local scale=catalog and (partner and 0.068 or 0.09)
+    or (galaxy and 0.065 or 0.07)
   layers[#layers+1]=Icons.layer(spectrum_prefix..colour..".png",256,
     {scale=scale,shift={x,y}})
   if partner then
