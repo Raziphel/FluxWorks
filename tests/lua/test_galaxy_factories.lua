@@ -70,5 +70,25 @@ assert(select(1,lib.register(pairs,"fw-rp-interplanetary-factories"))==0)
 local hybrids={{id="biomass",family="k2-galaxy",world="gleba",native={"bioflux"},
  k2={"kr-biomass"},product="fw-nutrient-bed",feed="fw-resin",spectrum="green"}}
 assert(select(1,lib.register(hybrids,"fw-rp-k2so-galaxy-industry"))==1)
+-- A renamed source material is still usable when its item declares the
+-- actual home planet. Do not fall back to unrelated ordinary resources.
+raw.planet.ribbonia={}
+raw.technology["planet-discovery-ribbonia"]={
+ effects={{type="unlock-space-location",space_location="ribbonia"}}
+}
+raw.item["ribbonia-prism"]={icon="prism.png",icon_size=64,
+ default_import_location="ribbonia"}
+raw.recipe["original-ribbonia-prism"]={
+ results={{type="item",name="ribbonia-prism",amount=1}}
+}
+raw.technology["fw-flux-resonance"]={}
+raw.fluid["fw-purple-flux"]={}
+local recovered={{id="ribbonia-source",family="planet",world="ribbonia",
+ native={"old-ribbonia-crystal"},product="fw-annealed-cermet",
+ feed="fw-cermet",spectrum="purple"}}
+assert(select(1,lib.register(recovered,"fw-rp-galactic-industry"))==1)
+local resolved=raw.recipe["fw-planet-ribbonia-source-process"]
+assert(resolved.ingredients[1].name=="ribbonia-prism")
+
 dofile("prototypes/validation/galactic-factories.lua")
 print("Galaxy factory guards: installed world, missing world, freight, K2SO, source preservation OK")

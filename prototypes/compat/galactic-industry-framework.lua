@@ -81,6 +81,55 @@ local system_badges={
   calidus=true,solaris=true,nyxaris=true,vibrant=true,
   vespera=true,beetlejuice=true,umbra=true,["deep-space"]=true
 }
+-- Source mods often rename intermediates between versions. Respect the
+-- engine's explicit default_import_location metadata before giving up.
+-- Avoid science/tool packs and universal vanilla resources as fallbacks.
+local function native_suppliers(producer)
+  local indexed={}
+  for _,kind in ipairs({"item","module","capsule","ammo"}) do
+    for name,proto in pairs(data.raw[kind] or {}) do
+      local location=proto.default_import_location
+      if type(location)=="string" and proto.hidden~=true
+        and producer[name] and name:sub(1,3)~="fw-"
+        and not name:find("science",1,true)
+        and not name:find("tech-card",1,true)
+        and not name:find("research-data",1,true)
+        and not name:find("satellite",1,true)
+        and not ({["iron-ore"]=true,["copper-ore"]=true,["coal"]=true,
+          ["stone"]=true,["iron-plate"]=true,["copper-plate"]=true})[name] then
+        indexed[location]=indexed[location] or {}
+        indexed[location][#indexed[location]+1]=name
+      end
+    end
+  end
+  for _,list in pairs(indexed) do
+    table.sort(list,function(a,b)
+      local function score(name)
+        local likely={"plate","ore","crystal","mineral","fiber","alloy",
+          "ingot","metal","biomass","glass","resin","cell","cable"}
+        local best=10
+        for index,word in ipairs(likely) do
+          if name:find(word,1,true) then best=math.min(best,index) end
+        end
+        return best
+      end
+      local pa,pb=score(a),score(b)
+      return pa==pb and a<b or pa<pb
+    end)
+  end
+  return indexed
+end
+local function choose_native(candidates,producer,world_name,indexed)
+  local exact=pick(candidates,producer)
+  if exact then return exact end
+  local options=indexed[world_name]
+  if options and #options>0 then
+    log("FluxWorks galaxy: using declared native import "..options[1]..
+      " for "..world_name.." instead of a guessed resource ID")
+    return options[1]
+  end
+end
+
 local function layers(product,colour,partner,system)
   local icons
   if product.icons then icons=table.deepcopy(product.icons)
@@ -149,6 +198,7 @@ function M.register(specs,setting_name)
   local recipes=data.raw.recipe or {}
   local techs=data.raw.technology or {}
   local products=produced_index()
+  local suppliers=native_suppliers(products)
   local arrivals=discovery_index()
   local science=accepted_science()
   local machines=available_categories()
@@ -166,8 +216,8 @@ function M.register(specs,setting_name)
     local arrival=spec.world and actual_arrival(spec.world,arrivals)
     local second=spec.secondworld and world(spec.secondworld)
     local second_arrival=spec.secondworld and actual_arrival(spec.secondworld,arrivals)
-    local native=pick(spec.native,products)
-    local other=spec.secondworld and pick(spec.second_native,products)
+    local native=choose_native(spec.native,products,spec.world,suppliers)
+    local other=spec.secondworld and choose_native(spec.second_native,products,spec.secondworld,suppliers)
     local kr_part=spec.k2 and pick(spec.k2,products)
     local output=item(spec.product)
     local feed=item(spec.feed)

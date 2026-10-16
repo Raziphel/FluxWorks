@@ -33,3 +33,7 @@ Run the offline Lua mock tests and then a Factorio 2.1 data-raw dump with every 
 ## K2SO science unlock safety
 
 Two late K2SO native-material hybrid recipes offer optional manufacturing of Flux Theory and Planetary Convergence specialist packs. They additionally require the corresponding **original FluxWorks science unlock technology**. Their technology nodes never appear as Razi chapter prerequisites, and no recipe overwrites a native K2SO science-card definition.
+
+## Source-native fallback
+
+When a curated item ID is absent, FluxWorks may choose a producible visible intermediate that the source item prototype explicitly declares as `default_import_location = <planet>`. This is a one-time data-stage lookup, sorted deterministically with a material-oriented preference. It excludes generic iron/copper/stone/coal and science/tech-card items. It does **not** mine, scan the game surface or create new resource patches. If neither exact material nor declared source-native item exists, the recipe is omitted. The Factorio log records any such substitution for a mod maintainer to review.
