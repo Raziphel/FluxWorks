@@ -61,6 +61,11 @@ assert(#techs["fw-cross-planetary-industrial-convergence"].unit.ingredients==2)
 assert(#techs["fw-planetary-convergence-science"].unit.ingredients==2)
 assert(techs["fw-origin-infrastructure"].prerequisites[1]=="kr-matter-cube")
 assert(raw.recipe["fw-k2so-imersite-resonance"])
+local fluids=0
+for _,ingredient in ipairs(raw.recipe["fw-k2so-imersite-resonance"].ingredients) do
+  if ingredient.type=="fluid" then fluids=fluids+1 end
+end
+assert(fluids<=2,"K2SO crystal variant cannot use more than two fluid ports")
 dofile("prototypes/compat/k2so.lua")
 assert(#techs["fw-cross-planetary-industrial-convergence"].unit.ingredients==2)
 assert(#techs["fw-origin-infrastructure"].prerequisites==1)

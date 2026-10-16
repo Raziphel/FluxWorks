@@ -69,7 +69,7 @@ replace_part("fw-origin-forge", "fusion-power-cell", "kr-matter-cube", 1)
 if item_exists("kr-imersite-crystal") and data.raw.item["fw-stabilized-flux-crystal"]
   and data.raw.technology["fw-flux-synthesis"] then
   local name = "fw-k2so-imersite-resonance"
-  if not data.raw.recipe[name] then
+  if not data.raw.recipe[name] and #Icons.from_prototype(data.raw.item["fw-stabilized-flux-crystal"])>0 then
     data:extend({ {
       type = "recipe",
       name = name,
@@ -86,7 +86,6 @@ if item_exists("kr-imersite-crystal") and data.raw.item["fw-stabilized-flux-crys
         { type = "item", name = "fw-flux-catalyst", amount = 1 },
         { type = "fluid", name = "fw-purple-flux", amount = 30 },
         { type = "fluid", name = "fw-yellow-flux", amount = 15 },
-        { type = "fluid", name = "fw-red-flux", amount = 8 },
       },
       results = {
         { type = "item", name = "fw-stabilized-flux-crystal", amount = 3 },
@@ -94,5 +93,7 @@ if item_exists("kr-imersite-crystal") and data.raw.item["fw-stabilized-flux-crys
       main_product = "fw-stabilized-flux-crystal",
     } })
   end
-  Technology.get("fw-flux-synthesis"):unlock(name)
+  if data.raw.recipe[name] then
+    Technology.get("fw-flux-synthesis"):unlock(name)
+  end
 end

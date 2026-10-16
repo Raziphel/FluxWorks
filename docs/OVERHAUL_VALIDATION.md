@@ -65,3 +65,7 @@ If RaziLib is checked out elsewhere, set `RAZILIB_PATH=/path/to/RaziLib` for eac
 ## Runtime RaziLib 1.2 checks
 
 The event registry was already in use. FluxWorks now also uses RaziLib's `runtime/storage.namespace` for **existing save keys** (`platform_type_whitelist`, `flux_extractors`, `phase_vault_units`, `spectral_reservoir_units`, `rift_exchange`) and `runtime/remote.add_interface` for the rocket-reusability remote API. These keep the same stored tables, interface name and command; they do **not** rename data or introduce global state migration. Run `lua tests/lua/test_razi_lib_runtime.lua` with the real sibling library to test persistence and interface idempotence. Confirm actual save migration in-game before publishing.
+
+### Imersite synthesis fluid-port guard
+
+The K2SO Flux stabilization alternative previously declared three different Flux input fluids, but the Flux synthesis machines are designed for two inlet ports. The refactor now consumes Purple and Yellow Flux and omits the tertiary Red Flux input, keeping the same output, technology ID, ingredients and optional status. The real-library K2SO test asserts the input-fluid count remains within the machine's actual limit. No global K2SO recipe is edited.
